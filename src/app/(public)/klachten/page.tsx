@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
 import { LegalNotice } from "@/components/layout/legal-notice";
+import { Card, CardTitle } from "@/components/ui/card";
+import { KlachtForm } from "./klacht-form";
 
 export const metadata: Metadata = {
   title: "Klachten",
@@ -25,6 +27,13 @@ export default function KlachtenPage() {
           </p>
           <p>De volledige klachtenregeling wordt hier opgenomen.</p>
         </div>
+
+        <Card className="mt-8">
+          <CardTitle>Klacht indienen</CardTitle>
+          <div className="mt-4">
+            <KlachtForm />
+          </div>
+        </Card>
       </Container>
     </>
   );

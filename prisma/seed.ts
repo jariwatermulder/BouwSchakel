@@ -8,6 +8,7 @@
  * -opdrachten worden in latere fasen toegevoegd, duidelijk gemarkeerd als seed.
  */
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
 
@@ -108,6 +109,26 @@ async function main() {
     update: {},
     create: { id: "default" },
   });
+
+  // Optionele admin-bootstrap: alleen wanneer ADMIN_EMAIL + ADMIN_PASSWORD
+  // gezet zijn. Zie docs/ADMIN.md voor het promoveren van een bestaand account.
+  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (adminEmail && adminPassword) {
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+    await db.user.upsert({
+      where: { email: adminEmail },
+      update: { role: "ADMIN", adminRole: "SUPER_ADMIN" },
+      create: {
+        email: adminEmail,
+        passwordHash,
+        role: "ADMIN",
+        adminRole: "SUPER_ADMIN",
+        emailVerifiedAt: new Date(),
+      },
+    });
+    console.info(`Admin klaar: ${adminEmail}`);
+  }
 
   const skillCount = await db.skill.count();
   const certCount = await db.certification.count();

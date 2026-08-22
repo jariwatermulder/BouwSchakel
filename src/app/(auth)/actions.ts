@@ -89,6 +89,6 @@ export async function loginAction(
       ? "/zzpers/dashboard"
       : role === "COMPANY"
         ? "/bedrijven/dashboard"
-        : "/",
+        : "/admin",
   );
 }

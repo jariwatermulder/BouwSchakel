@@ -64,6 +64,8 @@ model User {
   notificationPreference NotificationPreference?
   sentMessages           Message[]
   reviews                Review[]
+  reportsIngediend       Report[]
+  auditLogs              AuditLog[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -599,4 +601,71 @@ model Review {
   @@unique([assignmentId, richting])
   @@index([overZzpProfileId])
   @@index([overCompanyId])
+}
+
+// ── FASE 7: Admin, moderatie en audit ────────────────────────────────────────
+
+enum ReportStatus {
+  OPEN
+  IN_BEHANDELING
+  AFGEHANDELD
+  AFGEWEZEN
+}
+
+enum ReportSubjectType {
+  USER
+  COMPANY
+  ZZP_PROFIEL
+  JOB
+  REVIEW
+  MESSAGE
+}
+
+enum ComplaintStatus {
+  OPEN
+  IN_BEHANDELING
+  AFGEHANDELD
+}
+
+model Report {
+  id            String            @id @default(uuid())
+  melderUserId  String?
+  melder        User?             @relation(fields: [melderUserId], references: [id], onDelete: SetNull)
+  subjectType   ReportSubjectType
+  subjectId     String
+  reden         String
+  toelichting   String?
+  status        ReportStatus      @default(OPEN)
+  createdAt     DateTime          @default(now())
+  afgehandeldOp DateTime?
+
+  @@index([status])
+}
+
+model Complaint {
+  id        String          @id @default(uuid())
+  naam      String
+  email     String
+  onderwerp String
+  bericht   String
+  status    ComplaintStatus @default(OPEN)
+  createdAt DateTime        @default(now())
+
+  @@index([status])
+}
+
+// Append-only audit trail voor beveiligings- en beheergevoelige acties.
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorUserId String?
+  actor       User?    @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+  actie       String
+  subjectType String?
+  subjectId   String?
+  meta        Json?
+  ip          String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actorUserId])
 }

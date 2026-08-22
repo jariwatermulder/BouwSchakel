@@ -5,6 +5,18 @@ import {
   type MatchWeights,
 } from "@/server/matching/engine";
 
+import type { MatchingSettingInput } from "@/lib/validations/matching";
+
+export async function updateMatchingConfig(
+  data: MatchingSettingInput,
+): Promise<void> {
+  await db.matchingSetting.upsert({
+    where: { id: "default" },
+    update: data,
+    create: { id: "default", ...data },
+  });
+}
+
 export interface MatchingConfig {
   weights: MatchWeights;
   minMatchScore: number;
