@@ -4,10 +4,24 @@ import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MatchScore } from "@/components/match-score";
+import { Button } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getPublishedJob } from "@/server/jobs/service";
 import { scoreOpdrachtVoorZzp } from "@/server/matching/service";
 import { formatEuro } from "@/lib/utils";
+import { db } from "@/lib/db";
+import { openGesprek } from "@/app/(app)/message-actions";
+import { ApplyForm } from "./apply-form";
+import { trekReactieIn } from "./apply-actions";
+
+const APPLICATION_STATUS_LABEL: Record<string, string> = {
+  NIEUW: "Verstuurd",
+  BEKEKEN: "Bekeken door bedrijf",
+  UITGENODIGD: "Uitgenodigd",
+  AFGEWEZEN: "Niet geselecteerd",
+  GEACCEPTEERD: "Geselecteerd",
+  INGETROKKEN: "Ingetrokken",
+};
 
 export const metadata: Metadata = {
   title: "Opdracht",
@@ -28,6 +42,18 @@ export default async function ZzpOpdrachtDetailPage({
   const job = await getPublishedJob(id);
   if (!job) notFound();
   const result = await scoreOpdrachtVoorZzp(user.id, job);
+
+  const profile = await db.zZPProfile.findUnique({
+    where: { userId: user.id },
+    select: { id: true },
+  });
+  const application = profile
+    ? await db.application.findUnique({
+        where: {
+          jobId_zzpProfileId: { jobId: id, zzpProfileId: profile.id },
+        },
+      })
+    : null;
 
   return (
     <Container className="py-8 md:py-12">
@@ -104,9 +130,53 @@ export default async function ZzpOpdrachtDetailPage({
           </Card>
 
           <Card>
-            <CardDescription>
-              Reageren op opdrachten komt in de volgende stap beschikbaar.
-            </CardDescription>
+            <CardTitle>Reageren</CardTitle>
+            {!profile ? (
+              <CardDescription className="mt-2">
+                Maak eerst je profiel compleet om te kunnen reageren.
+              </CardDescription>
+            ) : application &&
+              application.status !== "INGETROKKEN" &&
+              application.status !== "AFGEWEZEN" ? (
+              <div className="mt-2 space-y-3">
+                <Badge variant="accent">
+                  {APPLICATION_STATUS_LABEL[application.status]}
+                </Badge>
+                <form action={openGesprek}>
+                  <input type="hidden" name="jobId" value={job.id} />
+                  <input type="hidden" name="zzpProfileId" value={profile.id} />
+                  <input
+                    type="hidden"
+                    name="basePath"
+                    value="/zzpers/berichten"
+                  />
+                  <Button type="submit" variant="outline" size="sm">
+                    Bericht sturen
+                  </Button>
+                </form>
+                {application.status === "NIEUW" ||
+                application.status === "UITGENODIGD" ? (
+                  <form action={trekReactieIn}>
+                    <input
+                      type="hidden"
+                      name="applicationId"
+                      value={application.id}
+                    />
+                    <input type="hidden" name="jobId" value={job.id} />
+                    <button
+                      type="submit"
+                      className="text-sm text-red-600 hover:underline"
+                    >
+                      Reactie intrekken
+                    </button>
+                  </form>
+                ) : null}
+              </div>
+            ) : (
+              <div className="mt-3">
+                <ApplyForm jobId={job.id} />
+              </div>
+            )}
           </Card>
         </div>
       </div>

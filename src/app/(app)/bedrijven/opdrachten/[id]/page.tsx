@@ -9,8 +9,24 @@ import { MatchScore } from "@/components/match-score";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getJobForUser } from "@/server/jobs/service";
 import { findKandidatenVoorOpdracht } from "@/server/matching/service";
+import { listApplicationsForJob } from "@/server/applications/service";
 import { formatEuro } from "@/lib/utils";
 import { wijzigOpdrachtStatus } from "../actions";
+import { openGesprek } from "@/app/(app)/message-actions";
+import {
+  nodigKandidaatUit,
+  selecteerKandidaat,
+  wijsKandidaatAf,
+} from "./application-actions";
+
+const REACTIE_LABEL: Record<string, string> = {
+  NIEUW: "Nieuw",
+  BEKEKEN: "Bekeken",
+  UITGENODIGD: "Uitgenodigd",
+  AFGEWEZEN: "Afgewezen",
+  GEACCEPTEERD: "Geselecteerd",
+  INGETROKKEN: "Ingetrokken",
+};
 
 export const metadata: Metadata = {
   title: "Opdracht",
@@ -53,6 +69,8 @@ export default async function OpdrachtDetailPage({
   const job = await getJobForUser(user.id, id);
   if (!job) notFound();
   const kandidaten = await findKandidatenVoorOpdracht(job);
+  const reacties = await listApplicationsForJob(user.id, job.id);
+  const actieveReacties = reacties.filter((a) => a.status !== "INGETROKKEN");
 
   return (
     <Container className="py-8 md:py-12">
@@ -171,6 +189,117 @@ export default async function OpdrachtDetailPage({
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold">
+          Reacties{" "}
+          <span className="text-foreground-muted font-normal">
+            ({actieveReacties.length})
+          </span>
+        </h2>
+        {actieveReacties.length === 0 ? (
+          <Card className="mt-4">
+            <CardDescription>
+              Nog geen reacties. Nodig kandidaten uit via de matches hieronder.
+            </CardDescription>
+          </Card>
+        ) : (
+          <ul className="mt-4 space-y-3">
+            {actieveReacties.map((a) => {
+              const naam =
+                [a.zzpProfile.voornaam, a.zzpProfile.achternaam]
+                  .filter(Boolean)
+                  .join(" ") || "Vakman";
+              const afgerond =
+                a.status === "GEACCEPTEERD" || a.status === "AFGEWEZEN";
+              return (
+                <li key={a.id}>
+                  <Card>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold">{naam}</p>
+                          <Badge
+                            variant={
+                              a.status === "GEACCEPTEERD"
+                                ? "verified"
+                                : "neutral"
+                            }
+                          >
+                            {REACTIE_LABEL[a.status]}
+                          </Badge>
+                        </div>
+                        {a.bericht ? (
+                          <p className="text-foreground-muted mt-1 text-sm">
+                            {a.bericht}
+                          </p>
+                        ) : null}
+                        {a.uurtariefVoorstelCents ? (
+                          <p className="text-foreground-muted mt-1 text-sm">
+                            Voorstel: {formatEuro(a.uurtariefVoorstelCents)} p/u
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="flex flex-wrap gap-2 sm:shrink-0">
+                        <form action={openGesprek}>
+                          <input type="hidden" name="jobId" value={job.id} />
+                          <input
+                            type="hidden"
+                            name="zzpProfileId"
+                            value={a.zzpProfileId}
+                          />
+                          <input
+                            type="hidden"
+                            name="basePath"
+                            value="/bedrijven/berichten"
+                          />
+                          <Button type="submit" variant="outline" size="sm">
+                            Bericht
+                          </Button>
+                        </form>
+                        {!afgerond ? (
+                          <>
+                            <form action={selecteerKandidaat}>
+                              <input
+                                type="hidden"
+                                name="applicationId"
+                                value={a.id}
+                              />
+                              <input
+                                type="hidden"
+                                name="jobId"
+                                value={job.id}
+                              />
+                              <Button type="submit" variant="accent" size="sm">
+                                Selecteren
+                              </Button>
+                            </form>
+                            <form action={wijsKandidaatAf}>
+                              <input
+                                type="hidden"
+                                name="applicationId"
+                                value={a.id}
+                              />
+                              <input
+                                type="hidden"
+                                name="jobId"
+                                value={job.id}
+                              />
+                              <Button type="submit" variant="ghost" size="sm">
+                                Afwijzen
+                              </Button>
+                            </form>
+                          </>
+                        ) : null}
+                      </div>
+                    </div>
+                  </Card>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-lg font-semibold">
           Beste matches{" "}
           <span className="text-foreground-muted font-normal">
             ({kandidaten.length})
@@ -213,6 +342,35 @@ export default async function OpdrachtDetailPage({
                     </div>
                     <div className="sm:w-64 sm:shrink-0">
                       <MatchScore result={k.result} />
+                      <div className="mt-3 flex gap-2">
+                        <form action={nodigKandidaatUit}>
+                          <input type="hidden" name="jobId" value={job.id} />
+                          <input
+                            type="hidden"
+                            name="zzpProfileId"
+                            value={k.zzpProfileId}
+                          />
+                          <Button type="submit" variant="accent" size="sm">
+                            Uitnodigen
+                          </Button>
+                        </form>
+                        <form action={openGesprek}>
+                          <input type="hidden" name="jobId" value={job.id} />
+                          <input
+                            type="hidden"
+                            name="zzpProfileId"
+                            value={k.zzpProfileId}
+                          />
+                          <input
+                            type="hidden"
+                            name="basePath"
+                            value="/bedrijven/berichten"
+                          />
+                          <Button type="submit" variant="outline" size="sm">
+                            Bericht
+                          </Button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </Card>

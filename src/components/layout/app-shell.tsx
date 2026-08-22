@@ -5,6 +5,16 @@ import { logoutAction } from "@/app/(app)/actions";
 export interface AppNavItem {
   href: string;
   label: string;
+  badge?: number;
+}
+
+function Badge({ count }: { count?: number }) {
+  if (!count || count <= 0) return null;
+  return (
+    <span className="bg-accent-500 text-ink ml-1 inline-flex min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
+      {count > 9 ? "9+" : count}
+    </span>
+  );
 }
 
 export function AppShell({
@@ -38,6 +48,7 @@ export function AppShell({
                   className="text-navy-100 text-sm font-medium hover:text-white"
                 >
                   {item.label}
+                  <Badge count={item.badge} />
                 </Link>
               ))}
             </nav>
@@ -70,6 +81,7 @@ export function AppShell({
             className="text-foreground-muted shrink-0 text-sm font-medium"
           >
             {item.label}
+            <Badge count={item.badge} />
           </Link>
         ))}
       </nav>

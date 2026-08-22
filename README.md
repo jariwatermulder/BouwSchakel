@@ -65,8 +65,9 @@ npm run dev            # http://localhost:3000
 - FASE 2: hervatbare multi-step ZZP-registratie met profielcompleetheid, profielpagina, beschikbaarheid, documenten (opslag-interface) en portfolio; catalogus van vakgebieden/specialisaties/certificaten via seed; ZZP-dashboard en app-shell.
 - FASE 3: bedrijfsregistratie/-profiel (met CompanyMember-teamaccounts), snelle 'opdracht plaatsen'-wizard, opdrachtenbeheer met statusworkflow en bedrijfsdashboard.
 - FASE 4: deterministische matching engine met harde filters en gewogen, uitlegbare scores (configureerbare gewichten via `MatchingSetting`); kandidaten per opdracht voor bedrijven en "Opdrachten voor jou" voor ZZP'ers; ingebouwde NL-gazetteer voor afstandsberekening.
+- FASE 5: reacties & uitnodigingen (Application) → kandidaat selecteren (Assignment, opdracht → vervuld); interne messaging per opdracht met ongelezen-indicators; in-app + e-mail notificaties met per-gebruiker voorkeuren.
 
-Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 5: reacties, messaging, notificaties).
+De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 6: reviews).
 
 ### Bekende aandachtspunten
 

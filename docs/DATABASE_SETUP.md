@@ -3,15 +3,15 @@
 De BouwSchakel-database draait op een **apart Supabase-project** (los van de
 JW Hout-CRM): PostgreSQL 17, regio EU (Frankfurt), gratis tier.
 
-| | |
-|---|---|
-| Project | `bouwschakel` |
-| Project ref | `pzpegcnvtzamsjqboyxz` |
-| Host (direct) | `db.pzpegcnvtzamsjqboyxz.supabase.co` |
-| Regio | eu-central-1 (Frankfurt) |
-| Dashboard | https://supabase.com/dashboard/project/pzpegcnvtzamsjqboyxz |
+|               |                                                             |
+| ------------- | ----------------------------------------------------------- |
+| Project       | `bouwschakel`                                               |
+| Project ref   | `pzpegcnvtzamsjqboyxz`                                      |
+| Host (direct) | `db.pzpegcnvtzamsjqboyxz.supabase.co`                       |
+| Regio         | eu-central-1 (Frankfurt)                                    |
+| Dashboard     | https://supabase.com/dashboard/project/pzpegcnvtzamsjqboyxz |
 
-Het schema (23 tabellen), de catalogus (15 vakgebieden, 38 specialisaties, 6
+Het schema (29 tabellen), de catalogus (15 vakgebieden, 38 specialisaties, 6
 certificaten), de standaard matching-instellingen én **RLS** (Row Level
 Security, dichtgezet) zijn al toegepast.
 

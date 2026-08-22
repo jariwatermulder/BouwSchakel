@@ -55,11 +55,14 @@ model User {
   emailVerifiedAt DateTime?
   lastLoginAt     DateTime?
 
-  sessions           Session[]
-  tokens             VerificationToken[]
-  zzpProfile         ZZPProfile?
-  documents          Document[]
-  companyMemberships CompanyMember[]
+  sessions               Session[]
+  tokens                 VerificationToken[]
+  zzpProfile             ZZPProfile?
+  documents              Document[]
+  companyMemberships     CompanyMember[]
+  notifications          Notification[]
+  notificationPreference NotificationPreference?
+  sentMessages           Message[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -162,6 +165,9 @@ model ZZPProfile {
   availability    Availability[]
   portfolio       PortfolioItem[]
   matches         Match[]
+  applications    Application[]
+  assignments     Assignment[]
+  conversations   Conversation[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -307,8 +313,10 @@ model Company {
   typeWerkzaamheden String?
   verificatieStatus VerificatieStatus @default(NIET_GEVERIFIEERD)
 
-  members CompanyMember[]
-  jobs    Job[]
+  members       CompanyMember[]
+  jobs          Job[]
+  assignments   Assignment[]
+  conversations Conversation[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -359,8 +367,11 @@ model Job {
   status              JobStatus @default(CONCEPT)
   publiekIndexeerbaar Boolean   @default(true)
 
-  requirements JobRequirement[]
-  matches      Match[]
+  requirements  JobRequirement[]
+  matches       Match[]
+  applications  Application[]
+  assignments   Assignment[]
+  conversations Conversation[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -419,4 +430,135 @@ model MatchingSetting {
   minMatchScore          Int      @default(50)
   maxAfstandKm           Int      @default(150)
   updatedAt              DateTime @updatedAt
+}
+
+// ── FASE 5: Interactie (reacties, opdrachten, berichten, notificaties) ───────
+
+enum ApplicationStatus {
+  NIEUW
+  BEKEKEN
+  UITGENODIGD
+  AFGEWEZEN
+  GEACCEPTEERD
+  INGETROKKEN
+}
+
+enum ApplicationRichting {
+  SOLLICITATIE // ZZP'er reageert op opdracht
+  UITNODIGING // bedrijf nodigt ZZP'er uit
+}
+
+enum AssignmentStatus {
+  GEPLAND
+  ACTIEF
+  AFGEROND
+  GEANNULEERD
+  GESCHIL
+}
+
+enum NotificationType {
+  NIEUWE_MATCH
+  NIEUWE_REACTIE
+  UITNODIGING
+  GESELECTEERD
+  AFGEWEZEN
+  NIEUW_BERICHT
+  OPDRACHT_GEWIJZIGD
+  REVIEW_ONTVANGEN
+  VERIFICATIE_AFGEROND
+}
+
+model Application {
+  id                     String              @id @default(uuid())
+  jobId                  String
+  job                    Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  zzpProfileId           String
+  zzpProfile             ZZPProfile          @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  status                 ApplicationStatus   @default(NIEUW)
+  richting               ApplicationRichting
+  bericht                String?
+  uurtariefVoorstelCents Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([jobId, zzpProfileId])
+  @@index([jobId, status])
+  @@index([zzpProfileId])
+}
+
+model Assignment {
+  id           String           @id @default(uuid())
+  jobId        String
+  job          Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  zzpProfileId String
+  zzpProfile   ZZPProfile       @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  companyId    String
+  company      Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  status       AssignmentStatus @default(GEPLAND)
+  startdatum   DateTime
+  einddatum    DateTime?
+  gewerkteUren Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([zzpProfileId])
+  @@index([jobId])
+}
+
+model Conversation {
+  id           String     @id @default(uuid())
+  jobId        String
+  job          Job        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  companyId    String
+  company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  zzpProfileId String
+  zzpProfile   ZZPProfile @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  messages     Message[]
+
+  createdAt      DateTime @default(now())
+  laatsteBericht DateTime @default(now())
+
+  @@unique([jobId, companyId, zzpProfileId])
+  @@index([companyId])
+  @@index([zzpProfileId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderUserId   String
+  sender         User         @relation(fields: [senderUserId], references: [id], onDelete: Cascade)
+  body           String
+  gelezenOp      DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  titel     String
+  tekst     String
+  link      String?
+  gelezenOp DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, gelezenOp])
+}
+
+model NotificationPreference {
+  userId         String  @id
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailReacties  Boolean @default(true)
+  emailBerichten Boolean @default(true)
+  emailMatches   Boolean @default(true)
+  emailReviews   Boolean @default(true)
 }
