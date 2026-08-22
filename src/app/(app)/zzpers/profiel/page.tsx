@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
+import { StarRating } from "@/components/star-rating";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations } from "@/server/zzp/profile";
+import { getReputatieVoor } from "@/server/reputation/service";
+import { getReviewsForZzp } from "@/server/reviews/service";
+import { reviewGemiddelde } from "@/server/reviews/scoring";
 import { formatEuro } from "@/lib/utils";
 import { verwijderPortfolioItem } from "./actions";
+
+function datum(d: Date): string {
+  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d);
+}
 
 export const metadata: Metadata = {
   title: "Mijn profiel",
@@ -25,6 +33,8 @@ function Rij({ label, value }: { label: string; value: string }) {
 export default async function ProfielPage() {
   const user = await requireCurrentUser();
   const p = await getProfileWithRelations(user.id);
+  const reputatie = p ? await getReputatieVoor(p.id) : null;
+  const reviews = p ? await getReviewsForZzp(p.id) : [];
 
   const naam =
     p?.voornaam || p?.achternaam
@@ -47,6 +57,12 @@ export default async function ProfielPage() {
             ) : (
               <Badge variant="neutral">Niet geverifieerd</Badge>
             )}
+          </div>
+          <div className="mt-2">
+            <StarRating
+              waarde={reputatie?.reviewGemiddelde ?? null}
+              aantal={reputatie?.aantalReviews}
+            />
           </div>
         </div>
         <ButtonLink href="/zzpers/registreren" variant="outline">
@@ -143,6 +159,38 @@ export default async function ProfielPage() {
           <p className="text-foreground-muted mt-2 text-sm">
             Nog geen portfolio-items. Voeg ze toe via profiel bewerken.
           </p>
+        )}
+      </Card>
+
+      <Card className="mt-6">
+        <CardTitle>Reviews</CardTitle>
+        {reviews.length === 0 ? (
+          <CardDescription className="mt-2">
+            Nog geen reviews. Na afgeronde opdrachten verschijnen beoordelingen
+            hier.
+          </CardDescription>
+        ) : (
+          <ul className="mt-3 space-y-3">
+            {reviews.map((r) => (
+              <li
+                key={r.id}
+                className="border-border border-b pb-3 last:border-0 last:pb-0"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <StarRating waarde={reviewGemiddelde(r)} />
+                  <span className="text-foreground-muted text-xs">
+                    {r.assignment.company.naam || "Bedrijf"} ·{" "}
+                    {datum(r.gepubliceerdOp)}
+                  </span>
+                </div>
+                {r.toelichting ? (
+                  <p className="text-foreground-muted mt-1 text-sm">
+                    {r.toelichting}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
         )}
       </Card>
     </Container>

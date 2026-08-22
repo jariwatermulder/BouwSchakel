@@ -9,6 +9,7 @@ import {
   type MatchZzpInput,
 } from "@/server/matching/engine";
 import { getMatchingConfig } from "@/server/matching/settings";
+import { getReputatie, type Reputatie } from "@/server/reputation/service";
 
 const jobInclude = {
   requirements: true,
@@ -48,7 +49,7 @@ function toJobInput(job: JobForMatch): MatchJobInput {
   };
 }
 
-function toZzpInput(zzp: ZzpForMatch): MatchZzpInput {
+function toZzpInput(zzp: ZzpForMatch, reputatie?: Reputatie): MatchZzpInput {
   const geo =
     zzp.werkgebiedLat != null && zzp.werkgebiedLng != null
       ? { lat: zzp.werkgebiedLat, lng: zzp.werkgebiedLng }
@@ -67,8 +68,8 @@ function toZzpInput(zzp: ZzpForMatch): MatchZzpInput {
     availability: zzp.availability.map((a) => ({ van: a.van, tot: a.tot })),
     startdatum: zzp.startdatum,
     profielCompleetheidPct: zzp.profielCompleetheidPct,
-    reviewGemiddelde: null, // reviews volgen in FASE 6
-    afgerondeOpdrachten: 0, // assignments volgen in FASE 5
+    reviewGemiddelde: reputatie?.reviewGemiddelde ?? null,
+    afgerondeOpdrachten: reputatie?.afgerondeOpdrachten ?? 0,
     eigenBus: zzp.eigenBus,
     eigenGereedschap: zzp.eigenGereedschap,
   };
@@ -100,12 +101,16 @@ export async function findKandidatenVoorOpdracht(
   });
 
   const jobInput = toJobInput(job);
+  const reputatie = await getReputatie(kandidaten.map((z) => z.id));
 
   return kandidaten
     .map((zzp) => {
-      const result = scoreMatch(jobInput, toZzpInput(zzp), config.weights, {
-        maxAfstandKm: config.maxAfstandKm,
-      });
+      const result = scoreMatch(
+        jobInput,
+        toZzpInput(zzp, reputatie.get(zzp.id)),
+        config.weights,
+        { maxAfstandKm: config.maxAfstandKm },
+      );
       return { zzp, result };
     })
     .filter((x) => !x.result.uitgesloten)
@@ -139,9 +144,13 @@ export async function scoreOpdrachtVoorZzp(
   });
   if (!zzp) return null;
   const config = await getMatchingConfig();
-  return scoreMatch(toJobInput(job), toZzpInput(zzp), config.weights, {
-    maxAfstandKm: config.maxAfstandKm,
-  });
+  const reputatie = await getReputatie([zzp.id]);
+  return scoreMatch(
+    toJobInput(job),
+    toZzpInput(zzp, reputatie.get(zzp.id)),
+    config.weights,
+    { maxAfstandKm: config.maxAfstandKm },
+  );
 }
 
 /** Passende, gepubliceerde opdrachten voor een ZZP'er, gesorteerd op score. */
@@ -164,7 +173,8 @@ export async function findOpdrachtenVoorZzp(
     include: jobInclude,
   });
 
-  const zzpInput = toZzpInput(zzp);
+  const reputatie = await getReputatie([zzp.id]);
+  const zzpInput = toZzpInput(zzp, reputatie.get(zzp.id));
 
   return jobs
     .map((job) => ({

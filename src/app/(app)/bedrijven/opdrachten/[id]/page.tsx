@@ -10,6 +10,9 @@ import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getJobForUser } from "@/server/jobs/service";
 import { findKandidatenVoorOpdracht } from "@/server/matching/service";
 import { listApplicationsForJob } from "@/server/applications/service";
+import { getAssignmentForJob } from "@/server/reviews/service";
+import { ReviewForm } from "@/components/review-form";
+import { markeerOpdrachtAfgerond } from "@/app/(app)/review-actions";
 import { formatEuro } from "@/lib/utils";
 import { wijzigOpdrachtStatus } from "../actions";
 import { openGesprek } from "@/app/(app)/message-actions";
@@ -26,6 +29,14 @@ const REACTIE_LABEL: Record<string, string> = {
   AFGEWEZEN: "Afgewezen",
   GEACCEPTEERD: "Geselecteerd",
   INGETROKKEN: "Ingetrokken",
+};
+
+const ASSIGNMENT_STATUS: Record<string, string> = {
+  GEPLAND: "Gepland",
+  ACTIEF: "Actief",
+  AFGEROND: "Afgerond",
+  GEANNULEERD: "Geannuleerd",
+  GESCHIL: "Geschil",
 };
 
 export const metadata: Metadata = {
@@ -71,6 +82,10 @@ export default async function OpdrachtDetailPage({
   const kandidaten = await findKandidatenVoorOpdracht(job);
   const reacties = await listApplicationsForJob(user.id, job.id);
   const actieveReacties = reacties.filter((a) => a.status !== "INGETROKKEN");
+  const assignment = await getAssignmentForJob(user.id, job.id);
+  const bedrijfReview = assignment?.reviews.find(
+    (r) => r.richting === "BEDRIJF_NAAR_ZZP",
+  );
 
   return (
     <Container className="py-8 md:py-12">
@@ -186,6 +201,80 @@ export default async function OpdrachtDetailPage({
           ) : null}
         </div>
       </Card>
+
+      {assignment ? (
+        <Card className="mt-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <CardTitle>Geselecteerde vakman</CardTitle>
+              <CardDescription>
+                {[
+                  assignment.zzpProfile.voornaam,
+                  assignment.zzpProfile.achternaam,
+                ]
+                  .filter(Boolean)
+                  .join(" ") || "Vakman"}
+              </CardDescription>
+            </div>
+            <Badge
+              variant={assignment.status === "AFGEROND" ? "verified" : "accent"}
+            >
+              {ASSIGNMENT_STATUS[assignment.status]}
+            </Badge>
+          </div>
+
+          {assignment.status !== "AFGEROND" &&
+          assignment.status !== "GEANNULEERD" ? (
+            <form
+              action={markeerOpdrachtAfgerond}
+              className="mt-4 flex flex-wrap items-end gap-2"
+            >
+              <input type="hidden" name="assignmentId" value={assignment.id} />
+              <input
+                type="hidden"
+                name="basePath"
+                value={`/bedrijven/opdrachten/${job.id}`}
+              />
+              <div>
+                <label
+                  htmlFor="gewerkteUren"
+                  className="mb-1.5 block text-sm font-medium"
+                >
+                  Gewerkte uren (optioneel)
+                </label>
+                <input
+                  id="gewerkteUren"
+                  name="gewerkteUren"
+                  type="number"
+                  min={0}
+                  className="border-border bg-surface h-11 w-40 rounded-lg border px-3 text-sm"
+                />
+              </div>
+              <Button type="submit" variant="primary">
+                Markeer als afgerond
+              </Button>
+            </form>
+          ) : assignment.status === "AFGEROND" ? (
+            <div className="border-border mt-4 border-t pt-4">
+              {bedrijfReview ? (
+                <p className="text-sm text-emerald-700">
+                  Je hebt deze vakman beoordeeld.
+                </p>
+              ) : (
+                <>
+                  <p className="mb-3 text-sm font-medium">
+                    Beoordeel de vakman
+                  </p>
+                  <ReviewForm
+                    assignmentId={assignment.id}
+                    basePath={`/bedrijven/opdrachten/${job.id}`}
+                  />
+                </>
+              )}
+            </div>
+          ) : null}
+        </Card>
+      ) : null}
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold">

@@ -18,6 +18,7 @@ export default async function ZzpAppLayout({
     { href: "/zzpers/dashboard", label: "Dashboard" },
     { href: "/zzpers/opdrachten", label: "Opdrachten" },
     { href: "/zzpers/reacties", label: "Reacties" },
+    { href: "/zzpers/mijn-opdrachten", label: "Mijn opdrachten" },
     { href: "/zzpers/berichten", label: "Berichten", badge: berichten },
     { href: "/zzpers/meldingen", label: "Meldingen", badge: meldingen },
     { href: "/zzpers/profiel", label: "Profiel" },

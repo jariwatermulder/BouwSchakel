@@ -63,6 +63,7 @@ model User {
   notifications          Notification[]
   notificationPreference NotificationPreference?
   sentMessages           Message[]
+  reviews                Review[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -500,6 +501,8 @@ model Assignment {
   einddatum    DateTime?
   gewerkteUren Int?
 
+  reviews Review[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -561,4 +564,39 @@ model NotificationPreference {
   emailBerichten Boolean @default(true)
   emailMatches   Boolean @default(true)
   emailReviews   Boolean @default(true)
+}
+
+// ── FASE 6: Reviews & reputatie ──────────────────────────────────────────────
+
+enum ReviewDirection {
+  ZZP_NAAR_BEDRIJF
+  BEDRIJF_NAAR_ZZP
+}
+
+// Review na een afgeronde opdracht. Alleen mogelijk bij een bestaande
+// Assignment; onveranderbaar na publicatie (behalve via moderatie).
+// De subject-velden zijn gedenormaliseerd voor snelle reputatie-aggregatie.
+// Zie docs/MATCHING.md (betrouwbaarheid).
+model Review {
+  id           String          @id @default(uuid())
+  assignmentId String
+  assignment   Assignment      @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  richting     ReviewDirection
+  auteurUserId String
+  auteur       User            @relation(fields: [auteurUserId], references: [id], onDelete: Cascade)
+
+  overZzpProfileId String?
+  overCompanyId    String?
+
+  scoreKwaliteit       Int
+  scoreCommunicatie    Int
+  scoreBetrouwbaarheid Int
+  scoreAfspraken       Int
+  toelichting          String?
+
+  gepubliceerdOp DateTime @default(now())
+
+  @@unique([assignmentId, richting])
+  @@index([overZzpProfileId])
+  @@index([overCompanyId])
 }

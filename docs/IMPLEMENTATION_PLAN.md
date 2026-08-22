@@ -16,7 +16,7 @@
 
 4. **Providers** (later te activeren): e-mail (bijv. Resend/Postmark), storage (bijv. Supabase Storage/S3), geocoding, payments (Mollie). Alleen interfaces in MVP; keuzes vast te leggen.
 
-**Status:** FASE 1 t/m FASE 5 zijn **gebouwd en geverifieerd** — Foundation, ZZP-registratie & profiel, Bedrijven & opdracht plaatsen, Matching, en Interactie (reacties/uitnodigingen → selecteren → assignment, messaging, notificaties). De database draait op een apart Supabase-project (zie `DATABASE_SETUP.md`). Volgende stap: FASE 6 (Reviews & reputatie).
+**Status:** FASE 1 t/m FASE 6 zijn **gebouwd en geverifieerd** — Foundation, ZZP-registratie & profiel, Bedrijven & opdracht plaatsen, Matching, Interactie (reacties → selecteren → assignment, messaging, notificaties), en Reviews & reputatie (beide richtingen na een afgeronde opdracht; reputatie voedt de matching-betrouwbaarheid). De database draait op een apart Supabase-project (zie `DATABASE_SETUP.md`). Volgende stap: FASE 7 (Admin & moderatie).
 
 ---
 
