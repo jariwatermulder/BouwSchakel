@@ -1,0 +1,93 @@
+// BouwSchakel — Prisma schema
+// FASE 1 (Foundation): identiteit, rollen, sessies en verificatietokens.
+// Latere fasen voegen ZZPProfile, Company, Job, Match, Application, Assignment,
+// Conversation, Message, Review, Verification, Notification, etc. toe.
+// Zie docs/DATABASE.md voor het volledige beoogde datamodel.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  ZZP
+  COMPANY
+  ADMIN
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  SUPPORT
+}
+
+enum UserStatus {
+  ACTIEF
+  GEBLOKKEERD
+  VERWIJDERD
+}
+
+enum TokenType {
+  EMAIL_VERIFICATIE
+  MAGIC_LINK
+  WACHTWOORD_RESET
+}
+
+// ── Modellen ─────────────────────────────────────────────────────────────────
+
+model User {
+  id              String     @id @default(uuid())
+  email           String     @unique
+  passwordHash    String? // null wanneer alleen magic link wordt gebruikt
+  role            UserRole
+  adminRole       AdminRole? // alleen gezet wanneer role = ADMIN
+  status          UserStatus @default(ACTIEF)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+
+  sessions Session[]
+  tokens   VerificationToken[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // soft delete t.b.v. AVG/audit
+
+  @@index([role])
+  @@index([status])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Hash van het sessietoken; het ruwe token staat alleen in de cookie.
+  tokenHash String   @unique
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model VerificationToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      TokenType
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, type])
+  @@index([expiresAt])
+}

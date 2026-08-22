@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BouwSchakel
 
-## Getting Started
+**De juiste vakman. Op het juiste moment.**
 
-First, run the development server:
+BouwSchakel is een Nederlands bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt. BouwSchakel is een bemiddelingsplatform: de overeenkomst voor het werk komt tot stand tussen opdrachtgever en vakman.
+
+> Dit is een nieuwe, op zichzelf staande applicatie en staat volledig los van de website www.jwhoutentuinbouw.nl.
+
+## Tech stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript** (strict)
+- **Tailwind CSS v4** — design system met eigen tokens
+- **Prisma 6** ORM op **PostgreSQL**
+- **Zod** validatie (gedeeld client/server) + **React Hook Form**
+- Server-side sessies (opaak token, httpOnly cookie), **bcrypt** wachtwoord-hashing, RBAC
+- **Vitest** voor unit-tests
+
+## Documentatie
+
+Zie [`docs/`](./docs) voor het volledige ontwerp:
+[PRODUCT_SPEC](./docs/PRODUCT_SPEC.md) ·
+[ARCHITECTURE](./docs/ARCHITECTURE.md) ·
+[DATABASE](./docs/DATABASE.md) ·
+[MATCHING](./docs/MATCHING.md) ·
+[SECURITY](./docs/SECURITY.md) ·
+[LEGAL_CONSIDERATIONS](./docs/LEGAL_CONSIDERATIONS.md) ·
+[IMPLEMENTATION_PLAN](./docs/IMPLEMENTATION_PLAN.md)
+
+## Lokaal ontwikkelen
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Dependencies
+npm install
+
+# 2. Omgeving
+cp .env.example .env   # vul DATABASE_URL en AUTH_SECRET in
+
+# 3. Database (PostgreSQL vereist)
+npm run db:generate    # Prisma client
+npm run db:migrate     # migraties toepassen (dev)
+npm run db:seed        # seed (alleen development)
+
+# 4. Draaien
+npm run dev            # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Handige scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script               | Doel                   |
+| -------------------- | ---------------------- |
+| `npm run dev`        | Development server     |
+| `npm run build`      | Productiebuild         |
+| `npm run lint`       | ESLint                 |
+| `npm run typecheck`  | TypeScript zonder emit |
+| `npm run format`     | Prettier               |
+| `npm run test`       | Vitest (unit)          |
+| `npm run db:migrate` | Prisma migratie (dev)  |
+| `npm run db:studio`  | Prisma Studio          |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Status
 
-## Learn More
+**FASE 1 — Foundation** is opgezet: project, tooling, design system, auth-fundament (registratie/inloggen, sessies, RBAC), Prisma-schema (identiteit/rollen/sessies) en publieke pagina's. Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen.
 
-To learn more about Next.js, take a look at the following resources:
+### Bekende aandachtspunten
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- De database-host wordt later definitief gekozen (Prisma blijft de ORM). Zonder `DATABASE_URL` draaien alleen de statische pagina's; auth-flows vereisen een database.
+- Juridische teksten zijn concept en moeten door een Nederlandse jurist worden gecontroleerd.
