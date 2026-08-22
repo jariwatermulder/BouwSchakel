@@ -52,8 +52,10 @@ model User {
   emailVerifiedAt DateTime?
   lastLoginAt     DateTime?
 
-  sessions Session[]
-  tokens   VerificationToken[]
+  sessions   Session[]
+  tokens     VerificationToken[]
+  zzpProfile ZZPProfile?
+  documents  Document[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -90,4 +92,181 @@ model VerificationToken {
 
   @@index([userId, type])
   @@index([expiresAt])
+}
+
+// ── FASE 2: ZZP-profiel, catalogus en profielonderdelen ──────────────────────
+
+enum VerificatieStatus {
+  NIET_GEVERIFIEERD
+  IN_BEHANDELING
+  GEVERIFIEERD
+  AFGEKEURD
+}
+
+enum BeschikbaarheidType {
+  FULLTIME
+  PARTTIME
+  INCIDENTEEL
+}
+
+enum DocumentType {
+  IDENTITEIT
+  VCA
+  CERTIFICAAT
+  VERZEKERING
+  KVK
+  OVERIG
+}
+
+model ZZPProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Persoonlijk / bedrijf
+  voornaam     String?
+  achternaam   String?
+  telefoon     String?
+  bedrijfsnaam String?
+  kvkNummer    String?
+
+  // Profiel
+  over           String?
+  jarenErvaring  Int?
+  uurtariefCents Int?
+
+  // Werkgebied (geocoding volgt later; nu plaats + straal)
+  werkgebiedPlaats String?
+  werkgebiedLat    Float?
+  werkgebiedLng    Float?
+  maxReisafstandKm Int?
+
+  // Materieel
+  eigenBus         Boolean @default(false)
+  eigenGereedschap Boolean @default(false)
+  vca              Boolean @default(false)
+
+  startdatum DateTime?
+
+  profielCompleetheidPct Int               @default(0)
+  verificatieStatus      VerificatieStatus @default(NIET_GEVERIFIEERD)
+  zichtbaar              Boolean           @default(false)
+
+  skills          ZZPSkill[]
+  specializations ZZPSpecialization[]
+  certifications  ZZPCertification[]
+  availability    Availability[]
+  portfolio       PortfolioItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([verificatieStatus])
+  @@index([zichtbaar])
+  @@index([werkgebiedLat, werkgebiedLng])
+}
+
+model Skill {
+  id              String           @id @default(uuid())
+  naam            String           @unique
+  slug            String           @unique
+  actief          Boolean          @default(true)
+  specializations Specialization[]
+  zzpSkills       ZZPSkill[]
+}
+
+model Specialization {
+  id      String  @id @default(uuid())
+  skillId String
+  skill   Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  naam    String
+  slug    String
+  actief  Boolean @default(true)
+
+  zzpSpecializations ZZPSpecialization[]
+
+  @@unique([skillId, slug])
+}
+
+model Certification {
+  id     String  @id @default(uuid())
+  naam   String  @unique
+  slug   String  @unique
+  actief Boolean @default(true)
+
+  zzpCertifications ZZPCertification[]
+}
+
+model ZZPSkill {
+  zzpProfileId String
+  zzpProfile   ZZPProfile @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  skillId      String
+  skill        Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([zzpProfileId, skillId])
+  @@index([skillId])
+}
+
+model ZZPSpecialization {
+  zzpProfileId     String
+  zzpProfile       ZZPProfile     @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  specializationId String
+  specialization   Specialization @relation(fields: [specializationId], references: [id], onDelete: Cascade)
+
+  @@id([zzpProfileId, specializationId])
+  @@index([specializationId])
+}
+
+model ZZPCertification {
+  id              String            @id @default(uuid())
+  zzpProfileId    String
+  zzpProfile      ZZPProfile        @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  certificationId String
+  certification   Certification     @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+  geldigTot       DateTime?
+  documentId      String?
+  status          VerificatieStatus @default(NIET_GEVERIFIEERD)
+
+  @@unique([zzpProfileId, certificationId])
+}
+
+model Availability {
+  id           String              @id @default(uuid())
+  zzpProfileId String
+  zzpProfile   ZZPProfile          @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  van          DateTime
+  tot          DateTime?
+  type         BeschikbaarheidType @default(FULLTIME)
+  createdAt    DateTime            @default(now())
+
+  @@index([zzpProfileId, van])
+}
+
+model Document {
+  id           String            @id @default(uuid())
+  ownerUserId  String
+  owner        User              @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  type         DocumentType
+  bestandsnaam String
+  opslagKey    String
+  mime         String
+  grootte      Int
+  status       VerificatieStatus @default(NIET_GEVERIFIEERD)
+  createdAt    DateTime          @default(now())
+
+  @@index([ownerUserId])
+}
+
+model PortfolioItem {
+  id            String     @id @default(uuid())
+  zzpProfileId  String
+  zzpProfile    ZZPProfile @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  titel         String
+  omschrijving  String?
+  afbeeldingKey String?
+  volgorde      Int        @default(0)
+  createdAt     DateTime   @default(now())
+
+  @@index([zzpProfileId])
 }

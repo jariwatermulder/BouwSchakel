@@ -50,7 +50,8 @@ export async function registerAction(
     if (err instanceof EmailInGebruikError) return { error: err.message };
     throw err;
   }
-  redirect("/");
+  // ZZP'ers gaan direct door naar het opbouwen van hun profiel.
+  redirect(parsed.data.role === "ZZP" ? "/zzpers/registreren" : "/");
 }
 
 export async function loginAction(
@@ -70,12 +71,14 @@ export async function loginAction(
     return { error: "Te veel inlogpogingen. Probeer het later opnieuw." };
   }
 
+  let role: "ZZP" | "COMPANY" | "ADMIN" = "ZZP";
   try {
     const user = await authenticate(parsed.data);
+    role = user.role;
     await createSession(user.id, await sessionMeta());
   } catch (err) {
     if (err instanceof OngeldigeInlogError) return { error: err.message };
     throw err;
   }
-  redirect("/");
+  redirect(role === "ZZP" ? "/zzpers/dashboard" : "/");
 }

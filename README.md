@@ -59,7 +59,12 @@ npm run dev            # http://localhost:3000
 
 ## Status
 
-**FASE 1 — Foundation** is opgezet: project, tooling, design system, auth-fundament (registratie/inloggen, sessies, RBAC), Prisma-schema (identiteit/rollen/sessies) en publieke pagina's. Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen.
+**FASE 1 — Foundation** en **FASE 2 — ZZP-registratie & profiel** zijn gebouwd:
+
+- FASE 1: project, tooling, design system, auth-fundament (registratie/inloggen, sessies, RBAC), Prisma-schema en publieke pagina's.
+- FASE 2: hervatbare multi-step ZZP-registratie met profielcompleetheid, profielpagina, beschikbaarheid, documenten (opslag-interface) en portfolio; catalogus van vakgebieden/specialisaties/certificaten via seed; ZZP-dashboard en app-shell.
+
+Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 3: bedrijven & opdracht plaatsen).
 
 ### Bekende aandachtspunten
 
