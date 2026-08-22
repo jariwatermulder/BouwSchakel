@@ -158,6 +158,7 @@ model ZZPProfile {
   certifications  ZZPCertification[]
   availability    Availability[]
   portfolio       PortfolioItem[]
+  matches         Match[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -356,6 +357,7 @@ model Job {
   publiekIndexeerbaar Boolean   @default(true)
 
   requirements JobRequirement[]
+  matches      Match[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -377,4 +379,41 @@ model JobRequirement {
   hard            Boolean        @default(false)
 
   @@index([jobId])
+}
+
+// ── FASE 4: Matching ─────────────────────────────────────────────────────────
+
+// Berekende match ZZP<->opdracht. Kan gecachet/herberekend worden; in de MVP
+// wordt de score veelal live berekend. subscores bevat de uitleg per dimensie.
+model Match {
+  id           String     @id @default(uuid())
+  jobId        String
+  job          Job        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  zzpProfileId String
+  zzpProfile   ZZPProfile @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  score        Int
+  subscores    Json
+  geschikt     Boolean    @default(true)
+  berekendOp   DateTime   @default(now())
+
+  @@unique([jobId, zzpProfileId])
+  @@index([jobId, score])
+  @@index([zzpProfileId])
+}
+
+// Configureerbare gewichten en drempels voor de matching engine (admin, FASE 7).
+// Eén rij met id "default". Gewichten sommeren tot 100.
+model MatchingSetting {
+  id                     String   @id @default("default")
+  gewichtVakgebied       Int      @default(25)
+  gewichtBeschikbaarheid Int      @default(20)
+  gewichtSpecialisatie   Int      @default(15)
+  gewichtLocatie         Int      @default(15)
+  gewichtTarief          Int      @default(10)
+  gewichtErvaring        Int      @default(5)
+  gewichtCertificaten    Int      @default(5)
+  gewichtBetrouwbaarheid Int      @default(5)
+  minMatchScore          Int      @default(50)
+  maxAfstandKm           Int      @default(150)
+  updatedAt              DateTime @updatedAt
 }

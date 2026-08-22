@@ -102,6 +102,13 @@ async function main() {
     });
   }
 
+  // Standaard matching-instellingen (bewerkbaar via admin in FASE 7).
+  await db.matchingSetting.upsert({
+    where: { id: "default" },
+    update: {},
+    create: { id: "default" },
+  });
+
   const skillCount = await db.skill.count();
   const certCount = await db.certification.count();
   console.info(

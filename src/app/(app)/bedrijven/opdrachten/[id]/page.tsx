@@ -5,8 +5,10 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { JobStatusBadge } from "@/components/job-status-badge";
+import { MatchScore } from "@/components/match-score";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getJobForUser } from "@/server/jobs/service";
+import { findKandidatenVoorOpdracht } from "@/server/matching/service";
 import { formatEuro } from "@/lib/utils";
 import { wijzigOpdrachtStatus } from "../actions";
 
@@ -50,6 +52,7 @@ export default async function OpdrachtDetailPage({
   const user = await requireCurrentUser();
   const job = await getJobForUser(user.id, id);
   if (!job) notFound();
+  const kandidaten = await findKandidatenVoorOpdracht(job);
 
   return (
     <Container className="py-8 md:py-12">
@@ -166,13 +169,58 @@ export default async function OpdrachtDetailPage({
         </div>
       </Card>
 
-      <Card className="mt-6">
-        <CardTitle>Kandidaten</CardTitle>
-        <CardDescription>
-          Passende vakmensen en reacties verschijnen hier zodra de matching
-          actief is.
-        </CardDescription>
-      </Card>
+      <section className="mt-8">
+        <h2 className="text-lg font-semibold">
+          Beste matches{" "}
+          <span className="text-foreground-muted font-normal">
+            ({kandidaten.length})
+          </span>
+        </h2>
+        {kandidaten.length === 0 ? (
+          <Card className="mt-4">
+            <CardDescription>
+              Nog geen passende, beschikbare vakmensen gevonden. Zodra meer
+              ZZP&apos;ers een profiel aanmaken dat bij deze opdracht past,
+              verschijnen ze hier.
+            </CardDescription>
+          </Card>
+        ) : (
+          <ul className="mt-4 space-y-3">
+            {kandidaten.map((k) => (
+              <li key={k.zzpProfileId}>
+                <Card>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold">{k.naam}</p>
+                        {k.verificatieStatus === "GEVERIFIEERD" ? (
+                          <Badge variant="verified">Geverifieerd</Badge>
+                        ) : null}
+                      </div>
+                      <p className="text-foreground-muted text-sm">
+                        {[
+                          k.plaats,
+                          k.jarenErvaring != null
+                            ? `${k.jarenErvaring} jaar ervaring`
+                            : null,
+                          k.uurtariefCents
+                            ? `${formatEuro(k.uurtariefCents)} p/u`
+                            : null,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    </div>
+                    <div className="sm:w-64 sm:shrink-0">
+                      <MatchScore result={k.result} />
+                    </div>
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </Container>
   );
 }

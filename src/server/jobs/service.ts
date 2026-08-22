@@ -116,6 +116,16 @@ export async function getJobForUser(
   });
 }
 
+/** Een gepubliceerde opdracht (voor ZZP-weergave / publieke pagina). */
+export async function getPublishedJob(
+  jobId: string,
+): Promise<JobWithRelations | null> {
+  return db.job.findFirst({
+    where: { id: jobId, status: "GEPUBLICEERD", deletedAt: null },
+    include: jobInclude,
+  });
+}
+
 export async function setJobStatus(
   userId: string,
   jobId: string,

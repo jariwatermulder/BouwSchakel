@@ -3,6 +3,7 @@ import { AppShell, type AppNavItem } from "@/components/layout/app-shell";
 
 const navItems: AppNavItem[] = [
   { href: "/zzpers/dashboard", label: "Dashboard" },
+  { href: "/zzpers/opdrachten", label: "Opdrachten" },
   { href: "/zzpers/profiel", label: "Profiel" },
   { href: "/zzpers/beschikbaarheid", label: "Beschikbaarheid" },
   { href: "/zzpers/documenten", label: "Documenten" },

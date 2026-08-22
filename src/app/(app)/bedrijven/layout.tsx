@@ -5,6 +5,7 @@ const navItems: AppNavItem[] = [
   { href: "/bedrijven/dashboard", label: "Dashboard" },
   { href: "/bedrijven/opdracht-plaatsen", label: "Opdracht plaatsen" },
   { href: "/bedrijven/opdrachten", label: "Opdrachten" },
+  { href: "/bedrijven/kandidaten", label: "Kandidaten" },
   { href: "/bedrijven/registreren", label: "Bedrijfsprofiel" },
   { href: "/bedrijven/instellingen", label: "Instellingen" },
 ];
