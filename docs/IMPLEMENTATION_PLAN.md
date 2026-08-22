@@ -16,7 +16,7 @@
 
 4. **Providers** (later te activeren): e-mail (bijv. Resend/Postmark), storage (bijv. Supabase Storage/S3), geocoding, payments (Mollie). Alleen interfaces in MVP; keuzes vast te leggen.
 
-**Status:** FASE 1 (Foundation) en FASE 2 (ZZP-registratie & profiel) zijn **gebouwd en geverifieerd** (typecheck, lint, tests en productiebuild groen; npm audit 0 vulnerabilities). Volgende stap: FASE 3 (Bedrijven & opdracht plaatsen).
+**Status:** FASE 1 (Foundation), FASE 2 (ZZP-registratie & profiel) en FASE 3 (Bedrijven & opdracht plaatsen) zijn **gebouwd en geverifieerd** (typecheck, lint, tests en productiebuild groen; npm audit 0 vulnerabilities). Volgende stap: FASE 4 (Matching).
 
 ---
 

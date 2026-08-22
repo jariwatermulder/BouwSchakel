@@ -63,8 +63,9 @@ npm run dev            # http://localhost:3000
 
 - FASE 1: project, tooling, design system, auth-fundament (registratie/inloggen, sessies, RBAC), Prisma-schema en publieke pagina's.
 - FASE 2: hervatbare multi-step ZZP-registratie met profielcompleetheid, profielpagina, beschikbaarheid, documenten (opslag-interface) en portfolio; catalogus van vakgebieden/specialisaties/certificaten via seed; ZZP-dashboard en app-shell.
+- FASE 3: bedrijfsregistratie/-profiel (met CompanyMember-teamaccounts), snelle 'opdracht plaatsen'-wizard, opdrachtenbeheer met statusworkflow en bedrijfsdashboard.
 
-Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 3: bedrijven & opdracht plaatsen).
+Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 4: matching).
 
 ### Bekende aandachtspunten
 

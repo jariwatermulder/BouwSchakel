@@ -50,8 +50,12 @@ export async function registerAction(
     if (err instanceof EmailInGebruikError) return { error: err.message };
     throw err;
   }
-  // ZZP'ers gaan direct door naar het opbouwen van hun profiel.
-  redirect(parsed.data.role === "ZZP" ? "/zzpers/registreren" : "/");
+  // Direct door naar het opbouwen van profiel/bedrijf.
+  redirect(
+    parsed.data.role === "ZZP"
+      ? "/zzpers/registreren"
+      : "/bedrijven/registreren",
+  );
 }
 
 export async function loginAction(
@@ -80,5 +84,11 @@ export async function loginAction(
     if (err instanceof OngeldigeInlogError) return { error: err.message };
     throw err;
   }
-  redirect(role === "ZZP" ? "/zzpers/dashboard" : "/");
+  redirect(
+    role === "ZZP"
+      ? "/zzpers/dashboard"
+      : role === "COMPANY"
+        ? "/bedrijven/dashboard"
+        : "/",
+  );
 }
