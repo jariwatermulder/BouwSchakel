@@ -2,7 +2,22 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 
-const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+// Bepaal een geldige basis-URL, ook als APP_URL ontbreekt, leeg is of het
+// schema mist (bijv. "bouwschakel.vercel.app"). Zo kan een verkeerd ingevulde
+// omgevingsvariabele de build nooit laten crashen.
+function resolveAppUrl(): string {
+  const fallback = "http://localhost:3000";
+  const raw = process.env.APP_URL?.trim();
+  if (!raw) return fallback;
+  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(withScheme).toString();
+  } catch {
+    return fallback;
+  }
+}
+
+const appUrl = resolveAppUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
