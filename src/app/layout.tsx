@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PWARegister } from "@/components/pwa-register";
+import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
 
 // Bepaal een geldige basis-URL, ook als APP_URL ontbreekt, leeg is of het
 // schema mist (bijv. "bouwschakel.vercel.app"). Zo kan een verkeerd ingevulde
@@ -67,6 +68,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
         <CookieConsent />
+        <PWAInstallPrompt />
         <PWARegister />
       </body>
     </html>
