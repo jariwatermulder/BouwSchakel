@@ -21,6 +21,9 @@ export default async function ZzpAppLayout({
     { href: "/zzpers/mijn-opdrachten", label: "Mijn opdrachten" },
     { href: "/zzpers/berichten", label: "Berichten", badge: berichten },
     { href: "/zzpers/meldingen", label: "Meldingen", badge: meldingen },
+  ];
+
+  const menuItems: AppNavItem[] = [
     { href: "/zzpers/profiel", label: "Profiel" },
     { href: "/zzpers/beschikbaarheid", label: "Beschikbaarheid" },
     { href: "/zzpers/documenten", label: "Documenten" },
@@ -28,7 +31,7 @@ export default async function ZzpAppLayout({
   ];
 
   return (
-    <AppShell navItems={navItems} email={user.email}>
+    <AppShell navItems={navItems} menuItems={menuItems} email={user.email}>
       {children}
     </AppShell>
   );

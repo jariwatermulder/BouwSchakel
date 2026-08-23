@@ -16,18 +16,28 @@ export default async function BedrijfAppLayout({
 
   const navItems: AppNavItem[] = [
     { href: "/bedrijven/dashboard", label: "Dashboard" },
-    { href: "/bedrijven/opdracht-plaatsen", label: "Opdracht plaatsen" },
     { href: "/bedrijven/opdrachten", label: "Opdrachten" },
     { href: "/bedrijven/kandidaten", label: "Kandidaten" },
     { href: "/bedrijven/berichten", label: "Berichten", badge: berichten },
     { href: "/bedrijven/meldingen", label: "Meldingen", badge: meldingen },
     { href: "/bedrijven/facturen", label: "Facturen" },
+  ];
+
+  const menuItems: AppNavItem[] = [
     { href: "/bedrijven/registreren", label: "Bedrijfsprofiel" },
     { href: "/bedrijven/instellingen", label: "Instellingen" },
   ];
 
   return (
-    <AppShell navItems={navItems} email={user.email}>
+    <AppShell
+      navItems={navItems}
+      menuItems={menuItems}
+      primaryAction={{
+        href: "/bedrijven/opdracht-plaatsen",
+        label: "Opdracht plaatsen",
+      }}
+      email={user.email}
+    >
       {children}
     </AppShell>
   );

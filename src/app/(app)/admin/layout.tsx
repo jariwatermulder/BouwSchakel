@@ -11,6 +11,9 @@ const navItems: AppNavItem[] = [
   { href: "/admin/reviews", label: "Reviews" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/klachten", label: "Klachten" },
+];
+
+const menuItems: AppNavItem[] = [
   { href: "/admin/matching", label: "Matching" },
   { href: "/admin/prijzen", label: "Prijzen" },
   { href: "/admin/catalogus", label: "Catalogus" },
@@ -27,7 +30,7 @@ export default async function AdminLayout({
   if (!isAdmin(user)) redirect("/");
 
   return (
-    <AppShell navItems={navItems} email={user.email}>
+    <AppShell navItems={navItems} menuItems={menuItems} email={user.email}>
       {children}
     </AppShell>
   );
