@@ -5,6 +5,7 @@ const columns = [
   {
     heading: "Platform",
     links: [
+      { href: "/opdrachten", label: "Opdrachten" },
       { href: "/hoe-het-werkt", label: "Hoe het werkt" },
       { href: "/tarieven", label: "Tarieven" },
       { href: "/faq", label: "Veelgestelde vragen" },

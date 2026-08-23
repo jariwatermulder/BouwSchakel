@@ -48,8 +48,10 @@ probeert uit te voeren:
 
 ```bash
 npm run db:generate
-npx prisma migrate resolve --applied 00000000000000_init
-npx prisma migrate resolve --applied 00000000000001_enable_rls
+# Markeer alle reeds toegepaste migraties als baseline:
+for m in prisma/migrations/*/; do
+  npx prisma migrate resolve --applied "$(basename "$m")"
+done
 ```
 
 Daarna verifiëren:

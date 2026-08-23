@@ -69,8 +69,10 @@ npm run dev            # http://localhost:3000
 - FASE 6: reviews in beide richtingen na een afgeronde opdracht (kwaliteit, communicatie, betrouwbaarheid, afspraken), alleen bij een echte opdrachtrelatie en onveranderbaar na plaatsing; rating + reviews op het ZZP-profiel; reputatie voedt de betrouwbaarheid-subscore in de matching.
 - FASE 7: adminomgeving (`/admin`) met RBAC — dashboard, gebruikers-/bedrijfsbeheer, verificaties, review-/report-/klachtmoderatie, matching-instellingen, catalogusbeheer en audit log.
 - FASE 8: configureerbare fees (`PricingSetting`), automatische factuurgeneratie bij afronding van een opdracht, `PaymentProvider`-interface (Mollie/Stripe later), factuuroverzichten voor bedrijf en admin.
+- FASE 9: security headers, rate limiting, AVG-gegevensexport en account­verwijdering, cookiemelding, RLS op alle tabellen.
+- FASE 10: publieke, indexeerbare opdrachtpagina's (`/opdrachten` + `/opdrachten/[slug]`) met JobPosting structured data, metadata/OG en canonical; dynamische sitemap.
 
-De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de resterende fasen (FASE 9: security/privacy · FASE 10: SEO/launch).
+**Alle 10 fasen zijn gebouwd.** De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Volgende stappen richting livegang: definitieve providers kiezen (e-mail, storage, Mollie), juridische teksten laten controleren en productie-omgeving configureren.
 
 ### Bekende aandachtspunten
 

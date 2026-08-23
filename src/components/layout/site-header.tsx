@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 
 const navItems = [
+  { href: "/opdrachten", label: "Opdrachten" },
   { href: "/hoe-het-werkt", label: "Hoe het werkt" },
   { href: "/zzpers", label: "Voor ZZP'ers" },
   { href: "/bedrijven", label: "Voor bedrijven" },

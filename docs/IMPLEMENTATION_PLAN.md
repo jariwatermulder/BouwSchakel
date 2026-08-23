@@ -16,7 +16,9 @@
 
 4. **Providers** (later te activeren): e-mail (bijv. Resend/Postmark), storage (bijv. Supabase Storage/S3), geocoding, payments (Mollie). Alleen interfaces in MVP; keuzes vast te leggen.
 
-**Status:** FASE 1 t/m FASE 8 zijn **gebouwd en geverifieerd** — Foundation, ZZP-registratie & profiel, Bedrijven & opdracht plaatsen, Matching, Interactie, Reviews & reputatie, Admin & moderatie, en Payments (configureerbare fees, factuurgeneratie bij afronding, provider-interface). De database draait op een apart Supabase-project (zie `DATABASE_SETUP.md`). Volgende stap: FASE 9 (Security & privacy) en FASE 10 (SEO & launch).
+**Status:** **Alle fasen (1 t/m 10) zijn gebouwd en geverifieerd** — Foundation, ZZP-registratie & profiel, Bedrijven & opdracht plaatsen, Matching, Interactie, Reviews & reputatie, Admin & moderatie, Payments, Security & privacy-hardening, en SEO & launch (publieke indexeerbare opdrachtpagina's met structured data, dynamische sitemap, security headers). De database draait op een apart Supabase-project (zie `DATABASE_SETUP.md`). Elke fase is afgesloten met typecheck, lint, tests en een groene productiebuild.
+
+Klaar voor livegang: kies de definitieve providers (e-mail, object storage, payments), laat de juridische teksten door een NL-jurist controleren, en zet de productie-omgevingsvariabelen (`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `APP_URL`).
 
 ---
 
