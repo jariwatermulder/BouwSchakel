@@ -1,5 +1,5 @@
 import "server-only";
-import type { Conversation, Prisma } from "@prisma/client";
+import type { Conversation, Message, Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { notify } from "@/server/notifications/service";
 
@@ -82,7 +82,7 @@ export async function sendMessage(
   userId: string,
   conversationId: string,
   body: string,
-): Promise<void> {
+): Promise<Message | null> {
   const conversation = await db.conversation.findUnique({
     where: { id: conversationId },
     include: { job: true },
@@ -92,9 +92,9 @@ export async function sendMessage(
   if (!d) throw new GeenToegangError();
 
   const tekst = body.trim();
-  if (!tekst) return;
+  if (!tekst) return null;
 
-  await db.$transaction([
+  const [bericht] = await db.$transaction([
     db.message.create({
       data: { conversationId, senderUserId: userId, body: tekst },
     }),
@@ -130,6 +130,42 @@ export async function sendMessage(
       link: `/zzpers/berichten/${conversationId}`,
     });
   }
+
+  return bericht;
+}
+
+/**
+ * Haalt berichten op sinds een bepaald moment (voor live polling) en markeert
+ * inkomende berichten als gelezen. Autoriseert via deelname; gooit bij geen
+ * toegang. Zonder `sinds` worden alle berichten teruggegeven.
+ */
+export async function getMessagesSince(
+  userId: string,
+  conversationId: string,
+  sinds?: Date,
+): Promise<Message[]> {
+  const conversation = await db.conversation.findUnique({
+    where: { id: conversationId },
+    select: { id: true, companyId: true, zzpProfileId: true },
+  });
+  if (!conversation) throw new GeenToegangError();
+  const d = await deelname(userId, conversation);
+  if (!d) throw new GeenToegangError();
+
+  const messages = await db.message.findMany({
+    where: {
+      conversationId,
+      ...(sinds ? { createdAt: { gt: sinds } } : {}),
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  await db.message.updateMany({
+    where: { conversationId, gelezenOp: null, senderUserId: { not: userId } },
+    data: { gelezenOp: new Date() },
+  });
+
+  return messages;
 }
 
 const conversationInclude = {

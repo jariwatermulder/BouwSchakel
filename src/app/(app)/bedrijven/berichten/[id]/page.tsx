@@ -28,10 +28,17 @@ export default async function BedrijfGesprekPage({
   return (
     <Container className="max-w-3xl py-8 md:py-12">
       <ConversationView
-        conversation={conversation}
+        conversationId={conversation.id}
         currentUserId={user.id}
         tegenpartij={naam}
-        basePath="/bedrijven/berichten"
+        jobTitel={conversation.job.titel}
+        skillNaam={conversation.job.skill.naam}
+        initialMessages={conversation.messages.map((m) => ({
+          id: m.id,
+          body: m.body,
+          senderUserId: m.senderUserId,
+          createdAt: m.createdAt.toISOString(),
+        }))}
       />
     </Container>
   );
