@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CookieConsent } from "@/components/layout/cookie-consent";
 
 const appUrl = process.env.APP_URL ?? "http://localhost:3000";
 
@@ -26,7 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="nl" className="h-full">
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <CookieConsent />
+      </body>
     </html>
   );
 }

@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth/current-user";
+import { AccountDangerZone } from "@/components/account-danger-zone";
 
 export const metadata: Metadata = {
   title: "Instellingen",
@@ -44,13 +45,7 @@ export default async function BedrijfInstellingenPage() {
         </ButtonLink>
       </Card>
 
-      <Card className="mt-6">
-        <CardTitle>Privacy & gegevens</CardTitle>
-        <CardDescription className="mt-2">
-          Gegevens exporteren en account verwijderen (AVG) worden later
-          toegevoegd.
-        </CardDescription>
-      </Card>
+      <AccountDangerZone />
     </Container>
   );
 }

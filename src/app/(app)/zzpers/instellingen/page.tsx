@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { requireCurrentUser } from "@/lib/auth/current-user";
+import { AccountDangerZone } from "@/components/account-danger-zone";
 
 export const metadata: Metadata = {
   title: "Instellingen",
@@ -31,13 +32,7 @@ export default async function InstellingenPage() {
         </div>
       </Card>
 
-      <Card className="mt-6">
-        <CardTitle>Privacy & gegevens</CardTitle>
-        <CardDescription className="mt-2">
-          Volgens de AVG kun je straks je gegevens exporteren en je account
-          verwijderen. Deze functies worden later toegevoegd.
-        </CardDescription>
-      </Card>
+      <AccountDangerZone />
 
       <Card className="mt-6">
         <CardTitle>Notificaties</CardTitle>

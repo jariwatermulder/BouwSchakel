@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireCurrentRole } from "@/lib/auth/current-user";
+import { rateLimit } from "@/lib/ratelimit";
 import {
   applyToJob,
   ReactieBestaatAlError,
@@ -18,6 +19,11 @@ export async function reageerOpOpdracht(
   formData: FormData,
 ): Promise<ApplyState> {
   const user = await requireCurrentRole("ZZP");
+  if (!rateLimit(`apply:${user.id}`, 30, 60 * 60 * 1000).success) {
+    return {
+      error: "Te veel reacties in korte tijd. Probeer het later opnieuw.",
+    };
+  }
   const jobId = formData.get("jobId");
   if (typeof jobId !== "string") return { error: "Onbekende opdracht." };
 

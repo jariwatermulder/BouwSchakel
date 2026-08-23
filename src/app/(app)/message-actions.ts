@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireCurrentUser } from "@/lib/auth/current-user";
+import { rateLimit } from "@/lib/ratelimit";
 import {
   sendMessage,
   startOrGetConversation,
@@ -19,6 +20,7 @@ export async function verstuurBericht(formData: FormData): Promise<void> {
     typeof body === "string" &&
     body.trim()
   ) {
+    if (!rateLimit(`message:${user.id}`, 60, 60 * 1000).success) return;
     await sendMessage(user.id, conversationId, body);
     if (typeof basePath === "string") {
       revalidatePath(`${basePath}/${conversationId}`);

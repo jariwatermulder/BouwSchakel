@@ -79,3 +79,12 @@
 - [ ] Audit log waar relevant
 - [ ] Uploads gevalideerd (type/grootte/opslag/signed URL)
 - [ ] Foutmeldingen zonder interne details
+
+## 12. Geïmplementeerde hardening (FASE 9)
+
+- **Security headers** op alle routes (`next.config.ts`): `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, HSTS; `poweredByHeader` uit.
+- **Rate limiting** op login, registratie, reageren op opdrachten, messaging en het klachtenformulier.
+- **AVG-rechten**: gegevensexport (`/api/account/export`, JSON-download) en onherroepelijke accountverwijdering (recht op vergetelheid), beide in Instellingen.
+- **Cookiemelding** site-breed; keuze lokaal bewaard.
+- **RLS** staat aan op alle databasetabellen; de app benadert de database uitsluitend via Prisma.
+- Server-side autorisatie en Zod-validatie op alle mutaties; audit logging op beheeracties.
