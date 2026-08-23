@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CookieConsent } from "@/components/layout/cookie-consent";
+import { PWARegister } from "@/components/pwa-register";
 
 // Bepaal een geldige basis-URL, ook als APP_URL ontbreekt, leeg is of het
 // schema mist (bijv. "bouwschakel.vercel.app"). Zo kan een verkeerd ingevulde
@@ -33,6 +34,27 @@ export const metadata: Metadata = {
     siteName: "BouwSchakel",
     url: appUrl,
   },
+  manifest: "/manifest.webmanifest",
+  applicationName: "BouwSchakel",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "BouwSchakel",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F2540",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -45,6 +67,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
         <CookieConsent />
+        <PWARegister />
       </body>
     </html>
   );
