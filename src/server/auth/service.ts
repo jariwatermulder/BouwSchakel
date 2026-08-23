@@ -52,11 +52,21 @@ async function createEmailVerification(user: User): Promise<void> {
   });
 
   const url = `${serverEnv().APP_URL}/verifieer?token=${token}`;
-  await sendEmail({
-    to: user.email,
-    subject: "Bevestig je e-mailadres — BouwSchakel",
-    text: `Welkom bij BouwSchakel. Bevestig je e-mailadres via: ${url}`,
-  });
+  // Best-effort: het versturen van de verificatiemail mag registratie nooit
+  // blokkeren. Zolang er geen e-mailprovider is geconfigureerd, wordt de mail
+  // niet verzonden, maar het account (status ACTIEF) is direct bruikbaar.
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: "Bevestig je e-mailadres — BouwSchakel",
+      text: `Welkom bij BouwSchakel. Bevestig je e-mailadres via: ${url}`,
+    });
+  } catch (err) {
+    console.warn(
+      `[auth] Verificatiemail niet verzonden voor ${user.email}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
 }
 
 export async function authenticate(input: {
