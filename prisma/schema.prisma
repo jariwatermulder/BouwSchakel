@@ -320,6 +320,7 @@ model Company {
   jobs          Job[]
   assignments   Assignment[]
   conversations Conversation[]
+  invoices      Invoice[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -504,6 +505,7 @@ model Assignment {
   gewerkteUren Int?
 
   reviews Review[]
+  invoice Invoice?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -668,4 +670,71 @@ model AuditLog {
 
   @@index([createdAt])
   @@index([actorUserId])
+}
+
+// ── FASE 8: Betalingen (fees, facturen, betalingen) ──────────────────────────
+
+enum FeeModel {
+  PER_UUR
+  VAST
+}
+
+enum InvoiceStatus {
+  CONCEPT
+  OPEN
+  BETAALD
+  MISLUKT
+  GECREDITEERD
+}
+
+enum PaymentStatus {
+  IN_AFWACHTING
+  GESLAAGD
+  MISLUKT
+  GEREFUND
+}
+
+// Eén rij ("default"). Alle bedragen configureerbaar via admin — nooit hardcoded.
+model PricingSetting {
+  id                        String   @id @default("default")
+  feeModel                  FeeModel @default(PER_UUR)
+  succesfeePerUurCents      Int      @default(750)
+  vasteBemiddelingsfeeCents Int      @default(0)
+  proMaandCents             Int      @default(19900)
+  btwPercentage             Int      @default(21)
+  updatedAt                 DateTime @updatedAt
+}
+
+model Invoice {
+  id             String        @id @default(uuid())
+  companyId      String
+  company        Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignmentId   String?       @unique
+  assignment     Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+  omschrijving   String
+  subtotaalCents Int
+  btwCents       Int
+  bedragCents    Int
+  status         InvoiceStatus @default(OPEN)
+  payments       Payment[]
+  uitgegevenOp   DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([companyId])
+  @@index([status])
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  invoiceId   String?
+  invoice     Invoice?      @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  provider    String
+  providerRef String?
+  bedragCents Int
+  status      PaymentStatus @default(IN_AFWACHTING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([invoiceId])
 }

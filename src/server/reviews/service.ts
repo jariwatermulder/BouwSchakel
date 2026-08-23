@@ -2,6 +2,7 @@ import "server-only";
 import type { Prisma, Review } from "@prisma/client";
 import { db } from "@/lib/db";
 import { notify } from "@/server/notifications/service";
+import { generateInvoiceForAssignment } from "@/server/payments/invoices";
 import type { ReviewInput } from "@/lib/validations/review";
 
 export class GeenToegangError extends Error {
@@ -111,6 +112,9 @@ export async function completeAssignment(
       einddatum: new Date(),
     },
   });
+
+  // Genereer (idempotent) de bemiddelingsfactuur op basis van de fee-instellingen.
+  await generateInvoiceForAssignment(assignmentId);
 }
 
 export async function createReview(

@@ -67,8 +67,10 @@ npm run dev            # http://localhost:3000
 - FASE 4: deterministische matching engine met harde filters en gewogen, uitlegbare scores (configureerbare gewichten via `MatchingSetting`); kandidaten per opdracht voor bedrijven en "Opdrachten voor jou" voor ZZP'ers; ingebouwde NL-gazetteer voor afstandsberekening.
 - FASE 5: reacties & uitnodigingen (Application) → kandidaat selecteren (Assignment, opdracht → vervuld); interne messaging per opdracht met ongelezen-indicators; in-app + e-mail notificaties met per-gebruiker voorkeuren.
 - FASE 6: reviews in beide richtingen na een afgeronde opdracht (kwaliteit, communicatie, betrouwbaarheid, afspraken), alleen bij een echte opdrachtrelatie en onveranderbaar na plaatsing; rating + reviews op het ZZP-profiel; reputatie voedt de betrouwbaarheid-subscore in de matching.
+- FASE 7: adminomgeving (`/admin`) met RBAC — dashboard, gebruikers-/bedrijfsbeheer, verificaties, review-/report-/klachtmoderatie, matching-instellingen, catalogusbeheer en audit log.
+- FASE 8: configureerbare fees (`PricingSetting`), automatische factuurgeneratie bij afronding van een opdracht, `PaymentProvider`-interface (Mollie/Stripe later), factuuroverzichten voor bedrijf en admin.
 
-De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de volgende fasen (FASE 7: admin).
+De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Zie het [implementatieplan](./docs/IMPLEMENTATION_PLAN.md) voor de resterende fasen (FASE 9: security/privacy · FASE 10: SEO/launch).
 
 ### Bekende aandachtspunten
 

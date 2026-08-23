@@ -21,6 +21,7 @@ export default async function BedrijfAppLayout({
     { href: "/bedrijven/kandidaten", label: "Kandidaten" },
     { href: "/bedrijven/berichten", label: "Berichten", badge: berichten },
     { href: "/bedrijven/meldingen", label: "Meldingen", badge: meldingen },
+    { href: "/bedrijven/facturen", label: "Facturen" },
     { href: "/bedrijven/registreren", label: "Bedrijfsprofiel" },
     { href: "/bedrijven/instellingen", label: "Instellingen" },
   ];

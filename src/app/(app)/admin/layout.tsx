@@ -12,6 +12,7 @@ const navItems: AppNavItem[] = [
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/klachten", label: "Klachten" },
   { href: "/admin/matching", label: "Matching" },
+  { href: "/admin/prijzen", label: "Prijzen" },
   { href: "/admin/catalogus", label: "Catalogus" },
   { href: "/admin/audit", label: "Audit" },
 ];

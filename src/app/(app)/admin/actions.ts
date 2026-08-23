@@ -11,6 +11,8 @@ import { requireCurrentAdmin } from "@/lib/auth/current-user";
 import { logAudit } from "@/server/admin/audit";
 import { matchingSettingSchema } from "@/lib/validations/matching";
 import { updateMatchingConfig } from "@/server/matching/settings";
+import { pricingSchema, pricingToCents } from "@/lib/validations/pricing";
+import { updatePricing } from "@/server/payments/pricing";
 import * as admin from "@/server/admin/service";
 
 const VERIF: VerificatieStatus[] = [
@@ -196,6 +198,30 @@ export async function opslaanMatchingInstellingen(
     meta: parsed.data,
   });
   revalidatePath("/admin/matching");
+  return { ok: true };
+}
+
+// ── Prijzen / fees ───────────────────────────────────────────────────────────
+export async function opslaanPrijzen(
+  _prev: MatchingState,
+  fd: FormData,
+): Promise<MatchingState> {
+  const actor = await requireCurrentAdmin("ADMIN");
+  const parsed = pricingSchema.safeParse({
+    feeModel: fd.get("feeModel"),
+    succesfeePerUurEuro: fd.get("succesfeePerUurEuro"),
+    vasteBemiddelingsfeeEuro: fd.get("vasteBemiddelingsfeeEuro"),
+    proMaandEuro: fd.get("proMaandEuro"),
+    btwPercentage: fd.get("btwPercentage"),
+  });
+  if (!parsed.success) return { error: "Controleer de ingevulde waarden." };
+  await updatePricing(pricingToCents(parsed.data));
+  await logAudit({
+    actorUserId: actor.id,
+    actie: "prijzen_gewijzigd",
+    meta: parsed.data,
+  });
+  revalidatePath("/admin/prijzen");
   return { ok: true };
 }
 
