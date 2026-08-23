@@ -15,6 +15,10 @@ const serverEnvSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
+  // E-mail (optioneel): zonder deze waarden worden mails niet verstuurd,
+  // maar blijft de app gewoon werken.
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
