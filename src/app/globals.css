@@ -54,3 +54,28 @@ body {
   outline: 2px solid var(--color-navy-500);
   outline-offset: 2px;
 }
+
+/* Chat: subtiele opkom-animatie voor nieuwe berichten. */
+@keyframes bs-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.bs-msg-in {
+  animation: bs-msg-in 0.18s ease-out both;
+}
+
+/* Chat: fijne, discrete achtergrond in het berichtenvenster. */
+.bs-chat-bg {
+  background-color: var(--color-surface-muted);
+  background-image: radial-gradient(
+    var(--color-border) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+}
