@@ -48,9 +48,9 @@ export function AppShell({
               aria-hidden
               className="bg-navy-700 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
             >
-              BS
+              ZC
             </span>
-            <span className="hidden sm:inline">BouwSchakel</span>
+            <span className="hidden sm:inline">ZZP Connect</span>
           </Link>
 
           {/* Hoofdmenu (desktop) */}

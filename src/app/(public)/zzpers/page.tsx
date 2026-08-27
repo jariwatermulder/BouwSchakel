@@ -7,7 +7,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 export const metadata: Metadata = {
   title: "Voor ZZP'ers",
   description:
-    "Vind passend werk in de bouw. Maak gratis een professioneel profiel op BouwSchakel.",
+    "Vind passend werk in de bouw. Maak gratis een professioneel profiel op ZZP Connect.",
 };
 
 const punten = [

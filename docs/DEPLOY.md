@@ -11,7 +11,7 @@ Supabase-dashboard → project **bouwschakel** → Settings → Database →
 ## 2. Project importeren in Vercel
 
 1. Ga naar https://vercel.com/new en log in met GitHub.
-2. Kies de repository **jariwatermulder/BouwSchakel**.
+2. Kies de repository **jariwatermulder/ZZP Connect**.
 3. Bij "Branch": kies `claude/bouwkracht-platform-design-92ku8q` (of merge die
    eerst naar `main`).
 4. Framework wordt automatisch herkend als **Next.js**. Niets aanpassen.

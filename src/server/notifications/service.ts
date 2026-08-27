@@ -56,7 +56,7 @@ export async function notify(input: NieuweNotificatie): Promise<void> {
   const link = input.link ? `${serverEnv().APP_URL}${input.link}` : undefined;
   await sendEmail({
     to: user.email,
-    subject: `${input.titel} — BouwSchakel`,
+    subject: `${input.titel} — ZZP Connect`,
     text: `${input.tekst}${link ? `\n\n${link}` : ""}`,
   }).catch(() => {
     // E-mail mag nooit de hoofdactie laten falen.

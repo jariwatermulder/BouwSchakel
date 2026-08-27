@@ -190,7 +190,7 @@ export default function HomePage() {
             echte opdracht via het platform. Zo weet je met wie je zakendoet.
           </p>
           <p className="text-navy-300 mt-6 text-sm">
-            BouwSchakel is een bemiddelingsplatform. De overeenkomst voor het
+            ZZP Connect is een bemiddelingsplatform. De overeenkomst voor het
             werk sluit je rechtstreeks met de vakman.
           </p>
         </Container>

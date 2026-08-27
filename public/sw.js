@@ -1,5 +1,5 @@
 /*
- * BouwSchakel service worker (minimaal & veilig).
+ * ZZP Connect service worker (minimaal & veilig).
  *
  * Doel: de app installeerbaar maken (PWA) en een nette offline-pagina tonen
  * wanneer er geen netwerk is. We cachen bewust GEEN persoonlijke of dynamische

@@ -16,7 +16,7 @@ export default function CookiesPage() {
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">
           <p>
-            BouwSchakel gebruikt functionele cookies die nodig zijn om het
+            ZZP Connect gebruikt functionele cookies die nodig zijn om het
             platform te laten werken, waaronder een beveiligde sessiecookie na
             inloggen. Voor eventuele analytische cookies wordt
             privacyvriendelijke meting nagestreefd en, waar vereist, toestemming

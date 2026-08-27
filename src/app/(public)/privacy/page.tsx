@@ -16,7 +16,7 @@ export default function PrivacyPage() {
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">
           <p>
-            BouwSchakel verwerkt persoonsgegevens volgens de AVG en het beginsel
+            ZZP Connect verwerkt persoonsgegevens volgens de AVG en het beginsel
             van privacy-by-design: we verzamelen niet meer dan nodig is om vraag
             en aanbod bij elkaar te brengen.
           </p>

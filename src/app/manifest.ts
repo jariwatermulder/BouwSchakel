@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 
-// Web app manifest — maakt BouwSchakel installeerbaar als PWA (app-icoon op het
+// Web app manifest — maakt ZZP Connect installeerbaar als PWA (app-icoon op het
 // beginscherm, schermvullend openen). Next.js serveert dit op /manifest.webmanifest.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BouwSchakel — vind de juiste vakman",
-    short_name: "BouwSchakel",
+    name: "ZZP Connect — vind de juiste zzp'er",
+    short_name: "ZZP Connect",
     description:
-      "Bouwbedrijven en zelfstandige vakmensen rechtstreeks verbonden. Plaats een opdracht of vind je volgende klus.",
+      "Opdrachtgevers en zelfstandige professionals (zzp'ers) rechtstreeks verbonden. Plaats een opdracht of vind je volgende klus.",
     id: "/",
     start_url: "/",
     scope: "/",

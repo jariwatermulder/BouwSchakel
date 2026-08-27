@@ -1,4 +1,4 @@
-// BouwSchakel — Prisma schema
+// ZZP Connect — Prisma schema
 // FASE 1 (Foundation): identiteit, rollen, sessies en verificatietokens.
 // Latere fasen voegen ZZPProfile, Company, Job, Match, Application, Assignment,
 // Conversation, Message, Review, Verification, Notification, etc. toe.

@@ -5,7 +5,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Neem contact op met BouwSchakel.",
+  description: "Neem contact op met ZZP Connect.",
 };
 
 export default function ContactPage() {

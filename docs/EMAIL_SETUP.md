@@ -1,6 +1,6 @@
 # E-mail instellen (Resend)
 
-BouwSchakel verstuurt transactionele e-mails (bevestig je e-mailadres, nieuw
+ZZP Connect verstuurt transactionele e-mails (bevestig je e-mailadres, nieuw
 bericht, nieuwe match, reactie, review) via **Resend**. Zolang er geen
 API-sleutel is ingesteld, werkt het platform gewoon, maar worden er geen mails
 verstuurd (er verschijnt alleen een waarschuwing in de serverlog).
@@ -26,7 +26,7 @@ Lokaal in `.env`:
 
 ```
 RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxx"
-EMAIL_FROM="BouwSchakel <onboarding@resend.dev>"
+EMAIL_FROM="ZZP Connect <onboarding@resend.dev>"
 ```
 
 Op **Vercel**: project → **Instellingen** → **Omgevingsvariabelen** → voeg

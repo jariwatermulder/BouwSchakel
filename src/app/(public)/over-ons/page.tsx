@@ -4,7 +4,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
   title: "Over ons",
-  description: "Het verhaal achter BouwSchakel.",
+  description: "Het verhaal achter ZZP Connect.",
 };
 
 export default function OverOnsPage() {
@@ -12,11 +12,11 @@ export default function OverOnsPage() {
     <>
       <PageIntro
         title="Over ons"
-        lead="De juiste vakman. Op het juiste moment."
+        lead="De juiste zzp'er. Op het juiste moment."
       />
       <Container className="prose max-w-2xl py-12 md:py-16">
         <p className="text-foreground-muted">
-          BouwSchakel is ontstaan uit een simpele observatie: bouwbedrijven
+          ZZP Connect is ontstaan uit een simpele observatie: bouwbedrijven
           hebben regelmatig op korte termijn een goede vakman nodig, terwijl
           veel zelfstandige vakmensen juist op zoek zijn naar passend werk in
           hun eigen regio. Die twee vinden elkaar nu vaak via omwegen.
@@ -28,7 +28,7 @@ export default function OverOnsPage() {
           past.
         </p>
         <p className="text-foreground-muted mt-4">
-          BouwSchakel is een bemiddelingsplatform. We faciliteren het contact;
+          ZZP Connect is een bemiddelingsplatform. We faciliteren het contact;
           de afspraken over het werk maken opdrachtgever en vakman rechtstreeks
           met elkaar.
         </p>

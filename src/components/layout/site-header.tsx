@@ -22,9 +22,9 @@ export function SiteHeader() {
             aria-hidden
             className="bg-navy-800 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
           >
-            BS
+            ZC
           </span>
-          <span className="text-lg">BouwSchakel</span>
+          <span className="text-lg">ZZP Connect</span>
         </Link>
 
         <nav

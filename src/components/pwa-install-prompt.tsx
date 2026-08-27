@@ -28,7 +28,7 @@ function isIos(): boolean {
 }
 
 /**
- * Uitnodiging om BouwSchakel als app te installeren.
+ * Uitnodiging om ZZP Connect als app te installeren.
  * - Android/Chrome/desktop: echte installatieknop via beforeinstallprompt.
  * - iOS Safari: korte instructie (daar bestaat geen installatieknop).
  * Verschijnt niet wanneer de app al is geïnstalleerd of eerder is weggeklikt,
@@ -106,14 +106,14 @@ export function PWAInstallPrompt() {
       <div className="mx-auto flex max-w-4xl items-center gap-3">
         <Image
           src="/icon-192.png"
-          alt="BouwSchakel"
+          alt="ZZP Connect"
           width={44}
           height={44}
           className="rounded-xl"
         />
         <div className="min-w-0 flex-1">
           <p className="text-foreground text-sm font-semibold">
-            Installeer BouwSchakel als app
+            Installeer ZZP Connect als app
           </p>
           {iosHelp ? (
             <p className="text-foreground-muted text-sm">
@@ -122,7 +122,7 @@ export function PWAInstallPrompt() {
             </p>
           ) : (
             <p className="text-foreground-muted text-sm">
-              Zet BouwSchakel op je beginscherm — snel en zonder appstore.
+              Zet ZZP Connect op je beginscherm — snel en zonder appstore.
             </p>
           )}
         </div>

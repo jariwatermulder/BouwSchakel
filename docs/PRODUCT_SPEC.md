@@ -1,4 +1,4 @@
-# BouwSchakel — Product Specificatie
+# ZZP Connect — Product Specificatie
 
 > **Status:** Concept / ter goedkeuring. Dit document is de functionele bron van waarheid vóór de bouw begint.
 > Juridische teksten en compliance-claims moeten door een Nederlandse jurist worden gecontroleerd (zie `LEGAL_CONSIDERATIONS.md`).
@@ -7,15 +7,15 @@
 
 ## 1. Productvisie
 
-**BouwSchakel** is een Nederlands digitaal bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt.
+**ZZP Connect** is een Nederlands digitaal bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt.
 
-**Pay-off:** _De juiste vakman. Op het juiste moment._
+**Pay-off:** _De juiste zzp'er. Op het juiste moment._
 
-**Kernbelofte:** Een bouwbedrijf dat vandaag een vakman nodig heeft, kan via BouwSchakel snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
+**Kernbelofte:** Een bouwbedrijf dat vandaag een vakman nodig heeft, kan via ZZP Connect snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
 
 ### Positionering (bemiddeling, geen uitzendbureau)
 
-BouwSchakel is **primair een bemiddelingsplatform**. Het platform:
+ZZP Connect is **primair een bemiddelingsplatform**. Het platform:
 
 - brengt vraag en aanbod bij elkaar en faciliteert contact;
 - sluit **niet** zelf de overeenkomst tot het uitvoeren van werk — die komt tot stand tussen opdrachtgever en ZZP'er;
@@ -110,7 +110,7 @@ Opdracht → afronden → review
 
 ## 7. Homepage
 
-- **Hero:** "De juiste vakman. Op het juiste moment."
+- **Hero:** "De juiste zzp'er. Op het juiste moment."
 - **Subtekst:** "Vind gecontroleerde ZZP'ers voor bouw, renovatie en installatie. Of vind jouw volgende opdracht."
 - **Twee primaire CTA's:** "Ik zoek een vakman" · "Ik zoek een opdracht"
 - Secties: hoe het werkt · populaire vakgebieden · voordelen bedrijven · voordelen ZZP'ers · verificatie · reviews · (optioneel) live platformstatistieken.
@@ -180,7 +180,7 @@ Beheer van gebruikers, bedrijven, opdrachten, verificaties, reviews/moderatie, r
 ## 19. Businessmodel (bedragen configureerbaar — nooit hardcoded)
 
 - **Primair:** succesfee voor opdrachtgever, bijv. €7,50 per daadwerkelijk gewerkt uur, of vaste bemiddelingsfee.
-- **Secundair:** _BouwSchakel Pro_ (bijv. €199/mnd): meerdere gebruikers, lagere fee, prioriteitsmatching, uitgebreide statistieken, favorieten, premium support.
+- **Secundair:** _ZZP Connect Pro_ (bijv. €199/mnd): meerdere gebruikers, lagere fee, prioriteitsmatching, uitgebreide statistieken, favorieten, premium support.
 - Betalingsarchitectuur voorbereid voor Mollie/Stripe; implementatie pas ná stabiele kern (zie `ARCHITECTURE.md` §Payments).
 
 ## 20. Belangrijkste businessmetric

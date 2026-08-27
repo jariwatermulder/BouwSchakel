@@ -13,7 +13,7 @@ export async function GET(): Promise<NextResponse> {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Content-Disposition": 'attachment; filename="bouwschakel-gegevens.json"',
+      "Content-Disposition": 'attachment; filename="zzp-connect-gegevens.json"',
     },
   });
 }

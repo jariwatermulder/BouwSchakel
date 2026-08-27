@@ -1,4 +1,4 @@
-# BouwSchakel — Juridische Overwegingen
+# ZZP Connect — Juridische Overwegingen
 
 > **Disclaimer:** Dit document is een technisch/functioneel hulpmiddel, **geen juridisch advies**. Alle juridische teksten (algemene voorwaarden, privacyverklaring, disclaimers, overeenkomsten) moeten door een **Nederlandse jurist** worden gecontroleerd vóór productie. Het platform doet **geen** claim dat het arbeidsrechtelijke of fiscale compliance automatisch garandeert.
 
@@ -6,17 +6,17 @@
 
 ## 1. Kernpositie: bemiddeling, geen terbeschikkingstelling
 
-BouwSchakel presenteert zich en gedraagt zich als **bemiddelingsplatform**: het brengt opdrachtgevers en zelfstandige vakmensen bij elkaar en faciliteert contact en administratie. De **overeenkomst van opdracht** komt tot stand tussen opdrachtgever en ZZP'er; BouwSchakel is daarbij geen partij.
+ZZP Connect presenteert zich en gedraagt zich als **bemiddelingsplatform**: het brengt opdrachtgevers en zelfstandige vakmensen bij elkaar en faciliteert contact en administratie. De **overeenkomst van opdracht** komt tot stand tussen opdrachtgever en ZZP'er; ZZP Connect is daarbij geen partij.
 
 Productbeslissingen bewaken bewust het onderscheid tussen:
 
-- **Bemiddeling** — partijen vinden en contact leggen; BouwSchakel stuurt de arbeid niet aan.
-- **Tussenkomst** — BouwSchakel wordt contractueel/financieel tussenschakel (risicovoller; vermijden tenzij bewust gekozen en juridisch ingericht).
-- **Terbeschikkingstelling van arbeid** — leiding/toezicht/allocatie door BouwSchakel (uitzenden/uitlenen). Dit **vermijden**; het raakt Waadi en registratie-/vergunningsplichten.
+- **Bemiddeling** — partijen vinden en contact leggen; ZZP Connect stuurt de arbeid niet aan.
+- **Tussenkomst** — ZZP Connect wordt contractueel/financieel tussenschakel (risicovoller; vermijden tenzij bewust gekozen en juridisch ingericht).
+- **Terbeschikkingstelling van arbeid** — leiding/toezicht/allocatie door ZZP Connect (uitzenden/uitlenen). Dit **vermijden**; het raakt Waadi en registratie-/vergunningsplichten.
 
 **Ontwerpimplicaties:**
 
-- BouwSchakel bepaalt niet wie waar werkt, geeft geen werkinstructies, en oefent geen leiding/toezicht uit.
+- ZZP Connect bepaalt niet wie waar werkt, geeft geen werkinstructies, en oefent geen leiding/toezicht uit.
 - De selectie/keuze ligt bij de opdrachtgever; de acceptatie bij de ZZP'er.
 - Communicatie en afspraken over de uitvoering lopen tussen de partijen zelf.
 
@@ -30,11 +30,11 @@ Het platform doet **geen** claim als "deze ZZP'er is juridisch gegarandeerd zelf
 
 ## 3. Waadi (Wet allocatie arbeidskrachten door intermediairs)
 
-Relevant zodra er sprake zou zijn van terbeschikkingstelling. Zolang BouwSchakel strikt bemiddelt (geen leiding/toezicht, geen allocatie), is de positie anders. Bij twijfel of bij toevoeging van tussenkomst-/detacheringsfuncties: juridisch toetsen (o.a. registratie-/informatieverplichtingen).
+Relevant zodra er sprake zou zijn van terbeschikkingstelling. Zolang ZZP Connect strikt bemiddelt (geen leiding/toezicht, geen allocatie), is de positie anders. Bij twijfel of bij toevoeging van tussenkomst-/detacheringsfuncties: juridisch toetsen (o.a. registratie-/informatieverplichtingen).
 
 ## 4. Toekomstige regelgeving (o.a. Wtta — toelating terbeschikkingstelling arbeidskrachten)
 
-Aankomende regelgeving rond het ter beschikking stellen van arbeidskrachten kan relevant worden **indien** BouwSchakel richting uitlenen/detacheren zou bewegen. De architectuur houdt hiermee rekening door bemiddeling en eventuele tussenkomst/terbeschikkingstelling **strikt gescheiden** te modelleren, zodat later per module compliance kan worden ingericht. Concrete verplichtingen: juridisch laten toetsen op het moment dat zo'n functie wordt overwogen.
+Aankomende regelgeving rond het ter beschikking stellen van arbeidskrachten kan relevant worden **indien** ZZP Connect richting uitlenen/detacheren zou bewegen. De architectuur houdt hiermee rekening door bemiddeling en eventuele tussenkomst/terbeschikkingstelling **strikt gescheiden** te modelleren, zodat later per module compliance kan worden ingericht. Concrete verplichtingen: juridisch laten toetsen op het moment dat zo'n functie wordt overwogen.
 
 ## 5. AVG / privacy
 
@@ -46,7 +46,7 @@ Doelgroep is primair B2B (bedrijven en zelfstandigen). Toch scherp onderscheiden
 
 ## 7. Aansprakelijkheid
 
-- BouwSchakel is bemiddelaar en niet verantwoordelijk voor de kwaliteit/uitvoering van het werk of voor geschillen tussen partijen.
+- ZZP Connect is bemiddelaar en niet verantwoordelijk voor de kwaliteit/uitvoering van het werk of voor geschillen tussen partijen.
 - Duidelijke aansprakelijkheidsbeperkingen in de voorwaarden (juridisch te toetsen).
 - Verificatie en reviews zijn indicatief, geen garantie.
 

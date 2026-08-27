@@ -6,7 +6,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
   title: "Tarieven",
-  description: "De tarieven van BouwSchakel — helder en zonder verrassingen.",
+  description: "De tarieven van ZZP Connect — helder en zonder verrassingen.",
 };
 
 export default function TarievenPage() {
@@ -43,7 +43,7 @@ export default function TarievenPage() {
       </Container>
       <Container className="pb-16">
         <p className="text-foreground-muted text-sm">
-          Definitieve bedragen en een eventueel abonnement (BouwSchakel Pro)
+          Definitieve bedragen en een eventueel abonnement (ZZP Connect Pro)
           worden later bekendgemaakt. Er worden geen kosten in rekening gebracht
           zonder dat dit vooraf duidelijk is.
         </p>

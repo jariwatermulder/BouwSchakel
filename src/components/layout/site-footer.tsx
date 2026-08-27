@@ -41,12 +41,12 @@ export function SiteFooter() {
               aria-hidden
               className="bg-navy-700 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
             >
-              BS
+              ZC
             </span>
-            BouwSchakel
+            ZZP Connect
           </div>
           <p className="text-navy-200 mt-3 text-sm">
-            De juiste vakman. Op het juiste moment.
+            De juiste zzp&apos;er. Op het juiste moment.
           </p>
         </div>
 
@@ -71,8 +71,8 @@ export function SiteFooter() {
 
       <div className="border-navy-800 border-t">
         <Container className="text-navy-300 py-4 text-xs">
-          © {new Date().getFullYear()} BouwSchakel — bemiddelingsplatform voor
-          de bouw. BouwSchakel is bemiddelaar en geen partij bij de overeenkomst
+          © {new Date().getFullYear()} ZZP Connect — bemiddelingsplatform voor
+          de bouw. ZZP Connect is bemiddelaar en geen partij bij de overeenkomst
           tussen opdrachtgever en ZZP&apos;er.
         </Container>
       </div>

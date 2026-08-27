@@ -1,4 +1,4 @@
-# BouwSchakel — Implementatieplan
+# ZZP Connect — Implementatieplan
 
 > Volgorde, fasen en Definition of Done. **Er wordt niet blind doorgebouwd:** na elke fase volgt tests + lint + typecheck + database/security/UX-controle + documentatie. Werkt iets niet, dan wordt het gefixt vóór de volgende fase.
 
@@ -9,7 +9,7 @@
 **Bevestigd door opdrachtgever (2026-08-22):**
 
 1. **Code-locatie: APARTE REPOSITORY** — `jariwatermulder/bouwschakel`. Het platform staat volledig los van de website jwhoutentuinbouw.nl en van de `JWHout-Tuinbouw`-repo. De bestaande statische site blijft ongemoeid.
-2. **Productnaam: BouwSchakel** (voorheen werktitel "BouwKracht"). Pay-off ongewijzigd: _De juiste vakman. Op het juiste moment._
+2. **Productnaam: ZZP Connect** (voorheen werktitel "BouwKracht"). Pay-off ongewijzigd: _De juiste zzp'er. Op het juiste moment._
 3. **Database-host: LATER TE BESLISSEN.** PostgreSQL + Prisma staan vast (Prisma 6 als ORM). De concrete host (Supabase / Vercel Postgres / Neon / anders) wordt vóór deployment gekozen. FASE 1 is opgezet tegen een generieke Postgres.
 
 **Nog te bevestigen bij aanvang latere fasen:**

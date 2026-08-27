@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 /**
- * Registreert de service worker zodat BouwSchakel als PWA installeerbaar is.
+ * Registreert de service worker zodat ZZP Connect als PWA installeerbaar is.
  * Draait alleen client-side en faalt stil wanneer service workers niet worden
  * ondersteund (bijv. oudere browsers).
  */

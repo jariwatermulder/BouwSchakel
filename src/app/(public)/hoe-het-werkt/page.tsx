@@ -6,7 +6,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 export const metadata: Metadata = {
   title: "Hoe het werkt",
   description:
-    "Zo werkt BouwSchakel voor bouwbedrijven en zelfstandige vakmensen.",
+    "Zo werkt ZZP Connect voor bouwbedrijven en zelfstandige vakmensen.",
 };
 
 const bedrijf = [
@@ -28,7 +28,7 @@ export default function HoeHetWerktPage() {
     <>
       <PageIntro
         title="Hoe het werkt"
-        lead="BouwSchakel brengt bouwbedrijven en zelfstandige vakmensen bij elkaar. Snel, transparant en op basis van echte match."
+        lead="ZZP Connect brengt bouwbedrijven en zelfstandige vakmensen bij elkaar. Snel, transparant en op basis van echte match."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
         <Card>
@@ -68,9 +68,9 @@ export default function HoeHetWerktPage() {
         <Card>
           <CardTitle>Bemiddeling, geen uitzendbureau</CardTitle>
           <CardDescription>
-            BouwSchakel faciliteert het contact tussen opdrachtgever en vakman.
+            ZZP Connect faciliteert het contact tussen opdrachtgever en vakman.
             De overeenkomst voor het uitvoeren van het werk komt rechtstreeks
-            tussen beide partijen tot stand. BouwSchakel is geen werkgever,
+            tussen beide partijen tot stand. ZZP Connect is geen werkgever,
             uitlener of partij bij die overeenkomst.
           </CardDescription>
         </Card>

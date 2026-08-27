@@ -1,4 +1,4 @@
-# BouwSchakel — Matching Engine
+# ZZP Connect — Matching Engine
 
 > Kernfunctie. Deterministisch, uitlegbaar, configureerbaar. Ontworpen zodat AI later inplugbaar is.
 

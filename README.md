@@ -1,8 +1,8 @@
-# BouwSchakel
+# ZZP Connect
 
-**De juiste vakman. Op het juiste moment.**
+**De juiste zzp'er. Op het juiste moment.**
 
-BouwSchakel is een Nederlands bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt. BouwSchakel is een bemiddelingsplatform: de overeenkomst voor het werk komt tot stand tussen opdrachtgever en vakman.
+ZZP Connect is een Nederlands bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt. ZZP Connect is een bemiddelingsplatform: de overeenkomst voor het werk komt tot stand tussen opdrachtgever en vakman.
 
 > Dit is een nieuwe, op zichzelf staande applicatie en staat volledig los van de website www.jwhoutentuinbouw.nl.
 

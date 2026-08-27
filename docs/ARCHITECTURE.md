@@ -1,4 +1,4 @@
-# BouwSchakel — Architectuur
+# ZZP Connect — Architectuur
 
 > Zie ook: `PRODUCT_SPEC.md`, `DATABASE.md`, `MATCHING.md`, `SECURITY.md`, `LEGAL_CONSIDERATIONS.md`, `IMPLEMENTATION_PLAN.md`.
 
@@ -6,9 +6,9 @@
 
 ## 1. Uitgangssituatie repository
 
-De huidige repository bevat een **statische HTML/CSS/JS-website voor "JW Hout & Tuinbouw"** (een hoveniersbedrijf) — geen build-tool, geen framework, geen `package.json`. Deze site is functioneel losstaand van BouwSchakel.
+De huidige repository bevat een **statische HTML/CSS/JS-website voor "JW Hout & Tuinbouw"** (een hoveniersbedrijf) — geen build-tool, geen framework, geen `package.json`. Deze site is functioneel losstaand van ZZP Connect.
 
-**Aanbeveling:** BouwSchakel wordt gebouwd als een nieuwe Next.js-applicatie in een subdirectory (`/app` op repo-niveau, of `/bouwschakel`) zodat de bestaande statische site niet breekt. De keuze tussen (a) BouwSchakel náást de bestaande site of (b) BouwSchakel als vervanging is een **beslissing die vóór FASE 1 door de opdrachtgever wordt bevestigd**. Tot die bevestiging blijft de bestaande site ongemoeid.
+**Aanbeveling:** ZZP Connect wordt gebouwd als een nieuwe Next.js-applicatie in een subdirectory (`/app` op repo-niveau, of `/bouwschakel`) zodat de bestaande statische site niet breekt. De keuze tussen (a) ZZP Connect náást de bestaande site of (b) ZZP Connect als vervanging is een **beslissing die vóór FASE 1 door de opdrachtgever wordt bevestigd**. Tot die bevestiging blijft de bestaande site ongemoeid.
 
 ---
 

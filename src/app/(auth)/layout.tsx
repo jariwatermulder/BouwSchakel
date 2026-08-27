@@ -15,9 +15,9 @@ export default function AuthLayout({
           aria-hidden
           className="bg-navy-800 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
         >
-          BS
+          ZC
         </span>
-        BouwSchakel
+        ZZP Connect
       </Link>
       <div className="w-full max-w-md">{children}</div>
     </div>

@@ -16,7 +16,7 @@ export default function OfflinePage() {
         <CardTitle>Je bent offline</CardTitle>
         <p className="text-foreground-muted mt-2">
           Er is op dit moment geen internetverbinding. Zodra je weer online
-          bent, kun je verdergaan met BouwSchakel.
+          bent, kun je verdergaan met ZZP Connect.
         </p>
         <div className="mt-6">
           <ButtonLink href="/" variant="accent">

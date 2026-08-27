@@ -4,12 +4,12 @@ import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
   title: "Veelgestelde vragen",
-  description: "Antwoorden op de meestgestelde vragen over BouwSchakel.",
+  description: "Antwoorden op de meestgestelde vragen over ZZP Connect.",
 };
 
 const vragen = [
   {
-    v: "Wat is BouwSchakel?",
+    v: "Wat is ZZP Connect?",
     a: "Een Nederlands bemiddelingsplatform dat bouwbedrijven verbindt met zelfstandige vakmensen (ZZP'ers) voor bouw, renovatie en installatie.",
   },
   {
@@ -17,8 +17,8 @@ const vragen = [
     a: "Een profiel aanmaken en opdrachten plaatsen is gratis. Voor bouwbedrijven geldt een bemiddelingsfee bij een succesvolle match. Tarieven zijn altijd vooraf transparant.",
   },
   {
-    v: "Is BouwSchakel een uitzendbureau?",
-    a: "Nee. BouwSchakel bemiddelt en faciliteert contact. De overeenkomst voor het werk sluit je rechtstreeks met de vakman; BouwSchakel is daarbij geen partij.",
+    v: "Is ZZP Connect een uitzendbureau?",
+    a: "Nee. ZZP Connect bemiddelt en faciliteert contact. De overeenkomst voor het werk sluit je rechtstreeks met de vakman; ZZP Connect is daarbij geen partij.",
   },
   {
     v: "Hoe werkt de matching?",

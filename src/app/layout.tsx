@@ -24,23 +24,23 @@ const appUrl = resolveAppUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: {
-    default: "BouwSchakel — De juiste vakman. Op het juiste moment.",
-    template: "%s · BouwSchakel",
+    default: "ZZP Connect — De juiste zzp'er. Op het juiste moment.",
+    template: "%s · ZZP Connect",
   },
   description:
-    "BouwSchakel verbindt bouwbedrijven met geverifieerde zelfstandige vakmensen. Plaats snel een opdracht of vind jouw volgende klus.",
+    "ZZP Connect verbindt opdrachtgevers met geverifieerde zelfstandige professionals (zzp'ers). Plaats snel een opdracht of vind jouw volgende klus.",
   openGraph: {
     type: "website",
     locale: "nl_NL",
-    siteName: "BouwSchakel",
+    siteName: "ZZP Connect",
     url: appUrl,
   },
   manifest: "/manifest.webmanifest",
-  applicationName: "BouwSchakel",
+  applicationName: "ZZP Connect",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "BouwSchakel",
+    title: "ZZP Connect",
   },
   icons: {
     icon: [

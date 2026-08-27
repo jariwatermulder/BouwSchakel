@@ -20,7 +20,7 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 export async function sendEmail(message: EmailMessage): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const from =
-    process.env.EMAIL_FROM?.trim() || "BouwSchakel <onboarding@resend.dev>";
+    process.env.EMAIL_FROM?.trim() || "ZZP Connect <onboarding@resend.dev>";
 
   if (!apiKey) {
     console.warn(
@@ -102,7 +102,7 @@ function basisTemplate(titel: string, tekst: string): string {
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
         <tr><td style="background:#0b1220;padding:20px 28px;">
-          <span style="color:#ffffff;font-size:18px;font-weight:800;">Bouw<span style="color:#f59e0b;">Schakel</span></span>
+          <span style="color:#ffffff;font-size:18px;font-weight:800;">ZZP <span style="color:#f59e0b;">Connect</span></span>
         </td></tr>
         <tr><td style="padding:28px;">
           <h1 style="margin:0 0 16px;font-size:18px;color:#0b1220;">${esc(titel)}</h1>
@@ -110,7 +110,7 @@ function basisTemplate(titel: string, tekst: string): string {
           ${knop}
         </td></tr>
         <tr><td style="padding:18px 28px;background:#f8fafc;border-top:1px solid #e2e8f0;">
-          <p style="margin:0;font-size:12px;color:#94a3b8;">Je ontvangt deze e-mail omdat je een account hebt bij BouwSchakel. Voorkeuren aanpassen kan in je instellingen.</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8;">Je ontvangt deze e-mail omdat je een account hebt bij ZZP Connect. Voorkeuren aanpassen kan in je instellingen.</p>
         </td></tr>
       </table>
     </td></tr>
