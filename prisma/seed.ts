@@ -64,6 +64,43 @@ const VAKGEBIEDEN: { naam: string; specialisaties: string[] }[] = [
   { naam: "Betontimmerman", specialisaties: ["Bekisting", "Wapening"] },
   { naam: "Voorman", specialisaties: [] },
   { naam: "Uitvoerder", specialisaties: [] },
+  // Techniek & installatie
+  { naam: "Monteur", specialisaties: ["Werktuigbouw", "Elektromechanica", "Machineonderhoud"] },
+  { naam: "Servicetechnicus", specialisaties: ["Koeltechniek", "Liften", "Zonnepanelen"] },
+  { naam: "Lasser", specialisaties: ["MIG/MAG", "TIG", "Elektrode"] },
+  // Schoonmaak
+  { naam: "Schoonmaker", specialisaties: ["Kantoorschoonmaak", "Woningschoonmaak", "Glasbewassing"] },
+  { naam: "Specialistische reiniging", specialisaties: ["Vloeronderhoud", "Gevelreiniging", "Dieptereiniging"] },
+  // Transport & logistiek
+  { naam: "Chauffeur", specialisaties: ["Bestelbus (B)", "Vrachtwagen (C)", "Bus (D)", "Koeriersdienst"] },
+  { naam: "Bezorger", specialisaties: ["Pakketten", "Maaltijden"] },
+  { naam: "Heftruckchauffeur", specialisaties: [] },
+  { naam: "Magazijnmedewerker", specialisaties: ["Orderpicken", "Voorraadbeheer"] },
+  // Groen & buiten
+  { naam: "Hovenier", specialisaties: ["Aanleg", "Onderhoud", "Boomverzorging"] },
+  // Horeca
+  { naam: "Kok", specialisaties: ["Zelfstandig werkend kok", "Chef-kok", "Fastfood"] },
+  { naam: "Bediening", specialisaties: ["Gastheer/-vrouw", "Barista", "Barpersoneel"] },
+  { naam: "Keukenhulp", specialisaties: [] },
+  // Zorg & welzijn
+  { naam: "Verzorgende IG", specialisaties: [] },
+  { naam: "Verpleegkundige", specialisaties: ["Wijkverpleging", "Ziekenhuis", "Ouderenzorg"] },
+  { naam: "Begeleider", specialisaties: ["Gehandicaptenzorg", "Jeugdzorg", "GGZ"] },
+  // ICT & digitaal
+  { naam: "Softwareontwikkelaar", specialisaties: ["Frontend", "Backend", "Fullstack"] },
+  { naam: "Systeembeheerder", specialisaties: ["Netwerkbeheer", "Cloud", "Support"] },
+  { naam: "Data-analist", specialisaties: [] },
+  // Administratie & office
+  { naam: "Administratief medewerker", specialisaties: ["Boekhouding", "Facturatie", "Salarisadministratie"] },
+  { naam: "Secretaresse", specialisaties: [] },
+  { naam: "Klantenservicemedewerker", specialisaties: [] },
+  // Creatief & marketing
+  { naam: "Grafisch vormgever", specialisaties: ["Print", "Digitaal", "Branding"] },
+  { naam: "Fotograaf / videograaf", specialisaties: [] },
+  { naam: "Online marketeer", specialisaties: ["SEO/SEA", "Social media", "E-mailmarketing"] },
+  // Evenementen & beveiliging
+  { naam: "Beveiliger", specialisaties: ["Objectbeveiliging", "Evenementbeveiliging"] },
+  { naam: "Evenementmedewerker", specialisaties: ["Op- en afbouw", "Hostess/host"] },
 ];
 
 const CERTIFICATEN = [
@@ -73,6 +110,17 @@ const CERTIFICATEN = [
   "Heftruckcertificaat",
   "Hoogwerker",
   "Asbest herkennen",
+  // Sector-breed
+  "Rijbewijs B",
+  "Rijbewijs C",
+  "Rijbewijs D",
+  "Code 95",
+  "Reachtruckcertificaat",
+  "HACCP",
+  "SVH Sociale Hygiëne",
+  "Beveiligingsdiploma (Beveiliger 2)",
+  "BIG-registratie",
+  "EHBO",
 ];
 
 async function main() {
