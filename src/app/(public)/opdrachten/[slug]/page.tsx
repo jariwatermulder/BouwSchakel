@@ -61,14 +61,14 @@ export default async function PubliekeOpdrachtPage({
         {job.company.naam || "Bedrijf"} · {job.locatiePlaats}
       </p>
 
-      <Card className="mt-8">
+      <Card className="bs-load mt-8">
         <CardTitle>Werkzaamheden</CardTitle>
         <p className="text-foreground-muted mt-2 whitespace-pre-line">
           {job.omschrijving}
         </p>
       </Card>
 
-      <Card className="mt-6">
+      <Card className="bs-load mt-6" style={{ animationDelay: "80ms" }}>
         <CardTitle>Details</CardTitle>
         <dl className="mt-3 space-y-2 text-sm">
           <div className="flex justify-between">
@@ -96,7 +96,10 @@ export default async function PubliekeOpdrachtPage({
         </dl>
       </Card>
 
-      <Card className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Card
+        className="bs-load mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between"
+        style={{ animationDelay: "160ms" }}
+      >
         <div>
           <CardTitle>Interesse in deze opdracht?</CardTitle>
           <p className="text-foreground-muted text-sm">
