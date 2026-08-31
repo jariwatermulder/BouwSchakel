@@ -5,6 +5,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MatchScore } from "@/components/match-score";
+import { Reveal } from "@/components/reveal";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations } from "@/server/zzp/profile";
 import { findOpdrachtenVoorZzp } from "@/server/matching/service";
@@ -34,7 +35,7 @@ export default async function ZzpDashboardPage() {
 
   return (
     <Container className="py-8 md:py-12">
-      <h1 className="text-2xl font-bold md:text-3xl">
+      <h1 className="bs-load text-2xl font-bold md:text-3xl">
         {groet()}, {naam}
       </h1>
 
@@ -53,19 +54,19 @@ export default async function ZzpDashboardPage() {
       ) : null}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card>
+        <Card className="bs-load">
           <CardTitle>Profiel</CardTitle>
           <p className="text-navy-800 mt-2 text-3xl font-extrabold">{pct}%</p>
           <CardDescription>compleet</CardDescription>
         </Card>
-        <Card>
+        <Card className="bs-load" style={{ animationDelay: "80ms" }}>
           <CardTitle>Beschikbaarheid</CardTitle>
           <p className="text-navy-800 mt-2 text-3xl font-extrabold">
             {profile?.availability.length ?? 0}
           </p>
           <CardDescription>periodes ingesteld</CardDescription>
         </Card>
-        <Card>
+        <Card className="bs-load" style={{ animationDelay: "160ms" }}>
           <CardTitle>Zichtbaarheid</CardTitle>
           <div className="mt-2">
             {profile?.zichtbaar ? (
@@ -98,10 +99,17 @@ export default async function ZzpDashboardPage() {
           </Card>
         ) : (
           <ul className="mt-4 space-y-3">
-            {matches.map(({ job, result }) => (
+            {matches.map(({ job, result }, i) => (
               <li key={job.id}>
-                <Link href={`/zzpers/opdrachten/${job.id}`}>
-                  <Card className="hover:border-navy-300 flex flex-col gap-3 transition-colors sm:flex-row sm:items-start sm:justify-between">
+                <Reveal delayMs={Math.min(i, 5) * 70}>
+                  <Link
+                    href={`/zzpers/opdrachten/${job.id}`}
+                    className="group block"
+                  >
+                    <Card
+                      interactive
+                      className="group-hover:border-accent-500/60 flex flex-col gap-3 transition-colors sm:flex-row sm:items-start sm:justify-between"
+                    >
                     <div>
                       <p className="font-semibold">{job.titel}</p>
                       <p className="text-foreground-muted text-sm">
@@ -114,11 +122,12 @@ export default async function ZzpDashboardPage() {
                           : ""}
                       </p>
                     </div>
-                    <div className="sm:w-52 sm:shrink-0">
-                      <MatchScore result={result} compact />
-                    </div>
-                  </Card>
-                </Link>
+                      <div className="sm:w-52 sm:shrink-0">
+                        <MatchScore result={result} compact />
+                      </div>
+                    </Card>
+                  </Link>
+                </Reveal>
               </li>
             ))}
           </ul>

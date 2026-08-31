@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
 import { JobStatusBadge } from "@/components/job-status-badge";
+import { Reveal } from "@/components/reveal";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getCompanyForUser } from "@/server/company/service";
 import { listJobsForUser } from "@/server/jobs/service";
@@ -26,7 +27,7 @@ export default async function BedrijfDashboardPage() {
 
   return (
     <Container className="py-8 md:py-12">
-      <h1 className="text-2xl font-bold md:text-3xl">Welkom, {naam}</h1>
+      <h1 className="bs-load text-2xl font-bold md:text-3xl">Welkom, {naam}</h1>
 
       {profielOnvolledig ? (
         <Card className="mt-6 flex flex-col items-start gap-3 border-amber-300 bg-amber-50 sm:flex-row sm:items-center sm:justify-between">
@@ -43,17 +44,17 @@ export default async function BedrijfDashboardPage() {
       ) : null}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <Card>
+        <Card className="bs-load">
           <CardTitle>Actieve opdrachten</CardTitle>
           <p className="text-navy-800 mt-2 text-3xl font-extrabold">{actief}</p>
         </Card>
-        <Card>
+        <Card className="bs-load" style={{ animationDelay: "80ms" }}>
           <CardTitle>Vervuld</CardTitle>
           <p className="text-navy-800 mt-2 text-3xl font-extrabold">
             {vervuld}
           </p>
         </Card>
-        <Card>
+        <Card className="bs-load" style={{ animationDelay: "160ms" }}>
           <CardTitle>Totaal opdrachten</CardTitle>
           <p className="text-navy-800 mt-2 text-3xl font-extrabold">
             {jobs.length}
@@ -80,19 +81,27 @@ export default async function BedrijfDashboardPage() {
         </Card>
       ) : (
         <ul className="mt-4 space-y-3">
-          {jobs.slice(0, 5).map((job) => (
+          {jobs.slice(0, 5).map((job, i) => (
             <li key={job.id}>
-              <Link href={`/bedrijven/opdrachten/${job.id}`}>
-                <Card className="hover:border-navy-300 flex items-center justify-between gap-4 transition-colors">
-                  <div>
-                    <p className="font-semibold">{job.titel}</p>
-                    <p className="text-foreground-muted text-sm">
-                      {job.locatiePlaats}
-                    </p>
-                  </div>
-                  <JobStatusBadge status={job.status} />
-                </Card>
-              </Link>
+              <Reveal delayMs={Math.min(i, 5) * 70}>
+                <Link
+                  href={`/bedrijven/opdrachten/${job.id}`}
+                  className="group block"
+                >
+                  <Card
+                    interactive
+                    className="group-hover:border-accent-500/60 flex items-center justify-between gap-4 transition-colors"
+                  >
+                    <div>
+                      <p className="font-semibold">{job.titel}</p>
+                      <p className="text-foreground-muted text-sm">
+                        {job.locatiePlaats}
+                      </p>
+                    </div>
+                    <JobStatusBadge status={job.status} />
+                  </Card>
+                </Link>
+              </Reveal>
             </li>
           ))}
         </ul>
