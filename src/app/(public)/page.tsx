@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/reveal";
 
 const vakgebieden = [
   "Timmerman",
@@ -37,7 +38,7 @@ const stappen = [
 ];
 
 const voordelenBedrijf = [
-  "Snel geschikte, beschikbare ZZP'ers vinden",
+  "Snel geschikte, beschikbare zzp’ers vinden",
   "Geverifieerde profielen en reviews",
   "Matchscore met heldere uitleg — geen black box",
   "Zelf de kandidaat kiezen en direct contact leggen",
@@ -50,12 +51,59 @@ const voordelenZzp = [
   "Bouw reputatie op met reviews van opdrachtgevers",
 ];
 
+/** Decoratief 'connect'-motief voor de hero (puur sfeer, geen inhoud). */
+function ConnectMotief() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 380 280"
+      className="absolute top-1/2 right-6 hidden w-[380px] max-w-[45%] -translate-y-1/2 opacity-70 lg:block"
+    >
+      <line x1="60" y1="140" x2="320" y2="86" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
+      <line x1="60" y1="140" x2="300" y2="214" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
+      <line x1="320" y1="86" x2="300" y2="214" stroke="#4f7cc4" strokeWidth="2" className="bs-dash" />
+      {/* ping-ringen */}
+      <circle cx="60" cy="140" r="12" fill="none" stroke="#f59e0b" strokeWidth="2" className="bs-ping" />
+      <circle cx="320" cy="86" r="10" fill="none" stroke="#ffffff" strokeWidth="2" className="bs-ping" />
+      {/* knopen */}
+      <circle cx="60" cy="140" r="11" fill="#f59e0b" />
+      <circle cx="320" cy="86" r="9" fill="#ffffff" />
+      <circle cx="300" cy="214" r="9" fill="#ffffff" />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-ink text-white">
-        <Container className="py-20 md:py-28">
+      <section className="bg-ink relative overflow-hidden text-white">
+        {/* Bewegende sfeerlaag */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div
+            className="bs-blob bs-float"
+            style={{
+              background: "var(--color-accent-500)",
+              width: "340px",
+              height: "340px",
+              top: "-90px",
+              right: "-40px",
+            }}
+          />
+          <div
+            className="bs-blob bs-float2"
+            style={{
+              background: "var(--color-navy-500)",
+              width: "380px",
+              height: "380px",
+              bottom: "-140px",
+              left: "-70px",
+            }}
+          />
+          <ConnectMotief />
+        </div>
+
+        <Container className="relative z-10 py-20 md:py-28">
           <div className="max-w-2xl">
             <Badge variant="accent" className="bg-navy-800 text-accent-400">
               Hét platform voor zzp-werk
@@ -96,13 +144,15 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold md:text-3xl">Hoe het werkt</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {stappen.map((stap, i) => (
-              <Card key={stap.titel}>
-                <div className="bg-navy-800 text-accent-500 flex h-9 w-9 items-center justify-center rounded-full font-bold">
-                  {i + 1}
-                </div>
-                <CardTitle className="mt-4">{stap.titel}</CardTitle>
-                <CardDescription>{stap.tekst}</CardDescription>
-              </Card>
+              <Reveal key={stap.titel} delayMs={i * 120}>
+                <Card className="bs-lift h-full">
+                  <div className="bg-navy-800 text-accent-500 flex h-9 w-9 items-center justify-center rounded-full font-bold">
+                    {i + 1}
+                  </div>
+                  <CardTitle className="mt-4">{stap.titel}</CardTitle>
+                  <CardDescription>{stap.tekst}</CardDescription>
+                </Card>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -114,87 +164,95 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold md:text-3xl">
             Populaire vakgebieden
           </h2>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {vakgebieden.map((vak) => (
-              <span
-                key={vak}
-                className="border-border bg-surface text-foreground rounded-full border px-4 py-2 text-sm font-medium"
-              >
-                {vak}
-              </span>
-            ))}
-          </div>
+          <Reveal>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {vakgebieden.map((vak) => (
+                <span
+                  key={vak}
+                  className="border-border bg-surface text-foreground hover:border-accent-500 hover:text-accent-600 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:-translate-y-0.5"
+                >
+                  {vak}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </Container>
       </section>
 
       {/* Voordelen */}
       <section className="py-16 md:py-20">
         <Container className="grid gap-8 md:grid-cols-2">
-          <Card>
-            <CardTitle>Voor bedrijven</CardTitle>
-            <ul className="mt-4 space-y-2">
-              {voordelenBedrijf.map((v) => (
-                <li
-                  key={v}
-                  className="text-foreground-muted flex gap-2 text-sm"
-                >
-                  <span aria-hidden className="text-accent-600">
-                    ✓
-                  </span>
-                  {v}
-                </li>
-              ))}
-            </ul>
-            <ButtonLink
-              href="/registreren?rol=bedrijf"
-              variant="primary"
-              className="mt-6"
-            >
-              Plaats een opdracht
-            </ButtonLink>
-          </Card>
+          <Reveal>
+            <Card className="bs-lift h-full">
+              <CardTitle>Voor bedrijven</CardTitle>
+              <ul className="mt-4 space-y-2">
+                {voordelenBedrijf.map((v) => (
+                  <li
+                    key={v}
+                    className="text-foreground-muted flex gap-2 text-sm"
+                  >
+                    <span aria-hidden className="text-accent-600">
+                      ✓
+                    </span>
+                    {v}
+                  </li>
+                ))}
+              </ul>
+              <ButtonLink
+                href="/registreren?rol=bedrijf"
+                variant="primary"
+                className="mt-6"
+              >
+                Plaats een opdracht
+              </ButtonLink>
+            </Card>
+          </Reveal>
 
-          <Card>
-            <CardTitle>Voor ZZP&apos;ers</CardTitle>
-            <ul className="mt-4 space-y-2">
-              {voordelenZzp.map((v) => (
-                <li
-                  key={v}
-                  className="text-foreground-muted flex gap-2 text-sm"
-                >
-                  <span aria-hidden className="text-accent-600">
-                    ✓
-                  </span>
-                  {v}
-                </li>
-              ))}
-            </ul>
-            <ButtonLink
-              href="/registreren?rol=zzp"
-              variant="primary"
-              className="mt-6"
-            >
-              Maak een profiel
-            </ButtonLink>
-          </Card>
+          <Reveal delayMs={120}>
+            <Card className="bs-lift h-full">
+              <CardTitle>Voor ZZP&apos;ers</CardTitle>
+              <ul className="mt-4 space-y-2">
+                {voordelenZzp.map((v) => (
+                  <li
+                    key={v}
+                    className="text-foreground-muted flex gap-2 text-sm"
+                  >
+                    <span aria-hidden className="text-accent-600">
+                      ✓
+                    </span>
+                    {v}
+                  </li>
+                ))}
+              </ul>
+              <ButtonLink
+                href="/registreren?rol=zzp"
+                variant="primary"
+                className="mt-6"
+              >
+                Maak een profiel
+              </ButtonLink>
+            </Card>
+          </Reveal>
         </Container>
       </section>
 
       {/* Verificatie / vertrouwen */}
       <section className="bg-ink py-16 text-white md:py-20">
         <Container className="max-w-3xl text-center">
-          <h2 className="text-2xl font-bold md:text-3xl">
-            Gebouwd op vertrouwen
-          </h2>
-          <p className="text-navy-100 mt-4">
-            Profielen kunnen worden geverifieerd op onder andere e-mail,
-            telefoon, KvK en certificaten. Reviews zijn alleen mogelijk na een
-            echte opdracht via het platform. Zo weet je met wie je zakendoet.
-          </p>
-          <p className="text-navy-300 mt-6 text-sm">
-            ZZP Connect is een bemiddelingsplatform. De overeenkomst voor het
-            werk sluit je rechtstreeks met de zzp’er.
-          </p>
+          <Reveal>
+            <h2 className="text-2xl font-bold md:text-3xl">
+              Gebouwd op vertrouwen
+            </h2>
+            <p className="text-navy-100 mt-4">
+              Profielen kunnen worden geverifieerd op onder andere e-mail,
+              telefoon, KvK en certificaten. Reviews zijn alleen mogelijk na een
+              echte opdracht via het platform. Zo weet je met wie je zakendoet.
+            </p>
+            <p className="text-navy-300 mt-6 text-sm">
+              ZZP Connect is een bemiddelingsplatform. De overeenkomst voor het
+              werk sluit je rechtstreeks met de zzp’er.
+            </p>
+          </Reveal>
         </Container>
       </section>
     </>

@@ -79,3 +79,49 @@ body {
   );
   background-size: 18px 18px;
 }
+
+/* ─── Homepage: sfeer & beweging (respecteert prefers-reduced-motion) ─── */
+@keyframes bs-float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(0, -26px); }
+}
+@keyframes bs-float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(18px, 20px) scale(1.08); }
+}
+@keyframes bs-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes bs-dash { to { stroke-dashoffset: -220; } }
+@keyframes bs-ping {
+  0% { transform: scale(0.9); opacity: 0.55; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.bs-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.bs-float { animation: bs-float 9s ease-in-out infinite; }
+.bs-float2 { animation: bs-float2 12s ease-in-out infinite; }
+.bs-dash { stroke-dasharray: 6 10; animation: bs-dash 3.5s linear infinite; }
+.bs-ping { transform-box: fill-box; transform-origin: center; animation: bs-ping 2.8s ease-out infinite; }
+
+/* Scroll-reveal: pas zichtbaar zodra in beeld. */
+.bs-reveal { opacity: 0; }
+.bs-reveal.bs-in { animation: bs-fade-up 0.6s ease-out forwards; }
+
+/* Zachte hover-lift voor kaarten/chips. */
+.bs-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.bs-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(11, 18, 32, 0.12); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-float, .bs-float2, .bs-dash, .bs-ping { animation: none !important; }
+  .bs-reveal, .bs-reveal.bs-in { opacity: 1 !important; animation: none !important; transform: none !important; }
+  .bs-lift:hover { transform: none; }
+}
