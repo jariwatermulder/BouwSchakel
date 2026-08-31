@@ -5,15 +5,17 @@ import { Badge } from "@/components/ui/badge";
 
 const vakgebieden = [
   "Timmerman",
-  "Metselaar",
-  "Tegelzetter",
-  "Schilder",
-  "Stukadoor",
-  "Loodgieter",
   "Elektricien",
-  "Dakdekker",
-  "Grondwerker",
-  "Voorman / uitvoerder",
+  "Monteur",
+  "Schoonmaker",
+  "Chauffeur",
+  "Hovenier",
+  "Kok",
+  "Verpleegkundige",
+  "Softwareontwikkelaar",
+  "Administratief medewerker",
+  "Online marketeer",
+  "Beveiliger",
 ];
 
 const stappen = [
