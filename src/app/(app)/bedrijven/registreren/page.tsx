@@ -21,7 +21,7 @@ export default async function BedrijfRegistrerenPage() {
         {onboarding ? "Welkom — stel je bedrijf in" : "Bedrijfsprofiel"}
       </h1>
       <p className="text-foreground-muted mt-1 text-sm">
-        Deze gegevens zien vakmensen bij je opdrachten. Alleen de bedrijfsnaam
+        Deze gegevens zien zzp’ers bij je opdrachten. Alleen de bedrijfsnaam
         is verplicht.
       </p>
       <Card className="mt-6">

@@ -29,7 +29,7 @@ export default function TarievenPage() {
           </ButtonLink>
         </Card>
         <Card>
-          <CardTitle>Bouwbedrijf</CardTitle>
+          <CardTitle>Bedrijf</CardTitle>
           <p className="mt-2 text-3xl font-extrabold">Succesfee</p>
           <CardDescription>
             Opdrachten plaatsen is gratis. Bij een succesvolle match geldt een

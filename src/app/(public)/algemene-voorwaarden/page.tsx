@@ -16,9 +16,9 @@ export default function AlgemeneVoorwaardenPage() {
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">
           <p>
-            ZZP Connect is een bemiddelingsplatform dat bouwbedrijven en
-            zelfstandige vakmensen met elkaar in contact brengt. ZZP Connect is
-            geen partij bij de overeenkomst die tussen opdrachtgever en vakman
+            ZZP Connect is een bemiddelingsplatform dat bedrijven en
+            zelfstandige zzp’ers met elkaar in contact brengt. ZZP Connect is
+            geen partij bij de overeenkomst die tussen opdrachtgever en zzp’er
             tot stand komt en treedt niet op als werkgever of uitlener.
           </p>
           <p>

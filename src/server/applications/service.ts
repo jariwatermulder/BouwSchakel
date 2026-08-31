@@ -72,7 +72,7 @@ export async function applyToJob(
     });
     const naam =
       [profile.voornaam, profile.achternaam].filter(Boolean).join(" ") ||
-      "Een vakman";
+      "Een zzp’er";
     await notifyCompany(job.companyId, {
       type: "NIEUWE_REACTIE",
       titel: "Nieuwe reactie op je opdracht",

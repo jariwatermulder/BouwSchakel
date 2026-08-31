@@ -81,7 +81,7 @@ export function CompanyForm({
             id="typeWerkzaamheden"
             name="typeWerkzaamheden"
             defaultValue={company.typeWerkzaamheden ?? ""}
-            placeholder="Bijv. renovatie, nieuwbouw"
+            placeholder="Bijv. installatie, schoonmaak, transport"
           />
         </div>
       </div>

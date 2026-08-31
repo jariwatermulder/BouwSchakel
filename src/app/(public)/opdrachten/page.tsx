@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Openstaande opdrachten",
   description:
-    "Bekijk actuele bouwopdrachten voor ZZP'ers: timmerman, metselaar, elektricien en meer, door heel Nederland.",
+    "Bekijk actuele opdrachten voor zzp’ers in elke sector, door heel Nederland.",
   alternates: { canonical: "/opdrachten" },
 };
 
@@ -28,7 +28,7 @@ export default async function OpdrachtenIndexPage() {
     <>
       <PageIntro
         title="Openstaande opdrachten"
-        lead="Actuele bouw-, renovatie- en installatieopdrachten. Reageer als ZZP'er of plaats zelf een opdracht."
+        lead="Actuele opdrachten in elke sector. Reageer als zzp’er of plaats zelf een opdracht."
       />
       <Container className="py-12 md:py-16">
         {jobs.length === 0 ? (

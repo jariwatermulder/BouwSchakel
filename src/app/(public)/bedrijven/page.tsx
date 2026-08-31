@@ -5,9 +5,9 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
-  title: "Voor bouwbedrijven",
+  title: "Voor bedrijven",
   description:
-    "Vind snel geverifieerde, beschikbare ZZP'ers voor je bouwopdrachten.",
+    "Vind snel geverifieerde, beschikbare zzp’ers voor je opdrachten.",
 };
 
 const punten = [
@@ -29,8 +29,8 @@ export default function BedrijvenLandingPage() {
   return (
     <>
       <PageIntro
-        title="Voor bouwbedrijven"
-        lead="Vandaag een vakman nodig? Vind snel een geschikte, beschikbare en betrouwbare ZZP'er."
+        title="Voor bedrijven"
+        lead="Vandaag een zzp’er nodig? Vind snel een geschikte, beschikbare en betrouwbare ZZP'er."
       />
       <Container className="py-12 md:py-16">
         <div className="grid gap-6 md:grid-cols-3">

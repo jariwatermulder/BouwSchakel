@@ -16,20 +16,20 @@ export default function OverOnsPage() {
       />
       <Container className="prose max-w-2xl py-12 md:py-16">
         <p className="text-foreground-muted">
-          ZZP Connect is ontstaan uit een simpele observatie: bouwbedrijven
-          hebben regelmatig op korte termijn een goede vakman nodig, terwijl
-          veel zelfstandige vakmensen juist op zoek zijn naar passend werk in
+          ZZP Connect is ontstaan uit een simpele observatie: bedrijven
+          hebben regelmatig op korte termijn een goede zzp’er nodig, terwijl
+          veel zelfstandige zzp’ers juist op zoek zijn naar passend werk in
           hun eigen regio. Die twee vinden elkaar nu vaak via omwegen.
         </p>
         <p className="text-foreground-muted mt-4">
           Wij bouwen een modern, betrouwbaar platform dat vraag en aanbod
           rechtstreeks bij elkaar brengt — met geverifieerde profielen, eerlijke
-          reviews en een transparante matching die uitlegt waarom een vakman
+          reviews en een transparante matching die uitlegt waarom een zzp’er
           past.
         </p>
         <p className="text-foreground-muted mt-4">
           ZZP Connect is een bemiddelingsplatform. We faciliteren het contact;
-          de afspraken over het werk maken opdrachtgever en vakman rechtstreeks
+          de afspraken over het werk maken opdrachtgever en zzp’er rechtstreeks
           met elkaar.
         </p>
       </Container>

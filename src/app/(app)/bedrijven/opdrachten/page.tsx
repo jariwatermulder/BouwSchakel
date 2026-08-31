@@ -34,7 +34,7 @@ export default async function OpdrachtenPage() {
         <Card className="mt-6">
           <CardTitle>Nog geen opdrachten</CardTitle>
           <CardDescription>
-            Plaats je eerste opdracht om geschikte vakmensen te vinden.
+            Plaats je eerste opdracht om geschikte zzp’ers te vinden.
           </CardDescription>
         </Card>
       ) : (

@@ -7,7 +7,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 export const metadata: Metadata = {
   title: "Voor ZZP'ers",
   description:
-    "Vind passend werk in de bouw. Maak gratis een professioneel profiel op ZZP Connect.",
+    "Vind passend werk in elke sector. Maak gratis een professioneel profiel op ZZP Connect.",
 };
 
 const punten = [
@@ -30,7 +30,7 @@ export default function ZzpLandingPage() {
     <>
       <PageIntro
         title="Voor ZZP'ers"
-        lead="Vind jouw volgende opdracht in bouw, renovatie en installatie — in je eigen regio."
+        lead="Vind jouw volgende opdracht in elke sector — in je eigen regio."
       />
       <Container className="py-12 md:py-16">
         <div className="grid gap-6 md:grid-cols-3">

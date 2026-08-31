@@ -6,12 +6,12 @@ import { PageIntro } from "@/components/layout/page-intro";
 export const metadata: Metadata = {
   title: "Hoe het werkt",
   description:
-    "Zo werkt ZZP Connect voor bouwbedrijven en zelfstandige vakmensen.",
+    "Zo werkt ZZP Connect voor bedrijven en zelfstandige zzp’ers.",
 };
 
 const bedrijf = [
   "Plaats een opdracht met vakgebied, locatie, startdatum, duur en tarief.",
-  "Bekijk passende, beschikbare vakmensen met matchscore en uitleg.",
+  "Bekijk passende, beschikbare zzp’ers met matchscore en uitleg.",
   "Nodig kandidaten uit en maak rechtstreeks afspraken.",
   "Rond de opdracht af en laat een review achter.",
 ];
@@ -28,11 +28,11 @@ export default function HoeHetWerktPage() {
     <>
       <PageIntro
         title="Hoe het werkt"
-        lead="ZZP Connect brengt bouwbedrijven en zelfstandige vakmensen bij elkaar. Snel, transparant en op basis van echte match."
+        lead="ZZP Connect brengt bedrijven en zelfstandige zzp’ers bij elkaar. Snel, transparant en op basis van echte match."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
         <Card>
-          <CardTitle>Voor bouwbedrijven</CardTitle>
+          <CardTitle>Voor bedrijven</CardTitle>
           <ol className="mt-4 space-y-3">
             {bedrijf.map((stap, i) => (
               <li
@@ -68,7 +68,7 @@ export default function HoeHetWerktPage() {
         <Card>
           <CardTitle>Bemiddeling, geen uitzendbureau</CardTitle>
           <CardDescription>
-            ZZP Connect faciliteert het contact tussen opdrachtgever en vakman.
+            ZZP Connect faciliteert het contact tussen opdrachtgever en zzp’er.
             De overeenkomst voor het uitvoeren van het werk komt rechtstreeks
             tussen beide partijen tot stand. ZZP Connect is geen werkgever,
             uitlener of partij bij die overeenkomst.

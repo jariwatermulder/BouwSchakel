@@ -30,7 +30,7 @@ export default async function KandidatenPage() {
       <h1 className="text-2xl font-bold md:text-3xl">Kandidaten</h1>
       <p className="text-foreground-muted mt-1 text-sm">
         Bekijk per gepubliceerde opdracht de best passende, beschikbare
-        vakmensen.
+        zzp’ers.
       </p>
 
       {metMatches.length === 0 ? (

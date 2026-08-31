@@ -23,7 +23,7 @@ export default async function BedrijfGesprekPage({
   const naam =
     [conversation.zzpProfile.voornaam, conversation.zzpProfile.achternaam]
       .filter(Boolean)
-      .join(" ") || "Vakman";
+      .join(" ") || "Zzp’er";
 
   return (
     <Container className="max-w-3xl py-8 md:py-12">

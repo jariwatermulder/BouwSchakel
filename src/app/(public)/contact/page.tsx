@@ -26,7 +26,7 @@ export default function ContactPage() {
         <Card>
           <CardTitle>Zakelijk</CardTitle>
           <CardDescription>
-            Ben je een groter bouwbedrijf of wil je samenwerken? Neem contact op
+            Ben je een groter bedrijf of wil je samenwerken? Neem contact op
             voor de mogelijkheden.
           </CardDescription>
         </Card>

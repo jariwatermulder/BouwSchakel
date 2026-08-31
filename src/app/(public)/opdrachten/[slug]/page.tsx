@@ -58,7 +58,7 @@ export default async function PubliekeOpdrachtPage({
         {job.titel}
       </h1>
       <p className="text-foreground-muted mt-1">
-        {job.company.naam || "Bouwbedrijf"} · {job.locatiePlaats}
+        {job.company.naam || "Bedrijf"} · {job.locatiePlaats}
       </p>
 
       <Card className="mt-8">
@@ -104,7 +104,7 @@ export default async function PubliekeOpdrachtPage({
           </p>
         </div>
         <ButtonLink href="/registreren?rol=zzp" variant="accent">
-          Reageer als vakman
+          Reageer als zzp’er
         </ButtonLink>
       </Card>
     </Container>

@@ -72,7 +72,7 @@ export function SiteFooter() {
       <div className="border-navy-800 border-t">
         <Container className="text-navy-300 py-4 text-xs">
           © {new Date().getFullYear()} ZZP Connect — bemiddelingsplatform voor
-          de bouw. ZZP Connect is bemiddelaar en geen partij bij de overeenkomst
+          zzp-werk. ZZP Connect is bemiddelaar en geen partij bij de overeenkomst
           tussen opdrachtgever en ZZP&apos;er.
         </Container>
       </div>

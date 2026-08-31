@@ -12,7 +12,7 @@ export function JobPostingJsonLd({ job }: { job: PublicJob }) {
     employmentType: "CONTRACTOR",
     hiringOrganization: {
       "@type": "Organization",
-      name: job.company.naam || "Bouwbedrijf",
+      name: job.company.naam || "Bedrijf",
     },
     jobLocation: {
       "@type": "Place",

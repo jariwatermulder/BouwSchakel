@@ -21,7 +21,7 @@ export default async function AdminDashboardPage() {
       <h1 className="text-2xl font-bold md:text-3xl">Adminoverzicht</h1>
       <p className="text-foreground-muted mt-1 text-sm">
         Belangrijkste getal: succesvolle matches (opdrachten met een
-        geselecteerde vakman).
+        geselecteerde zzp’er).
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

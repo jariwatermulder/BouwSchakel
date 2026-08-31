@@ -32,7 +32,7 @@ export function ConversationList({
             ? c.company.naam || "Bedrijf"
             : [c.zzpProfile.voornaam, c.zzpProfile.achternaam]
                 .filter(Boolean)
-                .join(" ") || "Vakman";
+                .join(" ") || "Zzp’er";
         return (
           <li key={c.id}>
             <Link href={`${basePath}/${c.id}`}>

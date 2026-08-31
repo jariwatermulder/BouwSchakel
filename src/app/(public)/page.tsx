@@ -25,12 +25,12 @@ const stappen = [
   {
     titel: "Ontvang passende matches",
     tekst:
-      "Ons systeem toont geschikte, beschikbare vakmensen met een matchscore én uitleg waarom ze passen.",
+      "Ons systeem toont geschikte, beschikbare zzp’ers met een matchscore én uitleg waarom ze passen.",
   },
   {
     titel: "Maak direct contact",
     tekst:
-      "Bekijk profielen, nodig kandidaten uit en maak afspraken. De overeenkomst sluit je rechtstreeks met de vakman.",
+      "Bekijk profielen, nodig kandidaten uit en maak afspraken. De overeenkomst sluit je rechtstreeks met de zzp’er.",
   },
 ];
 
@@ -56,16 +56,16 @@ export default function HomePage() {
         <Container className="py-20 md:py-28">
           <div className="max-w-2xl">
             <Badge variant="accent" className="bg-navy-800 text-accent-400">
-              Bemiddelingsplatform voor de bouw
+              Hét platform voor zzp-werk
             </Badge>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight md:text-6xl">
-              De juiste vakman.
+              De juiste zzp’er.
               <br />
               <span className="text-accent-500">Op het juiste moment.</span>
             </h1>
             <p className="text-navy-100 mt-5 text-lg">
-              Vind gecontroleerde ZZP&apos;ers voor bouw, renovatie en
-              installatie. Of vind jouw volgende opdracht.
+              Vind gecontroleerde zzp’ers voor elke klus, in elke sector. Of
+              vind jouw volgende opdracht.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink
@@ -73,7 +73,7 @@ export default function HomePage() {
                 variant="accent"
                 size="lg"
               >
-                Ik zoek een vakman
+                Ik zoek een zzp’er
               </ButtonLink>
               <ButtonLink
                 href="/registreren?rol=zzp"
@@ -129,7 +129,7 @@ export default function HomePage() {
       <section className="py-16 md:py-20">
         <Container className="grid gap-8 md:grid-cols-2">
           <Card>
-            <CardTitle>Voor bouwbedrijven</CardTitle>
+            <CardTitle>Voor bedrijven</CardTitle>
             <ul className="mt-4 space-y-2">
               {voordelenBedrijf.map((v) => (
                 <li
@@ -191,7 +191,7 @@ export default function HomePage() {
           </p>
           <p className="text-navy-300 mt-6 text-sm">
             ZZP Connect is een bemiddelingsplatform. De overeenkomst voor het
-            werk sluit je rechtstreeks met de vakman.
+            werk sluit je rechtstreeks met de zzp’er.
           </p>
         </Container>
       </section>

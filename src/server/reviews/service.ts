@@ -175,7 +175,7 @@ export async function createReview(
           userId: m.userId,
           type: "REVIEW_ONTVANGEN",
           titel: "Je hebt een review ontvangen",
-          tekst: `Een vakman heeft je beoordeeld voor "${assignment.job.titel}".`,
+          tekst: `Een zzp’er heeft je beoordeeld voor "${assignment.job.titel}".`,
           link: `/bedrijven/dashboard`,
         }),
       ),

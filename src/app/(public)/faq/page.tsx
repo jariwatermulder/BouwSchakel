@@ -10,19 +10,19 @@ export const metadata: Metadata = {
 const vragen = [
   {
     v: "Wat is ZZP Connect?",
-    a: "Een Nederlands bemiddelingsplatform dat bouwbedrijven verbindt met zelfstandige vakmensen (ZZP'ers) voor bouw, renovatie en installatie.",
+    a: "Een Nederlands bemiddelingsplatform dat opdrachtgevers verbindt met zelfstandige professionals (zzp’ers) in elke sector.",
   },
   {
     v: "Kost het geld?",
-    a: "Een profiel aanmaken en opdrachten plaatsen is gratis. Voor bouwbedrijven geldt een bemiddelingsfee bij een succesvolle match. Tarieven zijn altijd vooraf transparant.",
+    a: "Een profiel aanmaken en opdrachten plaatsen is gratis. Voor bedrijven geldt een bemiddelingsfee bij een succesvolle match. Tarieven zijn altijd vooraf transparant.",
   },
   {
     v: "Is ZZP Connect een uitzendbureau?",
-    a: "Nee. ZZP Connect bemiddelt en faciliteert contact. De overeenkomst voor het werk sluit je rechtstreeks met de vakman; ZZP Connect is daarbij geen partij.",
+    a: "Nee. ZZP Connect bemiddelt en faciliteert contact. De overeenkomst voor het werk sluit je rechtstreeks met de zzp’er; ZZP Connect is daarbij geen partij.",
   },
   {
     v: "Hoe werkt de matching?",
-    a: "Op basis van onder andere vakgebied, beschikbaarheid, locatie, tarief en ervaring krijgt elke vakman een matchscore, inclusief uitleg waarom hij past. Geen black box.",
+    a: "Op basis van onder andere vakgebied, beschikbaarheid, locatie, tarief en ervaring krijgt elke zzp’er een matchscore, inclusief uitleg waarom hij past. Geen black box.",
   },
   {
     v: "Hoe weet ik dat een profiel betrouwbaar is?",

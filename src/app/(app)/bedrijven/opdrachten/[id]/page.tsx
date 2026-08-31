@@ -206,14 +206,14 @@ export default async function OpdrachtDetailPage({
         <Card className="mt-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <CardTitle>Geselecteerde vakman</CardTitle>
+              <CardTitle>Geselecteerde zzp’er</CardTitle>
               <CardDescription>
                 {[
                   assignment.zzpProfile.voornaam,
                   assignment.zzpProfile.achternaam,
                 ]
                   .filter(Boolean)
-                  .join(" ") || "Vakman"}
+                  .join(" ") || "Zzp’er"}
               </CardDescription>
             </div>
             <Badge
@@ -258,12 +258,12 @@ export default async function OpdrachtDetailPage({
             <div className="border-border mt-4 border-t pt-4">
               {bedrijfReview ? (
                 <p className="text-sm text-emerald-700">
-                  Je hebt deze vakman beoordeeld.
+                  Je hebt deze zzp’er beoordeeld.
                 </p>
               ) : (
                 <>
                   <p className="mb-3 text-sm font-medium">
-                    Beoordeel de vakman
+                    Beoordeel de zzp’er
                   </p>
                   <ReviewForm
                     assignmentId={assignment.id}
@@ -295,7 +295,7 @@ export default async function OpdrachtDetailPage({
               const naam =
                 [a.zzpProfile.voornaam, a.zzpProfile.achternaam]
                   .filter(Boolean)
-                  .join(" ") || "Vakman";
+                  .join(" ") || "Zzp’er";
               const afgerond =
                 a.status === "GEACCEPTEERD" || a.status === "AFGEWEZEN";
               return (
@@ -397,7 +397,7 @@ export default async function OpdrachtDetailPage({
         {kandidaten.length === 0 ? (
           <Card className="mt-4">
             <CardDescription>
-              Nog geen passende, beschikbare vakmensen gevonden. Zodra meer
+              Nog geen passende, beschikbare zzp’ers gevonden. Zodra meer
               ZZP&apos;ers een profiel aanmaken dat bij deze opdracht past,
               verschijnen ze hier.
             </CardDescription>

@@ -22,7 +22,7 @@ export function RegisterForm({
       <CardTitle>Account aanmaken</CardTitle>
       <CardDescription>
         {defaultRole === "COMPANY"
-          ? "Als bouwbedrijf plaats je opdrachten en vind je vakmensen."
+          ? "Als bedrijf plaats je opdrachten en vind je zzp’ers."
           : "Als ZZP'er maak je een profiel en vind je passende opdrachten."}
       </CardDescription>
 
@@ -46,7 +46,7 @@ export function RegisterForm({
                 value="COMPANY"
                 defaultChecked={defaultRole === "COMPANY"}
               />
-              Bouwbedrijf
+              Bedrijf
             </label>
           </div>
         </fieldset>

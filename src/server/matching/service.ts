@@ -119,7 +119,7 @@ export async function findKandidatenVoorOpdracht(
       zzpProfileId: zzp.id,
       naam:
         [zzp.voornaam, zzp.achternaam].filter(Boolean).join(" ") ||
-        "Vakman zonder naam",
+        "Zzp’er zonder naam",
       plaats: zzp.werkgebiedPlaats,
       uurtariefCents: zzp.uurtariefCents,
       jarenErvaring: zzp.jarenErvaring,
