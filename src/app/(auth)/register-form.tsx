@@ -7,6 +7,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { FormAlert } from "@/components/ui/form-alert";
 
 const initial: AuthFormState = {};
 
@@ -76,11 +77,7 @@ export function RegisterForm({
           </p>
         </div>
 
-        {state.error ? (
-          <p role="alert" className="text-sm text-red-600">
-            {state.error}
-          </p>
-        ) : null}
+        {state.error ? <FormAlert>{state.error}</FormAlert> : null}
 
         <Button type="submit" disabled={pending} className="w-full">
           {pending ? "Bezig…" : "Account aanmaken"}

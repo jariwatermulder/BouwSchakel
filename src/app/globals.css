@@ -151,3 +151,18 @@ body {
   .bs-load { opacity: 1 !important; animation: none !important; transform: none !important; }
   .bs-float-card { animation: none !important; }
 }
+
+/* Formulierfeedback: subtiele shake + fade bij verschijnen van een fout. */
+@keyframes bs-shake {
+  0% { opacity: 0; transform: translateX(0); }
+  20% { opacity: 1; transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+.bs-shake { animation: bs-shake 0.35s ease-in-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-shake { animation: none !important; }
+}

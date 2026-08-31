@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { createOpdracht, type JobFormState } from "./actions";
 import { groepeerSkills } from "@/lib/sectoren";
+import { FormAlert } from "@/components/ui/form-alert";
 
 const initial: JobFormState = {};
 
@@ -194,11 +195,7 @@ export function JobForm({
         <Input id="contactpersoon" name="contactpersoon" />
       </div>
 
-      {state.error ? (
-        <p role="alert" className="text-sm text-red-600">
-          {state.error}
-        </p>
-      ) : null}
+      {state.error ? <FormAlert>{state.error}</FormAlert> : null}
 
       <Button type="submit" variant="accent" size="lg" disabled={pending}>
         {pending ? "Bezig…" : "Opdracht plaatsen"}
