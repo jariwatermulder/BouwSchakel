@@ -70,7 +70,7 @@ ReviewDirection     ZZP_NAAR_BEDRIJF | BEDRIJF_NAAR_ZZP
 
 - **Conversation** — gekoppeld aan een Job en de twee partijen: `jobId?, companyId, zzpProfileId`. Uniek per (job, company, zzp).
 - **Message** — `conversationId, senderUserId, body, gelezenOp?`. Index op `conversationId, createdAt`.
-- **Favorite** — Company ↔ ZZPProfile (favoriete vakmensen).
+- **Favorite** — Company ↔ ZZPProfile (favoriete zzp'ers).
 - **Review** — `assignmentId, richting(ReviewDirection), auteurUserId, scoreKwaliteit, scoreCommunicatie, scoreBetrouwbaarheid, scoreAfspraken, toelichting, gepubliceerdOp`. **Alleen** aanmaakbaar bij bestaande Assignment; onveranderbaar na publicatie (behalve moderatie). `(assignmentId, richting)` uniek.
 
 ### Notificaties & voorkeuren

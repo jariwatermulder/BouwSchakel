@@ -1,17 +1,17 @@
 # ZZP Connect — Product Specificatie
 
-> **Status:** Concept / ter goedkeuring. Dit document is de functionele bron van waarheid vóór de bouw begint.
+> **Status:** Concept / ter goedkeuring. Dit document is de functionele bron van waarheid vóór de ontwikkeling begint.
 > Juridische teksten en compliance-claims moeten door een Nederlandse jurist worden gecontroleerd (zie `LEGAL_CONSIDERATIONS.md`).
 
 ---
 
 ## 1. Productvisie
 
-**ZZP Connect** is een Nederlands digitaal bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt.
+**ZZP Connect** is een Nederlands digitaal bemiddelingsplatform dat bedrijven en zelfstandige zzp'ers (ZZP'ers) rechtstreeks met elkaar verbindt.
 
 **Pay-off:** _De juiste zzp'er. Op het juiste moment._
 
-**Kernbelofte:** Een bouwbedrijf dat vandaag een vakman nodig heeft, kan via ZZP Connect snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
+**Kernbelofte:** Een bedrijf dat vandaag een zzp'er nodig heeft, kan via ZZP Connect snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
 
 ### Positionering (bemiddeling, geen uitzendbureau)
 
@@ -27,15 +27,15 @@ Het onderscheid tussen **bemiddeling**, **tussenkomst** en **terbeschikkingstell
 
 ## 2. Doelgroepen & rollen
 
-### A. ZZP'er (vakman)
+### A. ZZP'er (zzp'er)
 
-Timmerman, metselaar, tegelzetter, schilder, stukadoor, loodgieter, elektricien, installateur, dakdekker, grondwerker, stratenmaker, sloper, hovenier, betontimmerman, voorman, uitvoerder en overige bouwgerelateerde zelfstandigen.
+Zelfstandige professionals uit alle sectoren — onder meer bouw & afbouw, techniek & installatie, schoonmaak, transport & logistiek, groen, horeca, zorg & welzijn, ICT, administratie, creatief & marketing, en evenementen & beveiliging.
 
 Kan o.a. instellen: vakgebieden, specialisaties, jaren ervaring, werkgebied, max. reisafstand, uurtarief, beschikbaarheid, startdatum, eigen bus, eigen gereedschap, certificaten, VCA, verzekeringen, portfolio, referenties, KvK- en bedrijfsgegevens.
 
-### B. Bouwbedrijf / opdrachtgever
+### B. Bedrijf / opdrachtgever
 
-Aannemer, bouwbedrijf, renovatiebedrijf, vastgoedonderhoud, installatiebedrijf, projectontwikkelaar, hoveniersbedrijf, dakbedrijf.
+Opdrachtgever, bedrijf, renovatiebedrijf, vastgoedonderhoud, installatiebedrijf, projectontwikkelaar, hoveniersbedrijf, dakbedrijf.
 
 Kan o.a.: opdracht plaatsen (vakgebied, locatie, startdatum, duur, tarief, werkzaamheden, vereisten), geschikte ZZP'ers bekijken, kandidaten uitnodigen, berichten sturen, kandidaat selecteren, opdrachten beheren, reviews achterlaten.
 
@@ -47,7 +47,7 @@ Kan o.a.: opdracht plaatsen (vakgebied, locatie, startdatum, duur, tarief, werkz
 
 ## 3. Kernprincipe: extreme eenvoud
 
-- Aannemer plaatst een opdracht in **± 2 minuten**.
+- Opdrachtgever plaatst een opdracht in **± 2 minuten**.
 - ZZP'er maakt een professioneel profiel in **± 5 minuten**.
 - **Progressive disclosure:** eerst essentie → dan verificatie → later verrijking.
 - Registratie is **hervatbaar**; voortgang wordt veilig opgeslagen. Toon "Profiel compleet: X%".
@@ -76,7 +76,7 @@ Matching → kandidaat bekijken → reageren → contact
 Opdracht → afronden → review
 ```
 
-**Productregel bij elke feature:** "Helpt dit een bouwbedrijf sneller een geschikte vakman vinden?" of "Helpt dit een ZZP'er sneller geschikt werk vinden?" Zo niet → lage prioriteit.
+**Productregel bij elke feature:** "Helpt dit een bedrijf sneller een geschikte zzp'er vinden?" of "Helpt dit een ZZP'er sneller geschikt werk vinden?" Zo niet → lage prioriteit.
 
 ---
 
@@ -100,7 +100,7 @@ Opdracht → afronden → review
 
 ### Publieke SEO-opdrachtpagina's (indexeerbaar)
 
-`/opdrachten/[slug]` — bijv. `/opdrachten/timmerman-groningen`. **Niet** indexeren: privéprofielen, dashboards, berichten (zie `ARCHITECTURE.md` §SEO).
+`/opdrachten/[slug]` — bijv. `/opdrachten/schoonmaker-groningen`. **Niet** indexeren: privéprofielen, dashboards, berichten (zie `ARCHITECTURE.md` §SEO).
 
 ### Admin
 
@@ -111,8 +111,8 @@ Opdracht → afronden → review
 ## 7. Homepage
 
 - **Hero:** "De juiste zzp'er. Op het juiste moment."
-- **Subtekst:** "Vind gecontroleerde ZZP'ers voor bouw, renovatie en installatie. Of vind jouw volgende opdracht."
-- **Twee primaire CTA's:** "Ik zoek een vakman" · "Ik zoek een opdracht"
+- **Subtekst:** "Vind gecontroleerde zzp'ers in elke sector. Of vind jouw volgende opdracht."
+- **Twee primaire CTA's:** "Ik zoek een zzp'er" · "Ik zoek een opdracht"
 - Secties: hoe het werkt · populaire vakgebieden · voordelen bedrijven · voordelen ZZP'ers · verificatie · reviews · (optioneel) live platformstatistieken.
 - **Nooit nepstatistieken.** Geen echte data → placeholders tonen of statistieken verbergen.
 

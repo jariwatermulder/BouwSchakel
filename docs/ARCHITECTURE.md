@@ -125,7 +125,7 @@ De matching engine is een **pure, deterministische service** (`server/matching`)
 ## 9. SEO
 
 - Metadata + Open Graph per pagina; canonical URLs; `sitemap.xml`; `robots.txt`; structured data waar relevant.
-- **Indexeerbaar:** publieke opdrachtpagina's `/opdrachten/[slug]` (bijv. `timmerman-groningen`).
+- **Indexeerbaar:** publieke opdrachtpagina's `/opdrachten/[slug]` (bijv. `schoonmaker-groningen`).
 - **Niet indexeren:** privéprofielen, dashboards, interne berichten, admin — via `robots` meta + route-segmentatie.
 - Geen persoonsgegevens in publieke/indexeerbare content.
 

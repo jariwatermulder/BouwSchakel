@@ -6,7 +6,7 @@
 
 ## 1. Kernpositie: bemiddeling, geen terbeschikkingstelling
 
-ZZP Connect presenteert zich en gedraagt zich als **bemiddelingsplatform**: het brengt opdrachtgevers en zelfstandige vakmensen bij elkaar en faciliteert contact en administratie. De **overeenkomst van opdracht** komt tot stand tussen opdrachtgever en ZZP'er; ZZP Connect is daarbij geen partij.
+ZZP Connect presenteert zich en gedraagt zich als **bemiddelingsplatform**: het brengt opdrachtgevers en zelfstandige zzp'ers bij elkaar en faciliteert contact en administratie. De **overeenkomst van opdracht** komt tot stand tussen opdrachtgever en ZZP'er; ZZP Connect is daarbij geen partij.
 
 Productbeslissingen bewaken bewust het onderscheid tussen:
 

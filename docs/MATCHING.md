@@ -6,7 +6,7 @@
 
 ## 1. Doel
 
-Voor elke opdracht (Job) elke relevante ZZP'er een **matchscore (0–100)** geven met een **begrijpelijke uitleg**. Geen black box. Matching mag **nooit alleen op afstand** gebaseerd zijn: een beschikbare vakman op 30 km hoort boven een niet-beschikbare op 5 km te eindigen.
+Voor elke opdracht (Job) elke relevante ZZP'er een **matchscore (0–100)** geven met een **begrijpelijke uitleg**. Geen black box. Matching mag **nooit alleen op afstand** gebaseerd zijn: een beschikbare zzp'er op 30 km hoort boven een niet-beschikbare op 5 km te eindigen.
 
 ## 2. Pipeline
 
@@ -86,7 +86,7 @@ Unit-tests dekken: harde filters (elk geval), elke subscore-functie op randgeval
 
 De MVP is bewust **deterministisch** (betrouwbaarheid boven "AI om AI"). De architectuur laat later toe:
 
-- **Opdrachtanalyse:** vrije omschrijving → gestructureerde skills/specialisaties (bijv. "renovatie 12 woningen, kozijnen, aftimmerwerk" → `timmerman, kozijnen, aftimmerwerk, renovatie`), als **suggestie** die de deterministische invoer verrijkt.
+- **Opdrachtanalyse:** vrije omschrijving → gestructureerde skills/specialisaties (bijv. "schoonmaak 12 kantoren, glasbewassing" → `schoonmaker, kantoorschoonmaak, glasbewassing`), als **suggestie** die de deterministische invoer verrijkt.
 - **Ranking-verrijking:** een optionele laag die de deterministische score bijstelt, altijd met behoud van de uitlegbaarheid en de harde filters.
 
 Deze uitbreidingen pluggen in als extra stappen in de pipeline zonder de kern te herschrijven.
