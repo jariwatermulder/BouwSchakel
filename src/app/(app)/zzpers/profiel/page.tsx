@@ -4,6 +4,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { StarRating } from "@/components/star-rating";
+import { AnimatedBar } from "@/components/animated-bar";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations } from "@/server/zzp/profile";
 import { getReputatieVoor } from "@/server/reputation/service";
@@ -40,6 +41,7 @@ export default async function ProfielPage() {
     p?.voornaam || p?.achternaam
       ? `${p?.voornaam ?? ""} ${p?.achternaam ?? ""}`.trim()
       : "Naam nog niet ingevuld";
+  const pct = p?.profielCompleetheidPct ?? 0;
 
   return (
     <Container className="py-8 md:py-12">
@@ -70,8 +72,23 @@ export default async function ProfielPage() {
         </ButtonLink>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <Card>
+      {p ? (
+        <Card className="bs-load mt-6">
+          <div className="flex items-center justify-between">
+            <CardTitle>Profiel compleet</CardTitle>
+            <span className="text-navy-800 font-bold">{pct}%</span>
+          </div>
+          <AnimatedBar value={pct} className="mt-3" />
+          {pct < 100 ? (
+            <CardDescription className="mt-2">
+              Een compleet profiel levert betere en meer matches op.
+            </CardDescription>
+          ) : null}
+        </Card>
+      ) : null}
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <Card className="bs-load">
           <CardTitle>Gegevens</CardTitle>
           <div className="mt-3">
             {p?.telefoon ? <Rij label="Telefoon" value={p.telefoon} /> : null}
@@ -97,7 +114,7 @@ export default async function ProfielPage() {
           </div>
         </Card>
 
-        <Card>
+        <Card className="bs-load" style={{ animationDelay: "90ms" }}>
           <CardTitle>Materieel & specialisaties</CardTitle>
           <div className="mt-3 flex flex-wrap gap-2">
             {p?.eigenBus ? <Badge>Eigen bus</Badge> : null}
@@ -118,7 +135,7 @@ export default async function ProfielPage() {
       </div>
 
       {p?.over ? (
-        <Card className="mt-6">
+        <Card className="bs-load mt-6">
           <CardTitle>Over mij</CardTitle>
           <p className="text-foreground-muted mt-2 text-sm whitespace-pre-line">
             {p.over}
@@ -126,7 +143,7 @@ export default async function ProfielPage() {
         </Card>
       ) : null}
 
-      <Card className="mt-6">
+      <Card className="bs-load mt-6">
         <CardTitle>Portfolio</CardTitle>
         {p && p.portfolio.length > 0 ? (
           <ul className="mt-3 space-y-3">
@@ -162,7 +179,7 @@ export default async function ProfielPage() {
         )}
       </Card>
 
-      <Card className="mt-6">
+      <Card className="bs-load mt-6">
         <CardTitle>Reviews</CardTitle>
         {reviews.length === 0 ? (
           <CardDescription className="mt-2">
