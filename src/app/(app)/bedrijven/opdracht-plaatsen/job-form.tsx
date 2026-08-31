@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { createOpdracht, type JobFormState } from "./actions";
+import { groepeerSkills } from "@/lib/sectoren";
 
 const initial: JobFormState = {};
 
@@ -42,10 +43,14 @@ export function JobForm({
             onChange={(e) => setSkillId(e.target.value)}
           >
             <option value="">Kies een vakgebied…</option>
-            {skills.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.naam}
-              </option>
+            {groepeerSkills(skills).map(({ sector, skills: sectorSkills }) => (
+              <optgroup key={sector} label={sector}>
+                {sectorSkills.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.naam}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>

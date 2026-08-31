@@ -1,4 +1,5 @@
 import type { Certification, Skill, Specialization } from "@prisma/client";
+import { groepeerSkills } from "@/lib/sectoren";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ProfileWithRelations } from "@/server/zzp/profile";
@@ -116,15 +117,24 @@ export function StepFields({
           <legend className="mb-2 text-sm font-medium">
             Kies je vakgebied(en)
           </legend>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {skills.map((skill) => (
-              <CheckboxCard
-                key={skill.id}
-                name="skillIds"
-                value={skill.id}
-                label={skill.naam}
-                defaultChecked={selectedSkillIds.has(skill.id)}
-              />
+          <div className="space-y-5">
+            {groepeerSkills(skills).map(({ sector, skills: sectorSkills }) => (
+              <div key={sector}>
+                <p className="text-foreground-muted mb-2 text-xs font-semibold tracking-wide uppercase">
+                  {sector}
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {sectorSkills.map((skill) => (
+                    <CheckboxCard
+                      key={skill.id}
+                      name="skillIds"
+                      value={skill.id}
+                      label={skill.naam}
+                      defaultChecked={selectedSkillIds.has(skill.id)}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
           {skills.length === 0 ? (
