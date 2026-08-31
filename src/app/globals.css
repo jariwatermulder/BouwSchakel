@@ -125,3 +125,29 @@ body {
   .bs-reveal, .bs-reveal.bs-in { opacity: 1 !important; animation: none !important; transform: none !important; }
   .bs-lift:hover { transform: none; }
 }
+
+/* ─── Motion design tokens & herbruikbare bewegingen ─── */
+:root {
+  --motion-fast: 200ms;
+  --motion-normal: 350ms;
+  --motion-slow: 650ms;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1); /* zachte ease-out */
+}
+
+/* Entrance bij page-load (boven de vouw): direct leesbaar, subtiele opkomst. */
+.bs-load {
+  opacity: 0;
+  animation: bs-fade-up var(--motion-slow) var(--ease-standard) forwards;
+}
+
+/* Zeer subtiele zweving voor een hero-visual (klein, rustig). */
+@keyframes bs-float-card {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.bs-float-card { animation: bs-float-card 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-load { opacity: 1 !important; animation: none !important; transform: none !important; }
+  .bs-float-card { animation: none !important; }
+}

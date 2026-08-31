@@ -51,25 +51,46 @@ const voordelenZzp = [
   "Bouw reputatie op met reviews van opdrachtgevers",
 ];
 
-/** Decoratief 'connect'-motief voor de hero (puur sfeer, geen inhoud). */
-function ConnectMotief() {
+/** Illustratieve product-mockup in de hero: opdracht → match. */
+function HeroMockup() {
   return (
-    <svg
-      aria-hidden
-      viewBox="0 0 380 280"
-      className="absolute top-1/2 right-6 hidden w-[380px] max-w-[45%] -translate-y-1/2 opacity-70 lg:block"
-    >
-      <line x1="60" y1="140" x2="320" y2="86" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
-      <line x1="60" y1="140" x2="300" y2="214" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
-      <line x1="320" y1="86" x2="300" y2="214" stroke="#4f7cc4" strokeWidth="2" className="bs-dash" />
-      {/* ping-ringen */}
-      <circle cx="60" cy="140" r="12" fill="none" stroke="#f59e0b" strokeWidth="2" className="bs-ping" />
-      <circle cx="320" cy="86" r="10" fill="none" stroke="#ffffff" strokeWidth="2" className="bs-ping" />
-      {/* knopen */}
-      <circle cx="60" cy="140" r="11" fill="#f59e0b" />
-      <circle cx="320" cy="86" r="9" fill="#ffffff" />
-      <circle cx="300" cy="214" r="9" fill="#ffffff" />
-    </svg>
+    <div className="bs-load bs-float-card w-full max-w-sm" style={{ animationDelay: "320ms" }}>
+      <div className="border-border bg-surface rounded-2xl border p-5 shadow-2xl">
+        {/* Opdracht */}
+        <div className="border-border rounded-xl border p-4">
+          <span className="bg-accent-500/15 text-accent-600 inline-flex rounded-full px-2 py-0.5 text-xs font-semibold">
+            Nieuwe opdracht
+          </span>
+          <p className="text-foreground mt-2 font-semibold">Timmerman gezocht</p>
+          <p className="text-foreground-muted text-sm">
+            Groningen · Start maandag · € 40–45 / u
+          </p>
+        </div>
+        {/* Verbinding */}
+        <div className="my-2 flex items-center justify-center">
+          <span className="bg-navy-800 text-accent-400 rounded-full px-3 py-1 text-xs font-medium">
+            ↓ Match gevonden
+          </span>
+        </div>
+        {/* Vakman-match */}
+        <div className="border-border rounded-xl border p-4">
+          <div className="flex items-center gap-3">
+            <span className="bg-navy-800 flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white">
+              JV
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-foreground font-semibold">Jeroen V.</p>
+              <p className="text-foreground-muted text-xs">
+                Timmerman · 12 jaar ervaring · beschikbaar
+              </p>
+            </div>
+            <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
+              96% match
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -100,24 +121,34 @@ export default function HomePage() {
               left: "-70px",
             }}
           />
-          <ConnectMotief />
         </div>
 
-        <Container className="relative z-10 py-20 md:py-28">
+        <Container className="relative z-10 grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
           <div className="max-w-2xl">
-            <Badge variant="accent" className="bg-navy-800 text-accent-400">
-              Hét platform voor zzp-werk
-            </Badge>
-            <h1 className="mt-4 text-4xl font-extrabold tracking-tight md:text-6xl">
+            <div className="bs-load" style={{ animationDelay: "0ms" }}>
+              <Badge variant="accent" className="bg-navy-800 text-accent-400">
+                Hét platform voor zzp-werk
+              </Badge>
+            </div>
+            <h1
+              className="bs-load mt-4 text-4xl font-extrabold tracking-tight md:text-6xl"
+              style={{ animationDelay: "80ms" }}
+            >
               De juiste zzp’er.
               <br />
               <span className="text-accent-500">Op het juiste moment.</span>
             </h1>
-            <p className="text-navy-100 mt-5 text-lg">
+            <p
+              className="text-navy-100 bs-load mt-5 text-lg"
+              style={{ animationDelay: "160ms" }}
+            >
               Vind gecontroleerde zzp’ers voor elke klus, in elke sector. Of
               vind jouw volgende opdracht.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div
+              className="bs-load mt-8 flex flex-col gap-3 sm:flex-row"
+              style={{ animationDelay: "240ms" }}
+            >
               <ButtonLink
                 href="/registreren?rol=bedrijf"
                 variant="accent"
@@ -129,11 +160,15 @@ export default function HomePage() {
                 href="/registreren?rol=zzp"
                 variant="outline"
                 size="lg"
-                className="border-navy-700 hover:bg-navy-800 bg-transparent text-white"
+                className="border-navy-700 hover:bg-navy-800 bg-transparent text-white hover:text-white"
               >
                 Ik zoek een opdracht
               </ButtonLink>
             </div>
+          </div>
+
+          <div className="flex justify-center lg:justify-end">
+            <HeroMockup />
           </div>
         </Container>
       </section>

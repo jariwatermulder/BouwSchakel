@@ -3,12 +3,14 @@ import { cn } from "@/lib/utils";
 
 export function Card({
   className,
+  interactive,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }) {
   return (
     <div
       className={cn(
         "border-border bg-surface rounded-[var(--radius-card)] border p-6 shadow-sm",
+        interactive && "bs-lift",
         className,
       )}
       {...props}
