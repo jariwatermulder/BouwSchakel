@@ -9,7 +9,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "border-border bg-surface rounded-[var(--radius-card)] border p-6 shadow-sm",
+        "border-border bg-surface shadow-soft rounded-[var(--radius-card)] border p-6",
         interactive && "bs-lift",
         className,
       )}

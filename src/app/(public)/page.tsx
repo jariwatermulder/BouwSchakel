@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -24,18 +25,92 @@ const stappen = [
     titel: "Plaats je opdracht",
     tekst:
       "Kies vakgebied, locatie, startdatum en tarief. In ongeveer twee minuten staat je opdracht klaar.",
+    icon: "doc" as const,
   },
   {
     titel: "Ontvang passende matches",
     tekst:
       "Ons systeem toont geschikte, beschikbare zzp’ers met een matchscore én uitleg waarom ze passen.",
+    icon: "match" as const,
   },
   {
     titel: "Maak direct contact",
     tekst:
       "Bekijk profielen, nodig kandidaten uit en maak afspraken. De overeenkomst sluit je rechtstreeks met de zzp’er.",
+    icon: "chat" as const,
   },
 ];
+
+const vertrouwenspunten = [
+  {
+    titel: "Geverifieerde profielen",
+    tekst: "E-mail, telefoon, KvK en certificaten kunnen worden gecontroleerd.",
+    icon: "shield" as const,
+  },
+  {
+    titel: "Transparante matchscore",
+    tekst: "Elke match komt met een score én uitleg — geen black box.",
+    icon: "match" as const,
+  },
+  {
+    titel: "Reviews na echte opdrachten",
+    tekst: "Beoordelingen zijn alleen mogelijk na werk via het platform.",
+    icon: "star" as const,
+  },
+  {
+    titel: "Direct contact",
+    tekst: "Je maakt rechtstreeks afspraken met de zzp’er, zonder tussenlaag.",
+    icon: "bolt" as const,
+  },
+];
+
+/** Compacte lijn-iconen (stroke) voor feature- en vertrouwenskaarten. */
+function Icon({ name, className }: { name: string; className?: string }) {
+  const paths: Record<string, React.ReactNode> = {
+    doc: (
+      <>
+        <path d="M8 3h6l4 4v14H6V5a2 2 0 0 1 2-2Z" />
+        <path d="M14 3v4h4" />
+        <path d="M9 13h6M9 17h4" />
+      </>
+    ),
+    match: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="3.2" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+      </>
+    ),
+    chat: (
+      <>
+        <path d="M4 5h16v11H9l-4 4v-4H4V5Z" />
+        <path d="M8 10h8M8 13h5" />
+      </>
+    ),
+    shield: (
+      <>
+        <path d="M12 3 5 6v5c0 4 3 7 7 9 4-2 7-5 7-9V6l-7-3Z" />
+        <path d="m9 12 2 2 4-4" />
+      </>
+    ),
+    star: <path d="M12 4l2.3 4.7 5.2.8-3.8 3.7.9 5.1L12 15.9 7.4 18.3l.9-5.1L4.5 9.5l5.2-.8L12 4Z" />,
+    bolt: <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />,
+  };
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {paths[name]}
+    </svg>
+  );
+}
 
 const voordelenBedrijf = [
   "Snel geschikte, beschikbare zzp’ers vinden",
@@ -120,7 +195,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-ink relative overflow-hidden text-white">
+      <section className="bg-ink bs-hero-mesh relative overflow-hidden text-white">
         {/* Bewegende sfeerlaag */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
@@ -196,18 +271,53 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Hoe het werkt */}
-      <section className="py-16 md:py-20">
+      {/* Vertrouwensstrip */}
+      <section className="border-border border-b py-14 md:py-16">
         <Container>
-          <h2 className="text-2xl font-bold md:text-3xl">Hoe het werkt</h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {vertrouwenspunten.map((punt, i) => (
+              <Reveal key={punt.titel} delayMs={i * 90}>
+                <div className="flex gap-4">
+                  <span className="bg-accent-500/10 text-accent-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                    <Icon name={punt.icon} className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-foreground font-semibold">{punt.titel}</p>
+                    <p className="text-foreground-muted mt-1 text-sm">
+                      {punt.tekst}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Hoe het werkt */}
+      <section className="py-16 md:py-24">
+        <Container>
+          <span className="eyebrow">Zo werkt het</span>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+            In drie stappen aan de slag
+          </h2>
+          <p className="text-foreground-muted mt-3 max-w-2xl">
+            Van opdracht plaatsen tot samenwerken — ZZP Connect houdt het
+            overzichtelijk en snel.
+          </p>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {stappen.map((stap, i) => (
               <Reveal key={stap.titel} delayMs={i * 120}>
                 <Card className="bs-lift h-full">
-                  <div className="bg-navy-800 text-accent-500 flex h-9 w-9 items-center justify-center rounded-full font-bold">
-                    {i + 1}
+                  <div className="flex items-center justify-between">
+                    <span className="bg-navy-800 text-accent-400 flex h-12 w-12 items-center justify-center rounded-2xl">
+                      <Icon name={stap.icon} className="h-6 w-6" />
+                    </span>
+                    <span className="text-border text-4xl font-black tabular-nums">
+                      {i + 1}
+                    </span>
                   </div>
-                  <CardTitle className="mt-4">{stap.titel}</CardTitle>
+                  <CardTitle className="mt-5">{stap.titel}</CardTitle>
                   <CardDescription>{stap.tekst}</CardDescription>
                 </Card>
               </Reveal>
@@ -217,13 +327,18 @@ export default function HomePage() {
       </section>
 
       {/* Populaire vakgebieden */}
-      <section className="bg-surface-muted py-16 md:py-20">
+      <section className="bg-surface-muted py-16 md:py-24">
         <Container>
-          <h2 className="text-2xl font-bold md:text-3xl">
+          <span className="eyebrow">Elke sector</span>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
             Populaire vakgebieden
           </h2>
+          <p className="text-foreground-muted mt-3 max-w-2xl">
+            Van bouw en techniek tot zorg, horeca, transport en IT — vind of vul
+            elke klus in.
+          </p>
           <Reveal>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-8 flex flex-wrap gap-2.5">
               {vakgebieden.map((vak) => (
                 <span
                   key={vak}
@@ -238,8 +353,14 @@ export default function HomePage() {
       </section>
 
       {/* Voordelen */}
-      <section className="py-16 md:py-20">
-        <Container className="grid gap-8 md:grid-cols-2">
+      <section className="py-16 md:py-24">
+        <Container>
+          <span className="eyebrow">Voor beide kanten</span>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+            Wat ZZP Connect je oplevert
+          </h2>
+        </Container>
+        <Container className="mt-10 grid gap-8 md:grid-cols-2">
           <Reveal>
             <Card className="bs-lift h-full">
               <CardTitle>Voor bedrijven</CardTitle>
@@ -290,6 +411,44 @@ export default function HomePage() {
                 Maak een profiel
               </ButtonLink>
             </Card>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Oproep tot actie */}
+      <section className="py-8 md:py-12">
+        <Container>
+          <Reveal>
+            <div className="bg-ink bs-hero-mesh shadow-elevated relative overflow-hidden rounded-[var(--radius-card)] px-8 py-12 text-white md:px-14 md:py-16">
+              <div className="relative z-10 flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+                <div className="max-w-xl">
+                  <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+                    Klaar om te beginnen?
+                  </h2>
+                  <p className="text-navy-100 mt-3">
+                    Plaats een opdracht of maak een profiel aan. Gratis, in een
+                    paar minuten.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <ButtonLink
+                    href="/registreren?rol=bedrijf"
+                    variant="accent"
+                    size="lg"
+                  >
+                    Ik zoek een zzp’er
+                  </ButtonLink>
+                  <ButtonLink
+                    href="/registreren?rol=zzp"
+                    variant="outline"
+                    size="lg"
+                    className="border-navy-700 hover:bg-navy-800 bg-transparent text-white hover:text-white"
+                  >
+                    Ik zoek een opdracht
+                  </ButtonLink>
+                </div>
+              </div>
+            </div>
           </Reveal>
         </Container>
       </section>
