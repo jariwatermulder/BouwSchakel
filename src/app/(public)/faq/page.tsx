@@ -33,15 +33,35 @@ const vragen = [
 export default function FaqPage() {
   return (
     <>
-      <PageIntro title="Veelgestelde vragen" />
+      <PageIntro
+        eyebrow="Veelgestelde vragen"
+        title="Goed om te weten"
+        lead="De antwoorden op de vragen die het vaakst gesteld worden."
+      />
       <Container className="max-w-3xl py-12 md:py-16">
-        <div className="divide-border border-border bg-surface divide-y rounded-[var(--radius-card)] border">
+        <div className="space-y-3">
           {vragen.map((item) => (
-            <details key={item.v} className="group p-5">
-              <summary className="text-foreground cursor-pointer list-none font-semibold">
+            <details
+              key={item.v}
+              className="border-border bg-surface shadow-soft rounded-2xl border p-5 open:[&_svg]:rotate-45"
+            >
+              <summary className="text-foreground flex cursor-pointer items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
                 {item.v}
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  className="text-accent-600 h-5 w-5 shrink-0 transition-transform duration-200"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
               </summary>
-              <p className="text-foreground-muted mt-2 text-sm">{item.a}</p>
+              <p className="text-foreground-muted mt-3 text-sm leading-relaxed">
+                {item.a}
+              </p>
             </details>
           ))}
         </div>

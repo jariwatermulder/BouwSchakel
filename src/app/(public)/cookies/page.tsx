@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function CookiesPage() {
   return (
     <>
-      <PageIntro title="Cookiebeleid" />
+      <PageIntro eyebrow="Juridisch" title="Cookiebeleid" />
       <Container className="max-w-3xl py-12 md:py-16">
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">

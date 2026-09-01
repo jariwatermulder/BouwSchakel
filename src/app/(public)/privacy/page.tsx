@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <>
-      <PageIntro title="Privacyverklaring" />
+      <PageIntro eyebrow="Juridisch" title="Privacyverklaring" />
       <Container className="max-w-3xl py-12 md:py-16">
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">

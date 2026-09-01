@@ -4,6 +4,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/reveal";
+import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
   title: "Voor ZZP'ers",
@@ -15,16 +16,24 @@ const punten = [
   {
     t: "Passend werk",
     d: "Ontvang alleen opdrachten die aansluiten bij jouw vak, regio en beschikbaarheid.",
+    icon: "match",
+    kleur: "#2563eb",
   },
   {
     t: "Jij bepaalt",
     d: "Stel zelf je tarief, werkgebied en maximale reisafstand in.",
+    icon: "euro",
+    kleur: "#16a34a",
   },
   {
     t: "Bouw reputatie",
     d: "Verzamel reviews van opdrachtgevers en verhoog je zichtbaarheid.",
+    icon: "star",
+    kleur: "#d97706",
   },
 ];
+
+const stapKleuren = ["#2563eb", "#16a34a", "#d97706"];
 
 const stappen = [
   "Maak in een paar minuten een gratis profiel.",
@@ -77,7 +86,7 @@ export default function ZzpLandingPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-ink relative overflow-hidden text-white">
+      <section className="bg-ink bs-hero-mesh relative overflow-hidden text-white">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
             className="bs-blob bs-float"
@@ -148,15 +157,26 @@ export default function ZzpLandingPage() {
       <section className="py-16 md:py-20">
         <Container>
           <Reveal>
-            <h2 className="text-2xl font-bold md:text-3xl">
+            <span className="eyebrow">Voordelen</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
               Waarom ZZP Connect
             </h2>
           </Reveal>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {punten.map((p, i) => (
               <Reveal key={p.t} delayMs={i * 120}>
-                <Card interactive className="h-full">
-                  <CardTitle>{p.t}</CardTitle>
+                <Card
+                  interactive
+                  className="h-full border-t-4"
+                  style={{ borderTopColor: p.kleur }}
+                >
+                  <span
+                    className="flex h-11 w-11 items-center justify-center rounded-2xl"
+                    style={{ backgroundColor: `${p.kleur}1a`, color: p.kleur }}
+                  >
+                    <Icon name={p.icon} className="h-5 w-5" />
+                  </span>
+                  <CardTitle className="mt-4">{p.t}</CardTitle>
                   <CardDescription>{p.d}</CardDescription>
                 </Card>
               </Reveal>
@@ -175,7 +195,10 @@ export default function ZzpLandingPage() {
             {stappen.map((stap, i) => (
               <Reveal key={stap} delayMs={i * 120}>
                 <div className="flex gap-3">
-                  <span className="bg-navy-800 text-accent-500 flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-bold">
+                  <span
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-bold text-white"
+                    style={{ backgroundColor: stapKleuren[i % stapKleuren.length] }}
+                  >
                     {i + 1}
                   </span>
                   <p className="text-foreground-muted pt-1.5 text-sm">{stap}</p>

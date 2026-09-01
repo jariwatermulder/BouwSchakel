@@ -5,8 +5,10 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { JobPostingJsonLd } from "@/components/job-posting-jsonld";
+import { Icon } from "@/components/home/pictos";
 import { getPublicJobBySlug } from "@/server/jobs/public";
 import { formatEuro } from "@/lib/utils";
+import { sectorMetaVan } from "@/lib/sector-meta";
 
 // Server-side gerenderd op aanvraag (data uit de database); volledig indexeerbaar.
 export const dynamic = "force-dynamic";
@@ -42,26 +44,51 @@ export default async function PubliekeOpdrachtPage({
   const job = await getPublicJobBySlug(slug);
   if (!job) notFound();
 
+  const meta = sectorMetaVan(job.skill.slug);
+
   return (
     <Container className="max-w-3xl py-12 md:py-16">
       <JobPostingJsonLd job={job} />
-      <div className="flex flex-wrap items-center gap-2">
-        <Badge variant="accent">{job.skill.naam}</Badge>
-        {job.specialization ? (
-          <Badge variant="neutral">{job.specialization.naam}</Badge>
-        ) : null}
-        {job.company.verificatieStatus === "GEVERIFIEERD" ? (
-          <Badge variant="verified">Geverifieerd bedrijf</Badge>
-        ) : null}
-      </div>
-      <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-        {job.titel}
-      </h1>
-      <p className="text-foreground-muted mt-1">
-        {job.company.naam || "Bedrijf"} · {job.locatiePlaats}
-      </p>
 
-      <Card className="bs-load mt-8">
+      {/* Kleurrijke, sector-gekleurde kop */}
+      <div
+        className="rounded-[var(--radius-card)] border-l-4 p-6 md:p-8"
+        style={{ borderLeftColor: meta.kleur, backgroundColor: `${meta.kleur}0d` }}
+      >
+        <div className="flex items-start gap-4">
+          <span
+            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+            style={{ backgroundColor: `${meta.kleur}1f`, color: meta.kleur }}
+          >
+            <Icon name={meta.icon} className="h-7 w-7" />
+          </span>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className="rounded-full px-2.5 py-0.5 text-xs font-bold"
+                style={{ backgroundColor: `${meta.kleur}1a`, color: meta.kleur }}
+              >
+                {job.skill.naam}
+              </span>
+              {job.specialization ? (
+                <Badge variant="neutral">{job.specialization.naam}</Badge>
+              ) : null}
+              {job.company.verificatieStatus === "GEVERIFIEERD" ? (
+                <Badge variant="verified">Geverifieerd bedrijf</Badge>
+              ) : null}
+            </div>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
+              {job.titel}
+            </h1>
+            <p className="text-foreground-muted mt-1 flex items-center gap-1.5">
+              <Icon name="pin" className="h-4 w-4" />
+              {job.company.naam || "Bedrijf"} · {job.locatiePlaats}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Card className="bs-load mt-6">
         <CardTitle>Werkzaamheden</CardTitle>
         <p className="text-foreground-muted mt-2 whitespace-pre-line">
           {job.omschrijving}
@@ -97,11 +124,15 @@ export default async function PubliekeOpdrachtPage({
       </Card>
 
       <Card
-        className="bs-load mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between"
-        style={{ animationDelay: "160ms" }}
+        className="bs-load mt-6 flex flex-col items-start gap-3 border-l-4 sm:flex-row sm:items-center sm:justify-between"
+        style={{
+          animationDelay: "160ms",
+          borderLeftColor: meta.kleur,
+          backgroundColor: `${meta.kleur}0d`,
+        }}
       >
         <div>
-          <CardTitle>Interesse in deze opdracht?</CardTitle>
+          <CardTitle>Interesse in deze klus?</CardTitle>
           <p className="text-foreground-muted text-sm">
             Maak een profiel aan of log in om te reageren.
           </p>

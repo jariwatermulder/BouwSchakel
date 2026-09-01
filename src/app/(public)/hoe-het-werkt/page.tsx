@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { PageIntro } from "@/components/layout/page-intro";
+import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
   title: "Hoe het werkt",
@@ -27,19 +28,31 @@ export default function HoeHetWerktPage() {
   return (
     <>
       <PageIntro
-        title="Hoe het werkt"
+        eyebrow="Hoe het werkt"
+        title="Zo werkt ZZP Connect"
         lead="ZZP Connect brengt bedrijven en zelfstandige zzp’ers bij elkaar. Snel, transparant en op basis van echte match."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
-        <Card>
-          <CardTitle>Voor bedrijven</CardTitle>
-          <ol className="mt-4 space-y-3">
+        <Card className="border-t-4" style={{ borderTopColor: "#2563eb" }}>
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-11 w-11 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: "#2563eb1a", color: "#2563eb" }}
+            >
+              <Icon name="doc" className="h-5 w-5" />
+            </span>
+            <CardTitle>Voor bedrijven</CardTitle>
+          </div>
+          <ol className="mt-5 space-y-3">
             {bedrijf.map((stap, i) => (
               <li
                 key={stap}
                 className="text-foreground-muted flex gap-3 text-sm"
               >
-                <span className="bg-navy-800 text-accent-500 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                <span
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                  style={{ backgroundColor: "#2563eb" }}
+                >
                   {i + 1}
                 </span>
                 {stap}
@@ -47,15 +60,26 @@ export default function HoeHetWerktPage() {
             ))}
           </ol>
         </Card>
-        <Card>
-          <CardTitle>Voor ZZP&apos;ers</CardTitle>
-          <ol className="mt-4 space-y-3">
+        <Card className="border-t-4" style={{ borderTopColor: "#f59e0b" }}>
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-11 w-11 items-center justify-center rounded-2xl"
+              style={{ backgroundColor: "#f59e0b1a", color: "#d97706" }}
+            >
+              <Icon name="bolt" className="h-5 w-5" />
+            </span>
+            <CardTitle>Voor ZZP&apos;ers</CardTitle>
+          </div>
+          <ol className="mt-5 space-y-3">
             {zzp.map((stap, i) => (
               <li
                 key={stap}
                 className="text-foreground-muted flex gap-3 text-sm"
               >
-                <span className="bg-navy-800 text-accent-500 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                <span
+                  className="text-ink flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                  style={{ backgroundColor: "#f59e0b" }}
+                >
                   {i + 1}
                 </span>
                 {stap}
@@ -65,14 +89,21 @@ export default function HoeHetWerktPage() {
         </Card>
       </Container>
       <Container className="pb-16">
-        <Card>
-          <CardTitle>Bemiddeling, geen uitzendbureau</CardTitle>
-          <CardDescription>
-            ZZP Connect faciliteert het contact tussen opdrachtgever en zzp’er.
-            De overeenkomst voor het uitvoeren van het werk komt rechtstreeks
-            tussen beide partijen tot stand. ZZP Connect is geen werkgever,
-            uitlener of partij bij die overeenkomst.
-          </CardDescription>
+        <Card className="bg-navy-50 border-navy-100">
+          <div className="flex items-start gap-3">
+            <span className="bg-navy-800 text-accent-400 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
+              <Icon name="shield" className="h-5 w-5" />
+            </span>
+            <div>
+              <CardTitle>Bemiddeling, geen uitzendbureau</CardTitle>
+              <CardDescription>
+                ZZP Connect faciliteert het contact tussen opdrachtgever en
+                zzp’er. De overeenkomst voor het uitvoeren van het werk komt
+                rechtstreeks tussen beide partijen tot stand. ZZP Connect is
+                geen werkgever, uitlener of partij bij die overeenkomst.
+              </CardDescription>
+            </div>
+          </div>
         </Card>
       </Container>
     </>

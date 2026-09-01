@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function AlgemeneVoorwaardenPage() {
   return (
     <>
-      <PageIntro title="Algemene voorwaarden" />
+      <PageIntro eyebrow="Juridisch" title="Algemene voorwaarden" />
       <Container className="max-w-3xl py-12 md:py-16">
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">

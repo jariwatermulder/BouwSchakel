@@ -14,6 +14,7 @@ export default function KlachtenPage() {
   return (
     <>
       <PageIntro
+        eyebrow="Service"
         title="Klachten"
         lead="We nemen klachten serieus en streven naar een snelle, eerlijke afhandeling."
       />
