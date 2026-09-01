@@ -101,6 +101,18 @@ export function Icon({ name, className }: { name: string; className?: string }) 
       </>
     ),
     folder: <path d="M3 7h6l2 2h10v9H3z" />,
+    pin: (
+      <>
+        <path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10Z" />
+        <circle cx="12" cy="11" r="2.3" />
+      </>
+    ),
+    calendar: (
+      <>
+        <rect x="4" y="5" width="16" height="16" rx="2" />
+        <path d="M8 3v4M16 3v4M4 10h16" />
+      </>
+    ),
     palette: (
       <>
         <path d="M12 3a9 9 0 1 0 0 18c1.4 0 1.9-1 1.4-2s.1-2 1.6-2H18a3 3 0 0 0 3-3 8.5 8.5 0 0 0-9-8Z" />
