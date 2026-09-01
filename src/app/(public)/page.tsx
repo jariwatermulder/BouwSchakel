@@ -41,6 +41,87 @@ const stappen = [
   },
 ];
 
+const sectoren = [
+  { naam: "Bouw & afbouw", icon: "hammer" as const },
+  { naam: "Techniek & installatie", icon: "wrench" as const },
+  { naam: "Schoonmaak", icon: "star" as const },
+  { naam: "Transport & logistiek", icon: "truck" as const },
+  { naam: "Groen & buiten", icon: "leaf" as const },
+  { naam: "Horeca", icon: "cup" as const },
+  { naam: "Zorg & welzijn", icon: "heart" as const },
+  { naam: "ICT & digitaal", icon: "code" as const },
+  { naam: "Administratie & office", icon: "folder" as const },
+  { naam: "Creatief & marketing", icon: "palette" as const },
+  { naam: "Evenementen & beveiliging", icon: "ticket" as const },
+  { naam: "En meer", icon: "grid" as const },
+];
+
+const features = [
+  {
+    titel: "Slimme matching",
+    tekst: "Elke match komt met een score én uitleg waarom een zzp’er past.",
+    icon: "match" as const,
+  },
+  {
+    titel: "Geverifieerde profielen",
+    tekst: "Controle mogelijk op e-mail, telefoon, KvK en certificaten.",
+    icon: "shield" as const,
+  },
+  {
+    titel: "Jij bepaalt je tarief",
+    tekst: "Zzp’ers stellen zelf hun uurtarief, vak en werkgebied in.",
+    icon: "euro" as const,
+  },
+  {
+    titel: "Direct contact & chat",
+    tekst: "Praat en plan rechtstreeks in het platform, zonder tussenlaag.",
+    icon: "chat" as const,
+  },
+  {
+    titel: "Snel geregeld",
+    tekst: "In een paar minuten staat je opdracht online of je profiel compleet.",
+    icon: "clock" as const,
+  },
+  {
+    titel: "In elke sector",
+    tekst: "Bouw, techniek, zorg, horeca, transport, IT en veel meer.",
+    icon: "grid" as const,
+  },
+];
+
+const faqs = [
+  {
+    vraag: "Wat kost ZZP Connect?",
+    antwoord:
+      "Een account aanmaken en een profiel opbouwen is gratis. Bekijk de actuele voorwaarden op de tarievenpagina.",
+  },
+  {
+    vraag: "Voor welke sectoren is het platform bedoeld?",
+    antwoord:
+      "Voor al het zzp-werk — van bouw en techniek tot zorg, horeca, transport, administratie, creatief werk en IT.",
+  },
+  {
+    vraag: "Hoe werkt de matching?",
+    antwoord:
+      "Op basis van vakgebied, specialisatie, locatie, beschikbaarheid en de gevraagde vereisten. Je ziet altijd een matchscore mét uitleg — geen black box.",
+  },
+  {
+    vraag: "Met wie sluit ik de overeenkomst?",
+    antwoord:
+      "ZZP Connect is een bemiddelingsplatform. De overeenkomst voor het werk sluit je rechtstreeks met de zzp’er.",
+  },
+  {
+    vraag: "Hoe weet ik of een profiel betrouwbaar is?",
+    antwoord:
+      "Profielen kunnen worden geverifieerd en reviews zijn alleen mogelijk na een echte opdracht via het platform. Zo weet je met wie je zakendoet.",
+  },
+  {
+    vraag: "Kan ik het op mijn telefoon gebruiken?",
+    antwoord:
+      "Ja. ZZP Connect werkt als web-app die je met één tik op je startscherm zet — geen app-store nodig.",
+  },
+];
+
 const vertrouwenspunten = [
   {
     titel: "Geverifieerde profielen",
@@ -95,6 +176,87 @@ function Icon({ name, className }: { name: string; className?: string }) {
     ),
     star: <path d="M12 4l2.3 4.7 5.2.8-3.8 3.7.9 5.1L12 15.9 7.4 18.3l.9-5.1L4.5 9.5l5.2-.8L12 4Z" />,
     bolt: <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />,
+    search: (
+      <>
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-3.6-3.6" />
+      </>
+    ),
+    euro: (
+      <>
+        <path d="M17 6.5a6 6 0 1 0 0 11" />
+        <path d="M4 10.5h9M4 13.5h8" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 8v4.5l3 1.8" />
+      </>
+    ),
+    hammer: (
+      <>
+        <path d="M14.5 4 20 9.5 17.5 12 12 6.5 14.5 4Z" />
+        <path d="M12.8 7.3 4 16v4h4l8.7-8.7" />
+      </>
+    ),
+    wrench: (
+      <path d="M20 6.5a3.5 3.5 0 0 1-4.6 4.6L7 19.5 4.5 17l8.4-8.4A3.5 3.5 0 0 1 17.5 4l-2.3 2.3 2 2L20 6.5Z" />
+    ),
+    truck: (
+      <>
+        <path d="M3 6h11v9H3z" />
+        <path d="M14 9h4l3 3v3h-7z" />
+        <circle cx="7" cy="18" r="1.7" />
+        <circle cx="17" cy="18" r="1.7" />
+      </>
+    ),
+    leaf: (
+      <>
+        <path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14Z" />
+        <path d="M5 19c4-4 7-7 11-9" />
+      </>
+    ),
+    cup: (
+      <>
+        <path d="M5 8h11v5a5.5 5.5 0 0 1-11 0z" />
+        <path d="M16 9h2.5a2 2 0 0 1 0 4H16" />
+        <path d="M5 20h11" />
+      </>
+    ),
+    heart: (
+      <path d="M12 20s-7-4.4-7-9.4A3.6 3.6 0 0 1 12 8a3.6 3.6 0 0 1 7 2.6C19 15.6 12 20 12 20Z" />
+    ),
+    code: (
+      <>
+        <path d="M8 8l-4 4 4 4" />
+        <path d="M16 8l4 4-4 4" />
+        <path d="M13.5 6l-3 12" />
+      </>
+    ),
+    folder: <path d="M3 7h6l2 2h10v9H3z" />,
+    palette: (
+      <>
+        <path d="M12 3a9 9 0 1 0 0 18c1.4 0 1.9-1 1.4-2s.1-2 1.6-2H18a3 3 0 0 0 3-3 8.5 8.5 0 0 0-9-8Z" />
+        <circle cx="8" cy="12" r="1" />
+        <circle cx="12" cy="8" r="1" />
+        <circle cx="16" cy="12" r="1" />
+      </>
+    ),
+    ticket: (
+      <>
+        <rect x="3" y="7" width="18" height="10" rx="2" />
+        <path d="M13 7v10" />
+      </>
+    ),
+    grid: (
+      <>
+        <rect x="4" y="4" width="7" height="7" rx="1.5" />
+        <rect x="13" y="4" width="7" height="7" rx="1.5" />
+        <rect x="4" y="13" width="7" height="7" rx="1.5" />
+        <rect x="13" y="13" width="7" height="7" rx="1.5" />
+      </>
+    ),
   };
   return (
     <svg
@@ -295,6 +457,55 @@ function HeroMockup() {
   );
 }
 
+/** Stilistische telefoon met een mini-overzicht van opdrachten. */
+function PhoneMock() {
+  const items = [
+    { vak: "Timmerman", plaats: "Groningen", tag: "96%" },
+    { vak: "Schoonmaker", plaats: "Assen", tag: "91%" },
+    { vak: "Chauffeur C", plaats: "Leeuwarden", tag: "88%" },
+  ];
+  return (
+    <div className="bs-float-card border-ink/10 bg-ink shadow-elevated relative mx-auto w-[260px] rounded-[2.2rem] border-8 p-3">
+      <div className="bg-ink absolute top-2 left-1/2 h-5 w-24 -translate-x-1/2 rounded-b-2xl" />
+      <div className="bg-surface overflow-hidden rounded-[1.6rem]">
+        <div className="bg-navy-800 flex items-center justify-between px-4 py-3 text-white">
+          <span className="text-sm font-bold">ZZP Connect</span>
+          <span className="bg-accent-500 text-ink flex h-6 w-6 items-center justify-center rounded-lg text-xs font-black">
+            ZC
+          </span>
+        </div>
+        <div className="space-y-2 p-3">
+          <p className="text-foreground-muted px-1 text-xs font-semibold">
+            Nieuwe matches
+          </p>
+          {items.map((it) => (
+            <div
+              key={it.vak}
+              className="border-border flex items-center gap-2 rounded-xl border p-2.5"
+            >
+              <span className="bg-navy-800 text-accent-400 flex h-8 w-8 items-center justify-center rounded-lg">
+                <Icon name="match" className="h-4 w-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-foreground truncate text-sm font-semibold">
+                  {it.vak}
+                </p>
+                <p className="text-foreground-muted text-xs">{it.plaats}</p>
+              </div>
+              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">
+                {it.tag}
+              </span>
+            </div>
+          ))}
+          <div className="bg-accent-500 text-ink mt-1 rounded-xl py-2 text-center text-sm font-semibold">
+            Bekijk opdracht
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
@@ -367,6 +578,21 @@ export default function HomePage() {
                 Ik zoek een opdracht
               </ButtonLink>
             </div>
+            <div
+              className="bs-load text-navy-200 mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm"
+              style={{ animationDelay: "320ms" }}
+            >
+              {["Gratis account", "Geen abonnement", "In elke sector"].map(
+                (chip) => (
+                  <span key={chip} className="inline-flex items-center gap-1.5">
+                    <span className="text-accent-400" aria-hidden>
+                      ✓
+                    </span>
+                    {chip}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
 
           <div className="flex justify-center lg:justify-end">
@@ -430,27 +656,82 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Populaire vakgebieden */}
+      {/* Waarom ZZP Connect */}
       <section className="bg-surface-muted py-16 md:py-24">
         <Container>
-          <span className="eyebrow">Elke sector</span>
-          <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
-            Populaire vakgebieden
-          </h2>
-          <p className="text-foreground-muted mt-3 max-w-2xl">
-            Van bouw en techniek tot zorg, horeca, transport en IT — vind of vul
-            elke klus in.
-          </p>
-          <Reveal>
-            <div className="mt-8 flex flex-wrap gap-2.5">
-              {vakgebieden.map((vak) => (
-                <span
-                  key={vak}
-                  className="border-border bg-surface text-foreground hover:border-accent-500 hover:text-accent-600 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:-translate-y-0.5"
+          <div className="max-w-2xl">
+            <span className="eyebrow">Waarom ZZP Connect</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              Alles voor een goede match op één plek
+            </h2>
+            <p className="text-foreground-muted mt-3">
+              Van slimme matching tot verificatie en directe communicatie —
+              overzichtelijk en zonder gedoe.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((f, i) => (
+              <Reveal key={f.titel} delayMs={(i % 3) * 100}>
+                <Card className="bs-lift h-full">
+                  <span className="bg-accent-500/10 text-accent-600 flex h-11 w-11 items-center justify-center rounded-xl">
+                    <Icon name={f.icon} className="h-5 w-5" />
+                  </span>
+                  <CardTitle className="mt-4 text-lg">{f.titel}</CardTitle>
+                  <CardDescription>{f.tekst}</CardDescription>
+                </Card>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Sectoren + populaire vakgebieden */}
+      <section className="py-16 md:py-24">
+        <Container>
+          <div className="max-w-2xl">
+            <span className="eyebrow">Elke sector</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              Voor al het zzp-werk
+            </h2>
+            <p className="text-foreground-muted mt-3">
+              Van bouw en techniek tot zorg, horeca, transport en IT — vind of
+              vul elke klus in.
+            </p>
+          </div>
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {sectoren.map((s, i) => (
+              <Reveal key={s.naam} delayMs={(i % 4) * 80}>
+                <ButtonLink
+                  href="/opdrachten"
+                  variant="outline"
+                  className="bs-lift border-border bg-surface h-auto w-full justify-start gap-3 rounded-[var(--radius-card)] px-4 py-4 font-semibold"
                 >
-                  {vak}
-                </span>
-              ))}
+                  <span className="bg-navy-800 text-accent-400 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                    <Icon name={s.icon} className="h-5 w-5" />
+                  </span>
+                  <span className="text-left text-sm leading-tight">
+                    {s.naam}
+                  </span>
+                </ButtonLink>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <div className="mt-10">
+              <p className="text-foreground-muted text-sm font-semibold">
+                Populair op dit moment
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2.5">
+                {vakgebieden.map((vak) => (
+                  <span
+                    key={vak}
+                    className="border-border bg-surface text-foreground hover:border-accent-500 hover:text-accent-600 rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:-translate-y-0.5"
+                  >
+                    {vak}
+                  </span>
+                ))}
+              </div>
             </div>
           </Reveal>
         </Container>
@@ -516,6 +797,84 @@ export default function HomePage() {
               </ButtonLink>
             </Card>
           </Reveal>
+        </Container>
+      </section>
+
+      {/* App / op je telefoon */}
+      <section className="bg-surface-muted overflow-hidden py-16 md:py-24">
+        <Container className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="max-w-xl">
+            <span className="eyebrow">Altijd bij de hand</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              ZZP Connect op je telefoon
+            </h2>
+            <p className="text-foreground-muted mt-3">
+              Zet ZZP Connect met één tik op je startscherm en werk als een
+              echte app — nieuwe matches, berichten en opdrachten altijd binnen
+              handbereik. Geen app-store nodig.
+            </p>
+            <ul className="mt-6 space-y-2">
+              {[
+                "Meldingen bij nieuwe, passende matches",
+                "Chat direct met opdrachtgevers en zzp’ers",
+                "Werkt op elke telefoon, tablet en laptop",
+              ].map((v) => (
+                <li key={v} className="text-foreground-muted flex gap-2 text-sm">
+                  <span aria-hidden className="text-accent-600">
+                    ✓
+                  </span>
+                  {v}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <ButtonLink href="/registreren" variant="accent" size="lg">
+                Gratis aan de slag
+              </ButtonLink>
+            </div>
+          </div>
+          <Reveal>
+            <div className="flex justify-center lg:justify-end">
+              <PhoneMock />
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Veelgestelde vragen */}
+      <section className="py-16 md:py-24">
+        <Container className="max-w-3xl">
+          <div className="text-center">
+            <span className="eyebrow justify-center">Veelgestelde vragen</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              Goed om te weten
+            </h2>
+          </div>
+          <div className="mt-10 space-y-3">
+            {faqs.map((f, i) => (
+              <Reveal key={f.vraag} delayMs={(i % 3) * 80}>
+                <details className="border-border bg-surface shadow-soft rounded-2xl border p-5 open:[&_svg]:rotate-45">
+                  <summary className="text-foreground flex cursor-pointer items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
+                    {f.vraag}
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      className="text-accent-600 h-5 w-5 shrink-0 transition-transform duration-200"
+                    >
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
+                  </summary>
+                  <p className="text-foreground-muted mt-3 text-sm leading-relaxed">
+                    {f.antwoord}
+                  </p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
         </Container>
       </section>
 
