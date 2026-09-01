@@ -51,6 +51,28 @@ const voordelenZzp = [
   "Bouw reputatie op met reviews van opdrachtgevers",
 ];
 
+/** Subtiel 'connect'-motief op de achtergrond: drie knooppunten die verbinden. */
+function ConnectMotief() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 380 280"
+      className="absolute top-1/2 left-1/2 hidden w-[540px] max-w-[80%] -translate-x-1/2 -translate-y-1/2 opacity-25 md:block"
+    >
+      <line x1="60" y1="140" x2="320" y2="86" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
+      <line x1="60" y1="140" x2="300" y2="214" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
+      <line x1="320" y1="86" x2="300" y2="214" stroke="#4f7cc4" strokeWidth="2" className="bs-dash" />
+      {/* pulserende ringen */}
+      <circle cx="60" cy="140" r="12" fill="none" stroke="#f59e0b" strokeWidth="2" className="bs-ping" />
+      <circle cx="320" cy="86" r="10" fill="none" stroke="#ffffff" strokeWidth="2" className="bs-ping" />
+      {/* knooppunten */}
+      <circle cx="60" cy="140" r="11" fill="#f59e0b" />
+      <circle cx="320" cy="86" r="9" fill="#ffffff" />
+      <circle cx="300" cy="214" r="9" fill="#ffffff" />
+    </svg>
+  );
+}
+
 /** Illustratieve product-mockup in de hero: opdracht → match. */
 function HeroMockup() {
   return (
@@ -121,6 +143,7 @@ export default function HomePage() {
               left: "-70px",
             }}
           />
+          <ConnectMotief />
         </div>
 
         <Container className="relative z-10 grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
