@@ -42,18 +42,18 @@ const stappen = [
 ];
 
 const sectoren = [
-  { naam: "Bouw & afbouw", icon: "hammer" as const },
-  { naam: "Techniek & installatie", icon: "wrench" as const },
-  { naam: "Schoonmaak", icon: "star" as const },
-  { naam: "Transport & logistiek", icon: "truck" as const },
-  { naam: "Groen & buiten", icon: "leaf" as const },
-  { naam: "Horeca", icon: "cup" as const },
-  { naam: "Zorg & welzijn", icon: "heart" as const },
-  { naam: "ICT & digitaal", icon: "code" as const },
-  { naam: "Administratie & office", icon: "folder" as const },
-  { naam: "Creatief & marketing", icon: "palette" as const },
-  { naam: "Evenementen & beveiliging", icon: "ticket" as const },
-  { naam: "En meer", icon: "grid" as const },
+  { naam: "Bouw & afbouw", icon: "hammer" as const, kleur: "#f59e0b" },
+  { naam: "Techniek & installatie", icon: "wrench" as const, kleur: "#2563eb" },
+  { naam: "Schoonmaak", icon: "star" as const, kleur: "#06b6d4" },
+  { naam: "Transport & logistiek", icon: "truck" as const, kleur: "#4f46e5" },
+  { naam: "Groen & buiten", icon: "leaf" as const, kleur: "#16a34a" },
+  { naam: "Horeca", icon: "cup" as const, kleur: "#e11d48" },
+  { naam: "Zorg & welzijn", icon: "heart" as const, kleur: "#db2777" },
+  { naam: "ICT & digitaal", icon: "code" as const, kleur: "#7c3aed" },
+  { naam: "Administratie & office", icon: "folder" as const, kleur: "#0d9488" },
+  { naam: "Creatief & marketing", icon: "palette" as const, kleur: "#c026d3" },
+  { naam: "Evenementen & beveiliging", icon: "ticket" as const, kleur: "#dc2626" },
+  { naam: "En meer", icon: "grid" as const, kleur: "#334155" },
 ];
 
 const features = [
@@ -408,48 +408,109 @@ function PersonPortrait({ variant }: { variant: "opdrachtgever" | "zzper" }) {
   );
 }
 
-/** Illustratieve hero-visual: opdrachtgever en zzp'er die worden gematcht. */
-function HeroMockup() {
+/**
+ * Origineel, kleurrijk hero-visual: een 'live matches'-bord dat het platform
+ * in actie toont. Elke sector heeft een eigen kleur, de matchscores lopen op
+ * met een animatie en rondom zweven kleurrijke sector-labels.
+ */
+function MatchBoard() {
+  const rijen = [
+    { vak: "Timmerman", plaats: "Groningen", pct: 96, icon: "hammer", kleur: "#f59e0b" },
+    { vak: "Verpleegkundige", plaats: "Zwolle", pct: 93, icon: "heart", kleur: "#db2777" },
+    { vak: "Softwareontwikkelaar", plaats: "Utrecht", pct: 90, icon: "code", kleur: "#7c3aed" },
+  ];
+  const chips = [
+    { label: "Horeca", kleur: "#e11d48", pos: "-left-3 top-10", delay: "0s" },
+    { label: "Transport", kleur: "#4f46e5", pos: "-right-4 top-1/3", delay: "1.2s" },
+    { label: "Groen", kleur: "#16a34a", pos: "-left-2 bottom-14", delay: "0.6s" },
+  ];
   return (
-    <div
-      className="bs-load bs-float-card w-full max-w-sm"
-      style={{ animationDelay: "320ms" }}
-    >
-      <div className="border-border bg-surface shadow-elevated rounded-[var(--radius-card)] border p-5">
-        {/* Opdrachtgever */}
-        <div className="border-border flex items-center gap-3 rounded-2xl border p-3">
-          <span className="ring-border h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1">
-            <PersonPortrait variant="opdrachtgever" />
+    <div className="bs-load relative w-full max-w-md" style={{ animationDelay: "260ms" }}>
+      {/* Zwevende, kleurrijke sector-labels */}
+      {chips.map((c) => (
+        <span
+          key={c.label}
+          aria-hidden
+          className={`bs-float-chip shadow-soft absolute z-20 hidden rounded-full px-3 py-1.5 text-xs font-bold text-white sm:inline-flex ${c.pos}`}
+          style={{ backgroundColor: c.kleur, animationDelay: c.delay }}
+        >
+          {c.label}
+        </span>
+      ))}
+
+      <div className="bs-float-card border-border bg-surface shadow-elevated relative z-10 rounded-[var(--radius-card)] border p-5">
+        {/* Kopregel */}
+        <div className="flex items-center justify-between">
+          <span className="text-foreground flex items-center gap-2 text-sm font-semibold">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="bs-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            </span>
+            Live matches
           </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-foreground font-semibold">Opdrachtgever</p>
-            <p className="text-foreground-muted text-sm">
-              Plaatste: “Vakman gezocht”
-            </p>
-          </div>
-          <span className="bg-accent-500/15 text-accent-600 shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
-            Nieuw
+          <span className="text-foreground-muted text-xs font-medium">
+            in elke sector
           </span>
         </div>
-        {/* Verbinding */}
-        <div className="my-2 flex items-center justify-center">
-          <span className="bg-navy-800 text-accent-400 rounded-full px-3 py-1 text-xs font-medium">
-            ↓ 96% match
-          </span>
+
+        {/* Match-rijen met oplopende score */}
+        <div className="mt-4 space-y-2.5">
+          {rijen.map((r, i) => (
+            <div
+              key={r.vak}
+              className="bs-load border-border rounded-2xl border p-3"
+              style={{ animationDelay: `${360 + i * 150}ms` }}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: `${r.kleur}1a`, color: r.kleur }}
+                >
+                  <Icon name={r.icon} className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-foreground truncate text-sm font-semibold">
+                    {r.vak}
+                  </p>
+                  <p className="text-foreground-muted text-xs">{r.plaats}</p>
+                </div>
+                <span
+                  className="shrink-0 text-sm font-bold"
+                  style={{ color: r.kleur }}
+                >
+                  {r.pct}%
+                </span>
+              </div>
+              <div className="bg-surface-muted mt-2 h-1.5 overflow-hidden rounded-full">
+                <div
+                  className="bs-fill h-full rounded-full"
+                  style={
+                    {
+                      background: r.kleur,
+                      "--bs-w": `${r.pct}%`,
+                    } as React.CSSProperties
+                  }
+                />
+              </div>
+            </div>
+          ))}
         </div>
-        {/* ZZP'er */}
-        <div className="border-border flex items-center gap-3 rounded-2xl border p-3">
-          <span className="ring-border h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1">
-            <PersonPortrait variant="zzper" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-foreground font-semibold">ZZP’er</p>
-            <p className="text-foreground-muted text-sm">
-              Beschikbaar · past op vak en regio
-            </p>
+
+        {/* Voettekst: de twee personen blijven in beeld */}
+        <div className="bg-surface-muted mt-4 flex items-center gap-3 rounded-2xl p-3">
+          <div className="flex -space-x-3">
+            <span className="ring-surface h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2">
+              <PersonPortrait variant="opdrachtgever" />
+            </span>
+            <span className="ring-surface h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2">
+              <PersonPortrait variant="zzper" />
+            </span>
           </div>
-          <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
-            Match
+          <p className="text-foreground-muted flex-1 text-xs">
+            Opdrachtgever en zzp’er direct verbonden
+          </p>
+          <span className="text-accent-600 text-lg" aria-hidden>
+            →
           </span>
         </div>
       </div>
@@ -596,7 +657,7 @@ export default function HomePage() {
           </div>
 
           <div className="flex justify-center lg:justify-end">
-            <HeroMockup />
+            <MatchBoard />
           </div>
         </Container>
       </section>
@@ -704,9 +765,12 @@ export default function HomePage() {
                 <ButtonLink
                   href="/opdrachten"
                   variant="outline"
-                  className="bs-lift border-border bg-surface h-auto w-full justify-start gap-3 rounded-[var(--radius-card)] px-4 py-4 font-semibold"
+                  className="bs-lift border-border bg-surface hover:border-navy-300 h-auto w-full justify-start gap-3 rounded-[var(--radius-card)] px-4 py-4 font-semibold"
                 >
-                  <span className="bg-navy-800 text-accent-400 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <span
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${s.kleur}1a`, color: s.kleur }}
+                  >
                     <Icon name={s.icon} className="h-5 w-5" />
                   </span>
                   <span className="text-left text-sm leading-tight">

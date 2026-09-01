@@ -183,9 +183,24 @@ body {
 }
 .bs-float-card { animation: bs-float-card 6s ease-in-out infinite; }
 
+/* Iets grotere, tragere zweving voor losse zwevende labels. */
+.bs-float-chip { animation: bs-float-card 5s ease-in-out infinite; }
+
+/* Oplopende voortgangsbalk (breedte 0 → --bs-w). CSS-only, geen JS nodig. */
+@keyframes bs-fill {
+  from { width: 0; }
+  to { width: var(--bs-w, 100%); }
+}
+.bs-fill {
+  width: 0;
+  animation: bs-fill 1.1s var(--ease-standard) forwards;
+  animation-delay: 0.5s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bs-load { opacity: 1 !important; animation: none !important; transform: none !important; }
-  .bs-float-card { animation: none !important; }
+  .bs-float-card, .bs-float-chip { animation: none !important; }
+  .bs-fill { width: var(--bs-w, 100%) !important; animation: none !important; }
 }
 
 /* Formulierfeedback: subtiele shake + fade bij verschijnen van een fout. */
