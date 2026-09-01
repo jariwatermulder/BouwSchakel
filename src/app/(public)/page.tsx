@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/home/pictos";
 import { HeroBoard } from "@/components/home/hero-board";
+import { KennisSectie } from "@/components/fun/kennis";
 
 const vakgebieden = [
   "Timmerman",
@@ -602,6 +603,25 @@ export default function HomePage() {
                 </details>
               </Reveal>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Even iets leuks: weetje + mini-quiz */}
+      <section className="bg-surface-muted py-16 md:py-24">
+        <Container>
+          <div className="max-w-2xl">
+            <span className="eyebrow">Even iets leuks</span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              Wist je dat? &amp; mini-quiz
+            </h2>
+            <p className="text-foreground-muted mt-3">
+              Handige weetjes over werk, zzp en hypotheek — en test jezelf met
+              een korte quiz.
+            </p>
+          </div>
+          <div className="mt-10">
+            <KennisSectie />
           </div>
         </Container>
       </section>

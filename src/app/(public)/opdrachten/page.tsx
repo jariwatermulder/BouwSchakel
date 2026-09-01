@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/home/pictos";
+import { Weetje } from "@/components/fun/kennis";
 import { listPublicJobs } from "@/server/jobs/public";
 import { formatEuro } from "@/lib/utils";
 import { sectorMetaVan } from "@/lib/sector-meta";
@@ -204,6 +205,13 @@ export default async function OpdrachtenIndexPage() {
             })}
           </ul>
         )}
+      </Container>
+
+      {/* Speels weetje onderaan */}
+      <Container className="pb-16 md:pb-24">
+        <div className="mx-auto max-w-2xl">
+          <Weetje />
+        </div>
       </Container>
     </>
   );
