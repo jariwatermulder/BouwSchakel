@@ -57,7 +57,7 @@ function ConnectMotief() {
     <svg
       aria-hidden
       viewBox="0 0 380 280"
-      className="absolute top-1/2 left-1/2 hidden w-[540px] max-w-[80%] -translate-x-1/2 -translate-y-1/2 opacity-25 md:block"
+      className="absolute top-8 right-8 hidden w-[420px] max-w-[42%] opacity-25 md:block"
     >
       <line x1="60" y1="140" x2="320" y2="86" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
       <line x1="60" y1="140" x2="300" y2="214" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
