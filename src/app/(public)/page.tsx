@@ -148,43 +148,147 @@ function ConnectMotief() {
   );
 }
 
-/** Illustratieve product-mockup in de hero: opdracht → match. */
+/**
+ * Vlakke portret-illustratie (geen foto van een echt persoon). Twee varianten
+ * met een eigen kleur- en haarpalet, zodat opdrachtgever en zzp'er duidelijk
+ * verschillende personen zijn.
+ */
+function PersonPortrait({ variant }: { variant: "opdrachtgever" | "zzper" }) {
+  const cfg =
+    variant === "opdrachtgever"
+      ? {
+          bg: "#eef3fb",
+          skin: "#f1c9a5",
+          hair: "#2b2f38",
+          clothing: "#22467f",
+          collar: "#1a3763",
+          glasses: true,
+        }
+      : {
+          bg: "#fff4e2",
+          skin: "#e6b184",
+          hair: "#4a3520",
+          clothing: "#d97706",
+          collar: "#b45309",
+          glasses: false,
+        };
+  const id = variant;
+  return (
+    <svg viewBox="0 0 160 160" aria-hidden className="h-full w-full">
+      <defs>
+        <clipPath id={`clip-${id}`}>
+          <circle cx="80" cy="80" r="80" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#clip-${id})`}>
+        <rect width="160" height="160" fill={cfg.bg} />
+        {/* schouders / kleding */}
+        <path
+          d="M24 160 C24 120 50 106 80 106 C110 106 136 120 136 160 Z"
+          fill={cfg.clothing}
+        />
+        <path d="M66 110 L80 126 L94 110 L88 106 L72 106 Z" fill={cfg.collar} />
+        {/* nek */}
+        <rect x="70" y="90" width="20" height="22" rx="8" fill={cfg.skin} />
+        {/* oren */}
+        <circle cx="51" cy="72" r="6" fill={cfg.skin} />
+        <circle cx="109" cy="72" r="6" fill={cfg.skin} />
+        {/* hoofd */}
+        <ellipse cx="80" cy="70" rx="30" ry="33" fill={cfg.skin} />
+        {/* haar */}
+        <path
+          d="M49 68 C46 40 66 29 80 29 C94 29 114 40 111 68 C110 55 99 48 80 48 C61 48 50 55 49 68 Z"
+          fill={cfg.hair}
+        />
+        {/* wenkbrauwen */}
+        <path
+          d="M64 62 q6 -4 12 0"
+          stroke={cfg.hair}
+          strokeWidth="2.4"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M84 62 q6 -4 12 0"
+          stroke={cfg.hair}
+          strokeWidth="2.4"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {/* ogen */}
+        <circle cx="70" cy="71" r="3" fill="#1f2937" />
+        <circle cx="90" cy="71" r="3" fill="#1f2937" />
+        {/* glimlach */}
+        <path
+          d="M70 85 q10 8 20 0"
+          stroke="#b0693f"
+          strokeWidth="2.4"
+          fill="none"
+          strokeLinecap="round"
+        />
+        {cfg.glasses ? (
+          <g stroke="#1f2937" strokeWidth="2.4" fill="none">
+            <circle cx="70" cy="71" r="8.5" />
+            <circle cx="90" cy="71" r="8.5" />
+            <path d="M78.5 71 h3" />
+          </g>
+        ) : null}
+      </g>
+      <circle
+        cx="80"
+        cy="80"
+        r="79"
+        fill="none"
+        stroke="rgba(11,18,32,0.06)"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+/** Illustratieve hero-visual: opdrachtgever en zzp'er die worden gematcht. */
 function HeroMockup() {
   return (
-    <div className="bs-load bs-float-card w-full max-w-sm" style={{ animationDelay: "320ms" }}>
-      <div className="border-border bg-surface rounded-2xl border p-5 shadow-2xl">
-        {/* Opdracht */}
-        <div className="border-border rounded-xl border p-4">
-          <span className="bg-accent-500/15 text-accent-600 inline-flex rounded-full px-2 py-0.5 text-xs font-semibold">
-            Nieuwe opdracht
+    <div
+      className="bs-load bs-float-card w-full max-w-sm"
+      style={{ animationDelay: "320ms" }}
+    >
+      <div className="border-border bg-surface shadow-elevated rounded-[var(--radius-card)] border p-5">
+        {/* Opdrachtgever */}
+        <div className="border-border flex items-center gap-3 rounded-2xl border p-3">
+          <span className="ring-border h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1">
+            <PersonPortrait variant="opdrachtgever" />
           </span>
-          <p className="text-foreground mt-2 font-semibold">Timmerman gezocht</p>
-          <p className="text-foreground-muted text-sm">
-            Groningen · Start maandag · € 40–45 / u
-          </p>
+          <div className="min-w-0 flex-1">
+            <p className="text-foreground font-semibold">Opdrachtgever</p>
+            <p className="text-foreground-muted text-sm">
+              Plaatste: “Vakman gezocht”
+            </p>
+          </div>
+          <span className="bg-accent-500/15 text-accent-600 shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
+            Nieuw
+          </span>
         </div>
         {/* Verbinding */}
         <div className="my-2 flex items-center justify-center">
           <span className="bg-navy-800 text-accent-400 rounded-full px-3 py-1 text-xs font-medium">
-            ↓ Match gevonden
+            ↓ 96% match
           </span>
         </div>
-        {/* Vakman-match */}
-        <div className="border-border rounded-xl border p-4">
-          <div className="flex items-center gap-3">
-            <span className="bg-navy-800 flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white">
-              JV
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-foreground font-semibold">Jeroen V.</p>
-              <p className="text-foreground-muted text-xs">
-                Timmerman · 12 jaar ervaring · beschikbaar
-              </p>
-            </div>
-            <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
-              96% match
-            </span>
+        {/* ZZP'er */}
+        <div className="border-border flex items-center gap-3 rounded-2xl border p-3">
+          <span className="ring-border h-14 w-14 shrink-0 overflow-hidden rounded-full ring-1">
+            <PersonPortrait variant="zzper" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-foreground font-semibold">ZZP’er</p>
+            <p className="text-foreground-muted text-sm">
+              Beschikbaar · past op vak en regio
+            </p>
           </div>
+          <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
+            Match
+          </span>
         </div>
       </div>
     </div>
