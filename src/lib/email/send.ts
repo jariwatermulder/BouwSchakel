@@ -8,11 +8,19 @@ import "server-only";
  * zodat een mislukte mail nooit de hoofdactie laat falen.
  * Zie docs/EMAIL_SETUP.md.
  */
+export interface EmailAttachment {
+  /** Bestandsnaam zoals de ontvanger die ziet. */
+  filename: string;
+  /** Bestandsinhoud als base64-string. */
+  content: string;
+}
+
 export interface EmailMessage {
   to: string;
   subject: string;
   text: string;
   html?: string;
+  attachments?: EmailAttachment[];
 }
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
@@ -43,6 +51,9 @@ export async function sendEmail(message: EmailMessage): Promise<void> {
       subject: message.subject,
       text: message.text,
       html,
+      ...(message.attachments && message.attachments.length > 0
+        ? { attachments: message.attachments }
+        : {}),
     }),
   });
 

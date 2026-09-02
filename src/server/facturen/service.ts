@@ -1,5 +1,8 @@
 import "server-only";
+import type { ZzpInvoiceStatus } from "@prisma/client";
 import { db } from "@/lib/db";
+import { sendEmail } from "@/lib/email/send";
+import { genereerFactuurPdf, type FactuurPdfData } from "./pdf";
 
 /**
  * Facturenmodule voor zzp'ers: opmaken, opslaan en teruglezen van eigen
@@ -85,6 +88,108 @@ export async function getFactuur(userId: string, id: string) {
     where: { id, zzpProfile: { userId } },
     include: { lines: { orderBy: { volgorde: "asc" } } },
   });
+}
+
+type FactuurMetRegels = NonNullable<Awaited<ReturnType<typeof getFactuur>>>;
+
+/** Zet een factuur (van deze gebruiker) op een nieuwe status. */
+export async function setFactuurStatus(
+  userId: string,
+  id: string,
+  status: ZzpInvoiceStatus,
+): Promise<boolean> {
+  const res = await db.zzpInvoice.updateMany({
+    where: { id, zzpProfile: { userId } },
+    data: { status },
+  });
+  return res.count > 0;
+}
+
+/** Bouwt de PDF-gegevens uit een opgeslagen factuur. */
+export function factuurNaarPdfData(f: FactuurMetRegels): FactuurPdfData {
+  return {
+    factuurnummer: f.factuurnummer,
+    factuurdatum: f.factuurdatum,
+    vervaldatum: f.vervaldatum,
+    afzenderNaam: f.afzenderNaam,
+    afzenderAdres: f.afzenderAdres,
+    afzenderPostcode: f.afzenderPostcode,
+    afzenderPlaats: f.afzenderPlaats,
+    afzenderKvk: f.afzenderKvk,
+    afzenderBtwId: f.afzenderBtwId,
+    afzenderIban: f.afzenderIban,
+    afzenderEmail: f.afzenderEmail,
+    klantNaam: f.klantNaam,
+    klantAdres: f.klantAdres,
+    klantPostcode: f.klantPostcode,
+    klantPlaats: f.klantPlaats,
+    klantEmail: f.klantEmail,
+    klantKvk: f.klantKvk,
+    btwPercentage: f.btwPercentage,
+    subtotaalCents: f.subtotaalCents,
+    btwCents: f.btwCents,
+    totaalCents: f.totaalCents,
+    opmerking: f.opmerking,
+    lines: f.lines,
+  };
+}
+
+export type VerstuurResultaat = { ok: boolean; error?: string };
+
+/**
+ * Mailt de factuur als PDF-bijlage naar de klant en zet de status op VERSTUURD.
+ * Verstuurt niets (en wijzigt niets) als er geen klant-e-mail of geen
+ * e-mailprovider is ingesteld.
+ */
+export async function verstuurFactuur(
+  userId: string,
+  id: string,
+): Promise<VerstuurResultaat> {
+  const f = await getFactuur(userId, id);
+  if (!f) return { ok: false, error: "Factuur niet gevonden." };
+  if (!f.klantEmail) {
+    return {
+      ok: false,
+      error: "Vul eerst het e-mailadres van de klant in bij de factuur.",
+    };
+  }
+  if (!process.env.RESEND_API_KEY?.trim()) {
+    return {
+      ok: false,
+      error:
+        "E-mail versturen is nog niet ingesteld (geen e-mailprovider gekoppeld).",
+    };
+  }
+
+  try {
+    const pdf = await genereerFactuurPdf(factuurNaarPdfData(f));
+    const base64 = Buffer.from(pdf).toString("base64");
+    const bestandsnaam = `factuur-${f.factuurnummer}.pdf`.replace(
+      /[^a-zA-Z0-9.\-]/g,
+      "_",
+    );
+    await sendEmail({
+      to: f.klantEmail,
+      subject: `Factuur ${f.factuurnummer} van ${f.afzenderNaam}`,
+      text: `Beste ${f.klantNaam},\n\nIn de bijlage vind je factuur ${f.factuurnummer}${
+        f.vervaldatum
+          ? `, te voldoen vóór ${new Intl.DateTimeFormat("nl-NL", {
+              dateStyle: "long",
+            }).format(f.vervaldatum)}`
+          : ""
+      }.\n\nMet vriendelijke groet,\n${f.afzenderNaam}`,
+      attachments: [{ filename: bestandsnaam, content: base64 }],
+    });
+  } catch (err) {
+    console.error("[facturen] versturen mislukt:", err);
+    return { ok: false, error: "Versturen mislukt. Probeer het later opnieuw." };
+  }
+
+  await db.zzpInvoice.update({
+    where: { id: f.id },
+    data: { status: "VERSTUURD" },
+  });
+  return { ok: true };
 }
 
 /** Maakt een factuur aan, berekent de bedragen en bewaart afzendergegevens voor de volgende keer. */

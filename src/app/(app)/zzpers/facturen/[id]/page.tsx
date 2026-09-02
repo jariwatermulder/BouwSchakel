@@ -5,10 +5,22 @@ import { Container } from "@/components/ui/container";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getFactuur } from "@/server/facturen/service";
 import { formatEuro } from "@/lib/utils";
+import { setStatusAction, verstuurFactuurAction } from "../actions";
 
 export const metadata: Metadata = {
   title: "Factuur",
   robots: { index: false },
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  CONCEPT: "Concept",
+  VERSTUURD: "Verstuurd",
+  BETAALD: "Betaald",
+};
+const STATUS_STIJL: Record<string, string> = {
+  CONCEPT: "bg-surface-muted text-foreground-muted border-border",
+  VERSTUURD: "bg-navy-50 text-navy-700 border-navy-200",
+  BETAALD: "bg-emerald-50 text-emerald-700 border-emerald-200",
 };
 
 function datum(d: Date): string {
@@ -48,30 +60,85 @@ function Adres({
 
 export default async function FactuurDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ verstuurd?: string; fout?: string }>;
 }) {
   const user = await requireCurrentUser();
   const { id } = await params;
+  const { verstuurd, fout } = await searchParams;
   const f = await getFactuur(user.id, id);
   if (!f) notFound();
 
   return (
     <Container className="max-w-3xl py-8 md:py-12">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link
-          href="/zzpers/facturen"
-          className="text-foreground-muted hover:text-foreground text-sm"
+      <Link
+        href="/zzpers/facturen"
+        className="text-foreground-muted hover:text-foreground text-sm"
+      >
+        ← Terug naar facturen
+      </Link>
+
+      {/* Actiebalk: status + versturen + betaald + PDF */}
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <span
+          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${STATUS_STIJL[f.status]}`}
         >
-          ← Terug naar facturen
-        </Link>
-        <a
-          href={`/zzpers/facturen/${f.id}/pdf`}
-          className="bg-accent-500 text-ink inline-flex h-10 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
-        >
-          Download PDF
-        </a>
+          {STATUS_LABEL[f.status]}
+        </span>
+        <div className="ml-auto flex flex-wrap items-center gap-2">
+          <form action={verstuurFactuurAction}>
+            <input type="hidden" name="id" value={f.id} />
+            <button
+              type="submit"
+              className="border-border bg-surface hover:border-navy-300 inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold"
+            >
+              Verstuur naar klant
+            </button>
+          </form>
+          {f.status !== "BETAALD" ? (
+            <form action={setStatusAction}>
+              <input type="hidden" name="id" value={f.id} />
+              <input type="hidden" name="status" value="BETAALD" />
+              <button
+                type="submit"
+                className="inline-flex h-10 items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
+              >
+                Markeer als betaald
+              </button>
+            </form>
+          ) : (
+            <form action={setStatusAction}>
+              <input type="hidden" name="id" value={f.id} />
+              <input type="hidden" name="status" value="VERSTUURD" />
+              <button
+                type="submit"
+                className="border-border bg-surface text-foreground-muted hover:border-navy-300 inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold"
+              >
+                Heropenen
+              </button>
+            </form>
+          )}
+          <a
+            href={`/zzpers/facturen/${f.id}/pdf`}
+            className="bg-accent-500 text-ink inline-flex h-10 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+          >
+            Download PDF
+          </a>
+        </div>
       </div>
+
+      {verstuurd ? (
+        <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          De factuur is per e-mail naar {f.klantEmail} verstuurd.
+        </div>
+      ) : null}
+      {fout ? (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {fout}
+        </div>
+      ) : null}
 
       {/* Factuurweergave in huisstijl */}
       <div className="border-border bg-surface shadow-soft mt-5 overflow-hidden rounded-[var(--radius-card)] border">

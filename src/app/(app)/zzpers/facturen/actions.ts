@@ -2,8 +2,13 @@
 
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { requireCurrentUser } from "@/lib/auth/current-user";
-import { createFactuur } from "@/server/facturen/service";
+import {
+  createFactuur,
+  setFactuurStatus,
+  verstuurFactuur,
+} from "@/server/facturen/service";
 
 export type FactuurFormState = { error?: string };
 
@@ -118,4 +123,32 @@ export async function createFactuurAction(
   }
 
   redirect(`/zzpers/facturen/${id}`);
+}
+
+const STATUSSEN = ["CONCEPT", "VERSTUURD", "BETAALD"] as const;
+
+/** Zet de status van een factuur (Concept / Verstuurd / Betaald). */
+export async function setStatusAction(formData: FormData): Promise<void> {
+  const user = await requireCurrentUser();
+  const id = String(formData.get("id") ?? "");
+  const status = String(formData.get("status") ?? "");
+  if (!id || !STATUSSEN.includes(status as (typeof STATUSSEN)[number])) return;
+
+  await setFactuurStatus(user.id, id, status as (typeof STATUSSEN)[number]);
+  revalidatePath(`/zzpers/facturen/${id}`);
+  revalidatePath("/zzpers/facturen");
+}
+
+/** Mailt de factuur als PDF naar de klant en zet de status op Verstuurd. */
+export async function verstuurFactuurAction(formData: FormData): Promise<void> {
+  const user = await requireCurrentUser();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  const res = await verstuurFactuur(user.id, id);
+  revalidatePath(`/zzpers/facturen/${id}`);
+  revalidatePath("/zzpers/facturen");
+  redirect(
+    `/zzpers/facturen/${id}?${res.ok ? "verstuurd=1" : `fout=${encodeURIComponent(res.error ?? "")}`}`,
+  );
 }
