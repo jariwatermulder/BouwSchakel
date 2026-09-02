@@ -738,3 +738,15 @@ model Payment {
 
   @@index([invoiceId])
 }
+
+// Logboek van vragen aan de AI-assistent, zodat we zien wat bezoekers vragen.
+// Geen relatie naar User: ook anonieme (uitgelogde) bezoekers stellen vragen.
+model AssistantLog {
+  id              String   @id @default(uuid())
+  vraag           String
+  antwoord        String
+  aantalBerichten Int      @default(1)
+  createdAt       DateTime @default(now())
+
+  @@index([createdAt])
+}

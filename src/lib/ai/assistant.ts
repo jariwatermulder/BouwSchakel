@@ -1,5 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
+import { db } from "@/lib/db";
+import { sendEmail } from "@/lib/email/send";
 
 /**
  * AI-assistent voor binnenkomende vragen op ZZP Connect.
@@ -57,7 +59,11 @@ export function streamAntwoord(
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
   });
 
+  const laatsteVraag =
+    [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+
   const encoder = new TextEncoder();
+  let antwoord = "";
   return new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
@@ -66,6 +72,7 @@ export function streamAntwoord(
             event.type === "content_block_delta" &&
             event.delta.type === "text_delta"
           ) {
+            antwoord += event.delta.text;
             controller.enqueue(encoder.encode(event.delta.text));
           }
         }
@@ -78,10 +85,44 @@ export function streamAntwoord(
         );
       } finally {
         controller.close();
+        // Vraag + antwoord loggen (best-effort; mag de chat nooit laten falen).
+        void logVraag(laatsteVraag, antwoord, messages.length);
       }
     },
     cancel() {
       stream.abort();
     },
   });
+}
+
+/**
+ * Slaat een vraag + antwoord op in de database en stuurt (optioneel) een
+ * notificatie-mail naar ASSISTANT_NOTIFY_EMAIL. Volledig best-effort.
+ */
+async function logVraag(
+  vraag: string,
+  antwoord: string,
+  aantalBerichten: number,
+): Promise<void> {
+  if (!vraag.trim() || !antwoord.trim()) return;
+  try {
+    await db.assistantLog.create({
+      data: { vraag, antwoord, aantalBerichten },
+    });
+  } catch (err) {
+    console.error("[ai] kon vraag niet loggen:", err);
+  }
+
+  const notify = process.env.ASSISTANT_NOTIFY_EMAIL?.trim();
+  if (notify) {
+    try {
+      await sendEmail({
+        to: notify,
+        subject: "Nieuwe vraag aan de AI-assistent",
+        text: `Vraag:\n${vraag}\n\nAntwoord van de assistent:\n${antwoord}`,
+      });
+    } catch (err) {
+      console.error("[ai] kon notificatie niet mailen:", err);
+    }
+  }
 }
