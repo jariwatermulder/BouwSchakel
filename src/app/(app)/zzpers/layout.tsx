@@ -25,6 +25,7 @@ export default async function ZzpAppLayout({
 
   const menuItems: AppNavItem[] = [
     { href: "/zzpers/profiel", label: "Profiel" },
+    { href: "/zzpers/facturen", label: "Facturen" },
     { href: "/zzpers/beschikbaarheid", label: "Beschikbaarheid" },
     { href: "/zzpers/documenten", label: "Documenten" },
     { href: "/zzpers/instellingen", label: "Instellingen" },

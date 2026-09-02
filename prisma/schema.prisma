@@ -140,6 +140,13 @@ model ZZPProfile {
   bedrijfsnaam String?
   kvkNummer    String?
 
+  // Factuurgegevens (voor de ingebouwde facturenmodule)
+  btwId    String?
+  iban     String?
+  adres    String?
+  postcode String?
+  plaats   String?
+
   // Profiel
   over           String?
   jarenErvaring  Int?
@@ -171,6 +178,7 @@ model ZZPProfile {
   applications    Application[]
   assignments     Assignment[]
   conversations   Conversation[]
+  zzpInvoices     ZzpInvoice[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -504,8 +512,9 @@ model Assignment {
   einddatum    DateTime?
   gewerkteUren Int?
 
-  reviews Review[]
-  invoice Invoice?
+  reviews     Review[]
+  invoice     Invoice?
+  zzpInvoices ZzpInvoice[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -749,4 +758,71 @@ model AssistantLog {
   createdAt       DateTime @default(now())
 
   @@index([createdAt])
+}
+
+enum ZzpInvoiceStatus {
+  CONCEPT
+  VERSTUURD
+  BETAALD
+}
+
+// Factuur die een zzp'er zelf in de app opmaakt (in ZZP Connect-huisstijl).
+// Afzender- en klantgegevens worden als momentopname opgeslagen, zodat een
+// factuur juridisch onveranderd blijft als het profiel later wijzigt.
+model ZzpInvoice {
+  id           String      @id @default(uuid())
+  zzpProfileId String
+  zzpProfile   ZZPProfile  @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+
+  factuurnummer String
+  status        ZzpInvoiceStatus @default(CONCEPT)
+  factuurdatum  DateTime
+  vervaldatum   DateTime?
+
+  // Afzender (momentopname)
+  afzenderNaam     String
+  afzenderAdres    String?
+  afzenderPostcode String?
+  afzenderPlaats   String?
+  afzenderKvk      String?
+  afzenderBtwId    String?
+  afzenderIban     String?
+  afzenderEmail    String?
+
+  // Klant
+  klantNaam     String
+  klantAdres    String?
+  klantPostcode String?
+  klantPlaats   String?
+  klantEmail    String?
+  klantKvk      String?
+
+  btwPercentage  Int    @default(21)
+  subtotaalCents Int    @default(0)
+  btwCents       Int    @default(0)
+  totaalCents    Int    @default(0)
+  opmerking      String?
+
+  lines     ZzpInvoiceLine[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([zzpProfileId, factuurnummer])
+  @@index([zzpProfileId])
+  @@index([createdAt])
+}
+
+model ZzpInvoiceLine {
+  id          String     @id @default(uuid())
+  invoiceId   String
+  invoice     ZzpInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  omschrijving String
+  aantal      Float      @default(1)
+  tariefCents Int        @default(0)
+  bedragCents Int        @default(0)
+  volgorde    Int        @default(0)
+
+  @@index([invoiceId])
 }
