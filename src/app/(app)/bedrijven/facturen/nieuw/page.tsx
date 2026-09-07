@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default async function NieuweFactuurPage() {
+export default async function NieuweBedrijfsfactuurPage() {
   const user = await requireCurrentUser();
   const context = await getFactuurContext(user.id, user.email);
 
@@ -20,13 +20,13 @@ export default async function NieuweFactuurPage() {
     return (
       <Container className="py-8 md:py-12">
         <Card className="max-w-lg">
-          <CardTitle>Maak eerst je profiel af</CardTitle>
+          <CardTitle>Maak eerst je bedrijfsprofiel af</CardTitle>
           <CardDescription>
-            Om facturen te maken heb je een zzp-profiel nodig. Vul je profiel
-            aan, dan kun je hier facturen opmaken.
+            Om facturen te maken heb je een bedrijfsprofiel nodig. Vul je
+            gegevens aan, dan kun je hier facturen opmaken.
           </CardDescription>
-          <ButtonLink href="/zzpers/profiel" variant="accent" className="mt-4">
-            Naar mijn profiel
+          <ButtonLink href="/bedrijven/registreren" variant="accent" className="mt-4">
+            Naar bedrijfsprofiel
           </ButtonLink>
         </Card>
       </Container>
@@ -36,17 +36,17 @@ export default async function NieuweFactuurPage() {
   return (
     <Container className="max-w-4xl py-8 md:py-12">
       <Link
-        href="/zzpers/facturen"
+        href="/bedrijven/facturen"
         className="text-foreground-muted hover:text-foreground text-sm"
       >
         ← Terug naar facturen
       </Link>
       <h1 className="mt-2 text-2xl font-bold md:text-3xl">Nieuwe factuur</h1>
       <p className="text-foreground-muted mt-1 text-sm">
-        Je gegevens zijn vast ingevuld vanuit je profiel. Pas aan waar nodig.
+        Maak een factuur voor je klant, in de huisstijl van ZZP Connect.
       </p>
       <div className="mt-8">
-        <FactuurForm context={context} basisPad="/zzpers/facturen" />
+        <FactuurForm context={context} basisPad="/bedrijven/facturen" />
       </div>
     </Container>
   );

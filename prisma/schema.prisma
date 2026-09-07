@@ -329,6 +329,7 @@ model Company {
   assignments   Assignment[]
   conversations Conversation[]
   invoices      Invoice[]
+  eigenFacturen ZzpInvoice[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -771,8 +772,11 @@ enum ZzpInvoiceStatus {
 // factuur juridisch onveranderd blijft als het profiel later wijzigt.
 model ZzpInvoice {
   id           String      @id @default(uuid())
-  zzpProfileId String
-  zzpProfile   ZZPProfile  @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  // Eigenaar is óf een zzp'er óf een bedrijf (precies één is gezet).
+  zzpProfileId String?
+  zzpProfile   ZZPProfile? @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   assignmentId String?
   assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
 
@@ -809,8 +813,8 @@ model ZzpInvoice {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
-  @@unique([zzpProfileId, factuurnummer])
   @@index([zzpProfileId])
+  @@index([companyId])
   @@index([createdAt])
 }
 

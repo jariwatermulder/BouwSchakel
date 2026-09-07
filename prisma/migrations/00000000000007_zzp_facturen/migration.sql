@@ -9,10 +9,11 @@ ALTER TABLE "ZZPProfile"
     ADD COLUMN "postcode" TEXT,
     ADD COLUMN "plaats" TEXT;
 
--- CreateTable
+-- CreateTable: eigen factuur (van een zzp'er óf een bedrijf)
 CREATE TABLE "ZzpInvoice" (
     "id" TEXT NOT NULL,
-    "zzpProfileId" TEXT NOT NULL,
+    "zzpProfileId" TEXT,
+    "companyId" TEXT,
     "assignmentId" TEXT,
     "factuurnummer" TEXT NOT NULL,
     "status" "ZzpInvoiceStatus" NOT NULL DEFAULT 'CONCEPT',
@@ -55,13 +56,14 @@ CREATE TABLE "ZzpInvoiceLine" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ZzpInvoice_zzpProfileId_factuurnummer_key" ON "ZzpInvoice"("zzpProfileId", "factuurnummer");
 CREATE INDEX "ZzpInvoice_zzpProfileId_idx" ON "ZzpInvoice"("zzpProfileId");
+CREATE INDEX "ZzpInvoice_companyId_idx" ON "ZzpInvoice"("companyId");
 CREATE INDEX "ZzpInvoice_createdAt_idx" ON "ZzpInvoice"("createdAt");
 CREATE INDEX "ZzpInvoiceLine_invoiceId_idx" ON "ZzpInvoiceLine"("invoiceId");
 
 -- AddForeignKey
 ALTER TABLE "ZzpInvoice" ADD CONSTRAINT "ZzpInvoice_zzpProfileId_fkey" FOREIGN KEY ("zzpProfileId") REFERENCES "ZZPProfile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ZzpInvoice" ADD CONSTRAINT "ZzpInvoice_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "ZzpInvoice" ADD CONSTRAINT "ZzpInvoice_assignmentId_fkey" FOREIGN KEY ("assignmentId") REFERENCES "Assignment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE "ZzpInvoiceLine" ADD CONSTRAINT "ZzpInvoiceLine_invoiceId_fkey" FOREIGN KEY ("invoiceId") REFERENCES "ZzpInvoice"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

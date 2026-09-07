@@ -6,33 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FormAlert } from "@/components/ui/form-alert";
 import { formatEuro } from "@/lib/utils";
+import type { FactuurContext } from "@/server/facturen/service";
 import { createFactuurAction, type FactuurFormState } from "./actions";
-
-export type FactuurContext = {
-  voorstelNummer: string;
-  afzender: {
-    naam: string;
-    adres: string;
-    postcode: string;
-    plaats: string;
-    kvk: string;
-    btwId: string;
-    iban: string;
-    email: string;
-  };
-  assignments: {
-    id: string;
-    jobTitel: string;
-    tariefEuro: number | null;
-    bedrijf: string;
-    bedrijfKvk: string;
-  }[];
-};
 
 type Regel = { omschrijving: string; aantal: string; tarief: string };
 
 const initial: FactuurFormState = {};
-const veld = "border-border bg-surface focus-visible:border-navy-500 h-11 w-full rounded-lg border px-3 text-sm";
+const veld =
+  "border-border bg-surface focus-visible:border-navy-500 h-11 w-full rounded-lg border px-3 text-sm";
 
 function vandaag(): string {
   return new Date().toISOString().slice(0, 10);
@@ -43,7 +24,13 @@ function overDagen(n: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-export function FactuurForm({ context }: { context: FactuurContext }) {
+export function FactuurForm({
+  context,
+  basisPad,
+}: {
+  context: FactuurContext;
+  basisPad: string;
+}) {
   const [state, formAction, pending] = useActionState(
     createFactuurAction,
     initial,
@@ -110,7 +97,8 @@ export function FactuurForm({ context }: { context: FactuurContext }) {
 
   return (
     <form action={formAction} className="space-y-8">
-      {/* Opdracht koppelen */}
+      <input type="hidden" name="basisPad" value={basisPad} />
+
       {context.assignments.length > 0 ? (
         <div>
           <Label htmlFor="assignmentKeuze">Koppel aan een opdracht (optioneel)</Label>
@@ -134,7 +122,6 @@ export function FactuurForm({ context }: { context: FactuurContext }) {
       ) : null}
       <input type="hidden" name="assignmentId" value={assignmentId} />
 
-      {/* Kop: nummer + datums */}
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <Label htmlFor="factuurnummer">Factuurnummer</Label>
@@ -150,7 +137,6 @@ export function FactuurForm({ context }: { context: FactuurContext }) {
         </div>
       </div>
 
-      {/* Afzender + klant */}
       <div className="grid gap-8 md:grid-cols-2">
         <fieldset className="space-y-3">
           <legend className="text-sm font-semibold">Jouw gegevens</legend>
@@ -227,7 +213,6 @@ export function FactuurForm({ context }: { context: FactuurContext }) {
         </fieldset>
       </div>
 
-      {/* Regels */}
       <div>
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold">Regels</h2>
@@ -275,7 +260,6 @@ export function FactuurForm({ context }: { context: FactuurContext }) {
         </div>
       </div>
 
-      {/* Btw + totalen */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <Label htmlFor="btwPercentage">Btw-tarief</Label>

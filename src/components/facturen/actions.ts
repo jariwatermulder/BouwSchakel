@@ -12,6 +12,13 @@ import {
 
 export type FactuurFormState = { error?: string };
 
+const BASISPADEN = ["/zzpers/facturen", "/bedrijven/facturen"] as const;
+type Basispad = (typeof BASISPADEN)[number];
+
+function veiligPad(v: unknown): Basispad {
+  return BASISPADEN.includes(v as Basispad) ? (v as Basispad) : "/zzpers/facturen";
+}
+
 const regelSchema = z.object({
   omschrijving: z.string().max(300),
   aantal: z.number().min(0).max(100000),
@@ -52,6 +59,7 @@ export async function createFactuurAction(
   formData: FormData,
 ): Promise<FactuurFormState> {
   const user = await requireCurrentUser();
+  const basisPad = veiligPad(formData.get("basisPad"));
 
   let parsed: z.infer<typeof inputSchema>;
   try {
@@ -122,33 +130,33 @@ export async function createFactuurAction(
     return { error: "Kon de factuur niet opslaan. Probeer het opnieuw." };
   }
 
-  redirect(`/zzpers/facturen/${id}`);
+  redirect(`${basisPad}/${id}`);
 }
 
 const STATUSSEN = ["CONCEPT", "VERSTUURD", "BETAALD"] as const;
 
-/** Zet de status van een factuur (Concept / Verstuurd / Betaald). */
 export async function setStatusAction(formData: FormData): Promise<void> {
   const user = await requireCurrentUser();
   const id = String(formData.get("id") ?? "");
   const status = String(formData.get("status") ?? "");
+  const basisPad = veiligPad(formData.get("basisPad"));
   if (!id || !STATUSSEN.includes(status as (typeof STATUSSEN)[number])) return;
 
   await setFactuurStatus(user.id, id, status as (typeof STATUSSEN)[number]);
-  revalidatePath(`/zzpers/facturen/${id}`);
-  revalidatePath("/zzpers/facturen");
+  revalidatePath(`${basisPad}/${id}`);
+  revalidatePath(basisPad);
 }
 
-/** Mailt de factuur als PDF naar de klant en zet de status op Verstuurd. */
 export async function verstuurFactuurAction(formData: FormData): Promise<void> {
   const user = await requireCurrentUser();
   const id = String(formData.get("id") ?? "");
+  const basisPad = veiligPad(formData.get("basisPad"));
   if (!id) return;
 
   const res = await verstuurFactuur(user.id, id);
-  revalidatePath(`/zzpers/facturen/${id}`);
-  revalidatePath("/zzpers/facturen");
+  revalidatePath(`${basisPad}/${id}`);
+  revalidatePath(basisPad);
   redirect(
-    `/zzpers/facturen/${id}?${res.ok ? "verstuurd=1" : `fout=${encodeURIComponent(res.error ?? "")}`}`,
+    `${basisPad}/${id}?${res.ok ? "verstuurd=1" : `fout=${encodeURIComponent(res.error ?? "")}`}`,
   );
 }

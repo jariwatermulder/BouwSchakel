@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default async function FactuurDetailPage({
+export default async function BedrijfsfactuurDetailPage({
   params,
   searchParams,
 }: {
@@ -27,7 +27,7 @@ export default async function FactuurDetailPage({
     <Container className="max-w-3xl py-8 md:py-12">
       <FactuurWeergave
         factuur={f}
-        basisPad="/zzpers/facturen"
+        basisPad="/bedrijven/facturen"
         verstuurd={Boolean(verstuurd)}
         fout={fout}
       />
