@@ -158,12 +158,12 @@ export async function getFactuurContext(
     voorstelNummer,
     afzender: {
       naam: c?.naam ?? "",
-      adres: "",
-      postcode: "",
-      plaats: "",
+      adres: c?.adres ?? "",
+      postcode: c?.postcode ?? "",
+      plaats: c?.plaats ?? "",
       kvk: c?.kvkNummer ?? "",
-      btwId: "",
-      iban: "",
+      btwId: c?.btwId ?? "",
+      iban: c?.iban ?? "",
       email,
     },
     assignments: [],
@@ -256,22 +256,22 @@ export async function createFactuur(
     },
   });
 
-  // Afzendergegevens onthouden voor de volgende factuur (alleen zzp-profiel).
-  if (eig.kind === "zzp") {
-    try {
-      await db.zZPProfile.update({
-        where: { id: eig.zzpProfileId },
-        data: {
-          adres: input.afzenderAdres || undefined,
-          postcode: input.afzenderPostcode || undefined,
-          plaats: input.afzenderPlaats || undefined,
-          iban: input.afzenderIban || undefined,
-          btwId: input.afzenderBtwId || undefined,
-        },
-      });
-    } catch {
-      // niet kritiek
+  // Afzendergegevens onthouden voor de volgende factuur (best-effort).
+  const bewaar = {
+    adres: input.afzenderAdres || undefined,
+    postcode: input.afzenderPostcode || undefined,
+    plaats: input.afzenderPlaats || undefined,
+    iban: input.afzenderIban || undefined,
+    btwId: input.afzenderBtwId || undefined,
+  };
+  try {
+    if (eig.kind === "zzp") {
+      await db.zZPProfile.update({ where: { id: eig.zzpProfileId }, data: bewaar });
+    } else {
+      await db.company.update({ where: { id: eig.companyId }, data: bewaar });
     }
+  } catch {
+    // niet kritiek
   }
 
   return factuur.id;

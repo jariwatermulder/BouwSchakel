@@ -324,6 +324,13 @@ model Company {
   typeWerkzaamheden String?
   verificatieStatus VerificatieStatus @default(NIET_GEVERIFIEERD)
 
+  // Factuurgegevens (voor de facturenmodule)
+  btwId    String?
+  iban     String?
+  adres    String?
+  postcode String?
+  plaats   String?
+
   members       CompanyMember[]
   jobs          Job[]
   assignments   Assignment[]
