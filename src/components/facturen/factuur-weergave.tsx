@@ -134,20 +134,22 @@ export function FactuurWeergave({
       ) : null}
 
       <div className="border-border bg-surface shadow-soft mt-5 overflow-hidden rounded-[var(--radius-card)] border">
-        <div className="bg-ink flex items-center justify-between px-6 py-5 text-white sm:px-8">
+        <div className="flex items-start justify-between px-6 pt-7 pb-2 sm:px-8">
           <div className="flex items-center gap-2">
-            <span className="bg-accent-500 text-ink flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black">
+            <span className="bg-accent-500 text-ink flex h-7 w-7 items-center justify-center rounded-md text-xs font-black">
               ZC
             </span>
             <span className="font-bold">ZZP Connect</span>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold">FACTUUR</p>
-            <p className="text-navy-200 text-sm">Nr. {f.factuurnummer}</p>
+            <p className="text-2xl font-bold tracking-tight">Factuur</p>
+            <p className="text-foreground-muted mt-1 text-sm">
+              Nr. {f.factuurnummer}
+            </p>
           </div>
         </div>
 
-        <div className="p-6 sm:p-8">
+        <div className="px-6 pb-6 sm:px-8 sm:pb-8">
           <div className="grid gap-6 sm:grid-cols-2">
             <div>
               <p className="text-foreground-muted text-xs font-semibold uppercase tracking-wide">
@@ -184,31 +186,35 @@ export function FactuurWeergave({
             {f.vervaldatum ? <span>Vervaldatum: {datum(f.vervaldatum)}</span> : null}
           </div>
 
-          <div className="mt-6 overflow-x-auto">
+          <div className="mt-8 overflow-x-auto">
             <table className="w-full min-w-[420px] text-sm">
               <thead>
-                <tr className="bg-navy-800 text-white">
-                  <th className="rounded-l-lg px-3 py-2 text-left font-medium">
+                <tr className="border-border text-foreground-muted border-b">
+                  <th className="px-3 pb-2 text-left text-xs font-semibold tracking-wide uppercase">
                     Omschrijving
                   </th>
-                  <th className="px-3 py-2 text-right font-medium">Aantal</th>
-                  <th className="px-3 py-2 text-right font-medium">Tarief</th>
-                  <th className="rounded-r-lg px-3 py-2 text-right font-medium">
+                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
+                    Aantal
+                  </th>
+                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
+                    Tarief
+                  </th>
+                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
                     Bedrag
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {f.lines.map((r) => (
-                  <tr key={r.id} className="border-border border-b">
-                    <td className="px-3 py-2">{r.omschrijving}</td>
-                    <td className="px-3 py-2 text-right tabular-nums">
+                  <tr key={r.id}>
+                    <td className="text-foreground px-3 pt-3">{r.omschrijving}</td>
+                    <td className="text-foreground-muted px-3 pt-3 text-right tabular-nums">
                       {Number.isInteger(r.aantal) ? r.aantal : r.aantal.toFixed(2)}
                     </td>
-                    <td className="px-3 py-2 text-right tabular-nums">
+                    <td className="text-foreground-muted px-3 pt-3 text-right tabular-nums">
                       {formatEuro(r.tariefCents)}
                     </td>
-                    <td className="px-3 py-2 text-right tabular-nums">
+                    <td className="text-foreground px-3 pt-3 text-right tabular-nums">
                       {formatEuro(r.bedragCents)}
                     </td>
                   </tr>
@@ -216,6 +222,8 @@ export function FactuurWeergave({
               </tbody>
             </table>
           </div>
+
+          <div className="border-border mt-4 border-t" />
 
           <div className="mt-4 flex justify-end">
             <dl className="w-full max-w-xs space-y-1.5 text-sm">

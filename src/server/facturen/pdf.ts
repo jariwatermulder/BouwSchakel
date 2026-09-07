@@ -2,9 +2,8 @@ import "server-only";
 import { PDFDocument, StandardFonts, rgb, type PDFFont } from "pdf-lib";
 
 /**
- * Genereert een nette factuur-PDF in de ZZP Connect-huisstijl met pdf-lib.
- * Gebruikt de standaard Helvetica-fonts; bedragen als "EUR 1.234,56" zodat er
- * geen problemen zijn met glyph-encoding.
+ * Genereert een rustige, overzichtelijke factuur-PDF (pdf-lib, Helvetica).
+ * Veel witruimte, lichte hairlines en één subtiel accent (het logo).
  */
 
 type Regel = {
@@ -40,35 +39,34 @@ export type FactuurPdfData = {
   lines: Regel[];
 };
 
-const INK = rgb(0.043, 0.071, 0.125); // #0b1220
-const NAVY = rgb(0.071, 0.157, 0.267); // #122844
-const AMBER = rgb(0.961, 0.62, 0.043); // #f59e0b
-const MUTED = rgb(0.4, 0.45, 0.52);
-const LINE = rgb(0.86, 0.89, 0.92);
-const WHITE = rgb(1, 1, 1);
+const INK = rgb(0.05, 0.09, 0.16);
+const MUTED = rgb(0.42, 0.47, 0.54);
+const HAIR = rgb(0.9, 0.92, 0.94);
+const AMBER = rgb(0.961, 0.62, 0.043);
 
 function bedrag(cents: number): string {
-  return (cents / 100).toLocaleString("nl-NL", {
+  return `€ ${(cents / 100).toLocaleString("nl-NL", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  })}`;
 }
 
-function datum(d: Date): string {
-  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "long" }).format(d);
+function korteDatum(d: Date): string {
+  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d);
 }
 
-/** WinAnsi-veilige tekst: vervangt typografische tekens en strip onbekende glyphs. */
+/** WinAnsi-veilige tekst (staat het euroteken toe). */
 function safe(input: string | null | undefined): string {
   if (!input) return "";
-  const vervangen = input
+  const v = input
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
     .replace(/[–—]/g, "-")
     .replace(/…/g, "...");
   let out = "";
-  for (const ch of vervangen) {
-    out += ch.charCodeAt(0) <= 255 ? ch : "?";
+  for (const ch of v) {
+    const c = ch.charCodeAt(0);
+    out += c <= 255 || c === 0x20ac ? ch : "?";
   }
   return out;
 }
@@ -81,7 +79,8 @@ export async function genereerFactuurPdf(
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const { width, height } = page.getSize();
-  const M = 48; // marge
+  const M = 56;
+  const right = width - M;
 
   const text = (
     s: string,
@@ -94,146 +93,151 @@ export async function genereerFactuurPdf(
 
   const rechts = (
     s: string,
-    rightX: number,
+    rx: number,
     y: number,
     size: number,
     f: PDFFont = font,
     color = INK,
   ) => {
     const w = f.widthOfTextAtSize(safe(s), size);
-    page.drawText(safe(s), { x: rightX - w, y, size, font: f, color });
+    page.drawText(safe(s), { x: rx - w, y, size, font: f, color });
   };
 
-  // ── Kopbalk ────────────────────────────────────────────────────────────
-  page.drawRectangle({ x: 0, y: height - 96, width, height: 96, color: INK });
-  // Logo-blokje
-  page.drawRectangle({
-    x: M,
-    y: height - 70,
-    width: 30,
-    height: 30,
-    color: AMBER,
-  });
-  text("ZC", M + 7, height - 62, 14, bold, INK);
-  text("ZZP Connect", M + 42, height - 62, 16, bold, WHITE);
-  rechts("FACTUUR", width - M, height - 52, 22, bold, WHITE);
-  rechts(`Nr. ${data.factuurnummer}`, width - M, height - 74, 10, font, rgb(0.8, 0.85, 0.92));
+  const hairline = (y: number) =>
+    page.drawLine({
+      start: { x: M, y },
+      end: { x: right, y },
+      thickness: 1,
+      color: HAIR,
+    });
 
-  // ── Afzender + klant ──────────────────────────────────────────────────
-  let y = height - 96 - 40;
-  const afz = [
-    data.afzenderNaam,
+  // ── Kop: logo links, "Factuur" rechts ─────────────────────────────────
+  let y = height - M;
+  page.drawRectangle({ x: M, y: y - 24, width: 24, height: 24, color: AMBER });
+  text("ZC", M + 5, y - 17, 11, bold, INK);
+  text("ZZP Connect", M + 34, y - 17, 12, bold, INK);
+  rechts("Factuur", right, y - 20, 26, bold, INK);
+
+  y -= 44;
+  rechts(`Nr. ${data.factuurnummer}`, right, y, 10, font, MUTED);
+  y -= 14;
+  rechts(`Datum  ${korteDatum(data.factuurdatum)}`, right, y, 10, font, MUTED);
+  if (data.vervaldatum) {
+    y -= 14;
+    rechts(`Vervalt  ${korteDatum(data.vervaldatum)}`, right, y, 10, font, MUTED);
+  }
+
+  // ── Van / Aan ─────────────────────────────────────────────────────────
+  const yBlok = height - M - 52;
+  const colAan = M + (width - 2 * M) / 2 + 10;
+
+  const regelsVan = [
     data.afzenderAdres,
     [data.afzenderPostcode, data.afzenderPlaats].filter(Boolean).join(" "),
     data.afzenderEmail,
-    data.afzenderKvk ? `KvK: ${data.afzenderKvk}` : "",
-    data.afzenderBtwId ? `Btw-id: ${data.afzenderBtwId}` : "",
-  ].filter((r) => r && r.length > 0) as string[];
+    data.afzenderKvk ? `KvK ${data.afzenderKvk}` : "",
+    data.afzenderBtwId ? `Btw-id ${data.afzenderBtwId}` : "",
+  ].filter((r): r is string => Boolean(r && r.length));
 
-  const klant = [
-    data.klantNaam,
+  const regelsAan = [
     data.klantAdres,
     [data.klantPostcode, data.klantPlaats].filter(Boolean).join(" "),
     data.klantEmail,
-    data.klantKvk ? `KvK: ${data.klantKvk}` : "",
-  ].filter((r) => r && r.length > 0) as string[];
+    data.klantKvk ? `KvK ${data.klantKvk}` : "",
+  ].filter((r): r is string => Boolean(r && r.length));
 
-  text("VAN", M, y, 8, bold, MUTED);
-  text("AAN", width / 2, y, 8, bold, MUTED);
-  y -= 16;
-  const startBlok = y;
-  afz.forEach((r, i) => text(r, M, startBlok - i * 14, i === 0 ? 11 : 10, i === 0 ? bold : font, i === 0 ? INK : MUTED));
-  klant.forEach((r, i) => text(r, width / 2, startBlok - i * 14, i === 0 ? 11 : 10, i === 0 ? bold : font, i === 0 ? INK : MUTED));
+  const blok = (
+    label: string,
+    naam: string,
+    regels: string[],
+    x: number,
+  ) => {
+    let yy = yBlok;
+    text(label, x, yy, 8, bold, MUTED);
+    yy -= 18;
+    text(naam, x, yy, 12, bold, INK);
+    yy -= 16;
+    for (const r of regels) {
+      text(r, x, yy, 10, font, MUTED);
+      yy -= 14;
+    }
+    return yy;
+  };
 
-  y = startBlok - Math.max(afz.length, klant.length) * 14 - 24;
+  const eindVan = blok("VAN", data.afzenderNaam, regelsVan, M);
+  const eindAan = blok("AAN", data.klantNaam, regelsAan, colAan);
+  y = Math.min(eindVan, eindAan) - 18;
 
-  // Datums
-  text(`Factuurdatum: ${datum(data.factuurdatum)}`, M, y, 10, font, MUTED);
-  if (data.vervaldatum) {
-    text(`Vervaldatum: ${datum(data.vervaldatum)}`, width / 2, y, 10, font, MUTED);
-  }
-  y -= 30;
+  // ── Regeltabel (licht, zonder gekleurde vlakken) ──────────────────────
+  const colBedrag = right;
+  const colTarief = right - 95;
+  const colAantal = right - 175;
 
-  // ── Regeltabel ────────────────────────────────────────────────────────
-  const colOms = M;
-  const colAantal = width - M - 230;
-  const colTarief = width - M - 120;
-  const colBedrag = width - M;
-
-  page.drawRectangle({
-    x: M,
-    y: y - 6,
-    width: width - 2 * M,
-    height: 24,
-    color: NAVY,
-  });
-  text("Omschrijving", colOms + 8, y + 2, 9, bold, WHITE);
-  rechts("Aantal", colAantal + 40, y + 2, 9, bold, WHITE);
-  rechts("Tarief", colTarief + 60, y + 2, 9, bold, WHITE);
-  rechts("Bedrag", colBedrag - 8, y + 2, 9, bold, WHITE);
+  text("OMSCHRIJVING", M, y, 8, bold, MUTED);
+  rechts("AANTAL", colAantal, y, 8, bold, MUTED);
+  rechts("TARIEF", colTarief, y, 8, bold, MUTED);
+  rechts("BEDRAG", colBedrag, y, 8, bold, MUTED);
+  y -= 10;
+  hairline(y);
   y -= 22;
 
   for (const r of data.lines) {
-    y -= 18;
-    text(r.omschrijving, colOms + 8, y, 10);
+    text(r.omschrijving, M, y, 10, font, INK);
     rechts(
       Number.isInteger(r.aantal) ? String(r.aantal) : r.aantal.toFixed(2),
-      colAantal + 40,
+      colAantal,
       y,
       10,
+      font,
+      MUTED,
     );
-    rechts(`EUR ${bedrag(r.tariefCents)}`, colTarief + 60, y, 10);
-    rechts(`EUR ${bedrag(r.bedragCents)}`, colBedrag - 8, y, 10);
-    page.drawLine({
-      start: { x: M, y: y - 6 },
-      end: { x: width - M, y: y - 6 },
-      thickness: 0.5,
-      color: LINE,
-    });
+    rechts(bedrag(r.tariefCents), colTarief, y, 10, font, MUTED);
+    rechts(bedrag(r.bedragCents), colBedrag, y, 10, font, INK);
+    y -= 24;
   }
 
   // ── Totalen ───────────────────────────────────────────────────────────
-  y -= 24;
-  const totLabelX = width - M - 200;
-  rechts("Subtotaal", totLabelX, y, 10, font, MUTED);
-  rechts(`EUR ${bedrag(data.subtotaalCents)}`, colBedrag - 8, y, 10);
+  y -= 2;
+  const labelX = right - 150;
+  hairline(y + 12);
+  y -= 6;
+  rechts("Subtotaal", labelX, y, 10, font, MUTED);
+  rechts(bedrag(data.subtotaalCents), colBedrag, y, 10, font, INK);
   y -= 18;
-  rechts(`Btw (${data.btwPercentage}%)`, totLabelX, y, 10, font, MUTED);
-  rechts(`EUR ${bedrag(data.btwCents)}`, colBedrag - 8, y, 10);
-  y -= 8;
-  page.drawLine({
-    start: { x: totLabelX - 10, y: y },
-    end: { x: width - M, y: y },
-    thickness: 1,
-    color: INK,
-  });
+  rechts(`Btw ${data.btwPercentage}%`, labelX, y, 10, font, MUTED);
+  rechts(bedrag(data.btwCents), colBedrag, y, 10, font, INK);
   y -= 20;
-  rechts("Totaal", totLabelX, y, 13, bold, INK);
-  rechts(`EUR ${bedrag(data.totaalCents)}`, colBedrag - 8, y, 13, bold, INK);
+  rechts("Totaal", labelX, y, 12, bold, INK);
+  rechts(bedrag(data.totaalCents), colBedrag, y, 12, bold, INK);
 
-  // ── Betaalinformatie + opmerking ─────────────────────────────────────
-  y -= 44;
+  // ── Betaalgegevens + opmerking ────────────────────────────────────────
+  y -= 52;
   if (data.afzenderIban) {
-    text("Gelieve te betalen op:", M, y, 10, bold, INK);
-    text(`IBAN ${data.afzenderIban}  —  t.n.v. ${data.afzenderNaam}`, M, y - 15, 10, font, MUTED);
-    y -= 40;
+    text("BETAALGEGEVENS", M, y, 8, bold, MUTED);
+    y -= 16;
+    text(
+      `IBAN ${data.afzenderIban}  ·  t.n.v. ${data.afzenderNaam}`,
+      M,
+      y,
+      10,
+      font,
+      INK,
+    );
+    y -= 8;
   }
   if (data.opmerking) {
-    text("Opmerking", M, y, 9, bold, MUTED);
-    text(data.opmerking, M, y - 14, 10, font, INK);
+    y -= 18;
+    text(data.opmerking, M, y, 10, font, MUTED);
   }
 
   // ── Voettekst ─────────────────────────────────────────────────────────
-  page.drawLine({
-    start: { x: M, y: 66 },
-    end: { x: width - M, y: 66 },
-    thickness: 0.5,
-    color: LINE,
-  });
-  text(
-    "Opgemaakt met ZZP Connect. Deze factuur is een hulpmiddel; controleer zelf de fiscale juistheid.",
-    M,
-    52,
+  hairline(60);
+  page.drawRectangle({ x: M, y: 44, width: 12, height: 12, color: AMBER });
+  text("ZZP Connect", M + 18, 46, 8, bold, MUTED);
+  rechts(
+    "Hulpmiddel — controleer zelf de fiscale juistheid.",
+    right,
+    46,
     8,
     font,
     MUTED,
