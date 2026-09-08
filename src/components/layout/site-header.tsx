@@ -3,8 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { ButtonLink } from "@/components/ui/button";
+import { ButtonLink, Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { logoutAction } from "@/app/(app)/actions";
+
+type HeaderUser = { email: string; role: string } | null;
+
+function dashboardPad(role: string): string {
+  if (role === "COMPANY") return "/bedrijven/dashboard";
+  if (role === "ADMIN") return "/admin";
+  return "/zzpers/dashboard";
+}
 
 const navItems = [
   { href: "/vind-zzper", label: "Vind een zzp'er" },
@@ -15,7 +24,7 @@ const navItems = [
   { href: "/tarieven", label: "Tarieven" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ user }: { user?: HeaderUser }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -69,16 +78,35 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ButtonLink href="/inloggen" variant="ghost" size="sm">
-            Inloggen
-          </ButtonLink>
-          <ButtonLink
-            href="/bedrijven/opdracht-plaatsen"
-            variant="accent"
-            size="sm"
-          >
-            Opdracht plaatsen
-          </ButtonLink>
+          {user ? (
+            <>
+              <ButtonLink
+                href={dashboardPad(user.role)}
+                variant="ghost"
+                size="sm"
+              >
+                Mijn account
+              </ButtonLink>
+              <form action={logoutAction}>
+                <Button type="submit" variant="outline" size="sm">
+                  Uitloggen
+                </Button>
+              </form>
+            </>
+          ) : (
+            <>
+              <ButtonLink href="/inloggen" variant="ghost" size="sm">
+                Inloggen
+              </ButtonLink>
+              <ButtonLink
+                href="/bedrijven/opdracht-plaatsen"
+                variant="accent"
+                size="sm"
+              >
+                Opdracht plaatsen
+              </ButtonLink>
+            </>
+          )}
         </div>
       </Container>
     </header>
