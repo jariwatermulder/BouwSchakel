@@ -167,18 +167,18 @@ function ConnectMotief() {
     <svg
       aria-hidden
       viewBox="0 0 380 280"
-      className="absolute top-8 right-8 hidden w-[420px] max-w-[42%] opacity-25 md:block"
+      className="absolute top-8 right-8 hidden w-[420px] max-w-[42%] opacity-40 md:block"
     >
       <line x1="60" y1="140" x2="320" y2="86" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
       <line x1="60" y1="140" x2="300" y2="214" stroke="#f59e0b" strokeWidth="2" className="bs-dash" />
-      <line x1="320" y1="86" x2="300" y2="214" stroke="#4f7cc4" strokeWidth="2" className="bs-dash" />
+      <line x1="320" y1="86" x2="300" y2="214" stroke="#2f5da6" strokeWidth="2" className="bs-dash" />
       {/* pulserende ringen */}
       <circle cx="60" cy="140" r="12" fill="none" stroke="#f59e0b" strokeWidth="2" className="bs-ping" />
-      <circle cx="320" cy="86" r="10" fill="none" stroke="#ffffff" strokeWidth="2" className="bs-ping" />
+      <circle cx="320" cy="86" r="10" fill="none" stroke="#2f5da6" strokeWidth="2" className="bs-ping" />
       {/* knooppunten */}
       <circle cx="60" cy="140" r="11" fill="#f59e0b" />
-      <circle cx="320" cy="86" r="9" fill="#ffffff" />
-      <circle cx="300" cy="214" r="9" fill="#ffffff" />
+      <circle cx="320" cy="86" r="9" fill="#2f5da6" />
+      <circle cx="300" cy="214" r="9" fill="#2f5da6" />
     </svg>
   );
 }
@@ -236,26 +236,30 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-ink bs-hero-mesh relative overflow-hidden text-white">
+      <section className="bs-hero-aurora text-foreground border-border relative overflow-hidden border-b">
+        {/* Stippen-textuur */}
+        <div aria-hidden className="bs-hero-dots pointer-events-none absolute inset-0" />
         {/* Bewegende sfeerlaag */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div
             className="bs-blob bs-float"
             style={{
-              background: "var(--color-accent-500)",
-              width: "340px",
-              height: "340px",
+              background: "var(--color-accent-400)",
+              opacity: 0.28,
+              width: "320px",
+              height: "320px",
               top: "-90px",
-              right: "-40px",
+              right: "-30px",
             }}
           />
           <div
             className="bs-blob bs-float2"
             style={{
-              background: "var(--color-navy-500)",
-              width: "380px",
-              height: "380px",
-              bottom: "-140px",
+              background: "#7c3aed",
+              opacity: 0.16,
+              width: "360px",
+              height: "360px",
+              bottom: "-150px",
               left: "-70px",
             }}
           />
@@ -265,7 +269,7 @@ export default function HomePage() {
         <Container className="relative z-10 grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
           <div className="max-w-2xl">
             <div className="bs-load" style={{ animationDelay: "0ms" }}>
-              <Badge variant="accent" className="bg-navy-800 text-accent-400">
+              <Badge variant="accent" className="bg-accent-500/15 text-accent-700 border border-accent-500/20">
                 Hét platform voor zzp-werk
               </Badge>
             </div>
@@ -278,7 +282,7 @@ export default function HomePage() {
               <span className="text-accent-500">Op het juiste moment.</span>
             </h1>
             <p
-              className="text-navy-100 bs-load mt-5 text-lg"
+              className="text-foreground-muted bs-load mt-5 text-lg"
               style={{ animationDelay: "160ms" }}
             >
               Vind gecontroleerde zzp’ers voor elke klus, in elke sector. Of
@@ -299,19 +303,18 @@ export default function HomePage() {
                 href="/registreren?rol=zzp"
                 variant="outline"
                 size="lg"
-                className="border-navy-700 hover:bg-navy-800 bg-transparent text-white hover:text-white"
               >
                 Ik zoek een opdracht
               </ButtonLink>
             </div>
             <div
-              className="bs-load text-navy-200 mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm"
+              className="bs-load text-foreground-muted mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm"
               style={{ animationDelay: "320ms" }}
             >
               {["Gratis account", "Geen abonnement", "In elke sector"].map(
                 (chip) => (
                   <span key={chip} className="inline-flex items-center gap-1.5">
-                    <span className="text-accent-400" aria-hidden>
+                    <span className="text-accent-600" aria-hidden>
                       ✓
                     </span>
                     {chip}
