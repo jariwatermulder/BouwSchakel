@@ -26,8 +26,8 @@ export default async function ZzpGesprekPage({
         conversationId={conversation.id}
         currentUserId={user.id}
         tegenpartij={conversation.company.naam || "Bedrijf"}
-        jobTitel={conversation.job.titel}
-        skillNaam={conversation.job.skill.naam}
+        jobTitel={conversation.job?.titel}
+        skillNaam={conversation.job?.skill.naam}
         initialMessages={conversation.messages.map((m) => ({
           id: m.id,
           body: m.body,

@@ -51,8 +51,8 @@ export function ConversationView({
   conversationId: string;
   currentUserId: string;
   tegenpartij: string;
-  jobTitel: string;
-  skillNaam: string;
+  jobTitel?: string | null;
+  skillNaam?: string | null;
   initialMessages: ChatBericht[];
 }) {
   const [berichten, setBerichten] = useState<ChatBericht[]>(initialMessages);
@@ -131,7 +131,7 @@ export function ConversationView({
         <div className="min-w-0">
           <p className="truncate font-semibold">{tegenpartij}</p>
           <p className="text-navy-200 truncate text-xs">
-            {jobTitel} · {skillNaam}
+            {jobTitel ? `${jobTitel}${skillNaam ? ` · ${skillNaam}` : ""}` : "Direct contact"}
           </p>
         </div>
       </div>

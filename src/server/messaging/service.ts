@@ -65,16 +65,42 @@ export async function startOrGetConversation(
   });
   if (!d) throw new GeenToegangError();
 
-  return db.conversation.upsert({
-    where: {
-      jobId_companyId_zzpProfileId: {
-        jobId,
-        companyId: job.companyId,
-        zzpProfileId,
-      },
-    },
-    update: {},
-    create: { jobId, companyId: job.companyId, zzpProfileId },
+  const bestaand = await db.conversation.findFirst({
+    where: { jobId, companyId: job.companyId, zzpProfileId },
+  });
+  if (bestaand) return bestaand;
+  return db.conversation.create({
+    data: { jobId, companyId: job.companyId, zzpProfileId },
+  });
+}
+
+/**
+ * Start (of hervat) een direct gesprek tussen een bedrijf en een zzp'er, zónder
+ * opdracht. Alleen bedrijfsleden kunnen dit initiëren.
+ */
+export async function startDirectConversation(
+  userId: string,
+  zzpProfileId: string,
+): Promise<Conversation> {
+  const member = await db.companyMember.findFirst({
+    where: { userId },
+    select: { companyId: true },
+  });
+  if (!member) throw new GeenToegangError();
+
+  const zzp = await db.zZPProfile.findUnique({
+    where: { id: zzpProfileId },
+    select: { id: true },
+  });
+  if (!zzp) throw new GeenToegangError();
+
+  const bestaand = await db.conversation.findFirst({
+    where: { companyId: member.companyId, zzpProfileId, jobId: null },
+  });
+  if (bestaand) return bestaand;
+
+  return db.conversation.create({
+    data: { companyId: member.companyId, zzpProfileId },
   });
 }
 
@@ -116,7 +142,9 @@ export async function sendMessage(
           userId: m.userId,
           type: "NIEUW_BERICHT",
           titel: "Nieuw bericht",
-          tekst: `Nieuw bericht over "${conversation.job.titel}".`,
+          tekst: conversation.job?.titel
+            ? `Nieuw bericht over "${conversation.job.titel}".`
+            : "Je hebt een nieuw bericht.",
           link: `/bedrijven/berichten/${conversationId}`,
         }),
       ),
@@ -126,7 +154,9 @@ export async function sendMessage(
       userId: d.zzpUserId,
       type: "NIEUW_BERICHT",
       titel: "Nieuw bericht",
-      tekst: `Nieuw bericht over "${conversation.job.titel}".`,
+      tekst: conversation.job?.titel
+        ? `Nieuw bericht over "${conversation.job.titel}".`
+        : "Je hebt een nieuw bericht.",
       link: `/zzpers/berichten/${conversationId}`,
     });
   }

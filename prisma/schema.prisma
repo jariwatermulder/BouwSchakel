@@ -534,8 +534,9 @@ model Assignment {
 
 model Conversation {
   id           String     @id @default(uuid())
-  jobId        String
-  job          Job        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  // Optioneel: een gesprek kan bij een opdracht horen óf direct contact zijn.
+  jobId        String?
+  job          Job?       @relation(fields: [jobId], references: [id], onDelete: Cascade)
   companyId    String
   company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   zzpProfileId String
@@ -545,7 +546,7 @@ model Conversation {
   createdAt      DateTime @default(now())
   laatsteBericht DateTime @default(now())
 
-  @@unique([jobId, companyId, zzpProfileId])
+  @@index([companyId, zzpProfileId])
   @@index([companyId])
   @@index([zzpProfileId])
 }

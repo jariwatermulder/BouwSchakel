@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
+  { href: "/vind-zzper", label: "Vind een zzp'er" },
   { href: "/opdrachten", label: "Opdrachten" },
   { href: "/hoe-het-werkt", label: "Hoe het werkt" },
   { href: "/zzpers", label: "Voor ZZP'ers" },

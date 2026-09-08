@@ -45,7 +45,9 @@ export function ConversationList({
                     ) : null}
                   </div>
                   <CardDescription>
-                    Over: {c.job.titel} · {c.job.skill.naam}
+                    {c.job
+                      ? `Over: ${c.job.titel} · ${c.job.skill.naam}`
+                      : "Direct contact"}
                   </CardDescription>
                 </div>
               </Card>
