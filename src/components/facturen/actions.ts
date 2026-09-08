@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import {
   createFactuur,
+  dupliceerFactuur,
   setFactuurStatus,
   verstuurFactuur,
 } from "@/server/facturen/service";
@@ -14,15 +15,16 @@ export type FactuurFormState = { error?: string };
 
 const BASISPADEN = ["/zzpers/facturen", "/bedrijven/facturen"] as const;
 type Basispad = (typeof BASISPADEN)[number];
-
 function veiligPad(v: unknown): Basispad {
   return BASISPADEN.includes(v as Basispad) ? (v as Basispad) : "/zzpers/facturen";
 }
 
 const regelSchema = z.object({
   omschrijving: z.string().max(300),
-  aantal: z.number().min(0).max(100000),
-  tarief: z.number().min(0).max(1000000), // euro
+  aantal: z.number().min(0).max(1000000),
+  eenheid: z.string().max(30).nullable().optional(),
+  tarief: z.number().min(-1000000).max(1000000),
+  btw: z.number(),
 });
 
 const inputSchema = z.object({
@@ -30,6 +32,9 @@ const inputSchema = z.object({
   factuurnummer: z.string().min(1).max(40),
   factuurdatum: z.string().min(1),
   vervaldatum: z.string().optional(),
+  betaaltermijnDagen: z.string().optional(),
+  betaalreferentie: z.string().max(60).optional(),
+  btwVerlegd: z.string().optional(),
   afzenderNaam: z.string().min(1).max(160),
   afzenderAdres: z.string().max(200).optional(),
   afzenderPostcode: z.string().max(20).optional(),
@@ -38,21 +43,25 @@ const inputSchema = z.object({
   afzenderBtwId: z.string().max(40).optional(),
   afzenderIban: z.string().max(40).optional(),
   afzenderEmail: z.string().max(160).optional(),
+  afzenderTelefoon: z.string().max(40).optional(),
+  afzenderWebsite: z.string().max(120).optional(),
   klantNaam: z.string().min(1).max(160),
+  klantContactpersoon: z.string().max(120).optional(),
   klantAdres: z.string().max(200).optional(),
   klantPostcode: z.string().max(20).optional(),
   klantPlaats: z.string().max(100).optional(),
   klantEmail: z.string().max(160).optional(),
   klantKvk: z.string().max(40).optional(),
-  btwPercentage: z.number(),
+  klantBtwId: z.string().max(40).optional(),
   opmerking: z.string().max(1000).optional(),
-  lines: z.array(regelSchema).min(1).max(50),
+  lines: z.array(regelSchema).min(1).max(80),
 });
 
-function datumUitString(s: string): Date | null {
+function datumUit(s: string): Date | null {
   const d = new Date(s);
   return Number.isNaN(d.getTime()) ? null : d;
 }
+const s = (fd: FormData, k: string) => (fd.get(k) as string) || undefined;
 
 export async function createFactuurAction(
   _prev: FactuurFormState,
@@ -63,39 +72,43 @@ export async function createFactuurAction(
 
   let parsed: z.infer<typeof inputSchema>;
   try {
-    const raw = {
-      assignmentId: (formData.get("assignmentId") as string) || undefined,
+    parsed = inputSchema.parse({
+      assignmentId: s(formData, "assignmentId"),
       factuurnummer: formData.get("factuurnummer"),
       factuurdatum: formData.get("factuurdatum"),
-      vervaldatum: (formData.get("vervaldatum") as string) || undefined,
+      vervaldatum: s(formData, "vervaldatum"),
+      betaaltermijnDagen: s(formData, "betaaltermijnDagen"),
+      betaalreferentie: s(formData, "betaalreferentie"),
+      btwVerlegd: s(formData, "btwVerlegd"),
       afzenderNaam: formData.get("afzenderNaam"),
-      afzenderAdres: (formData.get("afzenderAdres") as string) || undefined,
-      afzenderPostcode: (formData.get("afzenderPostcode") as string) || undefined,
-      afzenderPlaats: (formData.get("afzenderPlaats") as string) || undefined,
-      afzenderKvk: (formData.get("afzenderKvk") as string) || undefined,
-      afzenderBtwId: (formData.get("afzenderBtwId") as string) || undefined,
-      afzenderIban: (formData.get("afzenderIban") as string) || undefined,
-      afzenderEmail: (formData.get("afzenderEmail") as string) || undefined,
+      afzenderAdres: s(formData, "afzenderAdres"),
+      afzenderPostcode: s(formData, "afzenderPostcode"),
+      afzenderPlaats: s(formData, "afzenderPlaats"),
+      afzenderKvk: s(formData, "afzenderKvk"),
+      afzenderBtwId: s(formData, "afzenderBtwId"),
+      afzenderIban: s(formData, "afzenderIban"),
+      afzenderEmail: s(formData, "afzenderEmail"),
+      afzenderTelefoon: s(formData, "afzenderTelefoon"),
+      afzenderWebsite: s(formData, "afzenderWebsite"),
       klantNaam: formData.get("klantNaam"),
-      klantAdres: (formData.get("klantAdres") as string) || undefined,
-      klantPostcode: (formData.get("klantPostcode") as string) || undefined,
-      klantPlaats: (formData.get("klantPlaats") as string) || undefined,
-      klantEmail: (formData.get("klantEmail") as string) || undefined,
-      klantKvk: (formData.get("klantKvk") as string) || undefined,
-      btwPercentage: Number(formData.get("btwPercentage") ?? 21),
-      opmerking: (formData.get("opmerking") as string) || undefined,
+      klantContactpersoon: s(formData, "klantContactpersoon"),
+      klantAdres: s(formData, "klantAdres"),
+      klantPostcode: s(formData, "klantPostcode"),
+      klantPlaats: s(formData, "klantPlaats"),
+      klantEmail: s(formData, "klantEmail"),
+      klantKvk: s(formData, "klantKvk"),
+      klantBtwId: s(formData, "klantBtwId"),
+      opmerking: s(formData, "opmerking"),
       lines: JSON.parse((formData.get("linesJson") as string) || "[]"),
-    };
-    parsed = inputSchema.parse(raw);
+    });
   } catch {
     return { error: "Controleer de ingevulde gegevens en probeer opnieuw." };
   }
 
-  const factuurdatum = datumUitString(parsed.factuurdatum);
+  const factuurdatum = datumUit(parsed.factuurdatum);
   if (!factuurdatum) return { error: "Ongeldige factuurdatum." };
-  const vervaldatum = parsed.vervaldatum
-    ? datumUitString(parsed.vervaldatum)
-    : null;
+  const vervaldatum = parsed.vervaldatum ? datumUit(parsed.vervaldatum) : null;
+  const termijn = parsed.betaaltermijnDagen ? Number(parsed.betaaltermijnDagen) : null;
 
   let id: string;
   try {
@@ -104,6 +117,9 @@ export async function createFactuurAction(
       factuurnummer: parsed.factuurnummer,
       factuurdatum,
       vervaldatum,
+      betaaltermijnDagen: termijn != null && !Number.isNaN(termijn) ? termijn : null,
+      betaalreferentie: parsed.betaalreferentie ?? null,
+      btwVerlegd: parsed.btwVerlegd === "1",
       afzenderNaam: parsed.afzenderNaam,
       afzenderAdres: parsed.afzenderAdres ?? null,
       afzenderPostcode: parsed.afzenderPostcode ?? null,
@@ -112,18 +128,23 @@ export async function createFactuurAction(
       afzenderBtwId: parsed.afzenderBtwId ?? null,
       afzenderIban: parsed.afzenderIban ?? null,
       afzenderEmail: parsed.afzenderEmail ?? null,
+      afzenderTelefoon: parsed.afzenderTelefoon ?? null,
+      afzenderWebsite: parsed.afzenderWebsite ?? null,
       klantNaam: parsed.klantNaam,
+      klantContactpersoon: parsed.klantContactpersoon ?? null,
       klantAdres: parsed.klantAdres ?? null,
       klantPostcode: parsed.klantPostcode ?? null,
       klantPlaats: parsed.klantPlaats ?? null,
       klantEmail: parsed.klantEmail ?? null,
       klantKvk: parsed.klantKvk ?? null,
-      btwPercentage: parsed.btwPercentage,
+      klantBtwId: parsed.klantBtwId ?? null,
       opmerking: parsed.opmerking ?? null,
       lines: parsed.lines.map((r) => ({
         omschrijving: r.omschrijving,
         aantal: r.aantal,
+        eenheid: r.eenheid ?? null,
         tariefCents: Math.round(r.tarief * 100),
+        btwPercentage: r.btw,
       })),
     });
   } catch {
@@ -133,7 +154,14 @@ export async function createFactuurAction(
   redirect(`${basisPad}/${id}`);
 }
 
-const STATUSSEN = ["CONCEPT", "VERSTUURD", "BETAALD"] as const;
+const STATUSSEN = [
+  "CONCEPT",
+  "VERSTUURD",
+  "GEOPEND",
+  "BETAALD",
+  "TE_LAAT",
+  "GEANNULEERD",
+] as const;
 
 export async function setStatusAction(formData: FormData): Promise<void> {
   const user = await requireCurrentUser();
@@ -141,7 +169,6 @@ export async function setStatusAction(formData: FormData): Promise<void> {
   const status = String(formData.get("status") ?? "");
   const basisPad = veiligPad(formData.get("basisPad"));
   if (!id || !STATUSSEN.includes(status as (typeof STATUSSEN)[number])) return;
-
   await setFactuurStatus(user.id, id, status as (typeof STATUSSEN)[number]);
   revalidatePath(`${basisPad}/${id}`);
   revalidatePath(basisPad);
@@ -152,11 +179,21 @@ export async function verstuurFactuurAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   const basisPad = veiligPad(formData.get("basisPad"));
   if (!id) return;
-
   const res = await verstuurFactuur(user.id, id);
   revalidatePath(`${basisPad}/${id}`);
   revalidatePath(basisPad);
   redirect(
     `${basisPad}/${id}?${res.ok ? "verstuurd=1" : `fout=${encodeURIComponent(res.error ?? "")}`}`,
   );
+}
+
+export async function dupliceerFactuurAction(formData: FormData): Promise<void> {
+  const user = await requireCurrentUser();
+  const id = String(formData.get("id") ?? "");
+  const basisPad = veiligPad(formData.get("basisPad"));
+  if (!id) return;
+  const nieuwId = await dupliceerFactuur(user.id, id);
+  revalidatePath(basisPad);
+  if (nieuwId) redirect(`${basisPad}/${nieuwId}`);
+  redirect(`${basisPad}/${id}`);
 }

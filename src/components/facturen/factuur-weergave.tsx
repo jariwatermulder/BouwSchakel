@@ -1,55 +1,17 @@
-import Link from "next/link";
 import type { ZzpInvoice, ZzpInvoiceLine } from "@prisma/client";
-import { formatEuro } from "@/lib/utils";
-import { setStatusAction, verstuurFactuurAction } from "./actions";
+import { STATUS_META } from "@/lib/factuur";
+import { FactuurDocument } from "./factuur-document";
+import { PrintKnop } from "./print-knop";
+import {
+  dupliceerFactuurAction,
+  setStatusAction,
+  verstuurFactuurAction,
+} from "./actions";
 
 type Factuur = ZzpInvoice & { lines: ZzpInvoiceLine[] };
 
-const STATUS_LABEL: Record<string, string> = {
-  CONCEPT: "Concept",
-  VERSTUURD: "Verstuurd",
-  BETAALD: "Betaald",
-};
-const STATUS_STIJL: Record<string, string> = {
-  CONCEPT: "bg-surface-muted text-foreground-muted border-border",
-  VERSTUURD: "bg-navy-50 text-navy-700 border-navy-200",
-  BETAALD: "bg-emerald-50 text-emerald-700 border-emerald-200",
-};
-
-function datum(d: Date): string {
-  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "long" }).format(d);
-}
-
-function Adres({
-  naam,
-  adres,
-  postcode,
-  plaats,
-  extra,
-}: {
-  naam: string;
-  adres?: string | null;
-  postcode?: string | null;
-  plaats?: string | null;
-  extra?: (string | null)[];
-}) {
-  return (
-    <address className="text-foreground-muted mt-1 text-sm not-italic">
-      <span className="text-foreground block font-semibold">{naam}</span>
-      {adres ? <span className="block">{adres}</span> : null}
-      {postcode || plaats ? (
-        <span className="block">{[postcode, plaats].filter(Boolean).join(" ")}</span>
-      ) : null}
-      {(extra ?? [])
-        .filter((v): v is string => Boolean(v))
-        .map((v) => (
-          <span key={v} className="block">
-            {v}
-          </span>
-        ))}
-    </address>
-  );
-}
+const knopSecundair =
+  "border-border bg-surface hover:border-navy-300 inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold transition";
 
 export function FactuurWeergave({
   factuur: f,
@@ -62,60 +24,60 @@ export function FactuurWeergave({
   verstuurd?: boolean;
   fout?: string;
 }) {
+  const statusOpties = Object.entries(STATUS_META);
+
   return (
     <>
-      <Link
-        href={basisPad}
-        className="text-foreground-muted hover:text-foreground text-sm"
-      >
-        ← Terug naar facturen
-      </Link>
-
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <span
-          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${STATUS_STIJL[f.status]}`}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <a
+          href={basisPad}
+          className="text-foreground-muted hover:text-foreground text-sm"
         >
-          {STATUS_LABEL[f.status]}
-        </span>
-        <div className="ml-auto flex flex-wrap items-center gap-2">
+          ← Terug naar facturen
+        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Statusbeheer */}
+          <form action={setStatusAction} className="flex items-center gap-2">
+            <input type="hidden" name="id" value={f.id} />
+            <input type="hidden" name="basisPad" value={basisPad} />
+            <select
+              name="status"
+              defaultValue={f.status}
+              className="border-border bg-surface h-10 rounded-full border px-3 text-sm font-medium"
+              aria-label="Status"
+            >
+              {statusOpties.map(([waarde, meta]) => (
+                <option key={waarde} value={waarde}>
+                  {meta.label}
+                </option>
+              ))}
+            </select>
+            <button type="submit" className={knopSecundair}>
+              Bijwerken
+            </button>
+          </form>
+
+          <form action={dupliceerFactuurAction}>
+            <input type="hidden" name="id" value={f.id} />
+            <input type="hidden" name="basisPad" value={basisPad} />
+            <button type="submit" className={knopSecundair}>
+              Dupliceren
+            </button>
+          </form>
+
           <form action={verstuurFactuurAction}>
             <input type="hidden" name="id" value={f.id} />
             <input type="hidden" name="basisPad" value={basisPad} />
-            <button
-              type="submit"
-              className="border-border bg-surface hover:border-navy-300 inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold"
-            >
+            <button type="submit" className={knopSecundair}>
               Verstuur naar klant
             </button>
           </form>
-          {f.status !== "BETAALD" ? (
-            <form action={setStatusAction}>
-              <input type="hidden" name="id" value={f.id} />
-              <input type="hidden" name="basisPad" value={basisPad} />
-              <input type="hidden" name="status" value="BETAALD" />
-              <button
-                type="submit"
-                className="inline-flex h-10 items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
-              >
-                Markeer als betaald
-              </button>
-            </form>
-          ) : (
-            <form action={setStatusAction}>
-              <input type="hidden" name="id" value={f.id} />
-              <input type="hidden" name="basisPad" value={basisPad} />
-              <input type="hidden" name="status" value="VERSTUURD" />
-              <button
-                type="submit"
-                className="border-border bg-surface text-foreground-muted hover:border-navy-300 inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold"
-              >
-                Heropenen
-              </button>
-            </form>
-          )}
+
+          <PrintKnop className={knopSecundair} />
+
           <a
             href={`${basisPad}/${f.id}/pdf`}
-            className="bg-accent-500 text-ink inline-flex h-10 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+            className="bg-accent-500 text-ink inline-flex h-10 items-center rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
           >
             Download PDF
           </a>
@@ -133,132 +95,50 @@ export function FactuurWeergave({
         </div>
       ) : null}
 
-      <div className="border-border bg-surface shadow-soft mt-5 overflow-hidden rounded-[var(--radius-card)] border">
-        <div className="flex items-start justify-between px-6 pt-7 pb-2 sm:px-8">
-          <div className="flex items-center gap-2">
-            <span className="bg-accent-500 text-ink flex h-7 w-7 items-center justify-center rounded-md text-xs font-black">
-              ZC
-            </span>
-            <span className="font-bold">ZZP Connect</span>
-          </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold tracking-tight">Factuur</p>
-            <p className="text-foreground-muted mt-1 text-sm">
-              Nr. {f.factuurnummer}
-            </p>
-          </div>
-        </div>
-
-        <div className="px-6 pb-6 sm:px-8 sm:pb-8">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div>
-              <p className="text-foreground-muted text-xs font-semibold uppercase tracking-wide">
-                Van
-              </p>
-              <Adres
-                naam={f.afzenderNaam}
-                adres={f.afzenderAdres}
-                postcode={f.afzenderPostcode}
-                plaats={f.afzenderPlaats}
-                extra={[
-                  f.afzenderEmail,
-                  f.afzenderKvk ? `KvK: ${f.afzenderKvk}` : null,
-                  f.afzenderBtwId ? `Btw-id: ${f.afzenderBtwId}` : null,
-                ]}
-              />
-            </div>
-            <div>
-              <p className="text-foreground-muted text-xs font-semibold uppercase tracking-wide">
-                Aan
-              </p>
-              <Adres
-                naam={f.klantNaam}
-                adres={f.klantAdres}
-                postcode={f.klantPostcode}
-                plaats={f.klantPlaats}
-                extra={[f.klantEmail, f.klantKvk ? `KvK: ${f.klantKvk}` : null]}
-              />
-            </div>
-          </div>
-
-          <div className="text-foreground-muted mt-6 flex flex-wrap gap-x-8 gap-y-1 text-sm">
-            <span>Factuurdatum: {datum(f.factuurdatum)}</span>
-            {f.vervaldatum ? <span>Vervaldatum: {datum(f.vervaldatum)}</span> : null}
-          </div>
-
-          <div className="mt-8 overflow-x-auto">
-            <table className="w-full min-w-[420px] text-sm">
-              <thead>
-                <tr className="border-border text-foreground-muted border-b">
-                  <th className="px-3 pb-2 text-left text-xs font-semibold tracking-wide uppercase">
-                    Omschrijving
-                  </th>
-                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
-                    Aantal
-                  </th>
-                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
-                    Tarief
-                  </th>
-                  <th className="px-3 pb-2 text-right text-xs font-semibold tracking-wide uppercase">
-                    Bedrag
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {f.lines.map((r) => (
-                  <tr key={r.id}>
-                    <td className="text-foreground px-3 pt-3">{r.omschrijving}</td>
-                    <td className="text-foreground-muted px-3 pt-3 text-right tabular-nums">
-                      {Number.isInteger(r.aantal) ? r.aantal : r.aantal.toFixed(2)}
-                    </td>
-                    <td className="text-foreground-muted px-3 pt-3 text-right tabular-nums">
-                      {formatEuro(r.tariefCents)}
-                    </td>
-                    <td className="text-foreground px-3 pt-3 text-right tabular-nums">
-                      {formatEuro(r.bedragCents)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="border-border mt-4 border-t" />
-
-          <div className="mt-4 flex justify-end">
-            <dl className="w-full max-w-xs space-y-1.5 text-sm">
-              <div className="flex justify-between">
-                <dt className="text-foreground-muted">Subtotaal</dt>
-                <dd className="tabular-nums">{formatEuro(f.subtotaalCents)}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-foreground-muted">Btw ({f.btwPercentage}%)</dt>
-                <dd className="tabular-nums">{formatEuro(f.btwCents)}</dd>
-              </div>
-              <div className="border-border mt-1 flex justify-between border-t pt-2">
-                <dt className="font-semibold">Totaal</dt>
-                <dd className="text-lg font-bold tabular-nums">
-                  {formatEuro(f.totaalCents)}
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          {f.afzenderIban ? (
-            <p className="text-foreground-muted mt-6 text-sm">
-              Gelieve te betalen op <strong className="text-foreground">IBAN {f.afzenderIban}</strong> t.n.v. {f.afzenderNaam}.
-            </p>
-          ) : null}
-          {f.opmerking ? (
-            <p className="text-foreground-muted mt-2 text-sm">{f.opmerking}</p>
-          ) : null}
-        </div>
+      <div className="mt-5">
+        <FactuurDocument
+          data={{
+            factuurnummer: f.factuurnummer,
+            status: f.status,
+            factuurdatum: f.factuurdatum,
+            vervaldatum: f.vervaldatum,
+            betaaltermijnDagen: f.betaaltermijnDagen,
+            betaalreferentie: f.betaalreferentie,
+            btwVerlegd: f.btwVerlegd,
+            afzender: {
+              naam: f.afzenderNaam,
+              adres: f.afzenderAdres,
+              postcode: f.afzenderPostcode,
+              plaats: f.afzenderPlaats,
+              kvk: f.afzenderKvk,
+              btwId: f.afzenderBtwId,
+              iban: f.afzenderIban,
+              email: f.afzenderEmail,
+              telefoon: f.afzenderTelefoon,
+              website: f.afzenderWebsite,
+            },
+            klant: {
+              naam: f.klantNaam,
+              contactpersoon: f.klantContactpersoon,
+              adres: f.klantAdres,
+              postcode: f.klantPostcode,
+              plaats: f.klantPlaats,
+              kvk: f.klantKvk,
+              btwId: f.klantBtwId,
+              email: f.klantEmail,
+            },
+            regels: f.lines.map((l) => ({
+              omschrijving: l.omschrijving,
+              aantal: l.aantal,
+              eenheid: l.eenheid,
+              tariefCents: l.tariefCents,
+              btwPercentage: l.btwPercentage,
+              bedragCents: l.bedragCents,
+            })),
+            opmerking: f.opmerking,
+          }}
+        />
       </div>
-
-      <p className="text-foreground-muted mt-4 text-center text-xs">
-        Opgemaakt met ZZP Connect. Deze factuur is een hulpmiddel; controleer
-        zelf de fiscale juistheid.
-      </p>
     </>
   );
 }

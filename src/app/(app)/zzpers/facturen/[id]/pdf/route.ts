@@ -1,5 +1,6 @@
 import { requireCurrentUser } from "@/lib/auth/current-user";
-import { getFactuur, factuurNaarPdfData } from "@/server/facturen/service";
+import { getFactuur } from "@/server/facturen/service";
+import { factuurNaarPdfData } from "@/server/facturen/mapper";
 import { genereerFactuurPdf } from "@/server/facturen/pdf";
 
 export const runtime = "nodejs";

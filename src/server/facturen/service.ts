@@ -2,18 +2,22 @@ import "server-only";
 import type { Prisma, ZzpInvoiceStatus } from "@prisma/client";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email/send";
-import { genereerFactuurPdf, type FactuurPdfData } from "./pdf";
+import { berekenTotalen, regelBedragCents } from "@/lib/factuur";
+import { genereerFactuurPdf } from "./pdf";
+import { factuurNaarPdfData } from "./mapper";
 
 /**
- * Facturenmodule: zzp'ers én bedrijven kunnen eigen facturen opmaken, opslaan,
- * mailen en als PDF downloaden (in ZZP Connect-huisstijl). Afzender- en
- * klantgegevens worden als momentopname op de factuur bewaard.
+ * Facturenmodule: zzp'ers én bedrijven maken eigen facturen (opmaken, opslaan,
+ * dupliceren, mailen, PDF). Afzender/klant worden als momentopname bewaard;
+ * bedragen worden per btw-tarief berekend.
  */
 
 export type FactuurRegelInput = {
   omschrijving: string;
   aantal: number;
+  eenheid?: string | null;
   tariefCents: number;
+  btwPercentage: number;
 };
 
 export type FactuurInput = {
@@ -21,6 +25,9 @@ export type FactuurInput = {
   factuurnummer: string;
   factuurdatum: Date;
   vervaldatum?: Date | null;
+  betaaltermijnDagen?: number | null;
+  betaalreferentie?: string | null;
+  btwVerlegd: boolean;
   afzenderNaam: string;
   afzenderAdres?: string | null;
   afzenderPostcode?: string | null;
@@ -29,18 +36,20 @@ export type FactuurInput = {
   afzenderBtwId?: string | null;
   afzenderIban?: string | null;
   afzenderEmail?: string | null;
+  afzenderTelefoon?: string | null;
+  afzenderWebsite?: string | null;
   klantNaam: string;
+  klantContactpersoon?: string | null;
   klantAdres?: string | null;
   klantPostcode?: string | null;
   klantPlaats?: string | null;
   klantEmail?: string | null;
   klantKvk?: string | null;
-  btwPercentage: number;
+  klantBtwId?: string | null;
   opmerking?: string | null;
   lines: FactuurRegelInput[];
 };
 
-/** Een factuur is van deze gebruiker als hij van zijn zzp-profiel óf zijn bedrijf is. */
 function eigenaarWhere(userId: string): Prisma.ZzpInvoiceWhereInput {
   return {
     OR: [
@@ -76,6 +85,8 @@ export type FactuurContext = {
     btwId: string;
     iban: string;
     email: string;
+    telefoon: string;
+    website: string;
   };
   assignments: {
     id: string;
@@ -86,7 +97,10 @@ export type FactuurContext = {
   }[];
 };
 
-/** Context voor het factuurformulier: voorinvulling, opdrachten en een voorgesteld nummer. */
+function voorstelNummer(jaar: number, aantalDitJaar: number): string {
+  return `ZPC-${jaar}-${String(aantalDitJaar + 1).padStart(4, "0")}`;
+}
+
 export async function getFactuurContext(
   userId: string,
   email: string,
@@ -99,14 +113,13 @@ export async function getFactuurContext(
     eig.kind === "zzp"
       ? { zzpProfileId: eig.zzpProfileId }
       : { companyId: eig.companyId };
-
   const aantalDitJaar = await db.zzpInvoice.count({
     where: {
       ...ownerFilter,
       factuurdatum: { gte: new Date(jaar, 0, 1), lt: new Date(jaar + 1, 0, 1) },
     },
   });
-  const voorstelNummer = `${jaar}-${String(aantalDitJaar + 1).padStart(3, "0")}`;
+  const nummer = voorstelNummer(jaar, aantalDitJaar);
 
   if (eig.kind === "zzp") {
     const p = await db.zZPProfile.findUnique({ where: { userId } });
@@ -125,7 +138,7 @@ export async function getFactuurContext(
       "";
     return {
       kind: "zzp",
-      voorstelNummer,
+      voorstelNummer: nummer,
       afzender: {
         naam,
         adres: p?.adres ?? "",
@@ -135,6 +148,8 @@ export async function getFactuurContext(
         btwId: p?.btwId ?? "",
         iban: p?.iban ?? "",
         email,
+        telefoon: p?.telefoon ?? "",
+        website: "",
       },
       assignments: assignments.map((a) => ({
         id: a.id,
@@ -151,11 +166,10 @@ export async function getFactuurContext(
     };
   }
 
-  // Bedrijf: vrije factuur (geen opdracht-koppeling); prefill uit bedrijfsprofiel.
   const c = await db.company.findUnique({ where: { id: eig.companyId } });
   return {
     kind: "company",
-    voorstelNummer,
+    voorstelNummer: nummer,
     afzender: {
       naam: c?.naam ?? "",
       adres: c?.adres ?? "",
@@ -165,6 +179,8 @@ export async function getFactuurContext(
       btwId: c?.btwId ?? "",
       iban: c?.iban ?? "",
       email,
+      telefoon: c?.telefoon ?? "",
+      website: c?.website ?? "",
     },
     assignments: [],
   };
@@ -184,7 +200,7 @@ export async function getFactuur(userId: string, id: string) {
   });
 }
 
-type FactuurMetRegels = NonNullable<Awaited<ReturnType<typeof getFactuur>>>;
+export type FactuurMetRegels = NonNullable<Awaited<ReturnType<typeof getFactuur>>>;
 
 export async function setFactuurStatus(
   userId: string,
@@ -198,7 +214,16 @@ export async function setFactuurStatus(
   return res.count > 0;
 }
 
-/** Maakt een factuur aan, berekent de bedragen en onthoudt afzendergegevens (zzp). */
+function bewaarAfzender(input: FactuurInput) {
+  return {
+    adres: input.afzenderAdres || undefined,
+    postcode: input.afzenderPostcode || undefined,
+    plaats: input.afzenderPlaats || undefined,
+    iban: input.afzenderIban || undefined,
+    btwId: input.afzenderBtwId || undefined,
+  };
+}
+
 export async function createFactuur(
   userId: string,
   input: FactuurInput,
@@ -211,19 +236,18 @@ export async function createFactuur(
     .map((r, i) => ({
       omschrijving: r.omschrijving.trim(),
       aantal: r.aantal,
+      eenheid: r.eenheid || null,
       tariefCents: r.tariefCents,
-      bedragCents: Math.round(r.aantal * r.tariefCents),
+      btwPercentage: input.btwVerlegd ? 0 : r.btwPercentage,
+      bedragCents: regelBedragCents(r.aantal, r.tariefCents),
       volgorde: i,
     }));
-
   if (regels.length === 0) throw new Error("Voeg minstens één regel toe.");
 
-  const subtotaalCents = regels.reduce((s, r) => s + r.bedragCents, 0);
-  const btwPercentage = [0, 9, 21].includes(input.btwPercentage)
-    ? input.btwPercentage
-    : 21;
-  const btwCents = Math.round((subtotaalCents * btwPercentage) / 100);
-  const totaalCents = subtotaalCents + btwCents;
+  const totalen = berekenTotalen(
+    regels.map((r) => ({ bedragCents: r.bedragCents, btwPercentage: r.btwPercentage })),
+    input.btwVerlegd,
+  );
 
   const factuur = await db.zzpInvoice.create({
     data: {
@@ -233,6 +257,9 @@ export async function createFactuur(
       factuurnummer: input.factuurnummer.trim(),
       factuurdatum: input.factuurdatum,
       vervaldatum: input.vervaldatum ?? null,
+      betaaltermijnDagen: input.betaaltermijnDagen ?? null,
+      betaalreferentie: input.betaalreferentie || input.factuurnummer.trim(),
+      btwVerlegd: input.btwVerlegd,
       afzenderNaam: input.afzenderNaam.trim(),
       afzenderAdres: input.afzenderAdres || null,
       afzenderPostcode: input.afzenderPostcode || null,
@@ -241,34 +268,30 @@ export async function createFactuur(
       afzenderBtwId: input.afzenderBtwId || null,
       afzenderIban: input.afzenderIban || null,
       afzenderEmail: input.afzenderEmail || null,
+      afzenderTelefoon: input.afzenderTelefoon || null,
+      afzenderWebsite: input.afzenderWebsite || null,
       klantNaam: input.klantNaam.trim(),
+      klantContactpersoon: input.klantContactpersoon || null,
       klantAdres: input.klantAdres || null,
       klantPostcode: input.klantPostcode || null,
       klantPlaats: input.klantPlaats || null,
       klantEmail: input.klantEmail || null,
       klantKvk: input.klantKvk || null,
-      btwPercentage,
-      subtotaalCents,
-      btwCents,
-      totaalCents,
+      klantBtwId: input.klantBtwId || null,
+      btwPercentage: regels[0]?.btwPercentage ?? 21,
+      subtotaalCents: totalen.subtotaalCents,
+      btwCents: totalen.btwCents,
+      totaalCents: totalen.totaalCents,
       opmerking: input.opmerking || null,
       lines: { create: regels },
     },
   });
 
-  // Afzendergegevens onthouden voor de volgende factuur (best-effort).
-  const bewaar = {
-    adres: input.afzenderAdres || undefined,
-    postcode: input.afzenderPostcode || undefined,
-    plaats: input.afzenderPlaats || undefined,
-    iban: input.afzenderIban || undefined,
-    btwId: input.afzenderBtwId || undefined,
-  };
   try {
     if (eig.kind === "zzp") {
-      await db.zZPProfile.update({ where: { id: eig.zzpProfileId }, data: bewaar });
+      await db.zZPProfile.update({ where: { id: eig.zzpProfileId }, data: bewaarAfzender(input) });
     } else {
-      await db.company.update({ where: { id: eig.companyId }, data: bewaar });
+      await db.company.update({ where: { id: eig.companyId }, data: bewaarAfzender(input) });
     }
   } catch {
     // niet kritiek
@@ -277,38 +300,81 @@ export async function createFactuur(
   return factuur.id;
 }
 
-/** Bouwt de PDF-gegevens uit een opgeslagen factuur. */
-export function factuurNaarPdfData(f: FactuurMetRegels): FactuurPdfData {
-  return {
-    factuurnummer: f.factuurnummer,
-    factuurdatum: f.factuurdatum,
-    vervaldatum: f.vervaldatum,
-    afzenderNaam: f.afzenderNaam,
-    afzenderAdres: f.afzenderAdres,
-    afzenderPostcode: f.afzenderPostcode,
-    afzenderPlaats: f.afzenderPlaats,
-    afzenderKvk: f.afzenderKvk,
-    afzenderBtwId: f.afzenderBtwId,
-    afzenderIban: f.afzenderIban,
-    afzenderEmail: f.afzenderEmail,
-    klantNaam: f.klantNaam,
-    klantAdres: f.klantAdres,
-    klantPostcode: f.klantPostcode,
-    klantPlaats: f.klantPlaats,
-    klantEmail: f.klantEmail,
-    klantKvk: f.klantKvk,
-    btwPercentage: f.btwPercentage,
-    subtotaalCents: f.subtotaalCents,
-    btwCents: f.btwCents,
-    totaalCents: f.totaalCents,
-    opmerking: f.opmerking,
-    lines: f.lines,
-  };
+/** Dupliceert een factuur als nieuw concept met een nieuw nummer en datum. */
+export async function dupliceerFactuur(
+  userId: string,
+  id: string,
+): Promise<string | null> {
+  const bron = await getFactuur(userId, id);
+  if (!bron) return null;
+
+  const jaar = new Date().getFullYear();
+  const ownerFilter = bron.zzpProfileId
+    ? { zzpProfileId: bron.zzpProfileId }
+    : { companyId: bron.companyId };
+  const aantalDitJaar = await db.zzpInvoice.count({
+    where: {
+      ...ownerFilter,
+      factuurdatum: { gte: new Date(jaar, 0, 1), lt: new Date(jaar + 1, 0, 1) },
+    },
+  });
+  const nummer = voorstelNummer(jaar, aantalDitJaar);
+
+  const kopie = await db.zzpInvoice.create({
+    data: {
+      zzpProfileId: bron.zzpProfileId,
+      companyId: bron.companyId,
+      assignmentId: bron.assignmentId,
+      factuurnummer: nummer,
+      status: "CONCEPT",
+      factuurdatum: new Date(),
+      vervaldatum: bron.betaaltermijnDagen
+        ? new Date(Date.now() + bron.betaaltermijnDagen * 86400000)
+        : bron.vervaldatum,
+      betaaltermijnDagen: bron.betaaltermijnDagen,
+      betaalreferentie: nummer,
+      btwVerlegd: bron.btwVerlegd,
+      afzenderNaam: bron.afzenderNaam,
+      afzenderAdres: bron.afzenderAdres,
+      afzenderPostcode: bron.afzenderPostcode,
+      afzenderPlaats: bron.afzenderPlaats,
+      afzenderKvk: bron.afzenderKvk,
+      afzenderBtwId: bron.afzenderBtwId,
+      afzenderIban: bron.afzenderIban,
+      afzenderEmail: bron.afzenderEmail,
+      afzenderTelefoon: bron.afzenderTelefoon,
+      afzenderWebsite: bron.afzenderWebsite,
+      klantNaam: bron.klantNaam,
+      klantContactpersoon: bron.klantContactpersoon,
+      klantAdres: bron.klantAdres,
+      klantPostcode: bron.klantPostcode,
+      klantPlaats: bron.klantPlaats,
+      klantEmail: bron.klantEmail,
+      klantKvk: bron.klantKvk,
+      klantBtwId: bron.klantBtwId,
+      btwPercentage: bron.btwPercentage,
+      subtotaalCents: bron.subtotaalCents,
+      btwCents: bron.btwCents,
+      totaalCents: bron.totaalCents,
+      opmerking: bron.opmerking,
+      lines: {
+        create: bron.lines.map((l) => ({
+          omschrijving: l.omschrijving,
+          aantal: l.aantal,
+          eenheid: l.eenheid,
+          tariefCents: l.tariefCents,
+          btwPercentage: l.btwPercentage,
+          bedragCents: l.bedragCents,
+          volgorde: l.volgorde,
+        })),
+      },
+    },
+  });
+  return kopie.id;
 }
 
 export type VerstuurResultaat = { ok: boolean; error?: string };
 
-/** Mailt de factuur als PDF-bijlage naar de klant en zet de status op VERSTUURD. */
 export async function verstuurFactuur(
   userId: string,
   id: string,
@@ -316,34 +382,25 @@ export async function verstuurFactuur(
   const f = await getFactuur(userId, id);
   if (!f) return { ok: false, error: "Factuur niet gevonden." };
   if (!f.klantEmail) {
-    return {
-      ok: false,
-      error: "Vul eerst het e-mailadres van de klant in bij de factuur.",
-    };
+    return { ok: false, error: "Vul eerst het e-mailadres van de klant in bij de factuur." };
   }
   if (!process.env.RESEND_API_KEY?.trim()) {
     return {
       ok: false,
-      error:
-        "E-mail versturen is nog niet ingesteld (geen e-mailprovider gekoppeld).",
+      error: "E-mail versturen is nog niet ingesteld (geen e-mailprovider gekoppeld).",
     };
   }
 
   try {
     const pdf = await genereerFactuurPdf(factuurNaarPdfData(f));
     const base64 = Buffer.from(pdf).toString("base64");
-    const bestandsnaam = `factuur-${f.factuurnummer}.pdf`.replace(
-      /[^a-zA-Z0-9.\-]/g,
-      "_",
-    );
+    const bestandsnaam = `factuur-${f.factuurnummer}.pdf`.replace(/[^a-zA-Z0-9.\-]/g, "_");
     await sendEmail({
       to: f.klantEmail,
       subject: `Factuur ${f.factuurnummer} van ${f.afzenderNaam}`,
-      text: `Beste ${f.klantNaam},\n\nIn de bijlage vind je factuur ${f.factuurnummer}${
+      text: `Beste ${f.klantContactpersoon || f.klantNaam},\n\nIn de bijlage vindt u factuur ${f.factuurnummer}${
         f.vervaldatum
-          ? `, te voldoen vóór ${new Intl.DateTimeFormat("nl-NL", {
-              dateStyle: "long",
-            }).format(f.vervaldatum)}`
+          ? `, te voldoen vóór ${new Intl.DateTimeFormat("nl-NL", { dateStyle: "long" }).format(f.vervaldatum)}`
           : ""
       }.\n\nMet vriendelijke groet,\n${f.afzenderNaam}`,
       attachments: [{ filename: bestandsnaam, content: base64 }],
@@ -353,9 +410,6 @@ export async function verstuurFactuur(
     return { ok: false, error: "Versturen mislukt. Probeer het later opnieuw." };
   }
 
-  await db.zzpInvoice.update({
-    where: { id: f.id },
-    data: { status: "VERSTUURD" },
-  });
+  await db.zzpInvoice.update({ where: { id: f.id }, data: { status: "VERSTUURD" } });
   return { ok: true };
 }

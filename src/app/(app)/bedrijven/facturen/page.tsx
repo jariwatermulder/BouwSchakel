@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,17 +6,12 @@ import { ButtonLink } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { listInvoicesForUser } from "@/server/payments/invoices";
 import { listFacturen } from "@/server/facturen/service";
+import { FacturenTabel } from "@/components/facturen/facturen-tabel";
 import { formatEuro } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Facturen",
   robots: { index: false },
-};
-
-const EIGEN_STATUS: Record<string, string> = {
-  CONCEPT: "Concept",
-  VERSTUURD: "Verstuurd",
-  BETAALD: "Betaald",
 };
 
 function datum(d: Date): string {
@@ -54,50 +48,19 @@ export default async function BedrijfFacturenPage() {
           </CardDescription>
         </Card>
       ) : (
-        <div className="border-border mt-6 overflow-x-auto rounded-[var(--radius-card)] border">
-          <table className="w-full min-w-[560px] text-sm">
-            <thead className="bg-surface-muted text-foreground-muted">
-              <tr>
-                <th className="px-4 py-3 text-left font-medium">Nummer</th>
-                <th className="px-4 py-3 text-left font-medium">Klant</th>
-                <th className="px-4 py-3 text-left font-medium">Datum</th>
-                <th className="px-4 py-3 text-right font-medium">Totaal</th>
-                <th className="px-4 py-3 text-left font-medium">Status</th>
-                <th className="px-4 py-3 text-right font-medium">PDF</th>
-              </tr>
-            </thead>
-            <tbody>
-              {eigen.map((f) => (
-                <tr key={f.id} className="border-border border-t">
-                  <td className="px-4 py-3 font-medium">
-                    <Link href={`/bedrijven/facturen/${f.id}`} className="hover:text-accent-600">
-                      {f.factuurnummer}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3">{f.klantNaam}</td>
-                  <td className="text-foreground-muted px-4 py-3">
-                    {datum(f.factuurdatum)}
-                  </td>
-                  <td className="px-4 py-3 text-right font-medium tabular-nums">
-                    {formatEuro(f.totaalCents)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge variant={f.status === "BETAALD" ? "verified" : "neutral"}>
-                      {EIGEN_STATUS[f.status]}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <a
-                      href={`/bedrijven/facturen/${f.id}/pdf`}
-                      className="text-accent-600 font-medium hover:underline"
-                    >
-                      PDF
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="mt-6">
+          <FacturenTabel
+            basisPad="/bedrijven/facturen"
+            facturen={eigen.map((f) => ({
+              id: f.id,
+              nummer: f.factuurnummer,
+              klant: f.klantNaam,
+              datum: f.factuurdatum.toISOString(),
+              vervaldatum: f.vervaldatum ? f.vervaldatum.toISOString() : null,
+              totaalCents: f.totaalCents,
+              status: f.status,
+            }))}
+          />
         </div>
       )}
 

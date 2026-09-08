@@ -771,7 +771,10 @@ model AssistantLog {
 enum ZzpInvoiceStatus {
   CONCEPT
   VERSTUURD
+  GEOPEND
   BETAALD
+  TE_LAAT
+  GEANNULEERD
 }
 
 // Factuur die een zzp'er zelf in de app opmaakt (in ZZP Connect-huisstijl).
@@ -787,10 +790,13 @@ model ZzpInvoice {
   assignmentId String?
   assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
 
-  factuurnummer String
-  status        ZzpInvoiceStatus @default(CONCEPT)
-  factuurdatum  DateTime
-  vervaldatum   DateTime?
+  factuurnummer   String
+  status          ZzpInvoiceStatus @default(CONCEPT)
+  factuurdatum    DateTime
+  vervaldatum     DateTime?
+  betaaltermijnDagen Int?
+  betaalreferentie   String?
+  btwVerlegd         Boolean @default(false)
 
   // Afzender (momentopname)
   afzenderNaam     String
@@ -801,14 +807,18 @@ model ZzpInvoice {
   afzenderBtwId    String?
   afzenderIban     String?
   afzenderEmail    String?
+  afzenderTelefoon String?
+  afzenderWebsite  String?
 
   // Klant
-  klantNaam     String
-  klantAdres    String?
-  klantPostcode String?
-  klantPlaats   String?
-  klantEmail    String?
-  klantKvk      String?
+  klantNaam          String
+  klantContactpersoon String?
+  klantAdres         String?
+  klantPostcode      String?
+  klantPlaats        String?
+  klantEmail         String?
+  klantKvk           String?
+  klantBtwId         String?
 
   btwPercentage  Int    @default(21)
   subtotaalCents Int    @default(0)
@@ -826,14 +836,16 @@ model ZzpInvoice {
 }
 
 model ZzpInvoiceLine {
-  id          String     @id @default(uuid())
-  invoiceId   String
-  invoice     ZzpInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  omschrijving String
-  aantal      Float      @default(1)
-  tariefCents Int        @default(0)
-  bedragCents Int        @default(0)
-  volgorde    Int        @default(0)
+  id            String     @id @default(uuid())
+  invoiceId     String
+  invoice       ZzpInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  omschrijving  String
+  aantal        Float      @default(1)
+  eenheid       String?
+  tariefCents   Int        @default(0)
+  btwPercentage Int        @default(21)
+  bedragCents   Int        @default(0)
+  volgorde      Int        @default(0)
 
   @@index([invoiceId])
 }
