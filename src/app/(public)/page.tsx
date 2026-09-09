@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/reveal";
-import { Icon } from "@/components/home/pictos";
+import { Icon, PersonPortrait } from "@/components/home/pictos";
 import { listPublicJobs } from "@/server/jobs/public";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
@@ -35,11 +35,11 @@ const stappen = [
   },
 ];
 
-const kenmerken = [
+const waarden = [
   {
-    titel: "Slimme matching",
-    tekst: "Elke match komt met een score en uitleg waarom een zzp’er past.",
-    icon: "match" as const,
+    titel: "In elke sector",
+    tekst: "Van bouw en techniek tot zorg, horeca, transport en IT.",
+    icon: "grid" as const,
   },
   {
     titel: "Geverifieerde profielen",
@@ -47,13 +47,13 @@ const kenmerken = [
     icon: "shield" as const,
   },
   {
-    titel: "Jij bepaalt je tarief",
-    tekst: "Zzp’ers stellen zelf hun uurtarief, vak en werkgebied in.",
-    icon: "euro" as const,
+    titel: "Matchscore met uitleg",
+    tekst: "Je ziet altijd waarom iemand past — geen black box.",
+    icon: "match" as const,
   },
   {
     titel: "Direct contact",
-    tekst: "Praat en plan rechtstreeks in het platform, zonder tussenlaag.",
+    tekst: "Rechtstreeks afspraken maken, zonder tussenlaag.",
     icon: "chat" as const,
   },
 ];
@@ -111,43 +111,80 @@ function PreviewKaart() {
   );
 }
 
+/**
+ * Hero-visual: branded paneel met de twee vakmensen en een previewkaart.
+ * Fotoslot: geef een echte foto aan, dan vervangen we dit paneel door een
+ * volledige beeld-hero in bndle-stijl.
+ */
+function HeroVisual() {
+  return (
+    <div className="relative mx-auto w-full max-w-md">
+      <div
+        aria-hidden
+        className="bg-accent-500/20 absolute -inset-6 -z-10 rounded-[2.5rem] blur-2xl"
+      />
+      <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+        <div className="flex items-center gap-3 px-1 pb-4">
+          <div className="flex -space-x-3">
+            <span className="ring-navy-950 h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2">
+              <PersonPortrait variant="opdrachtgever" />
+            </span>
+            <span className="ring-navy-950 h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2">
+              <PersonPortrait variant="zzper" />
+            </span>
+          </div>
+          <p className="text-navy-100 text-sm">
+            Opdrachtgever en zzp’er, direct verbonden
+          </p>
+        </div>
+        <PreviewKaart />
+      </div>
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const klussen = await listPublicJobs(6);
 
   return (
     <>
       {/* Hero */}
-      <section className="bs-hero-aurora text-foreground border-border border-b">
-        <Container className="grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
+      <section className="bg-navy-950 relative overflow-hidden text-white">
+        <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
+        <Container className="relative z-10 grid items-center gap-14 py-16 md:py-24 lg:grid-cols-2">
           <div className="max-w-xl">
-            <Badge
-              variant="accent"
-              className="bg-accent-500/15 text-accent-700 border-accent-500/20 border"
-            >
+            <span className="eyebrow text-accent-400 [&::before]:bg-accent-400">
               Hét platform voor zzp-werk
-            </Badge>
-            <h1 className="mt-5 text-4xl font-extrabold tracking-tight md:text-5xl">
-              De juiste zzp’er.
-              <br />
-              <span className="text-accent-500">Op het juiste moment.</span>
+            </span>
+            <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
+              De juiste zzp’er.{" "}
+              <span className="text-accent-400">Op het juiste moment.</span>
             </h1>
-            <p className="text-foreground-muted mt-5 text-lg">
-              Vind gecontroleerde zzp’ers voor elke klus, in elke sector. Of
-              vind jouw volgende opdracht.
+            <p className="text-navy-100 mt-6 max-w-lg text-lg leading-relaxed">
+              Vind gecontroleerde zzp’ers voor elke klus, in elke sector — of
+              vind jouw volgende opdracht. Direct contact, zonder tussenlaag.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/registreren?rol=bedrijf" variant="accent" size="lg">
                 Ik zoek een zzp’er
               </ButtonLink>
-              <ButtonLink href="/registreren?rol=zzp" variant="outline" size="lg">
-                Ik zoek een opdracht
+              <ButtonLink
+                href="/opdrachten"
+                variant="outline"
+                size="lg"
+                className="border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              >
+                Bekijk opdrachten
               </ButtonLink>
             </div>
-            <div className="text-foreground-muted mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <div className="text-navy-100 mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
               {["Gratis account", "Geen abonnement", "In elke sector"].map(
                 (chip) => (
-                  <span key={chip} className="inline-flex items-center gap-1.5">
-                    <span className="text-accent-600" aria-hidden>
+                  <span key={chip} className="inline-flex items-center gap-2">
+                    <span
+                      aria-hidden
+                      className="bg-accent-400/15 text-accent-400 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
+                    >
                       ✓
                     </span>
                     {chip}
@@ -157,9 +194,26 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
-            <PreviewKaart />
+          <div className="lg:justify-self-end">
+            <HeroVisual />
           </div>
+        </Container>
+      </section>
+
+      {/* Waardenbalk (eerlijk — geen verzonnen cijfers) */}
+      <section className="border-border border-b bg-surface">
+        <Container className="grid gap-x-8 gap-y-10 py-10 sm:grid-cols-2 lg:grid-cols-4 md:py-12">
+          {waarden.map((w) => (
+            <div key={w.titel} className="flex flex-col items-center text-center">
+              <span className="bg-accent-500/10 text-accent-600 flex h-12 w-12 items-center justify-center rounded-2xl">
+                <Icon name={w.icon} className="h-6 w-6" />
+              </span>
+              <p className="text-foreground mt-4 font-bold">{w.titel}</p>
+              <p className="text-foreground-muted mt-1 text-sm leading-relaxed">
+                {w.tekst}
+              </p>
+            </div>
+          ))}
         </Container>
       </section>
 
@@ -278,33 +332,6 @@ export default async function HomePage() {
                   <h3 className="mt-5 font-semibold">{stap.titel}</h3>
                   <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
                     {stap.tekst}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Kenmerken */}
-      <section className="bg-surface-muted py-16 md:py-24">
-        <Container>
-          <div className="max-w-2xl">
-            <span className="eyebrow">Waarom ZZP Connect</span>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
-              Alles voor een goede match op één plek
-            </h2>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {kenmerken.map((k, i) => (
-              <Reveal key={k.titel} delayMs={(i % 4) * 80}>
-                <div className="h-full">
-                  <span className="bg-accent-500/10 text-accent-600 flex h-11 w-11 items-center justify-center rounded-xl">
-                    <Icon name={k.icon} className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 font-semibold">{k.titel}</h3>
-                  <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
-                    {k.tekst}
                   </p>
                 </div>
               </Reveal>
