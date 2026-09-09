@@ -156,14 +156,12 @@ body {
     radial-gradient(34rem 34rem at 8% 108%, rgba(47, 93, 166, 0.34), transparent 60%);
 }
 
-/* Lichte, kleurrijke 'aurora'-achtergrond voor de hero. */
+/* Rustige, lichte hero-achtergrond: één zachte gradient, geen ruis. */
 .bs-hero-aurora {
-  background-color: #f7f9fc;
+  background-color: #fafbfd;
   background-image:
-    radial-gradient(42rem 32rem at 88% -12%, rgba(245, 158, 11, 0.20), transparent 60%),
-    radial-gradient(40rem 34rem at 6% -6%, rgba(47, 93, 166, 0.18), transparent 55%),
-    radial-gradient(34rem 34rem at 18% 118%, rgba(22, 163, 74, 0.12), transparent 60%),
-    radial-gradient(32rem 30rem at 108% 78%, rgba(124, 58, 237, 0.12), transparent 60%);
+    radial-gradient(46rem 30rem at 92% -20%, rgba(245, 158, 11, 0.10), transparent 62%),
+    radial-gradient(44rem 34rem at 0% -10%, rgba(47, 93, 166, 0.08), transparent 58%);
 }
 /* Fijne stippenlaag voor subtiele textuur. */
 .bs-hero-dots {
