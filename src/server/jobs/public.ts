@@ -15,7 +15,7 @@ const publicInclude = {
 
 export type PublicJob = Prisma.JobGetPayload<{ include: typeof publicInclude }>;
 
-export async function listPublicJobs(): Promise<PublicJob[]> {
+export async function listPublicJobs(limit = 200): Promise<PublicJob[]> {
   return db.job.findMany({
     where: {
       status: "GEPUBLICEERD",
@@ -24,7 +24,7 @@ export async function listPublicJobs(): Promise<PublicJob[]> {
     },
     include: publicInclude,
     orderBy: { startdatum: "asc" },
-    take: 200,
+    take: limit,
   });
 }
 

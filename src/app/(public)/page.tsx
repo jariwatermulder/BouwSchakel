@@ -1,8 +1,18 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/home/pictos";
+import { listPublicJobs } from "@/server/jobs/public";
+import { sectorMetaVan } from "@/lib/sector-meta";
+import { formatEuro } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
+
+function datumKort(d: Date): string {
+  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d);
+}
 
 const stappen = [
   {
@@ -101,7 +111,9 @@ function PreviewKaart() {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const klussen = await listPublicJobs(6);
+
   return (
     <>
       {/* Hero */}
@@ -148,6 +160,97 @@ export default function HomePage() {
           <div className="flex justify-center lg:justify-end">
             <PreviewKaart />
           </div>
+        </Container>
+      </section>
+
+      {/* Actuele klussen */}
+      <section className="border-border border-b py-16 md:py-24">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <span className="eyebrow">Actuele klussen</span>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
+                Openstaande opdrachten
+              </h2>
+              <p className="text-foreground-muted mt-3">
+                Een greep uit de klussen die nu online staan, in elke sector.
+              </p>
+            </div>
+            <ButtonLink href="/opdrachten" variant="ghost">
+              Alle opdrachten →
+            </ButtonLink>
+          </div>
+
+          {klussen.length === 0 ? (
+            <div className="border-border text-foreground-muted mt-8 rounded-[var(--radius-card)] border border-dashed p-10 text-center">
+              Er staan op dit moment nog geen openbare opdrachten online.{" "}
+              <Link href="/registreren?rol=bedrijf" className="text-accent-600 font-semibold">
+                Plaats de eerste opdracht →
+              </Link>
+            </div>
+          ) : (
+            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {klussen.map((job, i) => {
+                const meta = sectorMetaVan(job.skill.slug);
+                return (
+                  <li key={job.id}>
+                    <Reveal delayMs={Math.min(i, 5) * 70}>
+                      <div className="border-border bg-surface flex h-full flex-col rounded-[var(--radius-card)] border p-5">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                            style={{
+                              backgroundColor: `${meta.kleur}1a`,
+                              color: meta.kleur,
+                            }}
+                          >
+                            {job.skill.naam}
+                          </span>
+                          {job.company.verificatieStatus === "GEVERIFIEERD" ? (
+                            <Badge variant="verified">Geverifieerd</Badge>
+                          ) : null}
+                        </div>
+
+                        <Link
+                          href={`/opdrachten/${job.slug}`}
+                          className="hover:text-accent-600 mt-3 block font-semibold leading-snug transition-colors"
+                        >
+                          {job.titel}
+                        </Link>
+
+                        <div className="text-foreground-muted mt-3 space-y-1.5 text-sm">
+                          <p className="flex items-center gap-2">
+                            <Icon name="pin" className="h-4 w-4 shrink-0 opacity-70" />
+                            {job.locatiePlaats}
+                          </p>
+                          <p className="flex items-center gap-2">
+                            <Icon name="calendar" className="h-4 w-4 shrink-0 opacity-70" />
+                            Start {datumKort(job.startdatum)}
+                          </p>
+                          {job.gewenstUurtariefCents ? (
+                            <p className="flex items-center gap-2">
+                              <Icon name="euro" className="h-4 w-4 shrink-0 opacity-70" />
+                              {formatEuro(job.gewenstUurtariefCents)} p/u
+                            </p>
+                          ) : null}
+                        </div>
+
+                        <div className="mt-auto pt-5">
+                          <ButtonLink
+                            href={`/registreren?rol=zzp&opdracht=${job.slug}`}
+                            variant="accent"
+                            className="w-full"
+                          >
+                            Op klus reageren
+                          </ButtonLink>
+                        </div>
+                      </div>
+                    </Reveal>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </Container>
       </section>
 
