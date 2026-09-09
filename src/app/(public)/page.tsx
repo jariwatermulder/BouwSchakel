@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/reveal";
-import { Icon, PersonPortrait } from "@/components/home/pictos";
+import { Icon } from "@/components/home/pictos";
 import { listPublicJobs } from "@/server/jobs/public";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
@@ -71,73 +72,57 @@ const sectoren = [
   "Creatief & marketing",
 ];
 
-/** Rustige, statische previewkaart met een paar voorbeeldmatches. */
-function PreviewKaart() {
-  const rijen = [
-    { vak: "Timmerman", plaats: "Groningen", pct: 96 },
-    { vak: "Verpleegkundige", plaats: "Zwolle", pct: 93 },
-    { vak: "Elektricien", plaats: "Amersfoort", pct: 94 },
-  ];
-  return (
-    <div className="border-border bg-surface shadow-soft w-full max-w-sm rounded-[var(--radius-card)] border p-5">
-      <div className="flex items-center justify-between">
-        <span className="text-foreground text-sm font-semibold">
-          Voorbeeld van matches
-        </span>
-        <span className="text-foreground-muted text-xs">in elke sector</span>
-      </div>
-      <div className="mt-4 space-y-2.5">
-        {rijen.map((r) => (
-          <div
-            key={r.vak}
-            className="border-border flex items-center gap-3 rounded-2xl border p-3"
-          >
-            <span className="bg-navy-50 text-navy-600 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">
-              <Icon name="match" className="h-4 w-4" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-foreground truncate text-sm font-semibold">
-                {r.vak}
-              </p>
-              <p className="text-foreground-muted text-xs">{r.plaats}</p>
-            </div>
-            <span className="text-accent-600 shrink-0 text-sm font-bold">
-              {r.pct}%
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+const heroMatches = [
+  { vak: "Timmerman", plaats: "Groningen", pct: 96, slug: "timmerman" },
+  { vak: "Verpleegkundige", plaats: "Zwolle", pct: 93, slug: "verpleegkundige" },
+  { vak: "Elektricien", plaats: "Amersfoort", pct: 94, slug: "elektricien" },
+];
 
 /**
- * Hero-visual: branded paneel met de twee vakmensen en een previewkaart.
- * Fotoslot: geef een echte foto aan, dan vervangen we dit paneel door een
- * volledige beeld-hero in bndle-stijl.
+ * Zwevende glass-matchkaartjes die (deels) over de hero-foto zweven.
+ * Entrance via bs-load (gespreid), doorlopende zweving via bs-float-card.
+ * Beide bewegingen respecteren prefers-reduced-motion (zie globals.css).
  */
-function HeroVisual() {
+function MatchKaartjes({ className }: { className?: string }) {
   return (
-    <div className="relative mx-auto w-full max-w-md">
-      <div
-        aria-hidden
-        className="bg-accent-500/20 absolute -inset-6 -z-10 rounded-[2.5rem] blur-2xl"
-      />
-      <div className="rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-        <div className="flex items-center gap-3 px-1 pb-4">
-          <div className="flex -space-x-3">
-            <span className="ring-navy-950 h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2">
-              <PersonPortrait variant="opdrachtgever" />
-            </span>
-            <span className="ring-navy-950 h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2">
-              <PersonPortrait variant="zzper" />
-            </span>
-          </div>
-          <p className="text-navy-100 text-sm">
-            Opdrachtgever en zzp’er, direct verbonden
-          </p>
-        </div>
-        <PreviewKaart />
+    <div className={className}>
+      <div className="w-64 max-w-full space-y-3">
+        {heroMatches.map((m, i) => {
+          const meta = sectorMetaVan(m.slug);
+          return (
+            <div
+              key={m.vak}
+              className="bs-load"
+              style={{ animationDelay: `${650 + i * 160}ms` }}
+            >
+              <div
+                className="bs-float-card rounded-2xl border border-white/60 bg-white/85 p-3 shadow-elevated backdrop-blur-md"
+                style={{ animationDelay: `${i * 900}ms` }}
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${meta.kleur}1a`, color: meta.kleur }}
+                  >
+                    <Icon name={meta.icon} className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-foreground truncate text-sm font-semibold">
+                      {m.vak}
+                    </p>
+                    <p className="text-foreground-muted text-xs">{m.plaats}</p>
+                  </div>
+                  <span
+                    className="shrink-0 text-sm font-bold"
+                    style={{ color: meta.kleur }}
+                  >
+                    {m.pct}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -149,22 +134,52 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-navy-950 relative overflow-hidden text-white">
+      <section className="bg-navy-950 relative overflow-hidden text-white lg:min-h-[34rem]">
         <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
-        <Container className="relative z-10 grid items-center gap-14 py-16 md:py-24 lg:grid-cols-2">
-          <div className="max-w-xl">
-            <span className="eyebrow text-accent-400 [&::before]:bg-accent-400">
+
+        {/* Desktop: foto rechts, bleedt naar de rand; links vloeiend vervagen */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block">
+          <Image
+            src="/images/hero-samenwerking.jpg"
+            alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
+            fill
+            priority
+            sizes="(min-width: 1024px) 62vw, 100vw"
+            className="hero-foto object-cover object-[62%_center]"
+          />
+          <div
+            aria-hidden
+            className="from-navy-950 via-navy-950/70 absolute inset-0 bg-gradient-to-r to-transparent"
+          />
+          <div
+            aria-hidden
+            className="from-navy-950/80 absolute inset-0 bg-gradient-to-t via-transparent to-transparent"
+          />
+        </div>
+
+        <Container className="relative z-10 py-16 md:py-20 lg:py-28">
+          <div className="lg:w-[52%] lg:pr-8">
+            <span className="eyebrow bs-load text-accent-400 [&::before]:bg-accent-400">
               Hét platform voor zzp-werk
             </span>
-            <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
+            <h1
+              className="bs-load mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-5xl xl:text-6xl"
+              style={{ animationDelay: "80ms" }}
+            >
               De juiste zzp’er.{" "}
               <span className="text-accent-400">Op het juiste moment.</span>
             </h1>
-            <p className="text-navy-100 mt-6 max-w-lg text-lg leading-relaxed">
+            <p
+              className="text-navy-100 bs-load mt-6 max-w-lg text-lg leading-relaxed"
+              style={{ animationDelay: "160ms" }}
+            >
               Vind gecontroleerde zzp’ers voor elke klus, in elke sector — of
               vind jouw volgende opdracht. Direct contact, zonder tussenlaag.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div
+              className="bs-load mt-8 flex flex-col gap-3 sm:flex-row"
+              style={{ animationDelay: "240ms" }}
+            >
               <ButtonLink href="/registreren?rol=bedrijf" variant="accent" size="lg">
                 Ik zoek een zzp’er
               </ButtonLink>
@@ -177,7 +192,10 @@ export default async function HomePage() {
                 Bekijk opdrachten
               </ButtonLink>
             </div>
-            <div className="text-navy-100 mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+            <div
+              className="text-navy-100 bs-load mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm"
+              style={{ animationDelay: "320ms" }}
+            >
               {["Gratis account", "Geen abonnement", "In elke sector"].map(
                 (chip) => (
                   <span key={chip} className="inline-flex items-center gap-2">
@@ -194,10 +212,32 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="lg:justify-self-end">
-            <HeroVisual />
-          </div>
+          {/* Desktop (xl+): zwevende matchkaartjes over de foto */}
+          <MatchKaartjes className="pointer-events-none absolute right-[7%] bottom-12 z-20 hidden xl:block" />
         </Container>
+
+        {/* Tablet & mobiel: aparte fotozone onder de tekst/CTA's */}
+        <div className="relative lg:hidden">
+          <div className="relative h-60 sm:h-72 md:h-96">
+            <Image
+              src="/images/hero-samenwerking.jpg"
+              alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
+              fill
+              priority
+              sizes="100vw"
+              className="hero-foto object-cover object-[62%_center]"
+            />
+            <div
+              aria-hidden
+              className="from-navy-950 absolute inset-x-0 top-0 h-20 bg-gradient-to-b to-transparent"
+            />
+            <div
+              aria-hidden
+              className="from-navy-950 absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t to-transparent"
+            />
+          </div>
+          <MatchKaartjes className="relative z-10 -mt-16 px-4 pb-8" />
+        </div>
       </section>
 
       {/* Waardenbalk (eerlijk — geen verzonnen cijfers) */}
