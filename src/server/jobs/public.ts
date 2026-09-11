@@ -28,6 +28,17 @@ export async function listPublicJobs(limit = 200): Promise<PublicJob[]> {
   });
 }
 
+/** Aantal publiek zichtbare, openstaande opdrachten (voor tellers). */
+export async function countPublicJobs(): Promise<number> {
+  return db.job.count({
+    where: {
+      status: "GEPUBLICEERD",
+      deletedAt: null,
+      publiekIndexeerbaar: true,
+    },
+  });
+}
+
 export async function getPublicJobBySlug(
   slug: string,
 ): Promise<PublicJob | null> {

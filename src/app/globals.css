@@ -25,6 +25,13 @@
   --color-accent-500: #f59e0b;
   --color-accent-600: #d97706;
 
+  /* Brand-blauw (primair): heldere, moderne SaaS-uitstraling. */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-500: #2f5bd8;
+  --color-brand-600: #2747c9;
+  --color-brand-700: #1f3aa8;
+
   --color-surface: #ffffff;
   --color-surface-muted: #f5f7fa;
   --color-border: #e2e8f0;

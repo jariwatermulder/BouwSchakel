@@ -16,12 +16,10 @@ function dashboardPad(role: string): string {
 }
 
 const navItems = [
-  { href: "/vind-zzper", label: "Vind een zzp'er" },
   { href: "/opdrachten", label: "Opdrachten" },
+  { href: "/zzpers", label: "Voor zzp'ers" },
+  { href: "/bedrijven", label: "Voor opdrachtgevers" },
   { href: "/hoe-het-werkt", label: "Hoe het werkt" },
-  { href: "/zzpers", label: "Voor ZZP'ers" },
-  { href: "/bedrijven", label: "Voor bedrijven" },
-  { href: "/tarieven", label: "Tarieven" },
 ];
 
 export function SiteHeader({ user }: { user?: HeaderUser }) {
@@ -55,7 +53,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
         >
           <span
             aria-hidden
-            className="bg-navy-800 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
+            className="bg-brand-500 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
           >
             ZC
           </span>
@@ -70,7 +68,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
             <Link
               key={item.href}
               href={item.href}
-              className="text-foreground-muted hover:text-navy-800 after:bg-accent-500 relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
+              className="text-foreground-muted hover:text-navy-800 after:bg-brand-500 relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
             >
               {item.label}
             </Link>
@@ -100,10 +98,11 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
               </ButtonLink>
               <ButtonLink
                 href="/bedrijven/opdracht-plaatsen"
-                variant="accent"
+                variant="brand"
                 size="sm"
+                className="rounded-xl"
               >
-                Opdracht plaatsen
+                Plaats een opdracht
               </ButtonLink>
             </>
           )}

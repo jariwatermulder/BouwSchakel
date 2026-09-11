@@ -2,426 +2,506 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/home/pictos";
-import { listPublicJobs } from "@/server/jobs/public";
-import { sectorMetaVan } from "@/lib/sector-meta";
+import {
+  listPublicJobs,
+  countPublicJobs,
+  type PublicJob,
+} from "@/server/jobs/public";
+import { countPublicZzpers } from "@/server/zzpers/directory";
+import { SECTOR_META } from "@/lib/sector-meta";
+import { sectorVan, SECTOR_VOLGORDE, type Sector } from "@/lib/sectoren";
 import { formatEuro } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
+const HERO_FOTO = "/images/hero-samenwerking.jpg";
+
 function datumKort(d: Date): string {
-  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d);
+  return new Intl.DateTimeFormat("nl-NL", { day: "numeric", month: "short" }).format(d);
 }
 
-const stappen = [
-  {
-    titel: "Plaats je opdracht of profiel",
-    tekst:
-      "Kies vakgebied, locatie en tarief. In een paar minuten sta je online.",
-    icon: "doc" as const,
-  },
-  {
-    titel: "Ontvang passende matches",
-    tekst:
-      "Je ziet geschikte, beschikbare zzp’ers — met een matchscore én uitleg.",
-    icon: "match" as const,
-  },
-  {
-    titel: "Maak direct contact",
-    tekst:
-      "Bekijk profielen en maak rechtstreeks afspraken. Geen tussenlaag.",
-    icon: "chat" as const,
-  },
-];
+function tariefLabel(cents: number | null): string {
+  return cents ? `${formatEuro(cents)}/u` : "Op aanvraag";
+}
 
-const waarden = [
-  {
-    titel: "In elke sector",
-    tekst: "Van bouw en techniek tot zorg, horeca, transport en IT.",
-    icon: "grid" as const,
-  },
-  {
-    titel: "Geverifieerde profielen",
-    tekst: "Controle op e-mail, telefoon, KvK en certificaten.",
-    icon: "shield" as const,
-  },
-  {
-    titel: "Matchscore met uitleg",
-    tekst: "Je ziet altijd waarom iemand past — geen black box.",
-    icon: "match" as const,
-  },
-  {
-    titel: "Direct contact",
-    tekst: "Rechtstreeks afspraken maken, zonder tussenlaag.",
-    icon: "chat" as const,
-  },
-];
+/* ─────────────────────────── Herbruikbare stukjes ─────────────────────────── */
 
-const sectoren = [
-  "Bouw & afbouw",
-  "Techniek & installatie",
-  "Schoonmaak",
-  "Transport & logistiek",
-  "Groen & buiten",
-  "Horeca",
-  "Zorg & welzijn",
-  "ICT & digitaal",
-  "Administratie & office",
-  "Creatief & marketing",
-];
-
-const heroMatches = [
-  { vak: "Timmerman", plaats: "Groningen", pct: 96, slug: "timmerman" },
-  { vak: "Verpleegkundige", plaats: "Zwolle", pct: 93, slug: "verpleegkundige" },
-  { vak: "Elektricien", plaats: "Amersfoort", pct: 94, slug: "elektricien" },
-];
-
-/**
- * Zwevende glass-matchkaartjes die (deels) over de hero-foto zweven.
- * Entrance via bs-load (gespreid), doorlopende zweving via bs-float-card.
- * Beide bewegingen respecteren prefers-reduced-motion (zie globals.css).
- */
-function MatchKaartjes({ className }: { className?: string }) {
+/** Opdrachtkaart met sector-thumbnail (kleur + icoon i.p.v. foto). */
+function OpdrachtKaart({ job }: { job: PublicJob }) {
+  const meta = SECTOR_META[sectorVan(job.skill.slug)];
   return (
-    <div className={className}>
-      <div className="w-64 max-w-full space-y-3">
-        {heroMatches.map((m, i) => {
-          const meta = sectorMetaVan(m.slug);
-          return (
-            <div
-              key={m.vak}
-              className="bs-load"
-              style={{ animationDelay: `${650 + i * 160}ms` }}
-            >
-              <div
-                className="bs-float-card rounded-2xl border border-white/60 bg-white/85 p-3 shadow-elevated backdrop-blur-md"
-                style={{ animationDelay: `${i * 900}ms` }}
-              >
-                <div className="flex items-center gap-3">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: `${meta.kleur}1a`, color: meta.kleur }}
-                  >
-                    <Icon name={meta.icon} className="h-4 w-4" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-foreground truncate text-sm font-semibold">
-                      {m.vak}
-                    </p>
-                    <p className="text-foreground-muted text-xs">{m.plaats}</p>
-                  </div>
-                  <span
-                    className="shrink-0 text-sm font-bold"
-                    style={{ color: meta.kleur }}
-                  >
-                    {m.pct}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+    <Link
+      href={`/opdrachten/${job.slug}`}
+      className="group border-border bg-surface hover:border-brand-500/40 hover:shadow-soft flex gap-4 rounded-2xl border p-4 transition"
+    >
+      <span
+        className="relative hidden h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl sm:flex"
+        style={{ backgroundColor: meta.kleur }}
+      >
+        <span className="absolute inset-0 bg-black/10" />
+        <Icon name={meta.icon} className="relative h-8 w-8 text-white" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-3">
+          <span className="bg-brand-50 text-brand-700 rounded-md px-2 py-0.5 text-xs font-semibold">
+            {job.skill.naam}
+          </span>
+          <span className="text-foreground shrink-0 text-sm font-bold">
+            {tariefLabel(job.gewenstUurtariefCents)}
+          </span>
+        </div>
+        <p className="text-foreground group-hover:text-brand-700 mt-2 truncate font-semibold transition-colors">
+          {job.titel}
+        </p>
+        <p className="text-foreground-muted mt-1 truncate text-sm">
+          {job.company.naam}
+        </p>
+        <div className="text-foreground-muted mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="pin" className="h-3.5 w-3.5 opacity-70" />
+            {job.locatiePlaats}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="calendar" className="h-3.5 w-3.5 opacity-70" />
+            {datumKort(job.startdatum)}
+          </span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
+/** Sector-tegel met kleurvlak, icoon-watermerk en aantal opdrachten. */
+function SectorTegel({
+  sector,
+  aantal,
+}: {
+  sector: Sector;
+  aantal: number;
+}) {
+  const meta = SECTOR_META[sector];
+  return (
+    <Link
+      href="/opdrachten"
+      className="group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-2xl p-4 text-white"
+      style={{ backgroundColor: meta.kleur }}
+    >
+      <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+      <Icon
+        name={meta.icon}
+        className="absolute -top-3 -right-3 h-24 w-24 text-white/15 transition-transform duration-300 group-hover:scale-110 motion-reduce:transform-none"
+      />
+      <div className="relative">
+        <p className="font-semibold leading-tight">{sector}</p>
+        <p className="text-white/80 text-sm">
+          {aantal} {aantal === 1 ? "opdracht" : "opdrachten"}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+/* ─────────────────────────────── Pagina ─────────────────────────────── */
+
 export default async function HomePage() {
-  const klussen = await listPublicJobs(6);
+  const [jobs, totaalOpdrachten, aantalProfessionals] = await Promise.all([
+    listPublicJobs(200),
+    countPublicJobs(),
+    countPublicZzpers(),
+  ]);
+
+  const recente = jobs.slice(0, 6);
+  const featured = jobs[0];
+
+  const perSector = new Map<Sector, number>();
+  for (const j of jobs) {
+    const s = sectorVan(j.skill.slug);
+    perSector.set(s, (perSector.get(s) ?? 0) + 1);
+  }
+  const sectorTegels = SECTOR_VOLGORDE.filter(
+    (s) => perSector.has(s) && s !== "Overig",
+  ).map((s) => ({ sector: s, aantal: perSector.get(s)! }));
+
+  const stats = [
+    { getal: String(totaalOpdrachten), label: "opdrachten online", icon: "doc" as const },
+    { getal: String(sectorTegels.length), label: "sectoren", icon: "grid" as const },
+    { getal: String(aantalProfessionals), label: "professionals met profiel", icon: "star" as const },
+    { getal: "€ 0", label: "kosten voor zzp’ers", icon: "euro" as const },
+  ];
 
   return (
     <>
-      {/* Hero */}
-      <section className="bg-navy-950 relative overflow-hidden text-white lg:min-h-[34rem]">
-        <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
+      {/* ───────────── Hero met foto-achtergrond + zoekbalk ───────────── */}
+      <section className="relative isolate overflow-hidden">
+        <Image
+          src={HERO_FOTO}
+          alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover object-center"
+        />
+        <div
+          aria-hidden
+          className="from-navy-950/95 via-navy-950/80 to-navy-900/45 absolute inset-0 -z-10 bg-gradient-to-r"
+        />
 
-        {/* Desktop: foto rechts, bleedt naar de rand; links vloeiend vervagen */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] lg:block">
-          <Image
-            src="/images/hero-samenwerking.jpg"
-            alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
-            fill
-            priority
-            sizes="(min-width: 1024px) 62vw, 100vw"
-            className="hero-foto object-cover object-[62%_center]"
-          />
-          <div
-            aria-hidden
-            className="from-navy-950 via-navy-950/70 absolute inset-0 bg-gradient-to-r to-transparent"
-          />
-          <div
-            aria-hidden
-            className="from-navy-950/80 absolute inset-0 bg-gradient-to-t via-transparent to-transparent"
-          />
-        </div>
-
-        <Container className="relative z-10 py-16 md:py-20 lg:py-28">
-          <div className="lg:w-[52%] lg:pr-8">
-            <span className="eyebrow bs-load text-accent-400 [&::before]:bg-accent-400">
-              Hét platform voor zzp-werk
-            </span>
-            <h1
-              className="bs-load mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-5xl xl:text-6xl"
-              style={{ animationDelay: "80ms" }}
-            >
-              De juiste zzp’er.{" "}
-              <span className="text-accent-400">Op het juiste moment.</span>
+        <Container className="grid items-center gap-12 py-16 text-white md:py-24 lg:grid-cols-2">
+          <div className="max-w-xl">
+            <h1 className="bs-load text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
+              Vind werk dat bij je past.
             </h1>
             <p
-              className="text-navy-100 bs-load mt-6 max-w-lg text-lg leading-relaxed"
+              className="bs-load mt-5 max-w-lg text-lg leading-relaxed text-white/85"
+              style={{ animationDelay: "80ms" }}
+            >
+              Bekijk actuele opdrachten van opdrachtgevers door heel Nederland.
+              Zoeken en vergelijken kan zonder account; je reageert rechtstreeks
+              bij de opdrachtgever.
+            </p>
+
+            {/* Zoekbalk */}
+            <form
+              method="get"
+              action="/opdrachten"
+              className="bs-load shadow-elevated mt-8 flex flex-col gap-2 rounded-2xl bg-white p-2 sm:flex-row"
               style={{ animationDelay: "160ms" }}
             >
-              Vind gecontroleerde zzp’ers voor elke klus, in elke sector — of
-              vind jouw volgende opdracht. Direct contact, zonder tussenlaag.
-            </p>
+              <label className="flex flex-1 items-center gap-2 px-3">
+                <svg aria-hidden viewBox="0 0 24 24" fill="none" className="text-foreground-muted h-5 w-5 shrink-0">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                  <path d="M21 21l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+                <input
+                  name="q"
+                  placeholder="Timmerman, elektricien…"
+                  className="text-foreground placeholder:text-foreground-muted h-11 w-full bg-transparent text-sm outline-none"
+                />
+              </label>
+              <label className="border-border flex flex-1 items-center gap-2 px-3 sm:border-l">
+                <Icon name="pin" className="text-foreground-muted h-5 w-5 shrink-0" />
+                <input
+                  name="plaats"
+                  placeholder="Plaats"
+                  className="text-foreground placeholder:text-foreground-muted h-11 w-full bg-transparent text-sm outline-none"
+                />
+              </label>
+              <button
+                type="submit"
+                className="bg-brand-500 hover:bg-brand-600 h-12 shrink-0 rounded-xl px-6 text-sm font-semibold text-white transition-colors"
+              >
+                Zoek opdrachten
+              </button>
+            </form>
+
+            {/* Vertrouwens-chips */}
             <div
-              className="bs-load mt-8 flex flex-col gap-3 sm:flex-row"
+              className="bs-load mt-5 flex flex-col gap-2 text-sm text-white/85 sm:flex-row sm:flex-wrap sm:gap-x-6"
               style={{ animationDelay: "240ms" }}
             >
-              <ButtonLink href="/registreren?rol=bedrijf" variant="accent" size="lg">
-                Ik zoek een zzp’er
-              </ButtonLink>
-              <ButtonLink
-                href="/opdrachten"
-                variant="outline"
-                size="lg"
-                className="border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white"
-              >
-                Bekijk opdrachten
-              </ButtonLink>
-            </div>
-            <div
-              className="text-navy-100 bs-load mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm"
-              style={{ animationDelay: "320ms" }}
-            >
-              {["Gratis account", "Geen abonnement", "In elke sector"].map(
-                (chip) => (
-                  <span key={chip} className="inline-flex items-center gap-2">
-                    <span
-                      aria-hidden
-                      className="bg-accent-400/15 text-accent-400 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
-                    >
-                      ✓
-                    </span>
-                    {chip}
+              {[
+                "Bekijken zonder account",
+                "KvK en certificaten gecontroleerd",
+                "Direct contact met de opdrachtgever",
+              ].map((c) => (
+                <span key={c} className="inline-flex items-center gap-2">
+                  <span aria-hidden className="text-brand-100 font-bold">
+                    ✓
                   </span>
-                ),
-              )}
+                  {c}
+                </span>
+              ))}
             </div>
+
+            <p
+              className="bs-load mt-6 text-sm text-white/70"
+              style={{ animationDelay: "300ms" }}
+            >
+              Professional nodig?{" "}
+              <Link
+                href="/bedrijven/opdracht-plaatsen"
+                className="font-semibold text-white underline underline-offset-4 hover:text-white/90"
+              >
+                Plaats gratis een opdracht
+              </Link>
+            </p>
           </div>
 
-          {/* Desktop (xl+): zwevende matchkaartjes over de foto */}
-          <MatchKaartjes className="pointer-events-none absolute right-[7%] bottom-12 z-20 hidden xl:block" />
+          {/* Uitgelichte opdracht-kaart (echte data) */}
+          {featured ? (
+            <div className="hidden lg:justify-self-end lg:block">
+              <div
+                className="bs-load w-[22rem] max-w-full rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md"
+                style={{ animationDelay: "220ms" }}
+              >
+                <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                  {featured.skill.naam}
+                </span>
+                <p className="mt-4 text-2xl font-bold leading-snug">
+                  {featured.titel}
+                </p>
+                <div className="mt-4 space-y-2 text-sm text-white/85">
+                  <p className="inline-flex items-center gap-2">
+                    <Icon name="pin" className="h-4 w-4 opacity-80" />
+                    {featured.locatiePlaats}
+                  </p>
+                  <p className="inline-flex items-center gap-2">
+                    <Icon name="calendar" className="h-4 w-4 opacity-80" />
+                    Start {datumKort(featured.startdatum)}
+                  </p>
+                </div>
+                <div className="mt-5 flex items-center justify-between">
+                  <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-navy-900">
+                    {tariefLabel(featured.gewenstUurtariefCents)}
+                  </span>
+                  <Link
+                    href={`/opdrachten/${featured.slug}`}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-white hover:gap-2"
+                  >
+                    Bekijk opdracht →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </Container>
-
-        {/* Tablet & mobiel: aparte fotozone onder de tekst/CTA's */}
-        <div className="relative lg:hidden">
-          <div className="relative h-60 sm:h-72 md:h-96">
-            <Image
-              src="/images/hero-samenwerking.jpg"
-              alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
-              fill
-              priority
-              sizes="100vw"
-              className="hero-foto object-cover object-[62%_center]"
-            />
-            <div
-              aria-hidden
-              className="from-navy-950 absolute inset-x-0 top-0 h-20 bg-gradient-to-b to-transparent"
-            />
-            <div
-              aria-hidden
-              className="from-navy-950 absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t to-transparent"
-            />
-          </div>
-          <MatchKaartjes className="relative z-10 -mt-16 px-4 pb-8" />
-        </div>
       </section>
 
-      {/* Waardenbalk (eerlijk — geen verzonnen cijfers) */}
+      {/* ───────────── Cijferbalk (echte cijfers uit de database) ───────────── */}
       <section className="border-border border-b bg-surface">
-        <Container className="grid gap-x-8 gap-y-10 py-10 sm:grid-cols-2 lg:grid-cols-4 md:py-12">
-          {waarden.map((w) => (
-            <div key={w.titel} className="flex flex-col items-center text-center">
-              <span className="bg-accent-500/10 text-accent-600 flex h-12 w-12 items-center justify-center rounded-2xl">
-                <Icon name={w.icon} className="h-6 w-6" />
+        <Container className="grid grid-cols-2 gap-6 py-8 md:grid-cols-4 md:py-10">
+          {stats.map((s) => (
+            <div key={s.label} className="flex items-center gap-3">
+              <span className="bg-brand-50 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                <Icon name={s.icon} className="h-5 w-5" />
               </span>
-              <p className="text-foreground mt-4 font-bold">{w.titel}</p>
-              <p className="text-foreground-muted mt-1 text-sm leading-relaxed">
-                {w.tekst}
-              </p>
+              <div>
+                <p className="text-2xl font-extrabold leading-none tracking-tight">
+                  {s.getal}
+                </p>
+                <p className="text-foreground-muted mt-1 text-sm">{s.label}</p>
+              </div>
             </div>
           ))}
         </Container>
       </section>
 
-      {/* Actuele klussen */}
-      <section className="border-border border-b py-16 md:py-24">
+      {/* ───────────── Actuele opdrachten ───────────── */}
+      <section className="py-16 md:py-20">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <span className="eyebrow">Actuele klussen</span>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
-                Openstaande opdrachten
+              <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
+                Actuele opdrachten
               </h2>
-              <p className="text-foreground-muted mt-3">
-                Een greep uit de klussen die nu online staan, in elke sector.
+              <p className="text-foreground-muted mt-2">
+                Een greep uit de opdrachten die nu openstaan. Bekijken kan zonder
+                account.
               </p>
             </div>
-            <ButtonLink href="/opdrachten" variant="ghost">
-              Alle opdrachten →
-            </ButtonLink>
+            <Link
+              href="/opdrachten"
+              className="text-brand-700 shrink-0 font-semibold hover:underline"
+            >
+              Bekijk alle {totaalOpdrachten} opdrachten →
+            </Link>
           </div>
 
-          {klussen.length === 0 ? (
-            <div className="border-border text-foreground-muted mt-8 rounded-[var(--radius-card)] border border-dashed p-10 text-center">
+          {recente.length === 0 ? (
+            <div className="border-border text-foreground-muted mt-8 rounded-2xl border border-dashed p-10 text-center">
               Er staan op dit moment nog geen openbare opdrachten online.{" "}
-              <Link href="/registreren?rol=bedrijf" className="text-accent-600 font-semibold">
+              <Link href="/bedrijven/opdracht-plaatsen" className="text-brand-700 font-semibold">
                 Plaats de eerste opdracht →
               </Link>
             </div>
           ) : (
-            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {klussen.map((job, i) => {
-                const meta = sectorMetaVan(job.skill.slug);
-                return (
-                  <li key={job.id}>
-                    <Reveal delayMs={Math.min(i, 5) * 70}>
-                      <div className="border-border bg-surface flex h-full flex-col rounded-[var(--radius-card)] border p-5">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                            style={{
-                              backgroundColor: `${meta.kleur}1a`,
-                              color: meta.kleur,
-                            }}
-                          >
-                            {job.skill.naam}
-                          </span>
-                          {job.company.verificatieStatus === "GEVERIFIEERD" ? (
-                            <Badge variant="verified">Geverifieerd</Badge>
-                          ) : null}
-                        </div>
-
-                        <Link
-                          href={`/opdrachten/${job.slug}`}
-                          className="hover:text-accent-600 mt-3 block font-semibold leading-snug transition-colors"
-                        >
-                          {job.titel}
-                        </Link>
-
-                        <div className="text-foreground-muted mt-3 space-y-1.5 text-sm">
-                          <p className="flex items-center gap-2">
-                            <Icon name="pin" className="h-4 w-4 shrink-0 opacity-70" />
-                            {job.locatiePlaats}
-                          </p>
-                          <p className="flex items-center gap-2">
-                            <Icon name="calendar" className="h-4 w-4 shrink-0 opacity-70" />
-                            Start {datumKort(job.startdatum)}
-                          </p>
-                          {job.gewenstUurtariefCents ? (
-                            <p className="flex items-center gap-2">
-                              <Icon name="euro" className="h-4 w-4 shrink-0 opacity-70" />
-                              {formatEuro(job.gewenstUurtariefCents)} p/u
-                            </p>
-                          ) : null}
-                        </div>
-
-                        <div className="mt-auto pt-5">
-                          <ButtonLink
-                            href={`/registreren?rol=zzp&opdracht=${job.slug}`}
-                            variant="accent"
-                            className="w-full"
-                          >
-                            Op klus reageren
-                          </ButtonLink>
-                        </div>
-                      </div>
-                    </Reveal>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="mt-8 grid gap-4 lg:grid-cols-2">
+              {recente.map((job) => (
+                <OpdrachtKaart key={job.id} job={job} />
+              ))}
+            </div>
           )}
         </Container>
       </section>
 
-      {/* Hoe het werkt */}
-      <section className="py-16 md:py-24">
-        <Container>
-          <div className="max-w-2xl">
-            <span className="eyebrow">Zo werkt het</span>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
-              In drie stappen aan de slag
+      {/* ───────────── Opdrachten per sector ───────────── */}
+      {sectorTegels.length > 0 ? (
+        <section className="bg-surface-muted py-16 md:py-20">
+          <Container>
+            <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
+              Opdrachten per sector
             </h2>
+            <p className="text-foreground-muted mt-2">
+              Van bouw en techniek tot zorg, horeca en ICT.
+            </p>
+            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {sectorTegels.map((t) => (
+                <SectorTegel key={t.sector} sector={t.sector} aantal={t.aantal} />
+              ))}
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
+      {/* ───────────── Voor zzp'ers (tekst + beeld) ───────────── */}
+      <section className="py-16 md:py-24">
+        <Container className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <span className="text-brand-700 text-sm font-bold tracking-wide uppercase">
+              Voor zzp’ers
+            </span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              Zelf kiezen waarop je reageert.
+            </h2>
+            <p className="text-foreground-muted mt-4 text-lg">
+              Geen bemiddelaar die opdrachten voor je uitzoekt. Je ziet alles,
+              inclusief het tarief, en beslist zelf.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {[
+                "Zoeken en filteren zonder account",
+                "Uurtarief of tariefrange staat bij elke opdracht",
+                "Je reactie gaat rechtstreeks naar de opdrachtgever",
+                "Eén profiel met je vakgebied, certificaten en beoordelingen",
+              ].map((v) => (
+                <li key={v} className="flex gap-3">
+                  <span className="bg-brand-50 text-brand-600 mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                    ✓
+                  </span>
+                  <span className="text-foreground">{v}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/opdrachten" variant="brand" size="lg" className="rounded-xl">
+                Bekijk opdrachten
+              </ButtonLink>
+              <ButtonLink href="/zzpers" variant="outline" size="lg" className="rounded-xl">
+                Meer voor zzp’ers
+              </ButtonLink>
+            </div>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {stappen.map((stap, i) => (
-              <Reveal key={stap.titel} delayMs={i * 90}>
-                <div className="border-border bg-surface h-full rounded-[var(--radius-card)] border p-6">
-                  <div className="flex items-center justify-between">
-                    <span className="bg-navy-50 text-navy-600 flex h-11 w-11 items-center justify-center rounded-xl">
-                      <Icon name={stap.icon} className="h-5 w-5" />
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-card)] shadow-soft lg:order-last">
+            <Image
+              src={HERO_FOTO}
+              alt="Vakmensen aan het werk"
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-cover object-[62%_center]"
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* ───────────── Voor opdrachtgevers (beeld + tekst) ───────────── */}
+      <section className="bg-surface-muted py-16 md:py-24">
+        <Container className="grid items-center gap-12 lg:grid-cols-2">
+          {/* Branded paneel met een paar echte opdrachten */}
+          <div className="from-navy-800 to-navy-950 relative overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br p-6 text-white shadow-elevated">
+            <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
+            <p className="relative text-sm font-semibold text-white/80">
+              Zo ziet een opdracht eruit
+            </p>
+            <div className="relative mt-4 space-y-3">
+              {(recente.length ? recente : jobs).slice(0, 3).map((job) => {
+                const meta = SECTOR_META[sectorVan(job.skill.slug)];
+                return (
+                  <div
+                    key={job.id}
+                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3"
+                  >
+                    <span
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                      style={{ backgroundColor: `${meta.kleur}33`, color: "#fff" }}
+                    >
+                      <Icon name={meta.icon} className="h-5 w-5" />
                     </span>
-                    <span className="text-border text-3xl font-black tabular-nums">
-                      {i + 1}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold">{job.titel}</p>
+                      <p className="truncate text-xs text-white/70">
+                        {job.locatiePlaats}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-bold">
+                      {tariefLabel(job.gewenstUurtariefCents)}
                     </span>
                   </div>
-                  <h3 className="mt-5 font-semibold">{stap.titel}</h3>
-                  <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
-                    {stap.tekst}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+                );
+              })}
+            </div>
           </div>
-        </Container>
-      </section>
 
-      {/* Sectoren */}
-      <section className="py-16 md:py-24">
-        <Container>
-          <div className="max-w-2xl">
-            <span className="eyebrow">Elke sector</span>
-            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
-              Voor al het zzp-werk
+          <div>
+            <span className="text-brand-700 text-sm font-bold tracking-wide uppercase">
+              Voor opdrachtgevers
+            </span>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
+              In een paar minuten staat je opdracht online.
             </h2>
-            <p className="text-foreground-muted mt-3">
-              Van bouw en techniek tot zorg, horeca, transport en IT.
+            <p className="text-foreground-muted mt-4 text-lg">
+              Beschrijf het werk in een paar korte stappen. Zelfstandigen
+              reageren met hun tarief en beschikbaarheid, en je ziet meteen
+              waarom iemand past.
             </p>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            {sectoren.map((s) => (
-              <span
-                key={s}
-                className="border-border bg-surface text-foreground rounded-full border px-4 py-2 text-sm font-medium"
+            <ul className="mt-6 space-y-3">
+              {[
+                "Gratis plaatsen, geen abonnement",
+                "Reacties met matchuitleg in plaats van een score zonder context",
+                "Rechtstreeks contact, wij zitten er niet tussen",
+              ].map((v) => (
+                <li key={v} className="flex gap-3">
+                  <span className="bg-brand-50 text-brand-600 mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                    ✓
+                  </span>
+                  <span className="text-foreground">{v}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink
+                href="/bedrijven/opdracht-plaatsen"
+                variant="brand"
+                size="lg"
+                className="rounded-xl"
               >
-                {s}
-              </span>
-            ))}
+                Plaats een opdracht
+              </ButtonLink>
+              <ButtonLink href="/vind-zzper" variant="outline" size="lg" className="rounded-xl">
+                Vind een zzp’er
+              </ButtonLink>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* Oproep tot actie */}
-      <section className="pb-20 md:pb-28">
+      {/* ───────────── Oproep tot actie ───────────── */}
+      <section className="py-16 md:py-20">
         <Container>
-          <div className="border-border bg-surface-muted rounded-[var(--radius-card)] border px-8 py-12 text-center md:px-14 md:py-16">
+          <div className="from-brand-600 to-brand-700 rounded-[var(--radius-card)] bg-gradient-to-br px-8 py-12 text-center text-white md:px-14 md:py-16">
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
               Klaar om te beginnen?
             </h2>
-            <p className="text-foreground-muted mx-auto mt-3 max-w-xl">
-              Plaats een opdracht of maak een profiel aan. Gratis, in een paar
+            <p className="mx-auto mt-3 max-w-xl text-white/85">
+              Bekijk opdrachten of plaats er zelf een. Gratis, in een paar
               minuten.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <ButtonLink href="/registreren?rol=bedrijf" variant="accent" size="lg">
-                Ik zoek een zzp’er
+              <ButtonLink
+                href="/opdrachten"
+                variant="primary"
+                size="lg"
+                className="rounded-xl bg-white text-brand-700 hover:bg-white/90"
+              >
+                Bekijk opdrachten
               </ButtonLink>
-              <ButtonLink href="/registreren?rol=zzp" variant="outline" size="lg">
-                Ik zoek een opdracht
+              <ButtonLink
+                href="/bedrijven/opdracht-plaatsen"
+                variant="outline"
+                size="lg"
+                className="rounded-xl border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              >
+                Plaats een opdracht
               </ButtonLink>
             </div>
           </div>

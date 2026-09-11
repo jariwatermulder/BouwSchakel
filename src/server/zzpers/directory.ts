@@ -34,6 +34,11 @@ export async function listPublicZzpers(filter: DirectoryFilter) {
   });
 }
 
+/** Aantal zichtbare zzp'er-profielen in de etalage (voor tellers). */
+export async function countPublicZzpers(): Promise<number> {
+  return db.zZPProfile.count({ where: { zichtbaar: true, deletedAt: null } });
+}
+
 export async function getPublicZzper(id: string) {
   const profile = await db.zZPProfile.findFirst({
     where: { id, zichtbaar: true, deletedAt: null },
