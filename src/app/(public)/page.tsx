@@ -84,10 +84,10 @@ function SectorTegel({
   return (
     <Link
       href="/opdrachten"
-      className="group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-2xl p-4 text-white"
+      className="group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-3xl p-4 text-white shadow-soft transition-transform duration-300 hover:-translate-y-1 motion-reduce:transform-none"
       style={{ backgroundColor: meta.kleur }}
     >
-      <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+      <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
       <Icon
         name={meta.icon}
         className="absolute -top-3 -right-3 h-24 w-24 text-white/15 transition-transform duration-300 group-hover:scale-110 motion-reduce:transform-none"
@@ -144,21 +144,30 @@ export default async function HomePage() {
         />
         <div
           aria-hidden
-          className="from-navy-950/95 via-navy-950/80 to-navy-900/45 absolute inset-0 -z-10 bg-gradient-to-r"
+          className="from-forest-900/95 via-forest-900/80 to-forest-800/45 absolute inset-0 -z-10 bg-gradient-to-r"
         />
 
         <Container className="grid items-center gap-12 py-16 text-white md:py-24 lg:grid-cols-2">
           <div className="max-w-xl">
-            <h1 className="bs-load text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-              Vind werk dat bij je past.
+            <span className="bs-load inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur">
+              <span className="bg-brand-400 inline-block h-2 w-2 rounded-full" style={{ backgroundColor: "var(--color-brand-500)" }} />
+              Hét zzp-platform voor heel Nederland
+            </span>
+            <h1
+              className="bs-load mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl"
+              style={{ animationDelay: "60ms" }}
+            >
+              Jouw volgende opdracht
+              <br />
+              begint hier.
             </h1>
             <p
               className="bs-load mt-5 max-w-lg text-lg leading-relaxed text-white/85"
-              style={{ animationDelay: "80ms" }}
+              style={{ animationDelay: "120ms" }}
             >
-              Bekijk actuele opdrachten van opdrachtgevers door heel Nederland.
-              Zoeken en vergelijken kan zonder account; je reageert rechtstreeks
-              bij de opdrachtgever.
+              Blader door actuele opdrachten in elke sector, vergelijk tarieven
+              en reageer rechtstreeks bij de opdrachtgever — zonder account en
+              zonder tussenpersoon.
             </p>
 
             {/* Zoekbalk */}
@@ -232,32 +241,40 @@ export default async function HomePage() {
           {featured ? (
             <div className="hidden lg:justify-self-end lg:block">
               <div
-                className="bs-load w-[22rem] max-w-full rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md"
+                className="bs-load bg-surface shadow-elevated w-[22rem] max-w-full rounded-3xl p-6"
                 style={{ animationDelay: "220ms" }}
               >
-                <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-                  {featured.skill.naam}
-                </span>
-                <p className="mt-4 text-2xl font-bold leading-snug">
+                <div className="flex items-center justify-between">
+                  <span className="bg-brand-50 text-brand-700 inline-flex rounded-full px-3 py-1 text-xs font-semibold">
+                    {featured.skill.naam}
+                  </span>
+                  <span className="text-foreground-muted text-xs font-semibold tracking-wide uppercase">
+                    Uitgelicht
+                  </span>
+                </div>
+                <p className="text-foreground mt-4 text-2xl font-bold leading-snug">
                   {featured.titel}
                 </p>
-                <div className="mt-4 space-y-2 text-sm text-white/85">
+                <p className="text-foreground-muted mt-1 text-sm">
+                  {featured.company.naam}
+                </p>
+                <div className="text-foreground-muted mt-4 space-y-2 text-sm">
                   <p className="inline-flex items-center gap-2">
-                    <Icon name="pin" className="h-4 w-4 opacity-80" />
+                    <Icon name="pin" className="text-brand-600 h-4 w-4" />
                     {featured.locatiePlaats}
                   </p>
                   <p className="inline-flex items-center gap-2">
-                    <Icon name="calendar" className="h-4 w-4 opacity-80" />
+                    <Icon name="calendar" className="text-brand-600 h-4 w-4" />
                     Start {datumKort(featured.startdatum)}
                   </p>
                 </div>
-                <div className="mt-5 flex items-center justify-between">
-                  <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-navy-900">
+                <div className="border-border mt-5 flex items-center justify-between border-t pt-5">
+                  <span className="bg-accent-500 text-ink rounded-full px-3 py-1 text-sm font-bold">
                     {tariefLabel(featured.gewenstUurtariefCents)}
                   </span>
                   <Link
                     href={`/opdrachten/${featured.slug}`}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-white hover:gap-2"
+                    className="text-brand-700 inline-flex items-center gap-1 text-sm font-semibold hover:gap-2"
                   >
                     Bekijk opdracht →
                   </Link>
@@ -269,21 +286,23 @@ export default async function HomePage() {
       </section>
 
       {/* ───────────── Cijferbalk (echte cijfers uit de database) ───────────── */}
-      <section className="border-border border-b bg-surface">
-        <Container className="grid grid-cols-2 gap-6 py-8 md:grid-cols-4 md:py-10">
-          {stats.map((s) => (
-            <div key={s.label} className="flex items-center gap-3">
-              <span className="bg-brand-50 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                <Icon name={s.icon} className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-2xl font-extrabold leading-none tracking-tight">
-                  {s.getal}
-                </p>
-                <p className="text-foreground-muted mt-1 text-sm">{s.label}</p>
+      <section className="bg-surface -mt-8 md:-mt-12">
+        <Container>
+          <div className="border-border bg-surface shadow-soft grid grid-cols-2 gap-4 rounded-3xl border p-5 md:grid-cols-4 md:p-6">
+            {stats.map((s) => (
+              <div key={s.label} className="flex items-center gap-3">
+                <span className="bg-brand-50 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                  <Icon name={s.icon} className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-brand-700 text-2xl font-extrabold leading-none tracking-tight">
+                    {s.getal}
+                  </p>
+                  <p className="text-foreground-muted mt-1 text-sm">{s.label}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </Container>
       </section>
 
@@ -293,11 +312,11 @@ export default async function HomePage() {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
               <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
-                Actuele opdrachten
+                Nieuwste opdrachten
               </h2>
               <p className="text-foreground-muted mt-2">
-                Een greep uit de opdrachten die nu openstaan. Bekijken kan zonder
-                account.
+                Vers online, uit heel Nederland. Bekijken en vergelijken kan
+                zonder account.
               </p>
             </div>
             <Link
@@ -330,10 +349,11 @@ export default async function HomePage() {
         <section className="bg-surface-muted py-16 md:py-20">
           <Container>
             <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
-              Opdrachten per sector
+              Werk in elke sector
             </h2>
             <p className="text-foreground-muted mt-2">
-              Van bouw en techniek tot zorg, horeca en ICT.
+              Van bouw en techniek tot zorg, horeca, transport en ICT — kies je
+              vakgebied.
             </p>
             <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {sectorTegels.map((t) => (
@@ -352,11 +372,11 @@ export default async function HomePage() {
               Voor zzp’ers
             </span>
             <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
-              Zelf kiezen waarop je reageert.
+              Jij kiest, jij beslist.
             </h2>
             <p className="text-foreground-muted mt-4 text-lg">
-              Geen bemiddelaar die opdrachten voor je uitzoekt. Je ziet alles,
-              inclusief het tarief, en beslist zelf.
+              Geen tussenpersoon die opdrachten voor je uitzoekt. Je ziet alles —
+              inclusief het tarief — en bepaalt zelf waar je op reageert.
             </p>
             <ul className="mt-6 space-y-3">
               {[
@@ -398,7 +418,7 @@ export default async function HomePage() {
       <section className="bg-surface-muted py-16 md:py-24">
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           {/* Branded paneel met een paar echte opdrachten */}
-          <div className="from-navy-800 to-navy-950 relative overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br p-6 text-white shadow-elevated">
+          <div className="from-forest-800 to-forest-900 relative overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br p-6 text-white shadow-elevated">
             <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
             <p className="relative text-sm font-semibold text-white/80">
               Zo ziet een opdracht eruit
@@ -437,12 +457,12 @@ export default async function HomePage() {
               Voor opdrachtgevers
             </span>
             <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-4xl">
-              In een paar minuten staat je opdracht online.
+              Binnen enkele minuten online.
             </h2>
             <p className="text-foreground-muted mt-4 text-lg">
-              Beschrijf het werk in een paar korte stappen. Zelfstandigen
-              reageren met hun tarief en beschikbaarheid, en je ziet meteen
-              waarom iemand past.
+              Beschrijf je klus in een paar korte stappen. Zelfstandigen reageren
+              met hun tarief en beschikbaarheid, en je ziet meteen waarom iemand
+              past.
             </p>
             <ul className="mt-6 space-y-3">
               {[
@@ -478,13 +498,14 @@ export default async function HomePage() {
       {/* ───────────── Oproep tot actie ───────────── */}
       <section className="py-16 md:py-20">
         <Container>
-          <div className="from-brand-600 to-brand-700 rounded-[var(--radius-card)] bg-gradient-to-br px-8 py-12 text-center text-white md:px-14 md:py-16">
-            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
-              Klaar om te beginnen?
+          <div className="from-brand-600 to-forest-900 relative overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br px-8 py-12 text-center text-white md:px-14 md:py-16">
+            <div aria-hidden className="bs-hero-mesh pointer-events-none absolute inset-0" />
+            <h2 className="relative text-2xl font-bold tracking-tight md:text-3xl">
+              Klaar om te starten?
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/85">
+            <p className="relative mx-auto mt-3 max-w-xl text-white/85">
               Bekijk opdrachten of plaats er zelf een. Gratis, in een paar
-              minuten.
+              minuten — zonder tussenpersoon.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <ButtonLink

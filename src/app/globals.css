@@ -25,12 +25,17 @@
   --color-accent-500: #f59e0b;
   --color-accent-600: #d97706;
 
-  /* Brand-blauw (primair): heldere, moderne SaaS-uitstraling. */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-500: #2f5bd8;
-  --color-brand-600: #2747c9;
-  --color-brand-700: #1f3aa8;
+  /* Brand-emerald (primair): fris, premium en betrouwbaar. */
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-500: #0e9f6e;
+  --color-brand-600: #0b8457;
+  --color-brand-700: #0a6b48;
+
+  /* Diep bosgroen voor donkere vlakken (hero, panelen, CTA). */
+  --color-forest-700: #0d4a37;
+  --color-forest-800: #0b3a2c;
+  --color-forest-900: #06241b;
 
   --color-surface: #ffffff;
   --color-surface-muted: #f5f7fa;
