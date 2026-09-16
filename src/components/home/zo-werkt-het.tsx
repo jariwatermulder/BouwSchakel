@@ -139,7 +139,7 @@ export function ZoWerktHet() {
   }
 
   return (
-    <section className="py-14 md:py-20">
+    <section className="bg-brand-50 py-14 md:py-20">
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <span className="eyebrow">Zo werkt het</span>
@@ -157,7 +157,7 @@ export function ZoWerktHet() {
           role="tablist"
           aria-label="Kies je doelgroep"
           onKeyDown={onKeyDown}
-          className="border-border bg-surface-muted mx-auto mt-8 flex w-full max-w-md items-center gap-1 rounded-full border p-1 sm:w-auto"
+          className="border-border bg-surface mx-auto mt-8 flex w-full max-w-md items-center gap-1 rounded-full border p-1 sm:w-auto"
         >
           {VOLGORDE.map((groep) => {
             const isActief = groep === actief;
@@ -202,14 +202,16 @@ export function ZoWerktHet() {
                 key={stap.titel}
                 className="flex flex-col items-center text-center"
               >
-                <Image
-                  src={stap.img}
-                  alt={stap.alt}
-                  width={640}
-                  height={640}
-                  sizes="(min-width: 640px) 220px, 60vw"
-                  className="border-border/60 h-auto w-40 rounded-2xl border md:w-48"
-                />
+                <div className="bg-surface border-border/60 shadow-soft rounded-2xl border p-2.5">
+                  <Image
+                    src={stap.img}
+                    alt={stap.alt}
+                    width={640}
+                    height={640}
+                    sizes="(min-width: 640px) 220px, 60vw"
+                    className="h-auto w-40 rounded-xl md:w-48"
+                  />
+                </div>
                 <p className="text-brand-700 mt-5 text-sm font-semibold">
                   Stap {i + 1}
                 </p>
