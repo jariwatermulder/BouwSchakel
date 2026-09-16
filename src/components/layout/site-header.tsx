@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink, Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -48,15 +49,17 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
       >
         <Link
           href="/"
-          className="text-navy-900 group flex items-center gap-2 font-bold"
+          className="flex items-center"
+          aria-label="ZZP Connect — naar de homepage"
         >
-          <span
-            aria-hidden
-            className="bg-brand-500 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
-          >
-            ZC
-          </span>
-          <span className="text-lg">ZZP Connect</span>
+          <Image
+            src="/brand/logo.png"
+            alt="ZZP Connect"
+            width={182}
+            height={30}
+            priority
+            className="h-7 w-auto md:h-8"
+          />
         </Link>
 
         <nav

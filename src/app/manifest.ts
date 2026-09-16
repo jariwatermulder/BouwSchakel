@@ -7,14 +7,14 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "ZZP Connect — vind de juiste zzp'er",
     short_name: "ZZP Connect",
     description:
-      "Opdrachtgevers en zelfstandige professionals (zzp'ers) rechtstreeks verbonden. Plaats een opdracht of vind je volgende klus.",
+      "Vind een zzp'er in jouw regio of maak gratis een profiel. Opdrachtgevers en zelfstandigen rechtstreeks met elkaar in contact.",
     id: "/",
     start_url: "/",
     scope: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#0F2540",
-    theme_color: "#0F2540",
+    background_color: "#ffffff",
+    theme_color: "#2563eb",
     lang: "nl-NL",
     dir: "ltr",
     categories: ["business", "productivity"],
@@ -30,14 +30,14 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "Opdracht plaatsen",
-        short_name: "Opdracht",
-        url: "/bedrijven/opdracht-plaatsen",
+        name: "Vind een zzp'er",
+        short_name: "Vind zzp'er",
+        url: "/vind-zzper",
       },
       {
-        name: "Opdrachten voor jou",
-        short_name: "Opdrachten",
-        url: "/zzpers/opdrachten",
+        name: "Maak een profiel",
+        short_name: "Profiel",
+        url: "/registreren?rol=zzp",
       },
     ],
   };

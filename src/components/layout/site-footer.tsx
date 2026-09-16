@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 
 const columns = [
@@ -36,15 +37,13 @@ export function SiteFooter() {
     <footer className="border-border bg-ink text-navy-100 mt-auto border-t">
       <Container className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
         <div className="col-span-2 md:col-span-1">
-          <div className="flex items-center gap-2 font-bold text-white">
-            <span
-              aria-hidden
-              className="bg-brand-500 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white"
-            >
-              ZC
-            </span>
-            ZZP Connect
-          </div>
+          <Image
+            src="/brand/logo-white.png"
+            alt="ZZP Connect"
+            width={182}
+            height={30}
+            className="h-7 w-auto"
+          />
           <p className="text-navy-200 mt-3 text-sm">
             Vind een zzp’er in jouw regio en neem rechtstreeks contact op.
           </p>
