@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
@@ -22,6 +23,41 @@ export const metadata: Metadata = {
 
 const veld =
   "border-border bg-surface focus-visible:border-navy-500 h-11 rounded-lg border px-3 text-sm outline-none";
+
+// Populaire bouw-vakgebieden (eerste focus). Slugs bestaan in de catalogus.
+const POPULAIRE_VAKGEBIEDEN = [
+  { naam: "Timmerman", slug: "timmerman" },
+  { naam: "Elektricien", slug: "elektricien" },
+  { naam: "Loodgieter", slug: "loodgieter" },
+  { naam: "Schilder", slug: "schilder" },
+  { naam: "Tegelzetter", slug: "tegelzetter" },
+  { naam: "Metselaar", slug: "metselaar" },
+  { naam: "Stukadoor", slug: "stukadoor" },
+  { naam: "Dakdekker", slug: "dakdekker" },
+  { naam: "Installateur", slug: "installateur" },
+  { naam: "Stratenmaker", slug: "stratenmaker" },
+];
+
+const stappen = [
+  {
+    titel: "Zoek op vak en regio",
+    tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
+    src: "/images/stap-1-zoeken.png",
+    alt: "Telefoon met de ZZP Connect-zoekfunctie: vakgebied en plaats invullen.",
+  },
+  {
+    titel: "Bekijk profielen",
+    tekst: "Zie wie er werkt in jouw buurt, met vakgebied en werkgebied.",
+    src: "/images/stap-2-profiel.png",
+    alt: "Profielkaart van een vakman met vakgebied, werkgebied en ervaring.",
+  },
+  {
+    titel: "Neem rechtstreeks contact op",
+    tekst: "Bespreek zelf het werk, het tarief en de planning. Geen tussenlaag.",
+    src: "/images/stap-3-contact.png",
+    alt: "Contact opnemen met een vakman via bericht, bellen of WhatsApp.",
+  },
+];
 
 export default async function VindZzperPage({
   searchParams,
@@ -46,6 +82,16 @@ export default async function VindZzperPage({
           Bekijk vakmensen en neem rechtstreeks contact op. Zoeken kan zonder
           account.
         </p>
+        <div className="text-foreground-muted mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-brand-600" aria-hidden>✓</span>
+            Zoeken zonder account
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-brand-600" aria-hidden>✓</span>
+            Gratis tijdens de introductie
+          </span>
+        </div>
 
         {/* Filters */}
         <form
@@ -93,6 +139,24 @@ export default async function VindZzperPage({
             </Link>
           ) : null}
         </form>
+
+        {/* Populaire vakgebieden (snelfilters) */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-foreground-muted text-sm">Populair:</span>
+          {POPULAIRE_VAKGEBIEDEN.map((v) => (
+            <Link
+              key={v.slug}
+              href={`/vind-zzper?vak=${v.slug}`}
+              className={`rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
+                vak === v.slug
+                  ? "border-brand-500 bg-brand-50 text-brand-700"
+                  : "border-border bg-surface text-foreground hover:border-brand-500 hover:text-brand-700"
+              }`}
+            >
+              {v.naam}
+            </Link>
+          ))}
+        </div>
 
         {zzpers.length === 0 ? (
           <div className="border-border mt-6 rounded-2xl border border-dashed p-10 text-center">
@@ -185,6 +249,34 @@ export default async function VindZzperPage({
           </ul>
         )}
       </Container>
+
+      {/* ───────────── Zo werkt het ───────────── */}
+      <section className="bg-surface-muted mt-4 py-12 md:py-16">
+        <Container>
+          <h2 className="text-2xl font-bold md:text-3xl">Zo werkt het</h2>
+          <ol className="mt-10 grid gap-10 sm:grid-cols-3 sm:gap-8">
+            {stappen.map((stap, i) => (
+              <li key={stap.titel} className="flex flex-col items-center text-center">
+                <Image
+                  src={stap.src}
+                  alt={stap.alt}
+                  width={820}
+                  height={820}
+                  sizes="(min-width: 640px) 320px, 80vw"
+                  className="h-44 w-44 object-contain md:h-52 md:w-52"
+                />
+                <p className="text-brand-700 mt-5 text-sm font-semibold">
+                  Stap {i + 1}
+                </p>
+                <h3 className="mt-1 text-lg font-semibold">{stap.titel}</h3>
+                <p className="text-foreground-muted mx-auto mt-2 max-w-xs text-sm leading-relaxed">
+                  {stap.tekst}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
     </>
   );
 }
