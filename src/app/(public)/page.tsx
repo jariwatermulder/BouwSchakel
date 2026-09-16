@@ -170,22 +170,29 @@ export default async function HomePage() {
               className="bs-load shadow-elevated mt-8 flex flex-col gap-2 rounded-2xl bg-white p-2 sm:flex-row"
               style={{ animationDelay: "160ms" }}
             >
-              <label className="flex flex-1 items-center gap-2 px-3">
+              <label className="focus-within:ring-brand-500 flex flex-1 items-center gap-2 rounded-lg px-3 focus-within:ring-2">
                 <svg aria-hidden viewBox="0 0 24 24" fill="none" className="text-foreground-muted h-5 w-5 shrink-0">
                   <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
                   <path d="M21 21l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
                 <input
+                  type="search"
                   name="q"
+                  aria-label="Zoek op vak of trefwoord"
+                  autoComplete="off"
+                  spellCheck={false}
                   placeholder="Timmerman, elektricien…"
                   className="text-foreground placeholder:text-foreground-muted h-11 w-full bg-transparent text-sm outline-none"
                 />
               </label>
-              <label className="border-border flex flex-1 items-center gap-2 px-3 sm:border-l">
+              <label className="border-border focus-within:ring-brand-500 flex flex-1 items-center gap-2 rounded-lg px-3 focus-within:ring-2 sm:border-l">
                 <Icon name="pin" className="text-foreground-muted h-5 w-5 shrink-0" />
                 <input
+                  type="text"
                   name="plaats"
-                  placeholder="Plaats"
+                  aria-label="Plaats of regio"
+                  autoComplete="address-level2"
+                  placeholder="Bijv. Groningen…"
                   className="text-foreground placeholder:text-foreground-muted h-11 w-full bg-transparent text-sm outline-none"
                 />
               </label>
@@ -283,7 +290,7 @@ export default async function HomePage() {
                   <Icon name={s.icon} className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="text-brand-700 text-2xl font-extrabold leading-none tracking-tight">
+                  <p className="text-brand-700 text-2xl font-extrabold leading-none tracking-tight tabular-nums">
                     {s.getal}
                   </p>
                   <p className="text-foreground-muted mt-1 text-sm">{s.label}</p>
