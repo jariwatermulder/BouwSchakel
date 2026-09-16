@@ -3,11 +3,6 @@ import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
-import {
-  ZoekIllustratie,
-  ProfielIllustratie,
-  ContactIllustratie,
-} from "@/components/home/stap-illustraties";
 import { listVakgebiedenVoorFilter } from "@/server/zzpers/directory";
 
 export const dynamic = "force-dynamic";
@@ -32,17 +27,20 @@ const stappen = [
   {
     titel: "Zoek op vak en regio",
     tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
-    Illustratie: ZoekIllustratie,
+    src: "/images/stap-1-zoeken.png",
+    alt: "Telefoon met de ZZP Connect-zoekfunctie: vakgebied en plaats invullen.",
   },
   {
     titel: "Bekijk profielen",
     tekst: "Zie wie er werkt in jouw buurt, met vakgebied en werkgebied.",
-    Illustratie: ProfielIllustratie,
+    src: "/images/stap-2-profiel.png",
+    alt: "Profielkaart van een vakman met vakgebied, werkgebied en ervaring.",
   },
   {
     titel: "Neem rechtstreeks contact op",
     tekst: "Bespreek zelf het werk, het tarief en de planning. Geen tussenlaag.",
-    Illustratie: ContactIllustratie,
+    src: "/images/stap-3-contact.png",
+    alt: "Contact opnemen met een vakman via bericht, bellen of WhatsApp.",
   },
 ];
 
@@ -212,20 +210,22 @@ export default async function HomePage() {
       <section className="bg-surface-muted py-12 md:py-16">
         <Container>
           <h2 className="text-2xl font-bold md:text-3xl">Zo werkt het</h2>
-          <ol className="mt-8 grid gap-6 md:grid-cols-3">
+          <ol className="mt-10 grid gap-10 sm:grid-cols-3 sm:gap-8">
             {stappen.map((stap, i) => (
-              <li
-                key={stap.titel}
-                className="border-border bg-surface flex flex-col rounded-2xl border p-6"
-              >
-                <stap.Illustratie className="h-40 w-full" />
-                <div className="mt-4 flex items-center gap-3">
-                  <span className="bg-brand-50 text-brand-700 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums">
-                    {i + 1}
-                  </span>
-                  <h3 className="text-lg font-semibold">{stap.titel}</h3>
-                </div>
-                <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
+              <li key={stap.titel} className="flex flex-col items-center text-center">
+                <Image
+                  src={stap.src}
+                  alt={stap.alt}
+                  width={820}
+                  height={820}
+                  sizes="(min-width: 640px) 320px, 80vw"
+                  className="h-44 w-44 object-contain md:h-52 md:w-52"
+                />
+                <p className="text-brand-700 mt-5 text-sm font-semibold">
+                  Stap {i + 1}
+                </p>
+                <h3 className="mt-1 text-lg font-semibold">{stap.titel}</h3>
+                <p className="text-foreground-muted mx-auto mt-2 max-w-xs text-sm leading-relaxed">
                   {stap.tekst}
                 </p>
               </li>
