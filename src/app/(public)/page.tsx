@@ -4,12 +4,6 @@ import { ButtonLink } from "@/components/ui/button";
 
 const HERO_FOTO = "/images/hero-samenwerking.jpg";
 
-const heroChips = [
-  "Zoeken zonder account",
-  "Gratis tijdens de introductie",
-  "Rechtstreeks contact",
-];
-
 const faqs = [
   {
     vraag: "Kost het iets?",
@@ -51,56 +45,18 @@ export default function HomePage() {
           className="from-ink/95 via-ink/80 to-ink/40 absolute inset-0 -z-10 bg-gradient-to-r"
         />
 
-        <Container className="py-16 text-white md:py-24">
-          <div className="max-w-2xl">
-            <h1 className="bs-load text-4xl font-extrabold leading-[1.03] md:text-6xl">
-              Vakmensen en opdrachtgevers, rechtstreeks verbonden.
+        <Container className="flex min-h-[58vh] flex-col justify-center py-20 text-white md:min-h-[66vh] md:py-28">
+          <div className="max-w-3xl">
+            <span className="bs-load inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white/90 backdrop-blur-sm">
+              Hét platform voor vakmensen en opdrachtgevers
+            </span>
+            <h1
+              className="bs-load mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-balance md:text-6xl"
+              style={{ animationDelay: "80ms" }}
+            >
+              Vakmensen en opdrachtgevers,{" "}
+              <span className="text-white/70">rechtstreeks verbonden.</span>
             </h1>
-            <p
-              className="bs-load mt-5 max-w-xl text-lg leading-relaxed text-white/85"
-              style={{ animationDelay: "120ms" }}
-            >
-              Zoek als opdrachtgever een zzp’er op vakgebied en regio, of laat
-              je als vakmens vinden. Geen tussenlaag, geen offertetraject — je
-              maakt zelf je afspraken. Tijdens de introductie gratis.
-            </p>
-
-            {/* Twee routes als CTA */}
-            <div
-              className="bs-load mt-8 flex flex-col gap-3 sm:flex-row"
-              style={{ animationDelay: "160ms" }}
-            >
-              <ButtonLink
-                href="/vind-zzper"
-                size="lg"
-                className="bg-white! text-brand-700! hover:bg-white/90! justify-center rounded-xl shadow-md"
-              >
-                Ik zoek een zzp’er
-              </ButtonLink>
-              <ButtonLink
-                href="/registreren?rol=zzp"
-                variant="ghost"
-                size="lg"
-                className="text-white! justify-center rounded-xl border border-white/60 hover:bg-white/10!"
-              >
-                Ik ben zzp’er
-              </ButtonLink>
-            </div>
-
-            {/* Vertrouwens-chips */}
-            <div
-              className="bs-load mt-6 flex flex-col gap-2 text-sm text-white/85 sm:flex-row sm:flex-wrap sm:gap-x-6"
-              style={{ animationDelay: "240ms" }}
-            >
-              {heroChips.map((c) => (
-                <span key={c} className="inline-flex items-center gap-2">
-                  <span aria-hidden className="font-bold text-white">
-                    ✓
-                  </span>
-                  {c}
-                </span>
-              ))}
-            </div>
           </div>
         </Container>
       </section>
