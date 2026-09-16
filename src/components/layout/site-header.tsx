@@ -24,6 +24,7 @@ const navItems = [
 
 export function SiteHeader({ user }: { user?: HeaderUser }) {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -32,11 +33,13 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const sluit = () => setOpen(false);
+
   return (
     <header
       className={cn(
         "border-brand-700/40 sticky top-0 z-40 border-b text-white transition-all duration-300 ease-out",
-        scrolled
+        scrolled || open
           ? "bg-brand-600/95 shadow-sm backdrop-blur-md"
           : "bg-brand-500",
       )}
@@ -51,6 +54,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           href="/"
           className="flex items-center"
           aria-label="ZZP Connect — naar de homepage"
+          onClick={sluit}
         >
           <Image
             src="/brand/logo-white.png"
@@ -62,10 +66,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           />
         </Link>
 
-        <nav
-          aria-label="Hoofdmenu"
-          className="hidden items-center gap-6 md:flex"
-        >
+        <nav aria-label="Hoofdmenu" className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -77,7 +78,8 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Acties op desktop */}
+        <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
               <ButtonLink
@@ -120,7 +122,86 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
             </>
           )}
         </div>
+
+        {/* Hamburger op mobiel */}
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="mobiel-menu"
+          aria-label={open ? "Menu sluiten" : "Menu openen"}
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 md:hidden"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-6 w-6">
+            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+          </svg>
+        </button>
       </Container>
+
+      {/* Uitklapmenu op mobiel */}
+      {open ? (
+        <div id="mobiel-menu" className="border-t border-white/15 md:hidden">
+          <Container className="flex flex-col py-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={sluit}
+                className="rounded-lg px-2 py-3 text-base font-medium text-white/90 hover:bg-white/10 hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            <div className="mt-3 flex flex-col gap-2 border-t border-white/15 pt-3">
+              {user ? (
+                <>
+                  <ButtonLink
+                    href={dashboardPad(user.role)}
+                    variant="brand"
+                    size="lg"
+                    onClick={sluit}
+                    className="w-full justify-center rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
+                  >
+                    Mijn account
+                  </ButtonLink>
+                  <form action={logoutAction}>
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="lg"
+                      className="w-full justify-center border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10 hover:text-white"
+                    >
+                      Uitloggen
+                    </Button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <ButtonLink
+                    href="/registreren?rol=zzp"
+                    variant="brand"
+                    size="lg"
+                    onClick={sluit}
+                    className="w-full justify-center rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
+                  >
+                    Maak een profiel
+                  </ButtonLink>
+                  <ButtonLink
+                    href="/inloggen"
+                    variant="outline"
+                    size="lg"
+                    onClick={sluit}
+                    className="w-full justify-center border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10 hover:text-white"
+                  >
+                    Inloggen
+                  </ButtonLink>
+                </>
+              )}
+            </div>
+          </Container>
+        </div>
+      ) : null}
     </header>
   );
 }

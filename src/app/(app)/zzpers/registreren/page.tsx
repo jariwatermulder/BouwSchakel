@@ -14,7 +14,13 @@ import {
   listSkills,
   listSpecializations,
 } from "@/server/catalog";
-import { REGISTRATIE_STAPPEN, isStapSlug, type StapSlug } from "./steps";
+import {
+  KERN_STAPPEN,
+  OPTIONELE_STAPPEN,
+  isStapSlug,
+  isKernStap,
+  type StapSlug,
+} from "./steps";
 import { StepFields } from "./step-fields";
 import { saveStap } from "./actions";
 
@@ -54,18 +60,17 @@ export default async function RegistrerenPage({
 
   const { stap: stapParam, fout } = await searchParams;
   const eersteOnvoltooid =
-    REGISTRATIE_STAPPEN.find((s) => !stapDone(s.slug, profile))?.slug ??
-    "persoonlijk";
+    KERN_STAPPEN.find((s) => !stapDone(s.slug, profile))?.slug ?? "persoonlijk";
   const activeSlug: StapSlug = isStapSlug(stapParam)
     ? stapParam
     : eersteOnvoltooid;
 
-  const activeIndex = REGISTRATIE_STAPPEN.findIndex(
-    (s) => s.slug === activeSlug,
-  );
-  const activeStap = REGISTRATIE_STAPPEN[activeIndex];
-  const vorige = REGISTRATIE_STAPPEN[activeIndex - 1];
-  const isLaatste = activeIndex === REGISTRATIE_STAPPEN.length - 1;
+  const kern = isKernStap(activeSlug);
+  const groep = kern ? KERN_STAPPEN : OPTIONELE_STAPPEN;
+  const groepIndex = groep.findIndex((s) => s.slug === activeSlug);
+  const activeStap = groep[groepIndex];
+  const vorige = groep[groepIndex - 1];
+  const isLaatsteInGroep = groepIndex === groep.length - 1;
 
   const selectedSkillIds = profile?.skills.map((s) => s.skillId) ?? [];
   const [skills, specializations, certifications] = await Promise.all([
@@ -76,52 +81,39 @@ export default async function RegistrerenPage({
     activeSlug === "certificaten" ? listCertifications() : Promise.resolve([]),
   ]);
 
-  const pct = profile?.profielCompleetheidPct ?? 0;
-
   return (
-    <Container className="grid gap-8 py-8 md:grid-cols-[240px_1fr] md:py-12">
+    <Container className="grid gap-8 py-8 md:grid-cols-[260px_1fr] md:py-12">
       {/* Stappen-navigatie */}
       <aside>
-        <div className="mb-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium">Profiel compleet</span>
-            <span className="text-navy-700 font-semibold">{pct}%</span>
-          </div>
-          <div className="bg-border mt-1 h-2 w-full overflow-hidden rounded-full">
-            <div
-              className="bg-accent-500 h-full rounded-full transition-all"
-              style={{ width: `${pct}%` }}
+        <p className="text-foreground-muted text-xs font-semibold tracking-wide uppercase">
+          Nodig om te starten
+        </p>
+        <ol className="mt-2 space-y-1">
+          {KERN_STAPPEN.map((s, i) => (
+            <StapLink
+              key={s.slug}
+              slug={s.slug}
+              label={s.label}
+              nummer={i + 1}
+              done={stapDone(s.slug, profile)}
+              active={s.slug === activeSlug}
             />
-          </div>
-        </div>
-        <ol className="space-y-1">
-          {REGISTRATIE_STAPPEN.map((s, i) => {
-            const done = stapDone(s.slug, profile);
-            const active = s.slug === activeSlug;
-            return (
-              <li key={s.slug}>
-                <Link
-                  href={`/zzpers/registreren?stap=${s.slug}`}
-                  className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
-                    active
-                      ? "bg-navy-50 text-navy-900 font-semibold"
-                      : "text-foreground-muted hover:bg-surface-muted"
-                  }`}
-                >
-                  <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full text-xs ${
-                      done
-                        ? "bg-emerald-500 text-white"
-                        : "bg-border text-foreground-muted"
-                    }`}
-                  >
-                    {done ? "✓" : i + 1}
-                  </span>
-                  {s.label}
-                </Link>
-              </li>
-            );
-          })}
+          ))}
+        </ol>
+
+        <p className="text-foreground-muted mt-6 text-xs font-semibold tracking-wide uppercase">
+          Later aanvullen (optioneel)
+        </p>
+        <ol className="mt-2 space-y-1">
+          {OPTIONELE_STAPPEN.map((s) => (
+            <StapLink
+              key={s.slug}
+              slug={s.slug}
+              label={s.label}
+              done={stapDone(s.slug, profile)}
+              active={s.slug === activeSlug}
+            />
+          ))}
         </ol>
       </aside>
 
@@ -129,9 +121,18 @@ export default async function RegistrerenPage({
       <div>
         <h1 className="text-2xl font-bold">{activeStap?.label}</h1>
         <p className="text-foreground-muted mt-1 text-sm">
-          Stap {activeIndex + 1} van {REGISTRATIE_STAPPEN.length}. Je voortgang
-          wordt automatisch opgeslagen — je kunt later verdergaan.
+          {kern
+            ? `Stap ${groepIndex + 1} van ${KERN_STAPPEN.length}. Je voortgang wordt automatisch opgeslagen.`
+            : "Optioneel — je kunt dit later aanvullen. Je voortgang wordt automatisch opgeslagen."}
         </p>
+
+        {kern ? (
+          <div className="border-brand-100 bg-brand-50 text-brand-700 mt-4 rounded-lg border p-3 text-sm">
+            Zodra je naam, vakgebied en werkgebied zijn ingevuld, staat je
+            profiel online en kunnen opdrachtgevers je vinden. De rest vul je
+            later aan.
+          </div>
+        ) : null}
 
         {fout ? (
           <p
@@ -164,11 +165,15 @@ export default async function RegistrerenPage({
                 <span />
               )}
               <div className="flex items-center gap-3">
-                <ButtonLink href="/zzpers/dashboard" variant="ghost">
+                <ButtonLink href="/zzpers/profiel" variant="ghost">
                   Later verder
                 </ButtonLink>
-                <Button type="submit" variant="accent">
-                  {isLaatste ? "Afronden" : "Opslaan en verder"}
+                <Button type="submit" variant="brand">
+                  {isLaatsteInGroep
+                    ? kern
+                      ? "Profiel opslaan"
+                      : "Opslaan"
+                    : "Opslaan en verder"}
                 </Button>
               </div>
             </div>
@@ -176,5 +181,41 @@ export default async function RegistrerenPage({
         </Card>
       </div>
     </Container>
+  );
+}
+
+function StapLink({
+  slug,
+  label,
+  nummer,
+  done,
+  active,
+}: {
+  slug: StapSlug;
+  label: string;
+  nummer?: number;
+  done: boolean;
+  active: boolean;
+}) {
+  return (
+    <li>
+      <Link
+        href={`/zzpers/registreren?stap=${slug}`}
+        className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-sm ${
+          active
+            ? "bg-brand-50 text-brand-700 font-semibold"
+            : "text-foreground-muted hover:bg-surface-muted"
+        }`}
+      >
+        <span
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs ${
+            done ? "bg-emerald-500 text-white" : "bg-border text-foreground-muted"
+          }`}
+        >
+          {done ? "✓" : (nummer ?? "+")}
+        </span>
+        {label}
+      </Link>
+    </li>
   );
 }

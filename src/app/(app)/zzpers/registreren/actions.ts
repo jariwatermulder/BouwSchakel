@@ -164,5 +164,7 @@ export async function saveStap(formData: FormData): Promise<void> {
 
   const next = volgendeStap(stap as StapSlug);
   if (next) redirect(`/zzpers/registreren?stap=${next}`);
-  redirect("/zzpers/dashboard");
+  // Klaar met deze groep: laat het profiel zien zodat de zzp'er ziet hoe het
+  // eruitziet en wat er eventueel nog aangevuld kan worden.
+  redirect("/zzpers/profiel");
 }
