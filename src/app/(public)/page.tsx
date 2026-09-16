@@ -3,6 +3,11 @@ import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
+import {
+  ZoekIllustratie,
+  ProfielIllustratie,
+  ContactIllustratie,
+} from "@/components/home/stap-illustraties";
 import { listVakgebiedenVoorFilter } from "@/server/zzpers/directory";
 
 export const dynamic = "force-dynamic";
@@ -27,14 +32,17 @@ const stappen = [
   {
     titel: "Zoek op vak en regio",
     tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
+    Illustratie: ZoekIllustratie,
   },
   {
     titel: "Bekijk profielen",
     tekst: "Zie wie er werkt in jouw buurt, met vakgebied en werkgebied.",
+    Illustratie: ProfielIllustratie,
   },
   {
     titel: "Neem rechtstreeks contact op",
     tekst: "Bespreek zelf het werk, het tarief en de planning. Geen tussenlaag.",
+    Illustratie: ContactIllustratie,
   },
 ];
 
@@ -208,12 +216,15 @@ export default async function HomePage() {
             {stappen.map((stap, i) => (
               <li
                 key={stap.titel}
-                className="border-border bg-surface rounded-2xl border p-6"
+                className="border-border bg-surface flex flex-col rounded-2xl border p-6"
               >
-                <span className="bg-brand-50 text-brand-700 flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold tabular-nums">
-                  {i + 1}
-                </span>
-                <h3 className="mt-4 text-lg font-semibold">{stap.titel}</h3>
+                <stap.Illustratie className="h-40 w-full" />
+                <div className="mt-4 flex items-center gap-3">
+                  <span className="bg-brand-50 text-brand-700 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums">
+                    {i + 1}
+                  </span>
+                  <h3 className="text-lg font-semibold">{stap.titel}</h3>
+                </div>
                 <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
                   {stap.tekst}
                 </p>
