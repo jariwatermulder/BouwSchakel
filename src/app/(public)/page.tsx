@@ -5,8 +5,6 @@ import { Icon } from "@/components/home/pictos";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
 import { VoorOpdrachtgevers, VoorZzpers } from "@/components/home/voor-wie";
 
-const HERO_FOTO = "/images/hero-samenwerking.jpg";
-
 const faqs = [
   {
     vraag: "Kost het iets?",
@@ -98,21 +96,17 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Fotozijde — helder, geen overlay */}
-          <div className="relative h-64 overflow-hidden sm:h-80 md:h-full">
-            <Image
-              src={HERO_FOTO}
-              alt="Een vakman en een opdrachtgever overleggen samen op locatie"
-              fill
-              priority
-              sizes="(min-width: 768px) 48vw, 100vw"
-              className="hero-approach object-cover object-[58%_center]"
-            />
+          {/* Fotozijde: personen springen uit een zachte merkkleur-vorm */}
+          <div className="relative h-80 sm:h-96 md:h-full">
+            {/* Achtergrondvorm in merkkleur */}
+            <div className="from-brand-100 to-brand-50 absolute inset-x-0 top-[36%] bottom-0 overflow-hidden bg-gradient-to-br md:top-[32%] md:rounded-l-[3rem]">
+              <div className="bg-brand-500/10 absolute -top-10 -right-10 h-48 w-48 rounded-full blur-2xl" />
+            </div>
 
             {/* Handgeschreven accent, zoals in de referentie (alleen desktop) */}
-            <div className="pointer-events-none absolute top-8 right-5 hidden text-right lg:block">
+            <div className="pointer-events-none absolute top-3 right-4 z-20 hidden text-right lg:block">
               <p
-                className="text-2xl leading-tight text-white [text-shadow:0_1px_6px_rgba(2,8,23,0.55)]"
+                className="text-foreground text-2xl leading-tight"
                 style={{ fontFamily: "'Caveat', cursive" }}
               >
                 Echte vakmensen.
@@ -122,7 +116,7 @@ export default function HomePage() {
               <svg
                 aria-hidden
                 viewBox="0 0 60 60"
-                className="ml-auto mt-1 h-12 w-12 text-white [filter:drop-shadow(0_1px_4px_rgba(2,8,23,0.5))]"
+                className="text-brand-600 ml-auto mt-1 h-11 w-11"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -133,25 +127,20 @@ export default function HomePage() {
                 <path d="M27 46 L16 49 L18 38" />
               </svg>
             </div>
+
+            {/* Uitgeknipte personen die uit het kader springen */}
+            <div className="hero-pop-float absolute inset-x-0 top-[16%] bottom-0 z-10">
+              <Image
+                src="/images/hero-personen.png"
+                alt="Een vakman en een opdrachtgever overleggen samen"
+                fill
+                priority
+                sizes="(min-width: 768px) 48vw, 100vw"
+                className="object-contain object-[42%_bottom] [filter:drop-shadow(0_22px_30px_rgba(2,8,23,0.30))]"
+              />
+            </div>
           </div>
         </div>
-
-        {/* Organische, afgeronde overgang tussen wit en foto (alleen desktop) */}
-        <svg
-          aria-hidden
-          className="text-surface pointer-events-none absolute inset-y-0 hidden md:block"
-          style={{
-            left: "56%",
-            width: "150px",
-            marginLeft: "-75px",
-            filter: "drop-shadow(7px 0 16px rgba(2, 8, 23, 0.22))",
-          }}
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          fill="currentColor"
-        >
-          <path d="M0 0 L50 0 C 96 28, 96 72, 50 100 L 0 100 Z" />
-        </svg>
       </section>
 
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}

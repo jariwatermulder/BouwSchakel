@@ -238,18 +238,17 @@ h3 {
   .hero-foto { animation: none !important; }
 }
 
-/* Hero-foto: langzame 'inzoom' zodat de personen naar je toe lijken te komen. */
-@keyframes hero-approach {
-  from { transform: scale(1); }
-  to { transform: scale(1.12); }
+/* Hero-personen: subtiele zweving zodat ze uit het kader lijken te springen. */
+@keyframes hero-pop-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
-.hero-approach {
-  transform-origin: 62% 42%;
-  animation: hero-approach 15s ease-in-out infinite alternate;
+.hero-pop-float {
+  animation: hero-pop-float 6s ease-in-out infinite;
   will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-approach { animation: none; transform: scale(1.04); }
+  .hero-pop-float { animation: none; }
 }
 
 /* 'Zo werkt het'-toggle: subtiele fade/slide bij het wisselen van doelgroep. */
