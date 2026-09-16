@@ -34,29 +34,29 @@ export default function HomePage() {
   return (
     <>
       {/* ───────────── Hero: wit tekstvlak links, heldere foto rechts ───────────── */}
-      <section className="bg-surface">
-        <div className="grid md:grid-cols-[1.1fr_0.9fr] md:items-stretch">
+      <section className="bg-surface relative overflow-hidden">
+        <div className="grid md:h-[clamp(600px,74vh,690px)] md:grid-cols-[1.12fr_0.88fr] md:items-stretch">
           {/* Tekstzijde */}
-          <div className="flex items-center py-12 pr-4 pl-4 sm:pr-6 sm:pl-6 md:py-20 md:pr-10 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
-            <div className="w-full max-w-xl">
+          <div className="relative z-10 flex items-center px-4 py-12 sm:px-6 md:py-0 md:pr-10 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+            <div className="w-full max-w-[36rem]">
               <span className="border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide">
                 <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
                 Hét platform voor vakmensen en opdrachtgevers
               </span>
 
-              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="mt-5 max-w-[26rem] text-[2.1rem] font-extrabold leading-[1.07] tracking-tight sm:text-5xl lg:text-[3.25rem]">
                 <span className="text-foreground">
                   Vakmensen en opdrachtgevers,
                 </span>{" "}
                 <span className="text-brand-600">rechtstreeks verbonden.</span>
               </h1>
 
-              <p className="text-foreground-muted mt-5 max-w-md text-lg leading-relaxed">
+              <p className="text-foreground-muted mt-4 max-w-[32rem] text-lg leading-relaxed">
                 Vind een vakman in jouw regio, of laat je als zzp’er vinden.
                 Zonder tussenlaag.
               </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <ButtonLink
                   href="/vind-zzper"
                   variant="brand"
@@ -78,18 +78,18 @@ export default function HomePage() {
                 </ButtonLink>
               </div>
 
-              <ul className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-6">
+              <ul className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
                 {[
-                  { icon: "check" as const, tekst: "Geen account nodig om te zoeken" },
-                  { icon: "users" as const, tekst: "Rechtstreeks contact met vakmensen" },
-                  { icon: "pin" as const, tekst: "Lokale vakmensen in jouw regio" },
+                  { icon: "check" as const, tekst: "Geen account nodig" },
+                  { icon: "users" as const, tekst: "Rechtstreeks contact" },
+                  { icon: "pin" as const, tekst: "Lokale vakmensen" },
                 ].map((v) => (
                   <li
                     key={v.tekst}
-                    className="text-foreground-muted flex items-center gap-2.5 text-sm"
+                    className="text-foreground-muted flex items-center gap-2 text-sm"
                   >
-                    <span className="bg-brand-50 text-brand-600 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
-                      <Icon name={v.icon} className="h-4 w-4" />
+                    <span className="bg-brand-50 text-brand-600 flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
+                      <Icon name={v.icon} className="h-3.5 w-3.5" />
                     </span>
                     {v.tekst}
                   </li>
@@ -99,17 +99,29 @@ export default function HomePage() {
           </div>
 
           {/* Fotozijde — helder, geen overlay */}
-          <div className="relative min-h-[300px] sm:min-h-[380px] md:min-h-[560px]">
+          <div className="relative h-64 sm:h-80 md:h-full">
             <Image
               src={HERO_FOTO}
               alt="Een vakman en een opdrachtgever overleggen samen op locatie"
               fill
               priority
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover object-[60%_center]"
+              sizes="(min-width: 768px) 48vw, 100vw"
+              className="object-cover object-[58%_center]"
             />
           </div>
         </div>
+
+        {/* Organische, afgeronde overgang tussen wit en foto (alleen desktop) */}
+        <svg
+          aria-hidden
+          className="text-surface pointer-events-none absolute inset-y-0 hidden md:block"
+          style={{ left: "56%", width: "150px", marginLeft: "-75px" }}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          fill="currentColor"
+        >
+          <path d="M0 0 L50 0 C 96 28, 96 72, 50 100 L 0 100 Z" />
+        </svg>
       </section>
 
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}
