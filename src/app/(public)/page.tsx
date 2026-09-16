@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
+import { VoorOpdrachtgevers, VoorZzpers } from "@/components/home/voor-wie";
 
 const HERO_FOTO = "/images/hero-samenwerking.jpg";
 
@@ -70,6 +71,10 @@ export default function HomePage() {
 
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}
       <ZoWerktHet />
+
+      {/* ───────────── Voor opdrachtgevers / Voor zzp'ers ───────────── */}
+      <VoorOpdrachtgevers />
+      <VoorZzpers />
 
       {/* ───────────── Veelgestelde vragen ───────────── */}
       <section className="bg-surface-muted py-12 md:py-16">

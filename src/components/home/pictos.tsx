@@ -32,6 +32,12 @@ export function Icon({ name, className }: { name: string; className?: string }) 
         <path d="m9 12 2 2 4-4" />
       </>
     ),
+    person: (
+      <>
+        <circle cx="12" cy="8" r="3.6" />
+        <path d="M5 20a7 7 0 0 1 14 0" />
+      </>
+    ),
     star: (
       <path d="M12 4l2.3 4.7 5.2.8-3.8 3.7.9 5.1L12 15.9 7.4 18.3l.9-5.1L4.5 9.5l5.2-.8L12 4Z" />
     ),
