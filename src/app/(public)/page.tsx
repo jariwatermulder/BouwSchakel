@@ -99,14 +99,14 @@ export default function HomePage() {
           </div>
 
           {/* Fotozijde — helder, geen overlay */}
-          <div className="relative h-64 sm:h-80 md:h-full">
+          <div className="relative h-64 overflow-hidden sm:h-80 md:h-full">
             <Image
               src={HERO_FOTO}
               alt="Een vakman en een opdrachtgever overleggen samen op locatie"
               fill
               priority
               sizes="(min-width: 768px) 48vw, 100vw"
-              className="object-cover object-[58%_center]"
+              className="hero-approach object-cover object-[58%_center]"
             />
           </div>
         </div>
@@ -115,7 +115,12 @@ export default function HomePage() {
         <svg
           aria-hidden
           className="text-surface pointer-events-none absolute inset-y-0 hidden md:block"
-          style={{ left: "56%", width: "150px", marginLeft: "-75px" }}
+          style={{
+            left: "56%",
+            width: "150px",
+            marginLeft: "-75px",
+            filter: "drop-shadow(7px 0 16px rgba(2, 8, 23, 0.22))",
+          }}
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           fill="currentColor"

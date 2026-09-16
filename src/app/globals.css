@@ -238,6 +238,20 @@ h3 {
   .hero-foto { animation: none !important; }
 }
 
+/* Hero-foto: langzame 'inzoom' zodat de personen naar je toe lijken te komen. */
+@keyframes hero-approach {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
+}
+.hero-approach {
+  transform-origin: 62% 42%;
+  animation: hero-approach 15s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-approach { animation: none; transform: scale(1.04); }
+}
+
 /* 'Zo werkt het'-toggle: subtiele fade/slide bij het wisselen van doelgroep. */
 @keyframes zw-swap-in {
   from { opacity: 0; transform: translateY(8px); }
