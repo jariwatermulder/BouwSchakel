@@ -77,7 +77,7 @@ export function FactuurWeergave({
 
           <a
             href={`${basisPad}/${f.id}/pdf`}
-            className="bg-accent-500 text-ink inline-flex h-10 items-center rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+            className="bg-accent-500 text-white inline-flex h-10 items-center rounded-full px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
           >
             Download PDF
           </a>

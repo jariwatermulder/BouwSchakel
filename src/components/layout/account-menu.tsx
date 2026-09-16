@@ -50,7 +50,7 @@ export function AccountMenu({
         aria-label="Accountmenu"
         className="hover:bg-navy-700 flex items-center gap-2 rounded-full py-1 pr-2 pl-1 transition-colors"
       >
-        <span className="bg-accent-500 text-ink flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold">
+        <span className="bg-accent-500 text-white flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold">
           {initiaal}
         </span>
         <svg

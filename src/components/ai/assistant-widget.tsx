@@ -196,7 +196,7 @@ export function AssistantWidget() {
               type="submit"
               disabled={bezig || !invoer.trim()}
               aria-label="Verstuur"
-              className="bg-accent-500 text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform hover:-translate-y-0.5 disabled:opacity-40"
+              className="bg-accent-500 text-white flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform hover:-translate-y-0.5 disabled:opacity-40"
             >
               <svg
                 viewBox="0 0 24 24"

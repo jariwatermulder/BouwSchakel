@@ -21,9 +21,11 @@
   --color-navy-900: #0b1c31;
   --color-navy-950: #071322;
 
-  --color-accent-400: #fbbf47;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
+  /* Geen amber meer: 'accent' verwijst naar Connect Blue zodat losse
+     accent-klassen sitebreed automatisch op de merkkleur uitkomen. */
+  --color-accent-400: #3b74ef;
+  --color-accent-500: #2563eb;
+  --color-accent-600: #1d4ed8;
 
   /* Connect Blue (primair) — ZZP Connect brandguide 2.0. */
   --color-brand-50: #eaf1ff;

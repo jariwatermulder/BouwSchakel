@@ -125,7 +125,7 @@ export function ConversationView({
     <div className="border-border bg-surface flex h-[72vh] flex-col overflow-hidden rounded-2xl border shadow-sm">
       {/* Chatkop */}
       <div className="border-border bg-ink flex items-center gap-3 border-b px-4 py-3 text-white">
-        <span className="bg-accent-500 text-ink flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-bold">
+        <span className="bg-accent-500 text-white flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-bold">
           {initiaal(tegenpartij)}
         </span>
         <div className="min-w-0">
@@ -241,7 +241,7 @@ export function ConversationView({
           type="submit"
           disabled={bezig || !tekst.trim()}
           aria-label="Versturen"
-          className="bg-accent-500 text-ink hover:bg-accent-400 flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40"
+          className="bg-accent-500 text-white hover:bg-accent-400 flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-40"
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5" aria-hidden>
             <path d="M2.3 2.3a1 1 0 011.05-.23l14 5.5a1 1 0 010 1.86l-14 5.5A1 1 0 012 13.9l1.4-3.9L11 9 3.4 8 2 4.1a1 1 0 01.3-1.8z" />

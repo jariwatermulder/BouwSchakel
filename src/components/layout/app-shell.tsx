@@ -16,7 +16,7 @@ export interface AppPrimaryAction {
 function Badge({ count }: { count?: number }) {
   if (!count || count <= 0) return null;
   return (
-    <span className="bg-accent-500 text-ink ml-1 inline-flex min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
+    <span className="bg-accent-500 text-white ml-1 inline-flex min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
       {count > 9 ? "9+" : count}
     </span>
   );
@@ -75,7 +75,7 @@ export function AppShell({
             {primaryAction ? (
               <Link
                 href={primaryAction.href}
-                className="bg-accent-500 text-ink hover:bg-accent-400 hidden items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold sm:inline-flex"
+                className="bg-accent-500 text-white hover:bg-accent-400 hidden items-center gap-1 rounded-lg px-3 py-2 text-sm font-semibold sm:inline-flex"
               >
                 <span aria-hidden>+</span> {primaryAction.label}
               </Link>
@@ -93,7 +93,7 @@ export function AppShell({
         {primaryAction ? (
           <Link
             href={primaryAction.href}
-            className="bg-accent-500 text-ink shrink-0 rounded-md px-3 py-1 text-sm font-semibold"
+            className="bg-accent-500 text-white shrink-0 rounded-md px-3 py-1 text-sm font-semibold"
           >
             + {primaryAction.label}
           </Link>
