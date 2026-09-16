@@ -42,24 +42,23 @@ export default function HomePage() {
         />
         <div
           aria-hidden
-          className="from-brand-700/95 via-brand-600/80 to-brand-500/45 absolute inset-0 -z-10 bg-gradient-to-r"
+          className="from-white via-white/85 to-white/25 absolute inset-0 -z-10 bg-gradient-to-r"
         />
 
-        <Container className="flex min-h-[58vh] flex-col justify-center py-20 text-white md:min-h-[66vh] md:py-28">
+        <Container className="flex min-h-[58vh] flex-col justify-center py-20 md:min-h-[66vh] md:py-28">
           <div className="max-w-3xl">
-            <span className="bs-load inline-flex max-w-full items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
-              <span aria-hidden className="h-2 w-2 shrink-0 rounded-full bg-white" />
+            <span className="bs-load border-border bg-surface/80 text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide backdrop-blur-sm">
+              <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
               Hét platform voor vakmensen en opdrachtgevers
             </span>
             <h1
-              className="bs-load mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-balance md:text-6xl"
+              className="bs-load text-brand-600 mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-balance md:text-6xl"
               style={{ animationDelay: "80ms" }}
             >
-              Vakmensen en opdrachtgevers,{" "}
-              <span className="text-brand-100">rechtstreeks verbonden.</span>
+              Vakmensen en opdrachtgevers, rechtstreeks verbonden.
             </h1>
             <p
-              className="bs-load mt-5 max-w-xl text-lg leading-relaxed text-white/90"
+              className="bs-load text-foreground-muted mt-5 max-w-xl text-lg leading-relaxed"
               style={{ animationDelay: "140ms" }}
             >
               Vind rechtstreeks een vakman in jouw regio, of laat je als zzp’er
