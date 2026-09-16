@@ -38,6 +38,15 @@ export function Icon({ name, className }: { name: string; className?: string }) 
         <path d="M5 20a7 7 0 0 1 14 0" />
       </>
     ),
+    users: (
+      <>
+        <circle cx="9" cy="8" r="3.2" />
+        <path d="M2.8 20a6.2 6.2 0 0 1 12.4 0" />
+        <path d="M15.5 5.2a3 3 0 0 1 0 5.9" />
+        <path d="M17.2 20a6.2 6.2 0 0 0-1.9-4.5" />
+      </>
+    ),
+    check: <path d="m5 13 4 4L19 7" />,
     star: (
       <path d="M12 4l2.3 4.7 5.2.8-3.8 3.7.9 5.1L12 15.9 7.4 18.3l.9-5.1L4.5 9.5l5.2-.8L12 4Z" />
     ),

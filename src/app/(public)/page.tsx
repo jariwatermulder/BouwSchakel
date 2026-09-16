@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { ButtonLink } from "@/components/ui/button";
+import { Icon } from "@/components/home/pictos";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
 import { VoorOpdrachtgevers, VoorZzpers } from "@/components/home/voor-wie";
 
@@ -31,42 +33,83 @@ const faqs = [
 export default function HomePage() {
   return (
     <>
-      {/* ───────────── Hero met foto-achtergrond ───────────── */}
-      <section className="relative isolate overflow-hidden">
-        <Image
-          src={HERO_FOTO}
-          alt="Een zzp’er en een opdrachtgever overleggen samen op locatie"
-          fill
-          priority
-          sizes="100vw"
-          className="hero-foto -z-10 object-cover object-[68%_center] md:object-[60%_center]"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-white from-[64%] to-transparent to-[97%] md:bg-gradient-to-r md:from-[44%] md:to-[68%]"
-        />
+      {/* ───────────── Hero: wit tekstvlak links, heldere foto rechts ───────────── */}
+      <section className="bg-surface">
+        <div className="grid md:grid-cols-[1.1fr_0.9fr] md:items-stretch">
+          {/* Tekstzijde */}
+          <div className="flex items-center py-12 pr-4 pl-4 sm:pr-6 sm:pl-6 md:py-20 md:pr-10 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+            <div className="w-full max-w-xl">
+              <span className="border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide">
+                <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
+                Hét platform voor vakmensen en opdrachtgevers
+              </span>
 
-        <Container className="flex min-h-[58vh] flex-col justify-center py-20 md:min-h-[66vh] md:py-28">
-          <div className="max-w-xl">
-            <span className="bs-load border-border bg-surface/80 text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide backdrop-blur-sm">
-              <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
-              Hét platform voor vakmensen en opdrachtgevers
-            </span>
-            <h1
-              className="bs-load text-brand-600 mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-balance md:text-6xl"
-              style={{ animationDelay: "80ms" }}
-            >
-              Vakmensen en opdrachtgevers, rechtstreeks verbonden.
-            </h1>
-            <p
-              className="bs-load text-foreground-muted mt-5 max-w-xl text-lg leading-relaxed"
-              style={{ animationDelay: "140ms" }}
-            >
-              Vind rechtstreeks een vakman in jouw regio, of laat je als zzp’er
-              vinden. Zonder tussenlaag. Tijdens de introductie gratis.
-            </p>
+              <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                <span className="text-foreground">
+                  Vakmensen en opdrachtgevers,
+                </span>{" "}
+                <span className="text-brand-600">rechtstreeks verbonden.</span>
+              </h1>
+
+              <p className="text-foreground-muted mt-5 max-w-md text-lg leading-relaxed">
+                Vind een vakman in jouw regio, of laat je als zzp’er vinden.
+                Zonder tussenlaag.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <ButtonLink
+                  href="/vind-zzper"
+                  variant="brand"
+                  size="lg"
+                  className="justify-center rounded-xl"
+                >
+                  <Icon name="search" className="h-5 w-5" />
+                  Zoek een vakman
+                  <span aria-hidden>→</span>
+                </ButtonLink>
+                <ButtonLink
+                  href="/registreren?rol=zzp"
+                  variant="outline"
+                  size="lg"
+                  className="justify-center rounded-xl"
+                >
+                  Maak een profiel aan
+                  <span aria-hidden>→</span>
+                </ButtonLink>
+              </div>
+
+              <ul className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                {[
+                  { icon: "check" as const, tekst: "Geen account nodig om te zoeken" },
+                  { icon: "users" as const, tekst: "Rechtstreeks contact met vakmensen" },
+                  { icon: "pin" as const, tekst: "Lokale vakmensen in jouw regio" },
+                ].map((v) => (
+                  <li
+                    key={v.tekst}
+                    className="text-foreground-muted flex items-center gap-2.5 text-sm"
+                  >
+                    <span className="bg-brand-50 text-brand-600 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                      <Icon name={v.icon} className="h-4 w-4" />
+                    </span>
+                    {v.tekst}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </Container>
+
+          {/* Fotozijde — helder, geen overlay */}
+          <div className="relative min-h-[300px] sm:min-h-[380px] md:min-h-[560px]">
+            <Image
+              src={HERO_FOTO}
+              alt="Een vakman en een opdrachtgever overleggen samen op locatie"
+              fill
+              priority
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover object-[60%_center]"
+            />
+          </div>
+        </div>
       </section>
 
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}
