@@ -98,13 +98,20 @@ export default function HomePage() {
 
           {/* Fotozijde: personen springen uit een zachte merkkleur-vorm */}
           <div className="relative h-80 sm:h-96 md:h-full">
-            {/* Achtergrondvorm in merkkleur */}
-            <div className="from-brand-100 to-brand-50 absolute inset-x-0 top-[36%] bottom-0 overflow-hidden bg-gradient-to-br md:top-[32%] md:rounded-l-[3rem]">
-              <div className="bg-brand-500/10 absolute -top-10 -right-10 h-48 w-48 rounded-full blur-2xl" />
+            {/* Achtergrond: originele locatiefoto (bus/garage) met de personen weggewerkt */}
+            <div className="absolute inset-x-0 top-[44%] bottom-0 overflow-hidden md:top-[56%] md:rounded-l-[3rem]">
+              <Image
+                src="/images/hero-achtergrond-clean.jpg"
+                alt=""
+                fill
+                priority
+                sizes="(min-width: 768px) 48vw, 100vw"
+                className="object-cover object-[50%_bottom]"
+              />
             </div>
 
             {/* Handgeschreven accent, zoals in de referentie (alleen desktop) */}
-            <div className="pointer-events-none absolute top-3 right-4 z-20 hidden text-right lg:block">
+            <div className="pointer-events-none absolute top-8 left-8 z-20 hidden text-left lg:block">
               <p
                 className="text-foreground text-2xl leading-tight"
                 style={{ fontFamily: "'Caveat', cursive" }}
@@ -116,27 +123,27 @@ export default function HomePage() {
               <svg
                 aria-hidden
                 viewBox="0 0 60 60"
-                className="text-brand-600 ml-auto mt-1 h-11 w-11"
+                className="text-brand-600 mt-1 ml-6 h-11 w-11"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M46 6 C 40 26, 30 40, 16 48" />
-                <path d="M27 46 L16 49 L18 38" />
+                <path d="M14 6 C 20 26, 30 40, 44 48" />
+                <path d="M33 46 L44 49 L42 38" />
               </svg>
             </div>
 
             {/* Uitgeknipte personen die uit het kader springen */}
-            <div className="hero-pop-float absolute inset-x-0 top-[16%] bottom-0 z-10">
+            <div className="hero-pop-float absolute top-[14%] right-0 bottom-0 left-[42%] z-10">
               <Image
                 src="/images/hero-personen.png"
                 alt="Een vakman en een opdrachtgever overleggen samen"
                 fill
                 priority
-                sizes="(min-width: 768px) 48vw, 100vw"
-                className="object-contain object-[42%_bottom] [filter:drop-shadow(0_22px_30px_rgba(2,8,23,0.30))]"
+                sizes="(min-width: 768px) 40vw, 85vw"
+                className="object-contain object-[left_bottom] [filter:drop-shadow(0_22px_30px_rgba(2,8,23,0.30))]"
               />
             </div>
           </div>
