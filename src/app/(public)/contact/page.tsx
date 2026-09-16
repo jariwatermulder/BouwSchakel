@@ -27,8 +27,8 @@ export default function ContactPage() {
           </span>
           <CardTitle className="mt-4">Support</CardTitle>
           <CardDescription>
-            Voor vragen over je account, opdrachten of matches. Een
-            contactformulier volgt zodra het platform live is.
+            Voor vragen over je account of je profiel. We voegen hier binnenkort
+            onze contactgegevens toe.
           </CardDescription>
         </Card>
         <Card interactive className="border-t-4" style={{ borderTopColor: "#7c3aed" }}>
