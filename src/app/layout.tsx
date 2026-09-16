@@ -71,11 +71,11 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Inter is het merklettertype (brandguide). Geldt voor de hele app. */}
+        {/* Inter is het merklettertype (brandguide). Caveat = handgeschreven accent. */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap"
         />
       </head>
       <body className="flex min-h-full flex-col">

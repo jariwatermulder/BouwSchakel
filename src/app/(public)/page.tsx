@@ -108,6 +108,31 @@ export default function HomePage() {
               sizes="(min-width: 768px) 48vw, 100vw"
               className="hero-approach object-cover object-[58%_center]"
             />
+
+            {/* Handgeschreven accent, zoals in de referentie (alleen desktop) */}
+            <div className="pointer-events-none absolute top-8 right-5 hidden text-right lg:block">
+              <p
+                className="text-2xl leading-tight text-white [text-shadow:0_1px_6px_rgba(2,8,23,0.55)]"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
+                Echte vakmensen.
+                <br />
+                Rechtstreeks in contact.
+              </p>
+              <svg
+                aria-hidden
+                viewBox="0 0 60 60"
+                className="ml-auto mt-1 h-12 w-12 text-white [filter:drop-shadow(0_1px_4px_rgba(2,8,23,0.5))]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M46 6 C 40 26, 30 40, 16 48" />
+                <path d="M27 46 L16 49 L18 38" />
+              </svg>
+            </div>
           </div>
         </div>
 
