@@ -16,9 +16,8 @@ function dashboardPad(role: string): string {
 }
 
 const navItems = [
-  { href: "/opdrachten", label: "Opdrachten" },
+  { href: "/vind-zzper", label: "Vind een zzp'er" },
   { href: "/zzpers", label: "Voor zzp'ers" },
-  { href: "/bedrijven", label: "Voor opdrachtgevers" },
   { href: "/hoe-het-werkt", label: "Hoe het werkt" },
 ];
 
@@ -97,12 +96,12 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
                 Inloggen
               </ButtonLink>
               <ButtonLink
-                href="/bedrijven/opdracht-plaatsen"
+                href="/registreren?rol=zzp"
                 variant="brand"
                 size="sm"
                 className="rounded-xl"
               >
-                Plaats een opdracht
+                Maak een profiel
               </ButtonLink>
             </>
           )}
