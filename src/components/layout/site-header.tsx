@@ -35,10 +35,10 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
   return (
     <header
       className={cn(
-        "border-border sticky top-0 z-40 border-b transition-all duration-300 ease-out",
+        "border-brand-700/40 sticky top-0 z-40 border-b text-white transition-all duration-300 ease-out",
         scrolled
-          ? "bg-surface/80 shadow-sm backdrop-blur-md"
-          : "bg-surface",
+          ? "bg-brand-600/95 shadow-sm backdrop-blur-md"
+          : "bg-brand-500",
       )}
     >
       <Container
@@ -53,7 +53,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           aria-label="ZZP Connect — naar de homepage"
         >
           <Image
-            src="/brand/logo.png"
+            src="/brand/logo-white.png"
             alt="ZZP Connect"
             width={182}
             height={30}
@@ -70,7 +70,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
             <Link
               key={item.href}
               href={item.href}
-              className="text-foreground-muted hover:text-navy-800 after:bg-brand-500 relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
+              className="relative text-sm font-medium text-white/85 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
             >
               {item.label}
             </Link>
@@ -84,25 +84,36 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
                 href={dashboardPad(user.role)}
                 variant="ghost"
                 size="sm"
+                className="text-white hover:bg-white/10 hover:text-white"
               >
                 Mijn account
               </ButtonLink>
               <form action={logoutAction}>
-                <Button type="submit" variant="outline" size="sm">
+                <Button
+                  type="submit"
+                  variant="outline"
+                  size="sm"
+                  className="border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10 hover:text-white"
+                >
                   Uitloggen
                 </Button>
               </form>
             </>
           ) : (
             <>
-              <ButtonLink href="/inloggen" variant="ghost" size="sm">
+              <ButtonLink
+                href="/inloggen"
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/10 hover:text-white"
+              >
                 Inloggen
               </ButtonLink>
               <ButtonLink
                 href="/registreren?rol=zzp"
                 variant="brand"
                 size="sm"
-                className="rounded-xl"
+                className="rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
               >
                 Maak een profiel
               </ButtonLink>
