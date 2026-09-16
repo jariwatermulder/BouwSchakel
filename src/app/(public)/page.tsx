@@ -38,15 +38,15 @@ export default function HomePage() {
           fill
           priority
           sizes="100vw"
-          className="hero-foto -z-10 object-cover object-center"
+          className="hero-foto -z-10 object-cover object-[68%_center] md:object-[60%_center]"
         />
         <div
           aria-hidden
-          className="from-white via-white/85 to-white/25 absolute inset-0 -z-10 bg-gradient-to-r"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-white from-[64%] to-transparent to-[97%] md:bg-gradient-to-r md:from-[44%] md:to-[68%]"
         />
 
         <Container className="flex min-h-[58vh] flex-col justify-center py-20 md:min-h-[66vh] md:py-28">
-          <div className="max-w-3xl">
+          <div className="max-w-xl">
             <span className="bs-load border-border bg-surface/80 text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide backdrop-blur-sm">
               <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
               Hét platform voor vakmensen en opdrachtgevers
