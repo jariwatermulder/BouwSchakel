@@ -111,7 +111,7 @@ export default function HomePage() {
             </div>
 
             {/* Handgeschreven accent, zoals in de referentie (alleen desktop) */}
-            <div className="pointer-events-none absolute top-8 left-8 z-20 hidden text-left lg:block">
+            <div className="pointer-events-none absolute top-[13%] right-8 z-20 hidden text-right lg:block">
               <p
                 className="text-foreground text-2xl leading-tight"
                 style={{ fontFamily: "'Caveat', cursive" }}
@@ -123,15 +123,15 @@ export default function HomePage() {
               <svg
                 aria-hidden
                 viewBox="0 0 60 60"
-                className="text-brand-600 mt-1 ml-6 h-11 w-11"
+                className="text-brand-600 mt-1 mr-4 ml-auto h-11 w-11"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M14 6 C 20 26, 30 40, 44 48" />
-                <path d="M33 46 L44 49 L42 38" />
+                <path d="M46 6 C 40 26, 30 40, 16 48" />
+                <path d="M27 46 L16 49 L18 38" />
               </svg>
             </div>
 
