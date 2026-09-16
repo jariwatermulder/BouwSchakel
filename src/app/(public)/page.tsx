@@ -33,9 +33,9 @@ export default function HomePage() {
     <>
       {/* ───────────── Hero: wit tekstvlak links, heldere foto rechts ───────────── */}
       <section className="bg-surface relative overflow-hidden">
-        <div className="grid md:h-[clamp(600px,74vh,690px)] md:grid-cols-[1.12fr_0.88fr] md:items-stretch">
+        <div className="grid md:h-[clamp(620px,76vh,720px)] md:grid-cols-[1.04fr_0.96fr] md:items-stretch">
           {/* Tekstzijde */}
-          <div className="relative z-10 flex items-center px-4 py-12 sm:px-6 md:py-0 md:pr-10 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+          <div className="relative z-10 flex items-center px-4 py-12 sm:px-6 md:py-0 md:pr-6 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
             <div className="w-full max-w-[36rem]">
               <span className="border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide">
                 <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
@@ -76,7 +76,7 @@ export default function HomePage() {
                 </ButtonLink>
               </div>
 
-              <ul className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
+              <ul className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2">
                 {[
                   { icon: "check" as const, tekst: "Geen account nodig" },
                   { icon: "users" as const, tekst: "Rechtstreeks contact" },
@@ -84,9 +84,9 @@ export default function HomePage() {
                 ].map((v) => (
                   <li
                     key={v.tekst}
-                    className="text-foreground-muted flex items-center gap-2 text-sm"
+                    className="text-foreground-muted flex items-center gap-1.5 text-sm"
                   >
-                    <span className="bg-brand-50 text-brand-600 flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
+                    <span className="bg-brand-50 text-brand-600 flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                       <Icon name={v.icon} className="h-3.5 w-3.5" />
                     </span>
                     {v.tekst}
@@ -99,7 +99,7 @@ export default function HomePage() {
           {/* Fotozijde: personen springen uit een zachte merkkleur-vorm */}
           <div className="relative h-80 sm:h-96 md:h-full">
             {/* Achtergrond: originele locatiefoto (bus/garage) met de personen weggewerkt */}
-            <div className="absolute inset-x-0 top-[44%] bottom-0 overflow-hidden md:top-[56%] md:rounded-l-[3rem]">
+            <div className="absolute inset-x-0 top-[40%] bottom-0 overflow-hidden md:top-[44%] md:rounded-l-[3rem]">
               <Image
                 src="/images/hero-achtergrond-clean.jpg"
                 alt=""
