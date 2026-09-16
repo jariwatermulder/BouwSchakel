@@ -238,6 +238,18 @@ h3 {
   .hero-foto { animation: none !important; }
 }
 
+/* 'Zo werkt het'-toggle: subtiele fade/slide bij het wisselen van doelgroep. */
+@keyframes zw-swap-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.zw-swap {
+  animation: zw-swap-in var(--motion-normal) var(--ease-standard) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .zw-swap { animation: none !important; }
+}
+
 /* Oplopende voortgangsbalk (breedte 0 → --bs-w). CSS-only, geen JS nodig. */
 @keyframes bs-fill {
   from { width: 0; }
