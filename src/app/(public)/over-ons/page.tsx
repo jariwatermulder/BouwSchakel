@@ -11,22 +11,22 @@ export const metadata: Metadata = {
 
 const waarden = [
   {
-    titel: "Transparant",
-    tekst: "Heldere matchscores met uitleg en tarieven die je vooraf kent.",
+    titel: "Eenvoudig",
+    tekst: "Zoeken op vakgebied en regio, zonder account en zonder gedoe.",
     icon: "match",
-    kleur: "#2563eb",
+    kleur: "#0e9f6e",
   },
   {
-    titel: "Betrouwbaar",
-    tekst: "Geverifieerde profielen en reviews na een echte opdracht.",
-    icon: "shield",
-    kleur: "#16a34a",
+    titel: "Rechtstreeks",
+    tekst: "Opdrachtgever en zzp’er maken zelf afspraken, zonder tussenpersoon.",
+    icon: "chat",
+    kleur: "#0b8457",
   },
   {
-    titel: "Voor elke sector",
-    tekst: "Van bouw en techniek tot zorg, horeca, transport en IT.",
+    titel: "Focus op de bouw",
+    tekst: "We beginnen bij bouw en techniek en groeien van daaruit verder.",
     icon: "grid",
-    kleur: "#c026d3",
+    kleur: "#0a6b48",
   },
 ];
 
@@ -46,15 +46,16 @@ export default function OverOnsPage() {
           hun eigen regio. Die twee vinden elkaar nu vaak via omwegen.
         </p>
         <p className="text-foreground-muted mt-4">
-          Wij bouwen een modern, betrouwbaar platform dat vraag en aanbod
-          rechtstreeks bij elkaar brengt — met geverifieerde profielen, eerlijke
-          reviews en een transparante matching die uitlegt waarom een zzp’er
-          past.
+          Wij bouwen een eenvoudig platform dat vraag en aanbod rechtstreeks bij
+          elkaar brengt. Opdrachtgevers zoeken op vakgebied en regio en bekijken
+          profielen; een opdracht plaatsen is niet nodig. Onze eerste focus is de
+          bouw.
         </p>
         <p className="text-foreground-muted mt-4">
-          ZZP Connect is een bemiddelingsplatform. We faciliteren het contact;
-          de afspraken over het werk maken opdrachtgever en zzp’er rechtstreeks
-          met elkaar.
+          ZZP Connect is een communicatieplatform. We brengen het contact tot
+          stand; de afspraken over het werk, het tarief en de planning maken
+          opdrachtgever en zzp’er rechtstreeks met elkaar. Tijdens de introductie
+          is het gebruik gratis.
         </p>
       </Container>
       <Container className="pb-16 md:pb-24">

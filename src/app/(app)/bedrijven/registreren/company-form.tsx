@@ -12,15 +12,18 @@ const initial: CompanyFormState = {};
 export function CompanyForm({
   company,
   onboarding,
+  next,
 }: {
   company: Company;
   onboarding: boolean;
+  next?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(saveCompany, initial);
 
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="onboarding" value={onboarding ? "1" : "0"} />
+      {next ? <input type="hidden" name="next" value={next} /> : null}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <Label htmlFor="naam">Bedrijfsnaam</Label>
@@ -106,12 +109,14 @@ export function CompanyForm({
         <p className="text-sm text-emerald-700">Bedrijfsprofiel opgeslagen.</p>
       ) : null}
 
-      <Button type="submit" variant="accent" disabled={pending}>
+      <Button type="submit" variant="brand" className="rounded-xl" disabled={pending}>
         {pending
           ? "Bezig…"
-          : onboarding
-            ? "Opslaan en opdracht plaatsen"
-            : "Opslaan"}
+          : next
+            ? "Opslaan en verdergaan"
+            : onboarding
+              ? "Opslaan en opdracht plaatsen"
+              : "Opslaan"}
       </Button>
     </form>
   );

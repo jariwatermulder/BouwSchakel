@@ -10,23 +10,23 @@ export const metadata: Metadata = {
 const vragen = [
   {
     v: "Wat is ZZP Connect?",
-    a: "Een Nederlands bemiddelingsplatform dat opdrachtgevers verbindt met zelfstandige professionals (zzp’ers) in elke sector.",
+    a: "Een Nederlands platform dat opdrachtgevers en zelfstandige vakmensen (zzp’ers) rechtstreeks met elkaar in contact brengt. Onze eerste focus is de bouw.",
   },
   {
     v: "Kost het geld?",
-    a: "Een profiel aanmaken en opdrachten plaatsen is gratis. Voor bedrijven geldt een bemiddelingsfee bij een succesvolle match. Tarieven zijn altijd vooraf transparant.",
+    a: "Nee. Tijdens de introductie is ZZP Connect gratis, voor zowel opdrachtgevers als zzp’ers. Mocht daar iets in veranderen, dan laten we dat vooraf duidelijk weten.",
   },
   {
-    v: "Is ZZP Connect een uitzendbureau?",
-    a: "Nee. ZZP Connect bemiddelt en faciliteert contact. De overeenkomst voor het werk sluit je rechtstreeks met de zzp’er; ZZP Connect is daarbij geen partij.",
+    v: "Moet ik een account maken om te zoeken?",
+    a: "Nee. Je kunt zonder account vakmensen zoeken en profielen bekijken. Een account is alleen nodig om zelf een profiel aan te maken of om via het platform contact op te nemen.",
   },
   {
-    v: "Hoe werkt de matching?",
-    a: "Op basis van onder andere vakgebied, beschikbaarheid, locatie, tarief en ervaring krijgt elke zzp’er een matchscore, inclusief uitleg waarom hij past. Geen black box.",
+    v: "Moet ik een opdracht plaatsen om iemand te benaderen?",
+    a: "Nee. Je zoekt op vakgebied en regio, bekijkt profielen en neemt rechtstreeks contact op. Een opdracht plaatsen is niet verplicht.",
   },
   {
-    v: "Hoe weet ik dat een profiel betrouwbaar is?",
-    a: "Profielen kunnen worden geverifieerd (o.a. e-mail, telefoon, KvK, certificaten) en reviews zijn alleen mogelijk na een echte opdracht via het platform.",
+    v: "Regelen jullie contracten, uren of betalingen?",
+    a: "Nee. ZZP Connect brengt je met elkaar in contact. Afspraken over het werk, het tarief en de planning maak je rechtstreeks met elkaar; ZZP Connect is daarbij geen partij.",
   },
 ];
 

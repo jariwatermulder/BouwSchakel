@@ -5,7 +5,7 @@ const columns = [
   {
     heading: "Platform",
     links: [
-      { href: "/opdrachten", label: "Opdrachten" },
+      { href: "/vind-zzper", label: "Vind een zzp'er" },
       { href: "/hoe-het-werkt", label: "Hoe het werkt" },
       { href: "/tarieven", label: "Tarieven" },
       { href: "/faq", label: "Veelgestelde vragen" },
@@ -14,8 +14,8 @@ const columns = [
   {
     heading: "Voor jou",
     links: [
-      { href: "/zzpers", label: "Voor ZZP'ers" },
-      { href: "/bedrijven", label: "Voor bedrijven" },
+      { href: "/zzpers", label: "Voor zzp'ers" },
+      { href: "/bedrijven", label: "Voor opdrachtgevers" },
       { href: "/over-ons", label: "Over ons" },
       { href: "/contact", label: "Contact" },
     ],
@@ -39,14 +39,14 @@ export function SiteFooter() {
           <div className="flex items-center gap-2 font-bold text-white">
             <span
               aria-hidden
-              className="bg-navy-700 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
+              className="bg-brand-500 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-white"
             >
               ZC
             </span>
             ZZP Connect
           </div>
           <p className="text-navy-200 mt-3 text-sm">
-            De juiste zzp&apos;er. Op het juiste moment.
+            Vind een zzp’er in jouw regio en neem rechtstreeks contact op.
           </p>
         </div>
 
@@ -71,9 +71,10 @@ export function SiteFooter() {
 
       <div className="border-navy-800 border-t">
         <Container className="text-navy-300 py-4 text-xs">
-          © {new Date().getFullYear()} ZZP Connect — bemiddelingsplatform voor
-          zzp-werk. ZZP Connect is bemiddelaar en geen partij bij de overeenkomst
-          tussen opdrachtgever en ZZP&apos;er.
+          © {new Date().getFullYear()} ZZP Connect — communicatieplatform dat
+          opdrachtgevers en zzp’ers met elkaar in contact brengt. Afspraken over
+          het werk maken beide partijen rechtstreeks met elkaar; ZZP Connect is
+          daarbij geen partij.
         </Container>
       </div>
     </footer>

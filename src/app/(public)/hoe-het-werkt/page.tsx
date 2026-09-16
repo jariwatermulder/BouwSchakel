@@ -11,17 +11,17 @@ export const metadata: Metadata = {
 };
 
 const bedrijf = [
-  "Plaats een opdracht met vakgebied, locatie, startdatum, duur en tarief.",
-  "Bekijk passende, beschikbare zzp’ers met matchscore en uitleg.",
-  "Nodig kandidaten uit en maak rechtstreeks afspraken.",
-  "Rond de opdracht af en laat een review achter.",
+  "Zoek op vakgebied en regio — een account of opdracht is niet nodig.",
+  "Bekijk profielen van vakmensen in jouw buurt.",
+  "Neem rechtstreeks contact op via het platform.",
+  "Bespreek zelf het werk, het tarief en de planning.",
 ];
 
 const zzp = [
-  "Maak een professioneel profiel: vak, ervaring, tarief en werkgebied.",
-  "Stel je beschikbaarheid in.",
-  "Ontvang opdrachten die passen bij jouw vak en regio.",
-  "Reageer, maak contact en bouw je reputatie op.",
+  "Maak een profiel met je vakgebied en werkgebied.",
+  "Stel je beschikbaarheid in — ook ‘in overleg’ kan.",
+  "Word gevonden door opdrachtgevers in jouw regio.",
+  "Word rechtstreeks benaderd en maak zelf je afspraken.",
 ];
 
 export default function HoeHetWerktPage() {
@@ -30,7 +30,7 @@ export default function HoeHetWerktPage() {
       <PageIntro
         eyebrow="Hoe het werkt"
         title="Zo werkt ZZP Connect"
-        lead="ZZP Connect brengt bedrijven en zelfstandige zzp’ers bij elkaar. Snel, transparant en op basis van echte match."
+        lead="ZZP Connect brengt opdrachtgevers en zelfstandige vakmensen rechtstreeks met elkaar in contact. Jullie maken zelf de afspraken."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
         <Card className="border-t-4" style={{ borderTopColor: "#2563eb" }}>
@@ -95,12 +95,13 @@ export default function HoeHetWerktPage() {
               <Icon name="shield" className="h-5 w-5" />
             </span>
             <div>
-              <CardTitle>Bemiddeling, geen uitzendbureau</CardTitle>
+              <CardTitle>Rechtstreeks contact, geen tussenpersoon</CardTitle>
               <CardDescription>
-                ZZP Connect faciliteert het contact tussen opdrachtgever en
-                zzp’er. De overeenkomst voor het uitvoeren van het werk komt
-                rechtstreeks tussen beide partijen tot stand. ZZP Connect is
-                geen werkgever, uitlener of partij bij die overeenkomst.
+                ZZP Connect is een communicatieplatform: het brengt
+                opdrachtgever en zzp’er met elkaar in contact. Afspraken over het
+                werk maak je rechtstreeks met elkaar. Wij regelen geen
+                contracten, uren, facturen of betalingen en zijn geen werkgever,
+                uitlener of partij bij jullie afspraak.
               </CardDescription>
             </div>
           </div>

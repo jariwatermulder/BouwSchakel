@@ -13,21 +13,27 @@ const initial: AuthFormState = {};
 
 export function RegisterForm({
   defaultRole,
+  next,
 }: {
   defaultRole: "ZZP" | "COMPANY";
+  next?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(registerAction, initial);
+  const inloggenHref = next
+    ? `/inloggen?next=${encodeURIComponent(next)}`
+    : "/inloggen";
 
   return (
     <Card>
       <CardTitle>Account aanmaken</CardTitle>
       <CardDescription>
         {defaultRole === "COMPANY"
-          ? "Als bedrijf plaats je opdrachten en vind je zzp’ers."
-          : "Als ZZP'er maak je een profiel en vind je passende opdrachten."}
+          ? "Maak een account aan om via het platform contact op te nemen. Je gegevens blijven bewaard."
+          : "Als zzp’er maak je een profiel aan zodat opdrachtgevers je kunnen vinden."}
       </CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">
+        {next ? <input type="hidden" name="next" value={next} /> : null}
         <fieldset>
           <legend className="mb-1.5 text-sm font-medium">Ik ben een…</legend>
           <div className="grid grid-cols-2 gap-2">
@@ -86,7 +92,7 @@ export function RegisterForm({
 
       <p className="text-foreground-muted mt-4 text-center text-sm">
         Al een account?{" "}
-        <Link href="/inloggen" className="text-navy-700 font-medium">
+        <Link href={inloggenHref} className="text-navy-700 font-medium">
           Inloggen
         </Link>
       </p>

@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default async function RegistrerenPage({
   searchParams,
 }: {
-  searchParams: Promise<{ rol?: string }>;
+  searchParams: Promise<{ rol?: string; next?: string }>;
 }) {
-  const { rol } = await searchParams;
+  const { rol, next } = await searchParams;
   const defaultRole = rol === "bedrijf" ? "COMPANY" : "ZZP";
-  return <RegisterForm defaultRole={defaultRole} />;
+  return <RegisterForm defaultRole={defaultRole} next={next ?? null} />;
 }

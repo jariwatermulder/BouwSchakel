@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { requireCurrentRole } from "@/lib/auth/current-user";
 import { companySchema } from "@/lib/validations/company";
 import { updateCompany } from "@/server/company/service";
+import { safeNextPath } from "@/lib/auth/next";
 
 export interface CompanyFormState {
   error?: string;
@@ -41,6 +42,11 @@ export async function saveCompany(
     typeWerkzaamheden: parsed.data.typeWerkzaamheden ?? null,
     omschrijving: parsed.data.omschrijving ?? null,
   });
+
+  // Terug naar de gekozen bestemming (bijv. een zzp-profiel om contact mee
+  // op te nemen) als die is meegegeven.
+  const next = safeNextPath(formData.get("next"));
+  if (next) redirect(next);
 
   const nieuw = formData.get("onboarding") === "1";
   if (nieuw) redirect("/bedrijven/opdracht-plaatsen");

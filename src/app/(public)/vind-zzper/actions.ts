@@ -15,10 +15,11 @@ export async function neemContactOpAction(formData: FormData): Promise<void> {
   const zzpProfileId = String(formData.get("zzpProfileId") ?? "");
   if (!zzpProfileId) return;
 
+  const terug = `/vind-zzper/${zzpProfileId}`;
   const user = await getCurrentUser();
   if (!user) {
     redirect(
-      `/registreren?rol=bedrijf&next=${encodeURIComponent(`/vind-zzper/${zzpProfileId}`)}`,
+      `/registreren?rol=bedrijf&next=${encodeURIComponent(terug)}`,
     );
   }
 
@@ -28,8 +29,11 @@ export async function neemContactOpAction(formData: FormData): Promise<void> {
     conversationId = c.id;
   } catch (e) {
     if (e instanceof GeenToegangError) {
-      // Ingelogd, maar (nog) geen bedrijf: laat een bedrijfsaccount aanmaken.
-      redirect("/registreren?rol=bedrijf");
+      // Ingelogd, maar (nog) geen bedrijf: vul kort het bedrijf aan en kom
+      // daarna terug op dit profiel om contact op te nemen.
+      redirect(
+        `/bedrijven/registreren?next=${encodeURIComponent(terug)}`,
+      );
     }
     throw e;
   }

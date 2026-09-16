@@ -140,17 +140,12 @@ export default async function ZzperProfielPage({
             </div>
           ) : null}
 
-          {/* Reviews */}
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold">
-              Beoordelingen {aantalReviews > 0 ? `(${aantalReviews})` : ""}
-            </h2>
-            {reviews.length === 0 ? (
-              <p className="text-foreground-muted mt-2 text-sm">
-                Nog geen beoordelingen. Reviews zijn alleen mogelijk na een echte
-                opdracht via het platform.
-              </p>
-            ) : (
+          {/* Beoordelingen — alleen tonen als ze er zijn */}
+          {reviews.length > 0 ? (
+            <div className="mt-8">
+              <h2 className="text-sm font-semibold">
+                Beoordelingen ({aantalReviews})
+              </h2>
               <ul className="mt-3 space-y-3">
                 {reviews.map((r) => {
                   const gem =
@@ -178,8 +173,8 @@ export default async function ZzperProfielPage({
                   );
                 })}
               </ul>
-            )}
-          </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Contact-zijbalk */}
@@ -195,13 +190,13 @@ export default async function ZzperProfielPage({
               <input type="hidden" name="zzpProfileId" value={p.id} />
               <button
                 type="submit"
-                className="bg-accent-500 text-ink flex h-11 w-full items-center justify-center rounded-full text-sm font-semibold transition-transform hover:-translate-y-0.5"
+                className="bg-brand-500 hover:bg-brand-600 flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white transition-colors"
               >
                 Neem contact op
               </button>
             </form>
             <p className="text-foreground-muted mt-3 text-center text-xs">
-              Je chat veilig via ZZP Connect.
+              Je berichten lopen via ZZP Connect.
             </p>
           </Card>
         </aside>

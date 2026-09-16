@@ -11,8 +11,11 @@ import { FormAlert } from "@/components/ui/form-alert";
 
 const initial: AuthFormState = {};
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string | null }) {
   const [state, formAction, pending] = useActionState(loginAction, initial);
+  const registrerenHref = next
+    ? `/registreren?next=${encodeURIComponent(next)}`
+    : "/registreren";
 
   return (
     <Card>
@@ -20,6 +23,7 @@ export function LoginForm() {
       <CardDescription>Welkom terug bij ZZP Connect.</CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">
+        {next ? <input type="hidden" name="next" value={next} /> : null}
         <div>
           <Label htmlFor="email">E-mailadres</Label>
           <Input
@@ -50,7 +54,7 @@ export function LoginForm() {
 
       <p className="text-foreground-muted mt-4 text-center text-sm">
         Nog geen account?{" "}
-        <Link href="/registreren" className="text-navy-700 font-medium">
+        <Link href={registrerenHref} className="text-navy-700 font-medium">
           Account aanmaken
         </Link>
       </p>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { PageIntro } from "@/components/layout/page-intro";
+import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
@@ -34,22 +34,26 @@ export default async function VindZzperPage({
     listVakgebiedenVoorFilter(),
   ]);
 
+  const heeftFilter = Boolean(vak || plaats);
+
   return (
     <>
-      <PageIntro
-        eyebrow="Voor bedrijven"
-        title="Vind een zzp'er"
-        lead="Blader door beschikbare, gecontroleerde professionals en neem direct contact op — je hoeft geen opdracht te plaatsen."
-      />
+      <Container className="py-8 md:py-10">
+        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+          Vind een zzp’er
+        </h1>
+        <p className="text-foreground-muted mt-1">
+          Bekijk vakmensen en neem rechtstreeks contact op. Zoeken kan zonder
+          account.
+        </p>
 
-      <Container className="py-8 md:py-12">
         {/* Filters */}
         <form
           method="get"
-          className="border-border bg-surface-muted/50 flex flex-wrap items-end gap-3 rounded-[var(--radius-card)] border p-4"
+          className="border-border bg-surface mt-5 flex flex-wrap items-end gap-3 rounded-2xl border p-4"
         >
           <div className="flex-1">
-            <label htmlFor="vak" className="text-foreground-muted mb-1 block text-xs font-semibold">
+            <label htmlFor="vak" className="text-foreground mb-1 block text-sm font-medium">
               Vakgebied
             </label>
             <select id="vak" name="vak" defaultValue={vak ?? ""} className={`${veld} w-full`}>
@@ -62,32 +66,57 @@ export default async function VindZzperPage({
             </select>
           </div>
           <div className="flex-1">
-            <label htmlFor="plaats" className="text-foreground-muted mb-1 block text-xs font-semibold">
-              Plaats / regio
+            <label htmlFor="plaats" className="text-foreground mb-1 block text-sm font-medium">
+              Plaats of regio
             </label>
             <input
               id="plaats"
               name="plaats"
               defaultValue={plaats ?? ""}
-              placeholder="Bijv. Groningen"
+              autoComplete="address-level2"
+              placeholder="Bijv. Groningen…"
               className={`${veld} w-full`}
             />
           </div>
           <button
             type="submit"
-            className="bg-navy-800 hover:bg-navy-700 h-11 rounded-lg px-5 text-sm font-semibold text-white"
+            className="bg-brand-500 hover:bg-brand-600 h-11 rounded-lg px-5 text-sm font-semibold text-white"
           >
-            Filter
+            Zoek vakmensen
           </button>
+          {heeftFilter ? (
+            <Link
+              href="/vind-zzper"
+              className="text-foreground-muted hover:text-foreground h-11 rounded-lg px-3 text-sm font-medium leading-[2.75rem]"
+            >
+              Wis filters
+            </Link>
+          ) : null}
         </form>
 
-        <p className="text-foreground-muted mt-4 text-sm">
-          {zzpers.length} {zzpers.length === 1 ? "professional" : "professionals"} gevonden
-        </p>
-
         {zzpers.length === 0 ? (
-          <div className="border-border text-foreground-muted mt-4 rounded-[var(--radius-card)] border border-dashed p-10 text-center">
-            Geen zzp’ers gevonden met deze filters. Pas je zoekopdracht aan.
+          <div className="border-border mt-6 rounded-2xl border border-dashed p-10 text-center">
+            <p className="text-foreground font-medium">
+              Nog geen passende profielen voor deze zoekopdracht.
+            </p>
+            <p className="text-foreground-muted mx-auto mt-2 max-w-md text-sm">
+              Probeer een ruimere regio of een ander vakgebied. Er zijn nog niet
+              in elke plaats vakmensen zichtbaar.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <ButtonLink href="/vind-zzper" variant="brand" className="rounded-xl">
+                Bekijk alle vakgebieden
+              </ButtonLink>
+              {plaats ? (
+                <ButtonLink
+                  href={vak ? `/vind-zzper?vak=${vak}` : "/vind-zzper"}
+                  variant="outline"
+                  className="rounded-xl"
+                >
+                  Zoek in heel Nederland
+                </ButtonLink>
+              ) : null}
+            </div>
           </div>
         ) : (
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

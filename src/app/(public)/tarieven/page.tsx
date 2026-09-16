@@ -1,82 +1,89 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
-import { PageIntro } from "@/components/layout/page-intro";
-import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
   title: "Tarieven",
-  description: "De tarieven van ZZP Connect — helder en zonder verrassingen.",
+  description:
+    "ZZP Connect is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",
 };
 
 export default function TarievenPage() {
   return (
     <>
-      <PageIntro
-        eyebrow="Tarieven"
-        title="Helder en zonder verrassingen"
-        lead="Een profiel aanmaken en opdrachten bekijken is gratis. Je betaalt pas bij een succesvolle match."
-      />
-      <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
-        <Card className="border-t-4" style={{ borderTopColor: "#16a34a" }}>
-          <div className="flex items-center gap-3">
-            <span
-              className="flex h-11 w-11 items-center justify-center rounded-2xl"
-              style={{ backgroundColor: "#16a34a1a", color: "#16a34a" }}
-            >
-              <Icon name="bolt" className="h-5 w-5" />
-            </span>
-            <CardTitle>ZZP&apos;er</CardTitle>
-          </div>
-          <p
-            className="mt-4 text-4xl font-extrabold"
-            style={{ color: "#16a34a" }}
-          >
-            Gratis
+      <section className="from-brand-50/60 border-border border-b bg-gradient-to-b to-transparent">
+        <Container className="py-12 md:py-16">
+          <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+            Tijdens de introductie gratis
+          </h1>
+          <p className="text-foreground-muted mt-3 max-w-2xl text-lg">
+            Zoeken, een profiel aanmaken en contact leggen kost op dit moment
+            niets — voor zowel zzp’ers als opdrachtgevers.
           </p>
+        </Container>
+      </section>
+
+      <Container className="grid gap-6 py-12 md:grid-cols-2 md:py-16">
+        <div className="border-border bg-surface rounded-2xl border p-6">
+          <h2 className="text-xl font-bold">Voor zzp’ers</h2>
+          <p className="text-brand-700 mt-3 text-3xl font-extrabold">Gratis</p>
           <ul className="mt-4 space-y-2">
             {[
-              "Professioneel profiel aanmaken",
-              "Beschikbaarheid instellen",
-              "Passende opdrachten ontvangen",
+              "Een profiel aanmaken met je vakgebied en werkgebied",
+              "Je beschikbaarheid instellen",
+              "Gevonden worden en rechtstreeks benaderd worden",
             ].map((v) => (
               <li key={v} className="text-foreground-muted flex gap-2 text-sm">
-                <span aria-hidden style={{ color: "#16a34a" }}>
+                <span aria-hidden className="text-brand-600">
                   ✓
                 </span>
                 {v}
               </li>
             ))}
           </ul>
-          <ButtonLink href="/registreren?rol=zzp" variant="accent" className="mt-6">
-            Maak een profiel
+          <ButtonLink
+            href="/registreren?rol=zzp"
+            variant="brand"
+            className="mt-6 rounded-xl"
+          >
+            Maak gratis een profiel
           </ButtonLink>
-        </Card>
-        <Card className="border-t-4" style={{ borderTopColor: "#2f5da6" }}>
-          <div className="flex items-center gap-3">
-            <span className="bg-navy-800 text-accent-400 flex h-11 w-11 items-center justify-center rounded-2xl">
-              <Icon name="euro" className="h-5 w-5" />
-            </span>
-            <CardTitle>Bedrijf</CardTitle>
-          </div>
-          <p className="text-navy-700 mt-4 text-4xl font-extrabold">Succesfee</p>
-          <CardDescription>
-            Opdrachten plaatsen is gratis. Bij een succesvolle match geldt een
-            bemiddelingsfee. De exacte tarieven worden vóór livegang vastgesteld
-            en zijn altijd vooraf transparant.
-          </CardDescription>
-          <ButtonLink href="/registreren?rol=bedrijf" className="mt-6">
-            Plaats een opdracht
+        </div>
+
+        <div className="border-border bg-surface rounded-2xl border p-6">
+          <h2 className="text-xl font-bold">Voor opdrachtgevers</h2>
+          <p className="text-brand-700 mt-3 text-3xl font-extrabold">Gratis</p>
+          <ul className="mt-4 space-y-2">
+            {[
+              "Zoeken op vakgebied en regio, zonder account",
+              "Profielen van vakmensen bekijken",
+              "Rechtstreeks contact opnemen via het platform",
+            ].map((v) => (
+              <li key={v} className="text-foreground-muted flex gap-2 text-sm">
+                <span aria-hidden className="text-brand-600">
+                  ✓
+                </span>
+                {v}
+              </li>
+            ))}
+          </ul>
+          <ButtonLink href="/vind-zzper" variant="outline" className="mt-6 rounded-xl">
+            Vind een zzp’er
           </ButtonLink>
-        </Card>
+        </div>
       </Container>
+
       <Container className="pb-16">
-        <p className="text-foreground-muted text-sm">
-          Definitieve bedragen en een eventueel abonnement (ZZP Connect Pro)
-          worden later bekendgemaakt. Er worden geen kosten in rekening gebracht
-          zonder dat dit vooraf duidelijk is.
-        </p>
+        <div className="border-border bg-surface-muted rounded-2xl border p-6">
+          <p className="text-foreground-muted text-sm leading-relaxed">
+            ZZP Connect is een communicatieplatform: je maakt zelf afspraken over
+            het werk, het tarief en de planning. Wij regelen geen contracten,
+            urenregistratie, facturen of betalingen. Er is nog geen vast
+            verdienmodel. Mocht daar iets in veranderen, dan laten we dat vooraf
+            duidelijk weten — er worden nooit ongemerkt kosten in rekening
+            gebracht.
+          </p>
+        </div>
       </Container>
     </>
   );

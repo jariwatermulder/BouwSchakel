@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function InloggenPage() {
-  return <LoginForm />;
+export default async function InloggenPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
+  const { next } = await searchParams;
+  return <LoginForm next={next ?? null} />;
 }

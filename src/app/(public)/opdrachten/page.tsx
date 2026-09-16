@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/reveal";
 import { Icon } from "@/components/home/pictos";
-import { Weetje } from "@/components/fun/kennis";
 import { listPublicJobs } from "@/server/jobs/public";
 import { formatEuro } from "@/lib/utils";
 import { sectorMetaVan } from "@/lib/sector-meta";
@@ -30,57 +29,22 @@ export default async function OpdrachtenIndexPage() {
 
   return (
     <>
-      {/* Vrolijke, kleurrijke intro */}
-      <section className="bg-ink bs-hero-mesh relative overflow-hidden text-white">
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div
-            className="bs-blob bs-float"
-            style={{
-              background: "var(--color-accent-500)",
-              width: "300px",
-              height: "300px",
-              top: "-80px",
-              right: "-30px",
-            }}
-          />
-          <div
-            className="bs-blob bs-float2"
-            style={{
-              background: "var(--color-navy-500)",
-              width: "320px",
-              height: "320px",
-              bottom: "-120px",
-              left: "-60px",
-            }}
-          />
-        </div>
-        <Container className="relative z-10 py-16 md:py-20">
-          <span className="eyebrow text-accent-400 [&::before]:bg-accent-400">
-            Opdrachten
-          </span>
-          <h1 className="bs-load mt-3 text-3xl font-extrabold tracking-tight md:text-5xl">
-            Vind jouw volgende klus 👋
+      {/* Rustige, lichte intro */}
+      <section className="from-brand-50/60 border-border border-b bg-gradient-to-b to-transparent">
+        <Container className="py-12 md:py-16">
+          <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+            Openstaande opdrachten
           </h1>
-          <p
-            className="text-navy-100 bs-load mt-4 max-w-2xl text-lg"
-            style={{ animationDelay: "80ms" }}
-          >
-            Verse opdrachten in elke sector, door heel Nederland. Kies er eentje
-            die bij je past — en ga aan de slag.
+          <p className="text-foreground-muted mt-3 max-w-2xl text-lg">
+            Opdrachtgevers plaatsen hier klussen. Een opdracht plaatsen is niet
+            verplicht — als zzp’er kun je ook gewoon een profiel maken en
+            gevonden worden.
           </p>
-          {jobs.length > 0 ? (
-            <p
-              className="bs-load mt-5 inline-flex items-center gap-2 text-sm font-medium"
-              style={{ animationDelay: "160ms" }}
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="bs-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-              </span>
-              {jobs.length}{" "}
-              {jobs.length === 1 ? "opdracht" : "opdrachten"} online
-            </p>
-          ) : null}
+          <div className="mt-6">
+            <ButtonLink href="/vind-zzper" variant="outline" className="rounded-xl">
+              Liever zoeken? Vind een zzp’er
+            </ButtonLink>
+          </div>
         </Container>
       </section>
 
@@ -205,13 +169,6 @@ export default async function OpdrachtenIndexPage() {
             })}
           </ul>
         )}
-      </Container>
-
-      {/* Speels weetje onderaan */}
-      <Container className="pb-16 md:pb-24">
-        <div className="mx-auto max-w-2xl">
-          <Weetje />
-        </div>
       </Container>
     </>
   );

@@ -11,6 +11,7 @@ import {
 } from "@/server/auth/service";
 import { createSession } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/ratelimit";
+import { safeNextPath, withNext } from "@/lib/auth/next";
 
 export interface AuthFormState {
   error?: string;
@@ -50,11 +51,17 @@ export async function registerAction(
     if (err instanceof EmailInGebruikError) return { error: err.message };
     throw err;
   }
-  // Direct door naar het opbouwen van profiel/bedrijf.
+  // Direct door naar het opbouwen van profiel/bedrijf; de gekozen
+  // vervolgbestemming (bijv. een zzp-profiel om contact mee op te nemen)
+  // reizen we mee zodat de gebruiker daar terugkomt.
+  const next = safeNextPath(formData.get("next"));
   redirect(
-    parsed.data.role === "ZZP"
-      ? "/zzpers/registreren"
-      : "/bedrijven/registreren",
+    withNext(
+      parsed.data.role === "ZZP"
+        ? "/zzpers/registreren"
+        : "/bedrijven/registreren",
+      next,
+    ),
   );
 }
 
@@ -84,6 +91,8 @@ export async function loginAction(
     if (err instanceof OngeldigeInlogError) return { error: err.message };
     throw err;
   }
+  const next = safeNextPath(formData.get("next"));
+  if (next) redirect(next);
   redirect(
     role === "ZZP"
       ? "/zzpers/dashboard"
