@@ -42,12 +42,13 @@ export default function HomePage() {
         />
         <div
           aria-hidden
-          className="from-ink/95 via-ink/80 to-ink/40 absolute inset-0 -z-10 bg-gradient-to-r"
+          className="from-brand-700/95 via-brand-600/80 to-brand-500/45 absolute inset-0 -z-10 bg-gradient-to-r"
         />
 
         <Container className="flex min-h-[58vh] flex-col justify-center py-20 text-white md:min-h-[66vh] md:py-28">
           <div className="max-w-3xl">
-            <span className="bs-load inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white/90 backdrop-blur-sm">
+            <span className="bs-load inline-flex max-w-full items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
+              <span aria-hidden className="h-2 w-2 shrink-0 rounded-full bg-white" />
               Hét platform voor vakmensen en opdrachtgevers
             </span>
             <h1
@@ -55,8 +56,15 @@ export default function HomePage() {
               style={{ animationDelay: "80ms" }}
             >
               Vakmensen en opdrachtgevers,{" "}
-              <span className="text-white/70">rechtstreeks verbonden.</span>
+              <span className="text-brand-100">rechtstreeks verbonden.</span>
             </h1>
+            <p
+              className="bs-load mt-5 max-w-xl text-lg leading-relaxed text-white/90"
+              style={{ animationDelay: "140ms" }}
+            >
+              Vind rechtstreeks een vakman in jouw regio, of laat je als zzp’er
+              vinden. Zonder tussenlaag. Tijdens de introductie gratis.
+            </p>
           </div>
         </Container>
       </section>

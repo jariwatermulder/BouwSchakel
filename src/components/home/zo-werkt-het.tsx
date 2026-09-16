@@ -174,7 +174,7 @@ export function ZoWerktHet() {
                 aria-controls={`${baseId}-panel`}
                 tabIndex={isActief ? 0 : -1}
                 onClick={() => setActief(groep)}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:flex-initial sm:px-6 ${
+                className={`flex flex-1 items-center justify-center gap-2 rounded-full px-3 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 sm:flex-initial sm:px-6 sm:whitespace-nowrap ${
                   isActief
                     ? "bg-brand-500 text-white shadow-sm"
                     : "text-foreground-muted hover:text-foreground"
