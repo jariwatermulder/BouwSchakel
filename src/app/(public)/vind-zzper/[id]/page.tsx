@@ -54,7 +54,7 @@ export default async function ZzperProfielPage({
         {/* Hoofdkolom */}
         <div>
           <div className="flex items-center gap-4">
-            <span className="bg-navy-800 flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white">
+            <span className="bg-ink flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white">
               {naam.slice(0, 2).toUpperCase()}
             </span>
             <div>

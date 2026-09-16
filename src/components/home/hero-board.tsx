@@ -133,7 +133,7 @@ export function HeroBoard() {
         </div>
 
         {/* Rouleren feitje / tip */}
-        <div className="bg-navy-800 mt-4 flex items-start gap-2.5 rounded-2xl p-3 text-white">
+        <div className="bg-ink mt-4 flex items-start gap-2.5 rounded-2xl p-3 text-white">
           <span className="text-accent-400 mt-0.5 shrink-0">
             <Icon name="lightbulb" className="h-4 w-4" />
           </span>

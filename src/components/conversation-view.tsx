@@ -186,7 +186,7 @@ export function ConversationView({
                   {/* Avatar tegenpartij (alleen bij laatste van groep) */}
                   {!vanMij ? (
                     laatsteVanGroep ? (
-                      <span className="bg-navy-700 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white">
+                      <span className="bg-ink-soft flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white">
                         {initiaal(tegenpartij)}
                       </span>
                     ) : (
@@ -198,7 +198,7 @@ export function ConversationView({
                     className={cn(
                       "bs-msg-in max-w-[78%] px-3.5 py-2 text-sm shadow-sm",
                       vanMij
-                        ? "bg-navy-800 rounded-2xl text-white"
+                        ? "bg-ink rounded-2xl text-white"
                         : "bg-surface border-border rounded-2xl border",
                       // "staartje" op de laatste bubbel van een groep
                       laatsteVanGroep &&

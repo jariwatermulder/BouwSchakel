@@ -8,7 +8,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-navy-800 text-white shadow-sm hover:bg-navy-700 hover:shadow-md",
+        primary: "bg-ink text-white shadow-sm hover:bg-ink-soft hover:shadow-md",
         brand: "bg-brand-500 text-white shadow-sm hover:bg-brand-600 hover:shadow-md",
         // Geen aparte accentkleur meer (brandguide: één primair blauw).
         accent: "bg-brand-500 text-white shadow-sm hover:bg-brand-600 hover:shadow-md",

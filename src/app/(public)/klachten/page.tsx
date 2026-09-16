@@ -22,11 +22,11 @@ export default function KlachtenPage() {
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">
           <p>
-            Heb je een klacht over het platform of over een andere gebruiker? Er
-            komt een klachtenprocedure waarmee je een melding kunt indienen, die
-            we vertrouwelijk en volgens een vaste procedure behandelen.
+            Heb je een klacht over het platform of over een andere gebruiker?
+            Dien hieronder een melding in. We behandelen die vertrouwelijk en
+            nemen zo snel mogelijk contact met je op.
           </p>
-          <p>De volledige klachtenregeling wordt hier opgenomen.</p>
+          <p>De volledige klachtenregeling wordt hier nog opgenomen.</p>
         </div>
 
         <Card className="mt-8">

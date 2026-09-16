@@ -17,7 +17,7 @@ export function PageIntro({
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(30rem 22rem at 92% -35%, rgba(245,158,11,0.16), transparent 60%), radial-gradient(26rem 22rem at -6% 135%, rgba(47,93,166,0.14), transparent 60%)",
+            "radial-gradient(30rem 22rem at 92% -35%, rgba(37,99,235,0.10), transparent 60%), radial-gradient(26rem 22rem at -6% 135%, rgba(37,99,235,0.08), transparent 60%)",
         }}
       />
       <Container className="relative py-14 md:py-20">
@@ -30,7 +30,7 @@ export function PageIntro({
         </h1>
         <span
           aria-hidden
-          className="from-accent-500 to-navy-500 mt-4 block h-1 w-16 rounded-full bg-gradient-to-r"
+          className="from-brand-500 to-brand-600 mt-4 block h-1 w-16 rounded-full bg-gradient-to-r"
         />
         {lead ? (
           <p

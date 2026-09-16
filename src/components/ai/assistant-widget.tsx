@@ -234,7 +234,7 @@ function Bubbel({
       <div
         className={`bs-msg-in max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm whitespace-pre-wrap ${
           isUser
-            ? "bg-navy-800 rounded-br-sm text-white"
+            ? "bg-ink rounded-br-sm text-white"
             : "border-border text-foreground rounded-bl-sm border bg-white"
         }`}
       >

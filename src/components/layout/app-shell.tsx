@@ -46,7 +46,7 @@ export function AppShell({
           >
             <span
               aria-hidden
-              className="bg-navy-700 text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
+              className="bg-ink-soft text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
             >
               ZC
             </span>
@@ -62,7 +62,7 @@ export function AppShell({
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-navy-100 hover:bg-navy-700 rounded-md px-3 py-2 text-sm font-medium hover:text-white"
+                className="text-navy-100 hover:bg-ink-soft rounded-md px-3 py-2 text-sm font-medium hover:text-white"
               >
                 {item.label}
                 <Badge count={item.badge} />

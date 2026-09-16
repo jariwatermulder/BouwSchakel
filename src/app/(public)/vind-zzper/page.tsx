@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Vind een zzp'er",
   description:
-    "Blader door beschikbare, gecontroleerde zzp'ers in elke sector en neem direct contact op — geen opdracht nodig.",
+    "Zoek op vakgebied en regio, bekijk profielen van vakmensen en neem rechtstreeks contact op. Geen opdracht nodig.",
   alternates: { canonical: "/vind-zzper" },
 };
 
@@ -130,7 +130,7 @@ export default async function VindZzperPage({
                     className="group border-border bg-surface shadow-soft hover:border-navy-300 flex h-full flex-col rounded-[var(--radius-card)] border p-5 transition"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="bg-navy-800 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
+                      <span className="bg-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
                         {naam.slice(0, 2).toUpperCase()}
                       </span>
                       <div className="min-w-0">

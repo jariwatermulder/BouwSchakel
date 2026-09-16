@@ -47,7 +47,7 @@ export function LoginForm({ next }: { next?: string | null }) {
 
         {state.error ? <FormAlert>{state.error}</FormAlert> : null}
 
-        <Button type="submit" disabled={pending} className="w-full">
+        <Button type="submit" variant="brand" disabled={pending} className="w-full">
           {pending ? "Bezig…" : "Inloggen"}
         </Button>
       </form>

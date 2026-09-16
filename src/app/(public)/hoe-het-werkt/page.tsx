@@ -41,7 +41,7 @@ export default function HoeHetWerktPage() {
             >
               <Icon name="doc" className="h-5 w-5" />
             </span>
-            <CardTitle>Voor bedrijven</CardTitle>
+            <CardTitle>Voor opdrachtgevers</CardTitle>
           </div>
           <ol className="mt-5 space-y-3">
             {bedrijf.map((stap, i) => (
@@ -60,15 +60,15 @@ export default function HoeHetWerktPage() {
             ))}
           </ol>
         </Card>
-        <Card className="border-t-4" style={{ borderTopColor: "#f59e0b" }}>
+        <Card className="border-t-4" style={{ borderTopColor: "#2563eb" }}>
           <div className="flex items-center gap-3">
             <span
               className="flex h-11 w-11 items-center justify-center rounded-2xl"
-              style={{ backgroundColor: "#f59e0b1a", color: "#d97706" }}
+              style={{ backgroundColor: "#2563eb1a", color: "#2563eb" }}
             >
               <Icon name="bolt" className="h-5 w-5" />
             </span>
-            <CardTitle>Voor ZZP&apos;ers</CardTitle>
+            <CardTitle>Voor zzp&apos;ers</CardTitle>
           </div>
           <ol className="mt-5 space-y-3">
             {zzp.map((stap, i) => (
@@ -77,8 +77,8 @@ export default function HoeHetWerktPage() {
                 className="text-foreground-muted flex gap-3 text-sm"
               >
                 <span
-                  className="text-ink flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold"
-                  style={{ backgroundColor: "#f59e0b" }}
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                  style={{ backgroundColor: "#2563eb" }}
                 >
                   {i + 1}
                 </span>
@@ -91,7 +91,7 @@ export default function HoeHetWerktPage() {
       <Container className="pb-16">
         <Card className="bg-navy-50 border-navy-100">
           <div className="flex items-start gap-3">
-            <span className="bg-navy-800 text-accent-400 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
+            <span className="bg-ink text-accent-400 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
               <Icon name="shield" className="h-5 w-5" />
             </span>
             <div>
