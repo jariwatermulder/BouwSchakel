@@ -120,7 +120,7 @@ function ToggleIcon({ groep }: { groep: Doelgroep }) {
 }
 
 export function ZoWerktHet() {
-  const [actief, setActief] = useState<Doelgroep>("opdrachtgever");
+  const [actief, setActief] = useState<Doelgroep>("zzper");
   const baseId = useId();
   const tabRefs = useRef<Record<Doelgroep, HTMLButtonElement | null>>({
     opdrachtgever: null,
