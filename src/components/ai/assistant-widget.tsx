@@ -6,10 +6,10 @@ import { Icon } from "@/components/home/pictos";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const WELKOM =
-  "Hoi! 👋 Ik ben de assistent van ZZP Connect. Vraag me gerust iets over het platform, zzp'en, of werk in het algemeen.";
+  "Hoi! 👋 Ik ben de assistent van ZZP Schakel. Vraag me gerust iets over het platform, zzp'en, of werk in het algemeen.";
 
 const SUGGESTIES = [
-  "Hoe werkt ZZP Connect?",
+  "Hoe werkt ZZP Schakel?",
   "Wat kost het?",
   "Kan ik als zzp'er een hypotheek krijgen?",
 ];
@@ -130,8 +130,8 @@ export function AssistantWidget() {
         >
           {/* Kop */}
           <div className="bg-ink bs-hero-mesh flex items-center gap-3 px-4 py-3 text-white">
-            <span className="from-accent-500 to-accent-400 text-ink flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-sm font-black">
-              ZC
+            <span className="from-accent-500 to-accent-400 flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-sm font-black text-white">
+              ZS
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold">ZZP-assistent</p>

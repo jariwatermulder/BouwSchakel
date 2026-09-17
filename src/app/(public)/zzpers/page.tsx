@@ -80,7 +80,7 @@ export default function ZzpLandingPage() {
       <section className="py-14 md:py-20">
         <Container>
           <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
-            Waarom ZZP Connect
+            Waarom ZZP Schakel
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {punten.map((p) => (

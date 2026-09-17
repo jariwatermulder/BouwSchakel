@@ -1,4 +1,4 @@
-# ZZP Connect — Securitymodel
+# ZZP Schakel — Securitymodel
 
 > Security is geen bijzaak. Elke API-route/server-actie wordt gecontroleerd op authenticatie én authorization. Een verborgen frontend-knop is nooit voldoende beveiliging.
 

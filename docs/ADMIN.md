@@ -1,4 +1,4 @@
-# Admin — ZZP Connect
+# Admin — ZZP Schakel
 
 De adminomgeving zit onder `/admin` en is beveiligd met role-based access
 control. Adminrollen (oplopend in bevoegdheid): `SUPPORT` → `MODERATOR` →

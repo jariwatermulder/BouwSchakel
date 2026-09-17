@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Tarieven",
   description:
-    "ZZP Connect is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",
+    "ZZP Schakel is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",
 };
 
 export default function TarievenPage() {
@@ -76,7 +76,7 @@ export default function TarievenPage() {
       <Container className="pb-16">
         <div className="border-border bg-surface-muted rounded-2xl border p-6">
           <p className="text-foreground-muted text-sm leading-relaxed">
-            ZZP Connect is een communicatieplatform: je maakt zelf afspraken over
+            ZZP Schakel is een communicatieplatform: je maakt zelf afspraken over
             het werk, het tarief en de planning. Wij regelen geen contracten,
             urenregistratie, facturen of betalingen. Er is nog geen vast
             verdienmodel. Mocht daar iets in veranderen, dan laten we dat vooraf

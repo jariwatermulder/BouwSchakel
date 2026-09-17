@@ -52,7 +52,7 @@ export function PricingForm({ config }: { config: PricingConfig }) {
           />
         </div>
         <div>
-          <Label htmlFor="proMaandEuro">ZZP Connect Pro (€/maand)</Label>
+          <Label htmlFor="proMaandEuro">ZZP Schakel Pro (€/maand)</Label>
           <Input
             id="proMaandEuro"
             name="proMaandEuro"

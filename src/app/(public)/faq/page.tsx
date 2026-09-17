@@ -4,17 +4,17 @@ import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
   title: "Veelgestelde vragen",
-  description: "Antwoorden op de meestgestelde vragen over ZZP Connect.",
+  description: "Antwoorden op de meestgestelde vragen over ZZP Schakel.",
 };
 
 const vragen = [
   {
-    v: "Wat is ZZP Connect?",
+    v: "Wat is ZZP Schakel?",
     a: "Een Nederlands platform dat opdrachtgevers en zelfstandige vakmensen (zzp’ers) rechtstreeks met elkaar in contact brengt. Onze eerste focus is de bouw.",
   },
   {
     v: "Kost het geld?",
-    a: "Nee. Tijdens de introductie is ZZP Connect gratis, voor zowel opdrachtgevers als zzp’ers. Mocht daar iets in veranderen, dan laten we dat vooraf duidelijk weten.",
+    a: "Nee. Tijdens de introductie is ZZP Schakel gratis, voor zowel opdrachtgevers als zzp’ers. Mocht daar iets in veranderen, dan laten we dat vooraf duidelijk weten.",
   },
   {
     v: "Moet ik een account maken om te zoeken?",
@@ -26,7 +26,7 @@ const vragen = [
   },
   {
     v: "Regelen jullie contracten, uren of betalingen?",
-    a: "Nee. ZZP Connect brengt je met elkaar in contact. Afspraken over het werk, het tarief en de planning maak je rechtstreeks met elkaar; ZZP Connect is daarbij geen partij.",
+    a: "Nee. ZZP Schakel brengt je met elkaar in contact. Afspraken over het werk, het tarief en de planning maak je rechtstreeks met elkaar; ZZP Schakel is daarbij geen partij.",
   },
 ];
 

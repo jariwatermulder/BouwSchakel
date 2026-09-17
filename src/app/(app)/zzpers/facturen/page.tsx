@@ -21,7 +21,7 @@ export default async function FacturenPage() {
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">Facturen</h1>
           <p className="text-foreground-muted mt-1 text-sm">
-            Maak en beheer je facturen in de huisstijl van ZZP Connect.
+            Maak en beheer je facturen in de huisstijl van ZZP Schakel.
           </p>
         </div>
         <ButtonLink href="/zzpers/facturen/nieuw" variant="accent">

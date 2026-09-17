@@ -9,7 +9,7 @@ const faqs = [
   {
     vraag: "Kost het iets?",
     antwoord:
-      "Nee. Tijdens de introductie is ZZP Connect gratis, voor zowel opdrachtgevers als zzp’ers.",
+      "Nee. Tijdens de introductie is ZZP Schakel gratis, voor zowel opdrachtgevers als zzp’ers.",
   },
   {
     vraag: "Moet ik een account maken om te zoeken?",
@@ -19,7 +19,7 @@ const faqs = [
   {
     vraag: "Regelen jullie contracten, uren of betalingen?",
     antwoord:
-      "Nee. ZZP Connect brengt je met elkaar in contact. Afspraken over het werk, het tarief en de planning maak je rechtstreeks met elkaar.",
+      "Nee. ZZP Schakel brengt je met elkaar in contact. Afspraken over het werk, het tarief en de planning maak je rechtstreeks met elkaar.",
   },
   {
     vraag: "Hoe neem ik contact op met een zzp’er?",

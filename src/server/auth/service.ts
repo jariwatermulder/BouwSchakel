@@ -58,8 +58,8 @@ async function createEmailVerification(user: User): Promise<void> {
   try {
     await sendEmail({
       to: user.email,
-      subject: "Bevestig je e-mailadres — ZZP Connect",
-      text: `Welkom bij ZZP Connect. Bevestig je e-mailadres via: ${url}`,
+      subject: "Bevestig je e-mailadres — ZZP Schakel",
+      text: `Welkom bij ZZP Schakel. Bevestig je e-mailadres via: ${url}`,
     });
   } catch (err) {
     console.warn(

@@ -172,8 +172,8 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
   page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: AMBER });
   y = A4.h - 58;
   page.drawRectangle({ x: M, y: y - 20, width: 26, height: 26, color: INK });
-  T(page, "ZC", M + 6, y - 12, 12, bold, AMBER);
-  T(page, "ZZP Connect", M + 36, y - 12, 14, bold, INK);
+  T(page, "ZS", M + 6, y - 12, 12, bold, AMBER);
+  T(page, "ZZP Schakel", M + 36, y - 12, 14, bold, INK);
   R(page, "FACTUUR", RIGHT, y - 8, 24, bold, INK);
   const eff = effectieveStatus(data.status, data.vervaldatum);
   const statusLabel = (STATUS_META[eff] ?? STATUS_META.CONCEPT!).label;
@@ -315,10 +315,10 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
   const paginas = doc.getPages();
   paginas.forEach((p, i) => {
     p.drawLine({ start: { x: M, y: 60 }, end: { x: RIGHT, y: 60 }, thickness: 0.5, color: HAIR });
-    T(p, "ZZP Connect", M, 46, 8, bold, MUTED);
+    T(p, "ZZP Schakel", M, 46, 8, bold, MUTED);
     R(
       p,
-      `Pagina ${i + 1} van ${paginas.length}  ·  Opgemaakt met ZZP Connect`,
+      `Pagina ${i + 1} van ${paginas.length}  ·  Opgemaakt met ZZP Schakel`,
       RIGHT,
       46,
       8,

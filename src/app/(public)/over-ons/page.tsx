@@ -6,7 +6,7 @@ import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
   title: "Over ons",
-  description: "Het verhaal achter ZZP Connect.",
+  description: "Het verhaal achter ZZP Schakel.",
 };
 
 const waarden = [
@@ -36,11 +36,11 @@ export default function OverOnsPage() {
       <PageIntro
         eyebrow="Over ons"
         title="De juiste zzp’er, op het juiste moment"
-        lead="Het verhaal achter ZZP Connect."
+        lead="Het verhaal achter ZZP Schakel."
       />
       <Container className="prose max-w-2xl py-12 md:py-16">
         <p className="text-foreground-muted">
-          ZZP Connect is ontstaan uit een simpele observatie: bedrijven
+          ZZP Schakel is ontstaan uit een simpele observatie: bedrijven
           hebben regelmatig op korte termijn een goede zzp’er nodig, terwijl
           veel zelfstandige zzp’ers juist op zoek zijn naar passend werk in
           hun eigen regio. Die twee vinden elkaar nu vaak via omwegen.
@@ -52,7 +52,7 @@ export default function OverOnsPage() {
           bouw.
         </p>
         <p className="text-foreground-muted mt-4">
-          ZZP Connect is een communicatieplatform. We brengen het contact tot
+          ZZP Schakel is een communicatieplatform. We brengen het contact tot
           stand; de afspraken over het werk, het tarief en de planning maken
           opdrachtgever en zzp’er rechtstreeks met elkaar. Tijdens de introductie
           is het gebruik gratis.

@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
 
-// Web app manifest — maakt ZZP Connect installeerbaar als PWA (app-icoon op het
+// Web app manifest — maakt ZZP Schakel installeerbaar als PWA (app-icoon op het
 // beginscherm, schermvullend openen). Next.js serveert dit op /manifest.webmanifest.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ZZP Connect — vind de juiste zzp'er",
-    short_name: "ZZP Connect",
+    name: "ZZP Schakel — de directe schakel tussen zzp'ers en bedrijven",
+    short_name: "ZZP Schakel",
     description:
       "Vind een zzp'er in jouw regio of maak gratis een profiel. Opdrachtgevers en zelfstandigen rechtstreeks met elkaar in contact.",
     id: "/",

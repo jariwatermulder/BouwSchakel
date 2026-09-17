@@ -1,4 +1,4 @@
-# ZZP Connect — Databaseontwerp
+# ZZP Schakel — Databaseontwerp
 
 > PostgreSQL + Prisma. Dit document beschrijft het relationele model, sleutelrelaties en indexes. Definitieve `schema.prisma` volgt in FASE 1.
 

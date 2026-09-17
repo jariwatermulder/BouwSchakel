@@ -23,7 +23,7 @@ const TIPS = [
   "Elke match komt mét uitleg waarom iemand past.",
   "Reviews kunnen alleen ná een echte opdracht.",
   "Je sluit de overeenkomst rechtstreeks met de zzp’er.",
-  "Zet ZZP Connect met één tik op je startscherm.",
+  "Zet ZZP Schakel met één tik op je startscherm.",
 ];
 
 const ROW_COUNT = 3;

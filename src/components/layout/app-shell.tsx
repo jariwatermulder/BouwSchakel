@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { AccountMenu } from "@/components/layout/account-menu";
+import { Logo } from "@/components/brand/logo";
 
 export interface AppNavItem {
   href: string;
@@ -42,15 +43,10 @@ export function AppShell({
           {/* Logo */}
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-2 font-bold"
+            className="flex shrink-0 items-center"
+            aria-label="ZZP Schakel — naar de homepage"
           >
-            <span
-              aria-hidden
-              className="bg-ink-soft text-accent-500 flex h-8 w-8 items-center justify-center rounded-md text-sm font-black"
-            >
-              ZC
-            </span>
-            <span className="hidden sm:inline">ZZP Connect</span>
+            <Logo variant="white" />
           </Link>
 
           {/* Hoofdmenu (desktop) */}

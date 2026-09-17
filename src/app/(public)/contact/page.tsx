@@ -6,7 +6,7 @@ import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Neem contact op met ZZP Connect.",
+  description: "Neem contact op met ZZP Schakel.",
 };
 
 export default function ContactPage() {

@@ -21,7 +21,7 @@ const punten = [
     icon: "chat" as const,
     titel: "Neem rechtstreeks contact op",
     tekst:
-      "Een geschikte vakman gevonden? Neem direct contact op en bespreek samen de klus, planning en het tarief. ZZP Connect zit daar niet tussen.",
+      "Een geschikte vakman gevonden? Neem direct contact op en bespreek samen de klus, planning en het tarief. ZZP Schakel zit daar niet tussen.",
   },
 ];
 
@@ -40,7 +40,7 @@ export function VoorOpdrachtgevers() {
           <div>
             <span className="eyebrow">Voor opdrachtgevers</span>
             <h2 className="mt-3 text-3xl font-bold md:text-4xl">
-              Waarom ZZP Connect zo eenvoudig werkt
+              Waarom ZZP Schakel zo eenvoudig werkt
             </h2>
             <p className="text-foreground-muted mt-4 text-lg leading-relaxed">
               Vind zelfstandige vakmensen op vakgebied en regio, bekijk hun
@@ -76,7 +76,7 @@ export function VoorOpdrachtgevers() {
           <div>
             <Image
               src="/images/zo-werkt/og-1.png"
-              alt="De ZZP Connect-app: zoek vakmensen op vakgebied en regio."
+              alt="De ZZP Schakel-app: zoek vakmensen op vakgebied en regio."
               width={640}
               height={640}
               sizes="(min-width: 768px) 480px, 90vw"

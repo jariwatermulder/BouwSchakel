@@ -1,5 +1,5 @@
 /*
- * ZZP Connect service worker (minimaal & veilig).
+ * ZZP Schakel service worker (minimaal & veilig).
  *
  * Doel: de app installeerbaar maken (PWA) en een nette offline-pagina tonen
  * wanneer er geen netwerk is. We cachen bewust GEEN persoonlijke of dynamische
@@ -7,7 +7,7 @@
  * andermans gegevens ziet. Alleen een paar statische bestanden worden vooraf
  * gecachet voor de offline-terugval.
  */
-const CACHE = "bouwschakel-v1";
+const CACHE = "zzp-schakel-v2";
 const OFFLINE_URL = "/offline";
 const PRECACHE = [OFFLINE_URL, "/icon-192.png", "/icon-512.png"];
 

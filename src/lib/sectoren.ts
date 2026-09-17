@@ -1,5 +1,5 @@
 /**
- * Sector-indeling voor de catalogus. ZZP Connect is sector-breed; vakgebieden
+ * Sector-indeling voor de catalogus. ZZP Schakel is sector-breed; vakgebieden
  * worden voor de keuzelijsten gegroepeerd per sector. De koppeling gebeurt op
  * de (stabiele) slug van een vakgebied. Onbekende/nieuw toegevoegde vakgebieden
  * vallen automatisch onder "Overig".

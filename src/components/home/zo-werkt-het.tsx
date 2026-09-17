@@ -23,7 +23,7 @@ const SETS: Record<
     stappen: [
       {
         img: "/images/zo-werkt/og-1.png",
-        alt: "Zoek op vakgebied en plaats in de ZZP Connect-app.",
+        alt: "Zoek op vakgebied en plaats in de ZZP Schakel-app.",
         titel: "Zoek op vak en regio",
         tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
       },
@@ -48,7 +48,7 @@ const SETS: Record<
     stappen: [
       {
         img: "/images/zo-werkt/zzp-1.png",
-        alt: "Een zzp’er maakt een profiel aan op ZZP Connect.",
+        alt: "Een zzp’er maakt een profiel aan op ZZP Schakel.",
         titel: "Maak gratis je profiel",
         tekst:
           "Laat zien wie je bent, wat je doet en waar je werkt. Binnen een paar minuten sta je online.",
@@ -148,7 +148,7 @@ export function ZoWerktHet() {
           </h2>
           <p className="text-foreground-muted mt-2">
             Of je nu op zoek bent naar een vakman of zelf zzp’er bent — ZZP
-            Connect brengt jullie direct met elkaar in contact.
+            Schakel brengt jullie direct met elkaar in contact.
           </p>
         </div>
 

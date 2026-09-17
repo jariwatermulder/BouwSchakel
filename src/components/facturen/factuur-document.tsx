@@ -96,10 +96,10 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
           <div>
             <div className="flex items-center gap-2.5">
               <span className="bg-ink text-accent-400 flex h-9 w-9 items-center justify-center rounded-lg text-sm font-black">
-                ZC
+                ZS
               </span>
               <span className="text-lg font-extrabold tracking-tight">
-                ZZP Connect
+                ZZP Schakel
               </span>
             </div>
           </div>
@@ -292,8 +292,8 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
 
         {/* Voettekst */}
         <footer className="border-border text-foreground-muted mt-8 flex flex-wrap items-center justify-between gap-2 border-t pt-4 text-[11px]">
-          <span className="font-semibold">ZZP Connect</span>
-          <span>Opgemaakt met ZZP Connect — controleer zelf de fiscale juistheid.</span>
+          <span className="font-semibold">ZZP Schakel</span>
+          <span>Opgemaakt met ZZP Schakel — controleer zelf de fiscale juistheid.</span>
         </footer>
       </div>
     </article>

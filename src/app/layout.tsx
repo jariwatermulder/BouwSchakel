@@ -23,23 +23,23 @@ const appUrl = resolveAppUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: {
-    default: "ZZP Connect — De juiste zzp'er. Op het juiste moment.",
-    template: "%s · ZZP Connect",
+    default: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+    template: "%s · ZZP Schakel",
   },
   description:
-    "ZZP Connect verbindt opdrachtgevers met geverifieerde zelfstandige professionals (zzp'ers). Plaats snel een opdracht of vind jouw volgende klus.",
+    "ZZP Schakel is de directe schakel tussen zzp'ers en bedrijven: vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
   openGraph: {
     type: "website",
     locale: "nl_NL",
-    siteName: "ZZP Connect",
+    siteName: "ZZP Schakel",
     url: appUrl,
   },
   manifest: "/manifest.webmanifest",
-  applicationName: "ZZP Connect",
+  applicationName: "ZZP Schakel",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ZZP Connect",
+    title: "ZZP Schakel",
   },
   icons: {
     icon: [

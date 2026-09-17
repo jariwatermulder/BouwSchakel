@@ -43,7 +43,7 @@ export default async function NieuweBedrijfsfactuurPage() {
       </Link>
       <h1 className="mt-2 text-2xl font-bold md:text-3xl">Nieuwe factuur</h1>
       <p className="text-foreground-muted mt-1 text-sm">
-        Maak een factuur voor je klant, in de huisstijl van ZZP Connect.
+        Maak een factuur voor je klant, in de huisstijl van ZZP Schakel.
       </p>
       <div className="mt-8">
         <FactuurForm context={context} basisPad="/bedrijven/facturen" />

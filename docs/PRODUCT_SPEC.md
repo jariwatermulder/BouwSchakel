@@ -1,4 +1,4 @@
-# ZZP Connect — Product Specificatie
+# ZZP Schakel — Product Specificatie
 
 > **Status:** Concept / ter goedkeuring. Dit document is de functionele bron van waarheid vóór de ontwikkeling begint.
 > Juridische teksten en compliance-claims moeten door een Nederlandse jurist worden gecontroleerd (zie `LEGAL_CONSIDERATIONS.md`).
@@ -7,15 +7,15 @@
 
 ## 1. Productvisie
 
-**ZZP Connect** is een Nederlands digitaal bemiddelingsplatform dat bedrijven en zelfstandige zzp'ers (ZZP'ers) rechtstreeks met elkaar verbindt.
+**ZZP Schakel** is een Nederlands digitaal bemiddelingsplatform dat bedrijven en zelfstandige zzp'ers (ZZP'ers) rechtstreeks met elkaar verbindt.
 
 **Pay-off:** _De juiste zzp'er. Op het juiste moment._
 
-**Kernbelofte:** Een bedrijf dat vandaag een zzp'er nodig heeft, kan via ZZP Connect snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
+**Kernbelofte:** Een bedrijf dat vandaag een zzp'er nodig heeft, kan via ZZP Schakel snel een geschikte, beschikbare en betrouwbare ZZP'er vinden — en een ZZP'er kan snel geschikt werk vinden.
 
 ### Positionering (bemiddeling, geen uitzendbureau)
 
-ZZP Connect is **primair een bemiddelingsplatform**. Het platform:
+ZZP Schakel is **primair een bemiddelingsplatform**. Het platform:
 
 - brengt vraag en aanbod bij elkaar en faciliteert contact;
 - sluit **niet** zelf de overeenkomst tot het uitvoeren van werk — die komt tot stand tussen opdrachtgever en ZZP'er;
@@ -180,7 +180,7 @@ Beheer van gebruikers, bedrijven, opdrachten, verificaties, reviews/moderatie, r
 ## 19. Businessmodel (bedragen configureerbaar — nooit hardcoded)
 
 - **Primair:** succesfee voor opdrachtgever, bijv. €7,50 per daadwerkelijk gewerkt uur, of vaste bemiddelingsfee.
-- **Secundair:** _ZZP Connect Pro_ (bijv. €199/mnd): meerdere gebruikers, lagere fee, prioriteitsmatching, uitgebreide statistieken, favorieten, premium support.
+- **Secundair:** _ZZP Schakel Pro_ (bijv. €199/mnd): meerdere gebruikers, lagere fee, prioriteitsmatching, uitgebreide statistieken, favorieten, premium support.
 - Betalingsarchitectuur voorbereid voor Mollie/Stripe; implementatie pas ná stabiele kern (zie `ARCHITECTURE.md` §Payments).
 
 ## 20. Belangrijkste businessmetric

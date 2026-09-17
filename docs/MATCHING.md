@@ -1,4 +1,4 @@
-# ZZP Connect — Matching Engine
+# ZZP Schakel — Matching Engine
 
 > Kernfunctie. Deterministisch, uitlegbaar, configureerbaar. Ontworpen zodat AI later inplugbaar is.
 

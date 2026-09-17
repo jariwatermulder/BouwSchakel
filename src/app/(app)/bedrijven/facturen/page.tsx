@@ -32,7 +32,7 @@ export default async function BedrijfFacturenPage() {
         <div>
           <h1 className="text-2xl font-bold md:text-3xl">Facturen</h1>
           <p className="text-foreground-muted mt-1 text-sm">
-            Maak je eigen facturen in de huisstijl van ZZP Connect.
+            Maak je eigen facturen in de huisstijl van ZZP Schakel.
           </p>
         </div>
         <ButtonLink href="/bedrijven/facturen/nieuw" variant="accent">
@@ -67,7 +67,7 @@ export default async function BedrijfFacturenPage() {
       {/* Ontvangen bemiddelingsfacturen van het platform */}
       <h2 className="mt-12 text-lg font-semibold">Ontvangen bemiddelingsfacturen</h2>
       <p className="text-foreground-muted mt-1 text-sm">
-        Facturen van ZZP Connect voor je afgeronde opdrachten.
+        Facturen van ZZP Schakel voor je afgeronde opdrachten.
       </p>
 
       {ontvangen.length === 0 ? (

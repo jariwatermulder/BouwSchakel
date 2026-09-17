@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * ZZP Connect design tokens.
+ * ZZP Schakel design tokens.
  * Basis: donkerblauw/ink. Accent: warm amber, spaarzaam gebruikt.
  * Zie docs/ARCHITECTURE.md §8 (Design system).
  */
@@ -21,13 +21,13 @@
   --color-navy-900: #0b1c31;
   --color-navy-950: #071322;
 
-  /* Geen amber meer: 'accent' verwijst naar Connect Blue zodat losse
+  /* Geen amber meer: 'accent' verwijst naar Schakel Blue zodat losse
      accent-klassen sitebreed automatisch op de merkkleur uitkomen. */
   --color-accent-400: #3b74ef;
   --color-accent-500: #2563eb;
   --color-accent-600: #1d4ed8;
 
-  /* Connect Blue (primair) — ZZP Connect brandguide 2.0. */
+  /* Schakel Blue (primair) — ZZP Schakel brandguide 2.0. */
   --color-brand-50: #eaf1ff;
   --color-brand-100: #d6e4ff;
   --color-brand-500: #2563eb;

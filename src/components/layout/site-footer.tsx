@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { Logo } from "@/components/brand/logo";
 
 const columns = [
   {
@@ -37,13 +37,7 @@ export function SiteFooter() {
     <footer className="border-border bg-ink text-navy-100 mt-auto border-t">
       <Container className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
         <div className="col-span-2 md:col-span-1">
-          <Image
-            src="/brand/logo-white.png"
-            alt="ZZP Connect"
-            width={182}
-            height={30}
-            className="h-7 w-auto"
-          />
+          <Logo variant="white" />
           <p className="text-navy-200 mt-3 text-sm">
             Vind een zzp’er in jouw regio en neem rechtstreeks contact op.
           </p>
@@ -70,9 +64,9 @@ export function SiteFooter() {
 
       <div className="border-navy-800 border-t">
         <Container className="text-navy-300 py-4 text-xs">
-          © {new Date().getFullYear()} ZZP Connect — communicatieplatform dat
+          © {new Date().getFullYear()} ZZP Schakel — communicatieplatform dat
           opdrachtgevers en zzp’ers met elkaar in contact brengt. Afspraken over
-          het werk maken beide partijen rechtstreeks met elkaar; ZZP Connect is
+          het werk maken beide partijen rechtstreeks met elkaar; ZZP Schakel is
           daarbij geen partij.
         </Container>
       </div>

@@ -43,7 +43,7 @@ const stappen = [
     titel: "Zoek op vak en regio",
     tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
     src: "/images/stap-1-zoeken.png",
-    alt: "Telefoon met de ZZP Connect-zoekfunctie: vakgebied en plaats invullen.",
+    alt: "Telefoon met de ZZP Schakel-zoekfunctie: vakgebied en plaats invullen.",
   },
   {
     titel: "Bekijk profielen",

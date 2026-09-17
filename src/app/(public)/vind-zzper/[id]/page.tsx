@@ -22,7 +22,7 @@ export async function generateMetadata({
   const naam = displayNaam(data.profile);
   return {
     title: `${naam} — zzp'er`,
-    description: data.profile.over?.slice(0, 155) ?? `Bekijk het profiel van ${naam} op ZZP Connect.`,
+    description: data.profile.over?.slice(0, 155) ?? `Bekijk het profiel van ${naam} op ZZP Schakel.`,
     robots: { index: false },
   };
 }
@@ -196,7 +196,7 @@ export default async function ZzperProfielPage({
               </button>
             </form>
             <p className="text-foreground-muted mt-3 text-center text-xs">
-              Je berichten lopen via ZZP Connect.
+              Je berichten lopen via ZZP Schakel.
             </p>
           </Card>
         </aside>

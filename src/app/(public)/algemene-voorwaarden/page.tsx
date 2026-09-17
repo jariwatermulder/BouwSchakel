@@ -16,8 +16,8 @@ export default function AlgemeneVoorwaardenPage() {
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm">
           <p>
-            ZZP Connect is een communicatieplatform dat opdrachtgevers en
-            zelfstandige zzp’ers met elkaar in contact brengt. ZZP Connect is
+            ZZP Schakel is een communicatieplatform dat opdrachtgevers en
+            zelfstandige zzp’ers met elkaar in contact brengt. ZZP Schakel is
             geen partij bij de afspraken die tussen opdrachtgever en zzp’er tot
             stand komen en treedt niet op als werkgever of uitlener. Afspraken
             over het werk, het tarief en de planning maken beide partijen

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { Logo } from "@/components/brand/logo";
 import { ButtonLink, Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { logoutAction } from "@/app/(app)/actions";
@@ -53,17 +53,10 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
         <Link
           href="/"
           className="flex items-center"
-          aria-label="ZZP Connect — naar de homepage"
+          aria-label="ZZP Schakel — naar de homepage"
           onClick={sluit}
         >
-          <Image
-            src="/brand/logo-white.png"
-            alt="ZZP Connect"
-            width={182}
-            height={30}
-            priority
-            className="h-7 w-auto md:h-8"
-          />
+          <Logo variant="white" />
         </Link>
 
         <nav aria-label="Hoofdmenu" className="hidden items-center gap-6 md:flex">

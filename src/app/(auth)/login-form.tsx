@@ -20,7 +20,7 @@ export function LoginForm({ next }: { next?: string | null }) {
   return (
     <Card>
       <CardTitle>Inloggen</CardTitle>
-      <CardDescription>Welkom terug bij ZZP Connect.</CardDescription>
+      <CardDescription>Welkom terug bij ZZP Schakel.</CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">
         {next ? <input type="hidden" name="next" value={next} /> : null}

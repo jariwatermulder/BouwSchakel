@@ -1,6 +1,6 @@
-# Database — Supabase (ZZP Connect)
+# Database — Supabase (ZZP Schakel)
 
-De ZZP Connect-database draait op een **apart Supabase-project** (los van de
+De ZZP Schakel-database draait op een **apart Supabase-project** (los van de
 JW Hout-CRM): PostgreSQL 17, regio EU (Frankfurt), gratis tier.
 
 |               |                                                             |

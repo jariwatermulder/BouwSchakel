@@ -7,7 +7,7 @@ import { Icon } from "@/components/home/pictos";
 export const metadata: Metadata = {
   title: "Hoe het werkt",
   description:
-    "Zo werkt ZZP Connect voor bedrijven en zelfstandige zzp’ers.",
+    "Zo werkt ZZP Schakel voor bedrijven en zelfstandige zzp’ers.",
 };
 
 const bedrijf = [
@@ -29,8 +29,8 @@ export default function HoeHetWerktPage() {
     <>
       <PageIntro
         eyebrow="Hoe het werkt"
-        title="Zo werkt ZZP Connect"
-        lead="ZZP Connect brengt opdrachtgevers en zelfstandige vakmensen rechtstreeks met elkaar in contact. Jullie maken zelf de afspraken."
+        title="Zo werkt ZZP Schakel"
+        lead="ZZP Schakel brengt opdrachtgevers en zelfstandige vakmensen rechtstreeks met elkaar in contact. Jullie maken zelf de afspraken."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-2 md:py-16">
         <Card className="border-t-4" style={{ borderTopColor: "#2563eb" }}>
@@ -97,7 +97,7 @@ export default function HoeHetWerktPage() {
             <div>
               <CardTitle>Rechtstreeks contact, geen tussenpersoon</CardTitle>
               <CardDescription>
-                ZZP Connect is een communicatieplatform: het brengt
+                ZZP Schakel is een communicatieplatform: het brengt
                 opdrachtgever en zzp’er met elkaar in contact. Afspraken over het
                 werk maak je rechtstreeks met elkaar. Wij regelen geen
                 contracten, uren, facturen of betalingen en zijn geen werkgever,
