@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils";
  *   diepte). Voor de blauwe balk en de donkere footer.
  * Inline SVG zodat hij scherp schaalt en geen image-loader nodig heeft.
  */
+// Brandguide: kobaltblauw #2563EB en antraciet #18212B.
 const BLUE = "#2563eb";
-const DARK = "#28313f";
+const DARK = "#18212b";
 
 export function LogoMark({
   variant = "color",
@@ -24,7 +25,7 @@ export function LogoMark({
     <svg
       viewBox="0 0 48 48"
       aria-hidden
-      className={cn("h-8 w-8 shrink-0", className)}
+      className={cn("h-10 w-10 shrink-0", className)}
       fill="none"
       strokeWidth="6"
       strokeLinecap="round"
@@ -78,20 +79,20 @@ export function Logo({
 }) {
   const white = variant === "white";
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark variant={variant} />
       <span className="flex flex-col leading-none">
         <span
           className={cn(
-            "text-[10px] font-extrabold tracking-[0.22em]",
-            white ? "text-white/85" : "text-[#28313f]",
+            "text-[12px] font-extrabold tracking-[0.22em]",
+            white ? "text-white/85" : "text-ink",
           )}
         >
           ZZP
         </span>
         <span
           className={cn(
-            "text-[19px] font-extrabold tracking-tight",
+            "text-[26px] font-extrabold tracking-tight",
             white ? "text-white" : "text-brand-500",
           )}
         >

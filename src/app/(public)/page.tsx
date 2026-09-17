@@ -42,7 +42,7 @@ export default function HomePage() {
                 Hét platform voor vakmensen en opdrachtgevers
               </span>
 
-              <h1 className="mt-5 max-w-[26rem] text-[2.1rem] font-extrabold leading-[1.07] tracking-tight sm:text-5xl lg:text-[3.25rem]">
+              <h1 className="mt-5 max-w-[26rem] text-[2.1rem] font-bold leading-[1.08] tracking-tight sm:text-5xl">
                 <span className="text-foreground">
                   Vakmensen en opdrachtgevers,
                 </span>{" "}
@@ -160,7 +160,7 @@ export default function HomePage() {
       {/* ───────────── Veelgestelde vragen ───────────── */}
       <section className="bg-surface-muted py-12 md:py-16">
         <Container className="max-w-3xl">
-          <h2 className="text-2xl font-bold md:text-3xl">Veelgestelde vragen</h2>
+          <h2 className="text-3xl font-bold md:text-4xl md:leading-[2.625rem]">Veelgestelde vragen</h2>
           <div className="mt-6 space-y-3">
             {faqs.map((f) => (
               <details

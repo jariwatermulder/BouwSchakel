@@ -2,7 +2,8 @@
 
 /*
  * ZZP Schakel design tokens.
- * Basis: donkerblauw/ink. Accent: warm amber, spaarzaam gebruikt.
+ * Merkpalet (brandguide): antraciet #18212B, kobaltblauw #2563EB, wit #FFFFFF,
+ * lichtgrijs #F5F7FA. Verhouding ca. 60% licht / 30% donker / 10% blauw.
  * Zie docs/ARCHITECTURE.md §8 (Design system).
  */
 @theme {
@@ -83,7 +84,7 @@ h3 {
 
 /* Zichtbare focus-indicatie t.b.v. toegankelijkheid. */
 :focus-visible {
-  outline: 2px solid var(--color-navy-500);
+  outline: 2px solid var(--color-brand-500);
   outline-offset: 2px;
 }
 
@@ -178,7 +179,7 @@ h3 {
 /* Zachte radial-gradient sfeerlaag voor donkere hero's. */
 .bs-hero-mesh {
   background-image:
-    radial-gradient(38rem 38rem at 82% -8%, rgba(245, 158, 11, 0.16), transparent 60%),
+    radial-gradient(38rem 38rem at 82% -8%, rgba(37, 99, 235, 0.22), transparent 60%),
     radial-gradient(34rem 34rem at 8% 108%, rgba(47, 93, 166, 0.34), transparent 60%);
 }
 
@@ -186,7 +187,7 @@ h3 {
 .bs-hero-aurora {
   background-color: #fafbfd;
   background-image:
-    radial-gradient(46rem 30rem at 92% -20%, rgba(245, 158, 11, 0.10), transparent 62%),
+    radial-gradient(46rem 30rem at 92% -20%, rgba(37, 99, 235, 0.10), transparent 62%),
     radial-gradient(44rem 34rem at 0% -10%, rgba(47, 93, 166, 0.08), transparent 58%);
 }
 /* Fijne stippenlaag voor subtiele textuur. */

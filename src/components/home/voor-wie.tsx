@@ -39,7 +39,7 @@ export function VoorOpdrachtgevers() {
         <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
           <div>
             <span className="eyebrow">Voor opdrachtgevers</span>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl md:leading-[2.625rem]">
               Waarom ZZP Schakel zo eenvoudig werkt
             </h2>
             <p className="text-foreground-muted mt-4 text-lg leading-relaxed">
@@ -97,7 +97,7 @@ export function VoorZzpers() {
         <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
           <div>
             <span className="eyebrow">Voor zzp’ers</span>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl md:leading-[2.625rem]">
               Laat opdrachtgevers jou vinden.
             </h2>
             <p className="text-foreground-muted mt-4 text-lg leading-relaxed">

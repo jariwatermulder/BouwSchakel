@@ -102,7 +102,7 @@ export function AssistantWidget() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Sluit de assistent" : "Open de AI-assistent"}
         aria-expanded={open}
-        className="from-accent-500 to-accent-400 text-ink fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br shadow-[0_10px_30px_-6px_rgba(245,158,11,0.6)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 md:right-6 md:bottom-6"
+        className="from-accent-500 to-accent-400 text-ink fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br shadow-[0_10px_30px_-6px_rgba(37,99,235,0.55)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 md:right-6 md:bottom-6"
       >
         {open ? (
           <svg

@@ -55,7 +55,8 @@ const INK = rgb(0.05, 0.09, 0.16);
 const MUTED = rgb(0.42, 0.47, 0.54);
 const HAIR = rgb(0.9, 0.92, 0.94);
 const SOFT = rgb(0.97, 0.98, 0.99);
-const AMBER = rgb(0.961, 0.62, 0.043);
+// Brandguide: kobaltblauw #2563EB als accent (was amber).
+const BLAUW = rgb(37 / 255, 99 / 255, 235 / 255);
 
 const A4 = { w: 595.28, h: 841.89 };
 const M = 48;
@@ -163,16 +164,16 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
 
   function nieuwePagina(): void {
     page = doc.addPage([A4.w, A4.h]);
-    page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: AMBER });
+    page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: BLAUW });
     y = A4.h - 64;
     y = tabelkop(page, y);
   }
 
   // ── Pagina 1: accentbalk + kop ────────────────────────────────────────
-  page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: AMBER });
+  page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: BLAUW });
   y = A4.h - 58;
   page.drawRectangle({ x: M, y: y - 20, width: 26, height: 26, color: INK });
-  T(page, "ZS", M + 6, y - 12, 12, bold, AMBER);
+  T(page, "ZS", M + 6, y - 12, 12, bold, BLAUW);
   T(page, "ZZP Schakel", M + 36, y - 12, 14, bold, INK);
   R(page, "FACTUUR", RIGHT, y - 8, 24, bold, INK);
   const eff = effectieveStatus(data.status, data.vervaldatum);
@@ -257,7 +258,7 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
   const nodig = totRegels * 18 + 120;
   if (y - nodig < BODEM) {
     page = doc.addPage([A4.w, A4.h]);
-    page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: AMBER });
+    page.drawRectangle({ x: 0, y: A4.h - 6, width: A4.w, height: 6, color: BLAUW });
     y = A4.h - 72;
   }
 
@@ -290,7 +291,7 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
   y -= 40;
   const boxH = 62 + (data.opmerking ? 16 : 0);
   page.drawRectangle({ x: M, y: y - boxH, width: RIGHT - M, height: boxH, color: SOFT });
-  page.drawRectangle({ x: M, y: y - boxH, width: 3, height: boxH, color: AMBER });
+  page.drawRectangle({ x: M, y: y - boxH, width: 3, height: boxH, color: BLAUW });
   let by = y - 16;
   T(page, "BETALINGSINFORMATIE", M + 14, by, 7.5, bold, MUTED);
   by -= 15;

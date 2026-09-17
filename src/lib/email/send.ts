@@ -100,7 +100,7 @@ function basisTemplate(titel: string, tekst: string): string {
   const knop = link
     ? `<p style="margin:8px 0 0;"><a href="${esc(
         link,
-      )}" style="display:inline-block;background:#f59e0b;color:#0b1220;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;font-size:15px;">Openen</a></p>
+      )}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:10px;font-size:15px;">Openen</a></p>
        <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;word-break:break-all;">${esc(
          link,
        )}</p>`
@@ -112,11 +112,11 @@ function basisTemplate(titel: string, tekst: string): string {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:24px 0;">
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;">
-        <tr><td style="background:#0b1220;padding:20px 28px;">
+        <tr><td style="background:#18212b;padding:20px 28px;">
           <span style="color:#ffffff;font-size:18px;font-weight:800;letter-spacing:0.04em;">ZZP <span style="color:#2563eb;">SCHAKEL</span></span>
         </td></tr>
         <tr><td style="padding:28px;">
-          <h1 style="margin:0 0 16px;font-size:18px;color:#0b1220;">${esc(titel)}</h1>
+          <h1 style="margin:0 0 16px;font-size:18px;color:#18212b;">${esc(titel)}</h1>
           ${alineas}
           ${knop}
         </td></tr>

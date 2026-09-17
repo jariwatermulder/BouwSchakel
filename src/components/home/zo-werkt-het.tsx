@@ -143,7 +143,7 @@ export function ZoWerktHet() {
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <span className="eyebrow">Zo werkt het</span>
-          <h2 className="mt-3 text-2xl font-bold md:text-3xl">
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl md:leading-[2.625rem]">
             Twee manieren, één platform
           </h2>
           <p className="text-foreground-muted mt-2">
