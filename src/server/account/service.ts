@@ -27,8 +27,8 @@ export async function exportUserData(
         certifications: { include: { certification: true } },
         availability: true,
         portfolio: true,
-        applications: true,
-        assignments: true,
+        conversations: { include: { messages: true } },
+        zzpInvoices: { include: { lines: true } },
       },
     }),
     db.companyMember.findMany({
@@ -49,8 +49,8 @@ export async function exportUserData(
 
 /**
  * Verwijdert het account onherroepelijk (recht op vergetelheid). Cascades in
- * het datamodel verwijderen gekoppelde gegevens (profiel, reacties, sessies,
- * berichten, notificaties). Bedrijven met andere leden blijven bestaan.
+ * het datamodel verwijderen gekoppelde gegevens (profiel, gesprekken, sessies,
+ * berichten, facturen, notificaties). Bedrijven met andere leden blijven bestaan.
  */
 export async function deleteAccount(userId: string): Promise<void> {
   await db.user.delete({ where: { id: userId } });

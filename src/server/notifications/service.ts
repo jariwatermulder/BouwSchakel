@@ -16,15 +16,9 @@ export interface NieuweNotificatie {
   link?: string;
 }
 
-// Koppelt een notificatietype aan de e-mailvoorkeur-kolom (indien van toepassing).
-const EMAIL_VOORKEUR: Partial<Record<NotificationType, string>> = {
-  NIEUWE_REACTIE: "emailReacties",
-  UITNODIGING: "emailReacties",
-  GESELECTEERD: "emailReacties",
-  AFGEWEZEN: "emailReacties",
+// Welke notificatietypes (optioneel) ook per e-mail gaan.
+const EMAIL_VOORKEUR: Partial<Record<NotificationType, "emailBerichten">> = {
   NIEUW_BERICHT: "emailBerichten",
-  NIEUWE_MATCH: "emailMatches",
-  REVIEW_ONTVANGEN: "emailReviews",
 };
 
 export async function notify(input: NieuweNotificatie): Promise<void> {
@@ -48,9 +42,7 @@ export async function notify(input: NieuweNotificatie): Promise<void> {
   if (!user) return;
 
   // Standaard aan wanneer geen voorkeuren zijn opgeslagen.
-  const emailAan =
-    pref == null ||
-    (pref as unknown as Record<string, boolean>)[voorkeurKolom] === true;
+  const emailAan = pref == null || pref[voorkeurKolom] === true;
   if (!emailAan) return;
 
   const link = input.link ? `${serverEnv().APP_URL}${input.link}` : undefined;

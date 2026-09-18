@@ -4,7 +4,7 @@
  * Belangrijk: seed data mag NOOIT in productie terechtkomen. Dit script weigert
  * te draaien wanneer NODE_ENV === "production". De catalogus (vakgebieden,
  * specialisaties, certificaten) is idempotent (upsert op slug) en vormt de
- * basis voor de ZZP-registratie en matching. Realistische demo-profielen en
+ * basis voor de ZZP-registratie en de zoekfilters. Realistische demo-profielen en
  * -opdrachten worden in latere fasen toegevoegd, duidelijk gemarkeerd als seed.
  */
 import { PrismaClient } from "@prisma/client";
@@ -150,13 +150,6 @@ async function main() {
       create: { naam: cert, slug: slugify(cert) },
     });
   }
-
-  // Standaard matching-instellingen (bewerkbaar via admin in FASE 7).
-  await db.matchingSetting.upsert({
-    where: { id: "default" },
-    update: {},
-    create: { id: "default" },
-  });
 
   // Optionele admin-bootstrap: alleen wanneer ADMIN_EMAIL + ADMIN_PASSWORD
   // gezet zijn. Zie docs/ADMIN.md voor het promoveren van een bestaand account.

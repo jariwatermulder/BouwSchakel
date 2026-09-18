@@ -45,9 +45,9 @@ export function ConversationList({
                     ) : null}
                   </div>
                   <CardDescription>
-                    {c.job
-                      ? `Over: ${c.job.titel} · ${c.job.skill.naam}`
-                      : "Direct contact"}
+                    {c.ongelezen > 0
+                      ? "Nieuwe berichten"
+                      : `Laatste bericht ${new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(c.laatsteBericht)}`}
                   </CardDescription>
                 </div>
               </Card>

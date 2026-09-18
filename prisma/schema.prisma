@@ -1,8 +1,8 @@
-// ZZP Connect — Prisma schema
-// FASE 1 (Foundation): identiteit, rollen, sessies en verificatietokens.
-// Latere fasen voegen ZZPProfile, Company, Job, Match, Application, Assignment,
-// Conversation, Message, Review, Verification, Notification, etc. toe.
-// Zie docs/DATABASE.md voor het volledige beoogde datamodel.
+// ZZP Schakel — Prisma schema
+// Communicatieplatform: identiteit, zzp-profielen, bedrijven, directe
+// berichten, notificaties, eigen facturen, beheer/moderatie en contact.
+// De vroegere opdrachten-/matching-/review-/betalingsmodellen zijn verwijderd
+// (migratie 00000000000012_verwijder_opdrachten). Zie docs/DATABASE.md.
 
 generator client {
   provider = "prisma-client-js"
@@ -63,7 +63,6 @@ model User {
   notifications          Notification[]
   notificationPreference NotificationPreference?
   sentMessages           Message[]
-  reviews                Review[]
   reportsIngediend       Report[]
   auditLogs              AuditLog[]
 
@@ -174,9 +173,6 @@ model ZZPProfile {
   certifications  ZZPCertification[]
   availability    Availability[]
   portfolio       PortfolioItem[]
-  matches         Match[]
-  applications    Application[]
-  assignments     Assignment[]
   conversations   Conversation[]
   zzpInvoices     ZzpInvoice[]
 
@@ -196,7 +192,6 @@ model Skill {
   actief          Boolean          @default(true)
   specializations Specialization[]
   zzpSkills       ZZPSkill[]
-  jobs            Job[]
 }
 
 model Specialization {
@@ -208,7 +203,6 @@ model Specialization {
   actief  Boolean @default(true)
 
   zzpSpecializations ZZPSpecialization[]
-  jobs               Job[]
 
   @@unique([skillId, slug])
 }
@@ -220,7 +214,6 @@ model Certification {
   actief Boolean @default(true)
 
   zzpCertifications ZZPCertification[]
-  jobRequirements   JobRequirement[]
 }
 
 model ZZPSkill {
@@ -296,20 +289,11 @@ model PortfolioItem {
   @@index([zzpProfileId])
 }
 
-// ── FASE 3: Bedrijven en opdrachten ──────────────────────────────────────────
+// ── FASE 3: Bedrijven ────────────────────────────────────────────────────────
 
 enum CompanyMemberRole {
   OWNER
   LID
-}
-
-enum JobStatus {
-  CONCEPT
-  GEPUBLICEERD
-  GESLOTEN
-  VERVULD
-  VERLOPEN
-  GEANNULEERD
 }
 
 model Company {
@@ -332,10 +316,7 @@ model Company {
   plaats   String?
 
   members       CompanyMember[]
-  jobs          Job[]
-  assignments   Assignment[]
   conversations Conversation[]
-  invoices      Invoice[]
   eigenFacturen ZzpInvoice[]
 
   createdAt DateTime  @default(now())
@@ -358,185 +339,16 @@ model CompanyMember {
   @@index([userId])
 }
 
-model Job {
-  id               String          @id @default(uuid())
-  companyId        String
-  company          Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  skillId          String
-  skill            Skill           @relation(fields: [skillId], references: [id])
-  specializationId String?
-  specialization   Specialization? @relation(fields: [specializationId], references: [id])
-
-  titel        String
-  slug         String @unique
-  omschrijving String
-
-  locatiePlaats String
-  locatieAdres  String?
-  lat           Float?
-  lng           Float?
-
-  startdatum              DateTime
-  einddatum               DateTime?
-  duurDagen               Int?
-  aantalPersonen          Int       @default(1)
-  gewenstUurtariefCents   Int?
-  eigenGereedschapGewenst Boolean   @default(false)
-
-  contactpersoon      String?
-  status              JobStatus @default(CONCEPT)
-  publiekIndexeerbaar Boolean   @default(true)
-
-  requirements  JobRequirement[]
-  matches       Match[]
-  applications  Application[]
-  assignments   Assignment[]
-  conversations Conversation[]
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-
-  @@index([skillId, status])
-  @@index([status, startdatum])
-  @@index([companyId])
-  @@index([lat, lng])
-}
-
-model JobRequirement {
-  id              String         @id @default(uuid())
-  jobId           String
-  job             Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  certificationId String?
-  certification   Certification? @relation(fields: [certificationId], references: [id])
-  vrijeTekst      String?
-  hard            Boolean        @default(false)
-
-  @@index([jobId])
-}
-
-// ── FASE 4: Matching ─────────────────────────────────────────────────────────
-
-// Berekende match ZZP<->opdracht. Kan gecachet/herberekend worden; in de MVP
-// wordt de score veelal live berekend. subscores bevat de uitleg per dimensie.
-model Match {
-  id           String     @id @default(uuid())
-  jobId        String
-  job          Job        @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  zzpProfileId String
-  zzpProfile   ZZPProfile @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
-  score        Int
-  subscores    Json
-  geschikt     Boolean    @default(true)
-  berekendOp   DateTime   @default(now())
-
-  @@unique([jobId, zzpProfileId])
-  @@index([jobId, score])
-  @@index([zzpProfileId])
-}
-
-// Configureerbare gewichten en drempels voor de matching engine (admin, FASE 7).
-// Eén rij met id "default". Gewichten sommeren tot 100.
-model MatchingSetting {
-  id                     String   @id @default("default")
-  gewichtVakgebied       Int      @default(25)
-  gewichtBeschikbaarheid Int      @default(20)
-  gewichtSpecialisatie   Int      @default(15)
-  gewichtLocatie         Int      @default(15)
-  gewichtTarief          Int      @default(10)
-  gewichtErvaring        Int      @default(5)
-  gewichtCertificaten    Int      @default(5)
-  gewichtBetrouwbaarheid Int      @default(5)
-  minMatchScore          Int      @default(50)
-  maxAfstandKm           Int      @default(150)
-  updatedAt              DateTime @updatedAt
-}
-
-// ── FASE 5: Interactie (reacties, opdrachten, berichten, notificaties) ───────
-
-enum ApplicationStatus {
-  NIEUW
-  BEKEKEN
-  UITGENODIGD
-  AFGEWEZEN
-  GEACCEPTEERD
-  INGETROKKEN
-}
-
-enum ApplicationRichting {
-  SOLLICITATIE // ZZP'er reageert op opdracht
-  UITNODIGING // bedrijf nodigt ZZP'er uit
-}
-
-enum AssignmentStatus {
-  GEPLAND
-  ACTIEF
-  AFGEROND
-  GEANNULEERD
-  GESCHIL
-}
+// ── FASE 5: Interactie (berichten, notificaties) ─────────────────────────────
 
 enum NotificationType {
-  NIEUWE_MATCH
-  NIEUWE_REACTIE
-  UITNODIGING
-  GESELECTEERD
-  AFGEWEZEN
   NIEUW_BERICHT
-  OPDRACHT_GEWIJZIGD
-  REVIEW_ONTVANGEN
   VERIFICATIE_AFGEROND
-}
-
-model Application {
-  id                     String              @id @default(uuid())
-  jobId                  String
-  job                    Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  zzpProfileId           String
-  zzpProfile             ZZPProfile          @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
-  status                 ApplicationStatus   @default(NIEUW)
-  richting               ApplicationRichting
-  bericht                String?
-  uurtariefVoorstelCents Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([jobId, zzpProfileId])
-  @@index([jobId, status])
-  @@index([zzpProfileId])
-}
-
-model Assignment {
-  id           String           @id @default(uuid())
-  jobId        String
-  job          Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  zzpProfileId String
-  zzpProfile   ZZPProfile       @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
-  companyId    String
-  company      Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  status       AssignmentStatus @default(GEPLAND)
-  startdatum   DateTime
-  einddatum    DateTime?
-  gewerkteUren Int?
-
-  reviews     Review[]
-  invoice     Invoice?
-  zzpInvoices ZzpInvoice[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([companyId])
-  @@index([zzpProfileId])
-  @@index([jobId])
 }
 
 model Conversation {
   id           String     @id @default(uuid())
-  // Optioneel: een gesprek kan bij een opdracht horen óf direct contact zijn.
-  jobId        String?
-  job          Job?       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  // Direct contact tussen één bedrijf en één zzp'er; hooguit één gesprek per paar.
   companyId    String
   company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
   zzpProfileId String
@@ -546,7 +358,7 @@ model Conversation {
   createdAt      DateTime @default(now())
   laatsteBericht DateTime @default(now())
 
-  @@index([companyId, zzpProfileId])
+  @@unique([companyId, zzpProfileId])
   @@index([companyId])
   @@index([zzpProfileId])
 }
@@ -582,45 +394,7 @@ model Notification {
 model NotificationPreference {
   userId         String  @id
   user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  emailReacties  Boolean @default(true)
   emailBerichten Boolean @default(true)
-  emailMatches   Boolean @default(true)
-  emailReviews   Boolean @default(true)
-}
-
-// ── FASE 6: Reviews & reputatie ──────────────────────────────────────────────
-
-enum ReviewDirection {
-  ZZP_NAAR_BEDRIJF
-  BEDRIJF_NAAR_ZZP
-}
-
-// Review na een afgeronde opdracht. Alleen mogelijk bij een bestaande
-// Assignment; onveranderbaar na publicatie (behalve via moderatie).
-// De subject-velden zijn gedenormaliseerd voor snelle reputatie-aggregatie.
-// Zie docs/MATCHING.md (betrouwbaarheid).
-model Review {
-  id           String          @id @default(uuid())
-  assignmentId String
-  assignment   Assignment      @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  richting     ReviewDirection
-  auteurUserId String
-  auteur       User            @relation(fields: [auteurUserId], references: [id], onDelete: Cascade)
-
-  overZzpProfileId String?
-  overCompanyId    String?
-
-  scoreKwaliteit       Int
-  scoreCommunicatie    Int
-  scoreBetrouwbaarheid Int
-  scoreAfspraken       Int
-  toelichting          String?
-
-  gepubliceerdOp DateTime @default(now())
-
-  @@unique([assignmentId, richting])
-  @@index([overZzpProfileId])
-  @@index([overCompanyId])
 }
 
 // ── FASE 7: Admin, moderatie en audit ────────────────────────────────────────
@@ -636,8 +410,6 @@ enum ReportSubjectType {
   USER
   COMPANY
   ZZP_PROFIEL
-  JOB
-  REVIEW
   MESSAGE
 }
 
@@ -690,73 +462,6 @@ model AuditLog {
   @@index([actorUserId])
 }
 
-// ── FASE 8: Betalingen (fees, facturen, betalingen) ──────────────────────────
-
-enum FeeModel {
-  PER_UUR
-  VAST
-}
-
-enum InvoiceStatus {
-  CONCEPT
-  OPEN
-  BETAALD
-  MISLUKT
-  GECREDITEERD
-}
-
-enum PaymentStatus {
-  IN_AFWACHTING
-  GESLAAGD
-  MISLUKT
-  GEREFUND
-}
-
-// Eén rij ("default"). Alle bedragen configureerbaar via admin — nooit hardcoded.
-model PricingSetting {
-  id                        String   @id @default("default")
-  feeModel                  FeeModel @default(PER_UUR)
-  succesfeePerUurCents      Int      @default(750)
-  vasteBemiddelingsfeeCents Int      @default(0)
-  proMaandCents             Int      @default(19900)
-  btwPercentage             Int      @default(21)
-  updatedAt                 DateTime @updatedAt
-}
-
-model Invoice {
-  id             String        @id @default(uuid())
-  companyId      String
-  company        Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  assignmentId   String?       @unique
-  assignment     Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
-  omschrijving   String
-  subtotaalCents Int
-  btwCents       Int
-  bedragCents    Int
-  status         InvoiceStatus @default(OPEN)
-  payments       Payment[]
-  uitgegevenOp   DateTime      @default(now())
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-
-  @@index([companyId])
-  @@index([status])
-}
-
-model Payment {
-  id          String        @id @default(uuid())
-  invoiceId   String?
-  invoice     Invoice?      @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
-  provider    String
-  providerRef String?
-  bedragCents Int
-  status      PaymentStatus @default(IN_AFWACHTING)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  @@index([invoiceId])
-}
-
 // Logboek van vragen aan de AI-assistent, zodat we zien wat bezoekers vragen.
 // Geen relatie naar User: ook anonieme (uitgelogde) bezoekers stellen vragen.
 model AssistantLog {
@@ -778,7 +483,7 @@ enum ZzpInvoiceStatus {
   GEANNULEERD
 }
 
-// Factuur die een zzp'er zelf in de app opmaakt (in ZZP Connect-huisstijl).
+// Factuur die een zzp'er of bedrijf zelf in de app opmaakt (in ZZP Schakel-huisstijl).
 // Afzender- en klantgegevens worden als momentopname opgeslagen, zodat een
 // factuur juridisch onveranderd blijft als het profiel later wijzigt.
 model ZzpInvoice {
@@ -788,8 +493,6 @@ model ZzpInvoice {
   zzpProfile   ZZPProfile? @relation(fields: [zzpProfileId], references: [id], onDelete: Cascade)
   companyId    String?
   company      Company?    @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  assignmentId String?
-  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
 
   factuurnummer   String
   status          ZzpInvoiceStatus @default(CONCEPT)

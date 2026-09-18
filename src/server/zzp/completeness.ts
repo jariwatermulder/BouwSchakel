@@ -2,8 +2,8 @@
  * Berekent de profielcompleetheid (0–100) van een ZZP-profiel.
  *
  * Pure functie, los van Prisma, zodat ze eenvoudig te testen is. De gewichten
- * weerspiegelen wat belangrijk is voor goede matches (zie docs/MATCHING.md):
- * vakgebied en beschikbaarheid wegen zwaarder dan bijv. portfolio.
+ * weerspiegelen wat opdrachtgevers het eerst bekijken: vakgebied en
+ * beschikbaarheid wegen zwaarder dan bijv. portfolio.
  */
 export interface CompletenessInput {
   voornaam?: string | null;

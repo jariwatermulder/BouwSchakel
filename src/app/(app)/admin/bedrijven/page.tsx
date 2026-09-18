@@ -26,7 +26,7 @@ export default async function AdminBedrijvenPage() {
                 <p className="font-medium">{c.naam || "(naamloos)"}</p>
                 <p className="text-foreground-muted text-sm">
                   {c.kvkNummer ? `KvK ${c.kvkNummer} · ` : ""}
-                  {c._count.jobs} opdrachten · {c._count.members} leden
+                  {c._count.members} leden · {c._count.conversations} gesprekken
                 </p>
               </div>
               <VerifForm

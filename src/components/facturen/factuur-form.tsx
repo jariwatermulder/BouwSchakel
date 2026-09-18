@@ -19,8 +19,6 @@ type Regel = {
 };
 
 const initial: FactuurFormState = {};
-const veld =
-  "border-border bg-surface focus-visible:border-navy-500 focus-visible:ring-navy-500/20 h-11 w-full rounded-lg border px-3 text-sm outline-none transition focus-visible:ring-2";
 const kleinVeld =
   "border-border bg-surface focus-visible:border-navy-500 h-10 w-full rounded-lg border px-2.5 text-sm outline-none";
 
@@ -44,7 +42,6 @@ export function FactuurForm({
   const [state, formAction, pending] = useActionState(createFactuurAction, initial);
   const a = context.afzender;
 
-  const [assignmentId, setAssignmentId] = useState("");
   const [factuurnummer, setFactuurnummer] = useState(context.voorstelNummer);
   const [factuurdatum, setFactuurdatum] = useState(isoVandaag());
   const [betaaltermijn, setBetaaltermijn] = useState("14");
@@ -89,24 +86,6 @@ export function FactuurForm({
     setFactuurdatum(iso);
     const n = Number(betaaltermijn);
     if (!Number.isNaN(n)) setVervaldatum(plusDagen(iso, n));
-  }
-
-  function kiesOpdracht(id: string) {
-    setAssignmentId(id);
-    const o = context.assignments.find((x) => x.id === id);
-    if (!o) return;
-    setKlant((k) => ({ ...k, naam: o.bedrijf, kvk: o.bedrijfKvk }));
-    setRegels((r) => {
-      const leeg = r.length === 1 && !r[0]!.omschrijving && !r[0]!.tarief;
-      const nieuw: Regel = {
-        omschrijving: o.jobTitel,
-        aantal: "1",
-        eenheid: "uur",
-        tarief: o.tariefEuro != null ? String(o.tariefEuro) : "",
-        btw: "21",
-      };
-      return leeg ? [nieuw] : [...r, nieuw];
-    });
   }
 
   const updateRegel = (i: number, patch: Partial<Regel>) =>
@@ -157,7 +136,6 @@ export function FactuurForm({
       {/* ── Editor ─────────────────────────────────────────────── */}
       <form action={formAction} className="space-y-7">
         <input type="hidden" name="basisPad" value={basisPad} />
-        <input type="hidden" name="assignmentId" value={assignmentId} />
         <input type="hidden" name="linesJson" value={linesJson} />
         <input type="hidden" name="btwVerlegd" value={btwVerlegd ? "1" : "0"} />
         {/* gesynchroniseerde afzender/klant velden */}
@@ -189,25 +167,6 @@ export function FactuurForm({
         }).map(([naam, waarde]) => (
           <input key={naam} type="hidden" name={naam} value={waarde} />
         ))}
-
-        {context.assignments.length > 0 ? (
-          <section className="space-y-2">
-            <Label htmlFor="opdrachtKeuze">Koppel aan opdracht (optioneel)</Label>
-            <select
-              id="opdrachtKeuze"
-              className={veld}
-              value={assignmentId}
-              onChange={(e) => kiesOpdracht(e.target.value)}
-            >
-              <option value="">Geen — vrije factuur</option>
-              {context.assignments.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.jobTitel} — {o.bedrijf}
-                </option>
-              ))}
-            </select>
-          </section>
-        ) : null}
 
         {/* Factuurgegevens */}
         <section className="space-y-3">

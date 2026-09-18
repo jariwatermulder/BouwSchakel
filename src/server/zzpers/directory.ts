@@ -47,26 +47,7 @@ export async function getPublicZzper(id: string) {
       certifications: { include: { certification: true } },
     },
   });
-  if (!profile) return null;
-
-  const reviews = await db.review.findMany({
-    where: { overZzpProfileId: id },
-    orderBy: { gepubliceerdOp: "desc" },
-    take: 20,
-  });
-
-  const scores = reviews.map(
-    (r) =>
-      (r.scoreKwaliteit +
-        r.scoreCommunicatie +
-        r.scoreBetrouwbaarheid +
-        r.scoreAfspraken) /
-      4,
-  );
-  const gemiddelde =
-    scores.length > 0 ? scores.reduce((s, n) => s + n, 0) / scores.length : null;
-
-  return { profile, reviews, gemiddelde, aantalReviews: reviews.length };
+  return profile;
 }
 
 /** Privacy-vriendelijke weergavenaam: bedrijfsnaam of voornaam + initiaal. */

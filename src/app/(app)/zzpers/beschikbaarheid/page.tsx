@@ -31,8 +31,8 @@ export default async function BeschikbaarheidPage() {
     <Container className="py-8 md:py-12">
       <h1 className="text-2xl font-bold md:text-3xl">Beschikbaarheid</h1>
       <p className="text-foreground-muted mt-1 text-sm">
-        Geef aan wanneer je beschikbaar bent. Dit weegt zwaar mee in de
-        matching.
+        Geef aan wanneer je beschikbaar bent, zodat opdrachtgevers weten
+        wanneer ze je kunnen benaderen.
       </p>
 
       <Card className="mt-6">

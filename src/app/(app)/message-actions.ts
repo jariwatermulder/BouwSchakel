@@ -1,14 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { rateLimit } from "@/lib/ratelimit";
-import {
-  getMessagesSince,
-  sendMessage,
-  startOrGetConversation,
-} from "@/server/messaging/service";
+import { getMessagesSince, sendMessage } from "@/server/messaging/service";
 import type { ChatBericht } from "@/lib/chat";
 import type { Message } from "@prisma/client";
 
@@ -68,25 +63,4 @@ export async function haalNieuweBerichten(
   const sinds = sindsIso ? new Date(sindsIso) : undefined;
   const berichten = await getMessagesSince(user.id, conversationId, sinds);
   return berichten.map(naarChatBericht);
-}
-
-/** Opent (of maakt) een gesprek en navigeert ernaartoe. */
-export async function openGesprek(formData: FormData): Promise<void> {
-  const user = await requireCurrentUser();
-  const jobId = formData.get("jobId");
-  const zzpProfileId = formData.get("zzpProfileId");
-  const basePath = formData.get("basePath");
-  if (
-    typeof jobId !== "string" ||
-    typeof zzpProfileId !== "string" ||
-    typeof basePath !== "string"
-  ) {
-    return;
-  }
-  const conversation = await startOrGetConversation(
-    user.id,
-    jobId,
-    zzpProfileId,
-  );
-  redirect(`${basePath}/${conversation.id}`);
 }

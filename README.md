@@ -2,7 +2,7 @@
 
 **De juiste zzp'er. Op het juiste moment.**
 
-ZZP Schakel is een Nederlands bemiddelingsplatform dat bouwbedrijven en zelfstandige vakmensen (ZZP'ers) rechtstreeks met elkaar verbindt. ZZP Schakel is een bemiddelingsplatform: de overeenkomst voor het werk komt tot stand tussen opdrachtgever en vakman.
+ZZP Schakel is een Nederlands communicatieplatform dat opdrachtgevers en zelfstandige zzp'ers rechtstreeks met elkaar verbindt. Opdrachtgevers zoeken zonder account in de etalage, nemen met een gratis account contact op en maken afspraken rechtstreeks met de zzp'er. Geen opdrachten, matching, reviews, uren, contracten of betalingen via het platform.
 
 > Dit is een nieuwe, op zichzelf staande applicatie en staat volledig los van de website www.jwhoutentuinbouw.nl.
 
@@ -21,7 +21,6 @@ Zie [`docs/`](./docs) voor het volledige ontwerp:
 [PRODUCT_SPEC](./docs/PRODUCT_SPEC.md) ·
 [ARCHITECTURE](./docs/ARCHITECTURE.md) ·
 [DATABASE](./docs/DATABASE.md) ·
-[MATCHING](./docs/MATCHING.md) ·
 [SECURITY](./docs/SECURITY.md) ·
 [LEGAL_CONSIDERATIONS](./docs/LEGAL_CONSIDERATIONS.md) ·
 [IMPLEMENTATION_PLAN](./docs/IMPLEMENTATION_PLAN.md)
@@ -63,14 +62,14 @@ npm run dev            # http://localhost:3000
 
 - FASE 1: project, tooling, design system, auth-fundament (registratie/inloggen, sessies, RBAC), Prisma-schema en publieke pagina's.
 - FASE 2: hervatbare multi-step ZZP-registratie met profielcompleetheid, profielpagina, beschikbaarheid, documenten (opslag-interface) en portfolio; catalogus van vakgebieden/specialisaties/certificaten via seed; ZZP-dashboard en app-shell.
-- FASE 3: bedrijfsregistratie/-profiel (met CompanyMember-teamaccounts), snelle 'opdracht plaatsen'-wizard, opdrachtenbeheer met statusworkflow en bedrijfsdashboard.
-- FASE 4: deterministische matching engine met harde filters en gewogen, uitlegbare scores (configureerbare gewichten via `MatchingSetting`); kandidaten per opdracht voor bedrijven en "Opdrachten voor jou" voor ZZP'ers; ingebouwde NL-gazetteer voor afstandsberekening.
-- FASE 5: reacties & uitnodigingen (Application) → kandidaat selecteren (Assignment, opdracht → vervuld); interne messaging per opdracht met ongelezen-indicators; in-app + e-mail notificaties met per-gebruiker voorkeuren.
-- FASE 6: reviews in beide richtingen na een afgeronde opdracht (kwaliteit, communicatie, betrouwbaarheid, afspraken), alleen bij een echte opdrachtrelatie en onveranderbaar na plaatsing; rating + reviews op het ZZP-profiel; reputatie voedt de betrouwbaarheid-subscore in de matching.
-- FASE 7: adminomgeving (`/admin`) met RBAC — dashboard, gebruikers-/bedrijfsbeheer, verificaties, review-/report-/klachtmoderatie, matching-instellingen, catalogusbeheer en audit log.
-- FASE 8: configureerbare fees (`PricingSetting`), automatische factuurgeneratie bij afronding van een opdracht, `PaymentProvider`-interface (Mollie/Stripe later), factuuroverzichten voor bedrijf en admin.
+- FASE 3: bedrijfsregistratie/-profiel (met CompanyMember-teamaccounts) en bedrijfsdashboard.
+- FASE 4: publieke etalage (`/vind-zzper`) met filters op vakgebied en plaats; ingebouwde NL-gazetteer voor plaatsnamen.
+- FASE 5: directe berichten tussen bedrijf en zzp'er (één gesprek per paar) met live polling en ongelezen-indicators; in-app + e-mail notificaties met per-gebruiker voorkeuren.
+- FASE 6: vervallen (reviews/reputatie zijn bewust geen onderdeel van het platform).
+- FASE 7: adminomgeving (`/admin`) met RBAC — dashboard, gebruikers-/bedrijfsbeheer, verificaties, report-/klacht-/contactafhandeling, catalogusbeheer en audit log.
+- FASE 8: eigen facturenmodule voor zzp'ers en bedrijven (opmaken, PDF, mailen, status) — geen platformfees of betalingen.
 - FASE 9: security headers, rate limiting, AVG-gegevensexport en account­verwijdering, cookiemelding, RLS op alle tabellen.
-- FASE 10: publieke, indexeerbare opdrachtpagina's (`/opdrachten` + `/opdrachten/[slug]`) met JobPosting structured data, metadata/OG en canonical; dynamische sitemap.
+- FASE 10: SEO (metadata/OG, canonicals, dynamische sitemap van de etalage) en juridische pagina's.
 
 **Alle 10 fasen zijn gebouwd.** De database draait op een apart **Supabase**-project — zie [DATABASE_SETUP](./docs/DATABASE_SETUP.md). Volgende stappen richting livegang: definitieve providers kiezen (e-mail, storage, Mollie), juridische teksten laten controleren en productie-omgeving configureren.
 

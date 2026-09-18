@@ -21,7 +21,6 @@ export type FactuurRegelInput = {
 };
 
 export type FactuurInput = {
-  assignmentId?: string | null;
   factuurnummer: string;
   factuurdatum: Date;
   vervaldatum?: Date | null;
@@ -60,13 +59,13 @@ function eigenaarWhere(userId: string): Prisma.ZzpInvoiceWhereInput {
 }
 
 type Eigenaar =
-  | { kind: "zzp"; zzpProfileId: string; uurtariefCents: number | null }
+  | { kind: "zzp"; zzpProfileId: string }
   | { kind: "company"; companyId: string };
 
 async function resolveEigenaar(userId: string): Promise<Eigenaar | null> {
   const zzp = await db.zZPProfile.findUnique({ where: { userId } });
   if (zzp) {
-    return { kind: "zzp", zzpProfileId: zzp.id, uurtariefCents: zzp.uurtariefCents };
+    return { kind: "zzp", zzpProfileId: zzp.id };
   }
   const lid = await db.companyMember.findFirst({ where: { userId } });
   if (lid) return { kind: "company", companyId: lid.companyId };
@@ -88,17 +87,10 @@ export type FactuurContext = {
     telefoon: string;
     website: string;
   };
-  assignments: {
-    id: string;
-    jobTitel: string;
-    tariefEuro: number | null;
-    bedrijf: string;
-    bedrijfKvk: string;
-  }[];
 };
 
 function voorstelNummer(jaar: number, aantalDitJaar: number): string {
-  return `ZPC-${jaar}-${String(aantalDitJaar + 1).padStart(4, "0")}`;
+  return `ZS-${jaar}-${String(aantalDitJaar + 1).padStart(4, "0")}`;
 }
 
 export async function getFactuurContext(
@@ -123,15 +115,6 @@ export async function getFactuurContext(
 
   if (eig.kind === "zzp") {
     const p = await db.zZPProfile.findUnique({ where: { userId } });
-    const assignments = await db.assignment.findMany({
-      where: { zzpProfileId: eig.zzpProfileId },
-      include: {
-        job: { select: { titel: true, gewenstUurtariefCents: true } },
-        company: { select: { naam: true, kvkNummer: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 50,
-    });
     const naam =
       p?.bedrijfsnaam?.trim() ||
       [p?.voornaam, p?.achternaam].filter(Boolean).join(" ").trim() ||
@@ -151,18 +134,6 @@ export async function getFactuurContext(
         telefoon: p?.telefoon ?? "",
         website: "",
       },
-      assignments: assignments.map((a) => ({
-        id: a.id,
-        jobTitel: a.job.titel,
-        tariefEuro:
-          a.job.gewenstUurtariefCents != null
-            ? a.job.gewenstUurtariefCents / 100
-            : eig.uurtariefCents != null
-              ? eig.uurtariefCents / 100
-              : null,
-        bedrijf: a.company.naam,
-        bedrijfKvk: a.company.kvkNummer ?? "",
-      })),
     };
   }
 
@@ -182,7 +153,6 @@ export async function getFactuurContext(
       telefoon: c?.telefoon ?? "",
       website: c?.website ?? "",
     },
-    assignments: [],
   };
 }
 
@@ -253,7 +223,6 @@ export async function createFactuur(
     data: {
       zzpProfileId: eig.kind === "zzp" ? eig.zzpProfileId : null,
       companyId: eig.kind === "company" ? eig.companyId : null,
-      assignmentId: eig.kind === "zzp" ? input.assignmentId || null : null,
       factuurnummer: input.factuurnummer.trim(),
       factuurdatum: input.factuurdatum,
       vervaldatum: input.vervaldatum ?? null,
@@ -324,7 +293,6 @@ export async function dupliceerFactuur(
     data: {
       zzpProfileId: bron.zzpProfileId,
       companyId: bron.companyId,
-      assignmentId: bron.assignmentId,
       factuurnummer: nummer,
       status: "CONCEPT",
       factuurdatum: new Date(),

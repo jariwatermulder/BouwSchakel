@@ -8,15 +8,12 @@ const navItems: AppNavItem[] = [
   { href: "/admin/gebruikers", label: "Gebruikers" },
   { href: "/admin/bedrijven", label: "Bedrijven" },
   { href: "/admin/verificaties", label: "Verificaties" },
-  { href: "/admin/reviews", label: "Reviews" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/klachten", label: "Klachten" },
   { href: "/admin/contact", label: "Contact" },
 ];
 
 const menuItems: AppNavItem[] = [
-  { href: "/admin/matching", label: "Matching" },
-  { href: "/admin/prijzen", label: "Prijzen" },
   { href: "/admin/catalogus", label: "Catalogus" },
   { href: "/admin/audit", label: "Audit" },
 ];

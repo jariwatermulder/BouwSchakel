@@ -28,7 +28,6 @@ const regelSchema = z.object({
 });
 
 const inputSchema = z.object({
-  assignmentId: z.string().optional(),
   factuurnummer: z.string().min(1).max(40),
   factuurdatum: z.string().min(1),
   vervaldatum: z.string().optional(),
@@ -73,7 +72,6 @@ export async function createFactuurAction(
   let parsed: z.infer<typeof inputSchema>;
   try {
     parsed = inputSchema.parse({
-      assignmentId: s(formData, "assignmentId"),
       factuurnummer: formData.get("factuurnummer"),
       factuurdatum: formData.get("factuurdatum"),
       vervaldatum: s(formData, "vervaldatum"),
@@ -113,7 +111,6 @@ export async function createFactuurAction(
   let id: string;
   try {
     id = await createFactuur(user.id, {
-      assignmentId: parsed.assignmentId ?? null,
       factuurnummer: parsed.factuurnummer,
       factuurdatum,
       vervaldatum,

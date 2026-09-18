@@ -49,7 +49,7 @@ export async function listCompanies() {
   return db.company.findMany({
     orderBy: { createdAt: "desc" },
     take: 100,
-    include: { _count: { select: { jobs: true, members: true } } },
+    include: { _count: { select: { members: true, conversations: true } } },
   });
 }
 
@@ -105,19 +105,6 @@ export async function setDocumentStatus(
   status: VerificatieStatus,
 ) {
   await db.document.update({ where: { id: documentId }, data: { status } });
-}
-
-// ── Reviews (moderatie) ──────────────────────────────────────────────────────
-export async function listReviews() {
-  return db.review.findMany({
-    orderBy: { gepubliceerdOp: "desc" },
-    take: 100,
-    include: { assignment: { include: { job: true, company: true } } },
-  });
-}
-
-export async function deleteReview(reviewId: string) {
-  await db.review.delete({ where: { id: reviewId } });
 }
 
 // ── Reports & klachten ───────────────────────────────────────────────────────

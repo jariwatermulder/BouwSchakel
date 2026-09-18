@@ -115,7 +115,7 @@ export function CompanyForm({
           : next
             ? "Opslaan en verdergaan"
             : onboarding
-              ? "Opslaan en opdracht plaatsen"
+              ? "Opslaan en zzp'ers zoeken"
               : "Opslaan"}
       </Button>
     </form>

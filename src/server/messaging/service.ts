@@ -47,36 +47,10 @@ async function deelname(
   return null;
 }
 
-/** Opent (of maakt) het gesprek tussen bedrijf en ZZP'er rond een opdracht. */
-export async function startOrGetConversation(
-  userId: string,
-  jobId: string,
-  zzpProfileId: string,
-): Promise<Conversation> {
-  const job = await db.job.findUnique({
-    where: { id: jobId },
-    select: { companyId: true },
-  });
-  if (!job) throw new GeenToegangError();
-
-  const d = await deelname(userId, {
-    companyId: job.companyId,
-    zzpProfileId,
-  });
-  if (!d) throw new GeenToegangError();
-
-  const bestaand = await db.conversation.findFirst({
-    where: { jobId, companyId: job.companyId, zzpProfileId },
-  });
-  if (bestaand) return bestaand;
-  return db.conversation.create({
-    data: { jobId, companyId: job.companyId, zzpProfileId },
-  });
-}
-
 /**
- * Start (of hervat) een direct gesprek tussen een bedrijf en een zzp'er, zónder
- * opdracht. Alleen bedrijfsleden kunnen dit initiëren.
+ * Start (of hervat) het directe gesprek tussen een bedrijf en een zzp'er.
+ * Er is per bedrijf/zzp'er-paar hooguit één gesprek. Alleen bedrijfsleden
+ * kunnen een gesprek starten; alleen zichtbare profielen zijn benaderbaar.
  */
 export async function startDirectConversation(
   userId: string,
@@ -88,19 +62,18 @@ export async function startDirectConversation(
   });
   if (!member) throw new GeenToegangError();
 
-  const zzp = await db.zZPProfile.findUnique({
-    where: { id: zzpProfileId },
+  const zzp = await db.zZPProfile.findFirst({
+    where: { id: zzpProfileId, zichtbaar: true, deletedAt: null },
     select: { id: true },
   });
   if (!zzp) throw new GeenToegangError();
 
-  const bestaand = await db.conversation.findFirst({
-    where: { companyId: member.companyId, zzpProfileId, jobId: null },
-  });
-  if (bestaand) return bestaand;
-
-  return db.conversation.create({
-    data: { companyId: member.companyId, zzpProfileId },
+  return db.conversation.upsert({
+    where: {
+      companyId_zzpProfileId: { companyId: member.companyId, zzpProfileId },
+    },
+    update: {},
+    create: { companyId: member.companyId, zzpProfileId },
   });
 }
 
@@ -111,7 +84,6 @@ export async function sendMessage(
 ): Promise<Message | null> {
   const conversation = await db.conversation.findUnique({
     where: { id: conversationId },
-    include: { job: true },
   });
   if (!conversation) throw new GeenToegangError();
   const d = await deelname(userId, conversation);
@@ -142,9 +114,7 @@ export async function sendMessage(
           userId: m.userId,
           type: "NIEUW_BERICHT",
           titel: "Nieuw bericht",
-          tekst: conversation.job?.titel
-            ? `Nieuw bericht over "${conversation.job.titel}".`
-            : "Je hebt een nieuw bericht.",
+          tekst: "Je hebt een nieuw bericht van een zzp'er.",
           link: `/bedrijven/berichten/${conversationId}`,
         }),
       ),
@@ -154,9 +124,7 @@ export async function sendMessage(
       userId: d.zzpUserId,
       type: "NIEUW_BERICHT",
       titel: "Nieuw bericht",
-      tekst: conversation.job?.titel
-        ? `Nieuw bericht over "${conversation.job.titel}".`
-        : "Je hebt een nieuw bericht.",
+      tekst: "Je hebt een nieuw bericht van een opdrachtgever.",
       link: `/zzpers/berichten/${conversationId}`,
     });
   }
@@ -199,7 +167,6 @@ export async function getMessagesSince(
 }
 
 const conversationInclude = {
-  job: { include: { skill: true } },
   company: true,
   zzpProfile: true,
 } satisfies Prisma.ConversationInclude;
@@ -238,7 +205,6 @@ export async function listConversationsForUser(
 
 export type ConversationWithMessages = Prisma.ConversationGetPayload<{
   include: {
-    job: { include: { skill: true } };
     company: true;
     zzpProfile: true;
     messages: true;
@@ -267,7 +233,6 @@ export async function getConversation(
   const conversation = await db.conversation.findUnique({
     where: { id: conversationId },
     include: {
-      job: { include: { skill: true } },
       company: true,
       zzpProfile: true,
       messages: { orderBy: { createdAt: "asc" } },

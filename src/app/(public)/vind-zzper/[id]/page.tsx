@@ -19,16 +19,12 @@ export async function generateMetadata({
   const { id } = await params;
   const data = await getPublicZzper(id);
   if (!data) return { title: "Profiel niet gevonden" };
-  const naam = displayNaam(data.profile);
+  const naam = displayNaam(data);
   return {
     title: `${naam} — zzp'er`,
-    description: data.profile.over?.slice(0, 155) ?? `Bekijk het profiel van ${naam} op ZZP Schakel.`,
+    description: data.over?.slice(0, 155) ?? `Bekijk het profiel van ${naam} op ZZP Schakel.`,
     robots: { index: false },
   };
-}
-
-function datum(d: Date): string {
-  return new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d);
 }
 
 export default async function ZzperProfielPage({
@@ -40,7 +36,7 @@ export default async function ZzperProfielPage({
   const data = await getPublicZzper(id);
   if (!data) notFound();
 
-  const { profile: p, reviews, gemiddelde, aantalReviews } = data;
+  const p = data;
   const naam = displayNaam(p);
   const geverifieerd = p.verificatieStatus === "GEVERIFIEERD";
 
@@ -71,12 +67,6 @@ export default async function ZzperProfielPage({
             {geverifieerd ? (
               <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
                 <Icon name="shield" className="h-3.5 w-3.5" /> Geverifieerd
-              </span>
-            ) : null}
-            {gemiddelde != null ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
-                <Icon name="star" className="h-3.5 w-3.5" />
-                {gemiddelde.toFixed(1)} / 5 ({aantalReviews})
               </span>
             ) : null}
             {p.eigenBus ? (
@@ -140,41 +130,6 @@ export default async function ZzperProfielPage({
             </div>
           ) : null}
 
-          {/* Beoordelingen — alleen tonen als ze er zijn */}
-          {reviews.length > 0 ? (
-            <div className="mt-8">
-              <h2 className="text-sm font-semibold">
-                Beoordelingen ({aantalReviews})
-              </h2>
-              <ul className="mt-3 space-y-3">
-                {reviews.map((r) => {
-                  const gem =
-                    (r.scoreKwaliteit +
-                      r.scoreCommunicatie +
-                      r.scoreBetrouwbaarheid +
-                      r.scoreAfspraken) /
-                    4;
-                  return (
-                    <li key={r.id} className="border-border bg-surface rounded-xl border p-4">
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="font-semibold text-amber-700">
-                          {gem.toFixed(1)} / 5
-                        </span>
-                        <span className="text-foreground-muted text-xs">
-                          {datum(r.gepubliceerdOp)}
-                        </span>
-                      </div>
-                      {r.toelichting ? (
-                        <p className="text-foreground-muted mt-1 text-sm">
-                          {r.toelichting}
-                        </p>
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : null}
         </div>
 
         {/* Contact-zijbalk */}

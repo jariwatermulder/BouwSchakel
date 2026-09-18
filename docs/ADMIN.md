@@ -7,8 +7,8 @@ control. Adminrollen (oplopend in bevoegdheid): `SUPPORT` → `MODERATOR` →
 | Onderdeel                                                         | Minimale rol |
 | ----------------------------------------------------------------- | ------------ |
 | Overzichten bekijken (dashboard, lijsten)                         | SUPPORT      |
-| Verificaties, reviews, reports, klachten afhandelen               | MODERATOR    |
-| Gebruikers blokkeren, bedrijven, catalogus, matching-instellingen | ADMIN        |
+| Verificaties, reports, klachten afhandelen                        | MODERATOR    |
+| Gebruikers blokkeren, bedrijven, catalogus                        | ADMIN        |
 | Adminrollen toekennen/wijzigen                                    | SUPER_ADMIN  |
 
 Alle beheeracties worden vastgelegd in het **audit log** (`/admin/audit`).
@@ -38,6 +38,3 @@ Log daarna opnieuw in; je wordt naar `/admin` geleid.
 
 ## Matching-instellingen
 
-Onder `/admin/matching` pas je de gewichten per dimensie, de minimale
-matchscore en de maximale afstand aan — zonder codewijziging. Wijzigingen
-gelden direct voor nieuwe matchberekeningen.

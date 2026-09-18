@@ -44,15 +44,11 @@ export function ConversationView({
   conversationId,
   currentUserId,
   tegenpartij,
-  jobTitel,
-  skillNaam,
   initialMessages,
 }: {
   conversationId: string;
   currentUserId: string;
   tegenpartij: string;
-  jobTitel?: string | null;
-  skillNaam?: string | null;
   initialMessages: ChatBericht[];
 }) {
   const [berichten, setBerichten] = useState<ChatBericht[]>(initialMessages);
@@ -131,7 +127,7 @@ export function ConversationView({
         <div className="min-w-0">
           <p className="truncate font-semibold">{tegenpartij}</p>
           <p className="text-navy-200 truncate text-xs">
-            {jobTitel ? `${jobTitel}${skillNaam ? ` · ${skillNaam}` : ""}` : "Direct contact"}
+            Rechtstreeks contact via ZZP Schakel
           </p>
         </div>
       </div>
