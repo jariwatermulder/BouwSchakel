@@ -375,6 +375,20 @@ export function StepFields({
               className="border-border bg-surface focus-visible:border-navy-500 w-full rounded-lg border p-3 text-sm"
             />
           </div>
+          <div>
+            <Label htmlFor="afbeelding">Foto van het werk (optioneel)</Label>
+            <input
+              id="afbeelding"
+              name="afbeelding"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="border-border bg-surface file:bg-brand-50 file:text-brand-700 block w-full rounded-lg border p-2 text-sm file:mr-3 file:rounded-md file:border-0 file:px-3 file:py-1.5 file:font-medium"
+            />
+            <p className="text-foreground-muted mt-1 text-xs">
+              JPG, PNG of WebP, max. 8 MB. De foto wordt verkleind en komt op je
+              publieke profiel.
+            </p>
+          </div>
         </div>
       );
   }

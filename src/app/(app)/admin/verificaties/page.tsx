@@ -5,6 +5,7 @@ import { VerifForm } from "@/components/admin/verif-form";
 import { requireCurrentAdmin } from "@/lib/auth/current-user";
 import { listDocuments, listZzpVerificaties } from "@/server/admin/service";
 import { verifieerDocument, verifieerZzp } from "../actions";
+import { getStorageProvider } from "@/lib/storage";
 
 export const metadata: Metadata = {
   title: "Verificaties",
@@ -13,10 +14,17 @@ export const metadata: Metadata = {
 
 export default async function AdminVerificatiesPage() {
   await requireCurrentAdmin("SUPPORT");
-  const [profielen, documenten] = await Promise.all([
+  const [profielen, documentenRuw] = await Promise.all([
     listZzpVerificaties(),
     listDocuments(),
   ]);
+  const storage = await getStorageProvider();
+  const documenten = await Promise.all(
+    documentenRuw.map(async (d) => ({
+      ...d,
+      url: await storage.signedUrl(d.opslagKey, 10 * 60),
+    })),
+  );
 
   return (
     <Container className="py-8 md:py-12">
@@ -58,10 +66,7 @@ export default async function AdminVerificatiesPage() {
       {documenten.length === 0 ? (
         <Card className="mt-3">
           <CardTitle>Geen documenten</CardTitle>
-          <CardDescription>
-            Er zijn nog geen documenten geüpload (opslag wordt later
-            geactiveerd).
-          </CardDescription>
+          <CardDescription>Er zijn nog geen documenten geüpload.</CardDescription>
         </Card>
       ) : (
         <ul className="mt-3 space-y-2">
@@ -73,7 +78,10 @@ export default async function AdminVerificatiesPage() {
                     {d.type} — {d.bestandsnaam}
                   </p>
                   <p className="text-foreground-muted text-sm">
-                    {d.owner.email}
+                    {d.owner.email} ·{" "}
+                    <a href={d.url} className="text-brand-600 hover:underline" target="_blank" rel="noreferrer">
+                      Bekijk document
+                    </a>
                   </p>
                 </div>
                 <VerifForm

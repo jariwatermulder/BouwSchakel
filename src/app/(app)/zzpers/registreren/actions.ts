@@ -22,6 +22,11 @@ import {
   updateProfileFields,
 } from "@/server/zzp/profile";
 import { isStapSlug, volgendeStap, type StapSlug } from "./steps";
+import {
+  leesUploadAfbeelding,
+  OngeldigeAfbeeldingError,
+  verwerkPortfolioFoto,
+} from "@/lib/images";
 
 function checkbox(formData: FormData, name: string): boolean {
   return formData.get(name) === "on";
@@ -150,12 +155,21 @@ export async function saveStap(formData: FormData): Promise<void> {
       const titel = formData.get("titel");
       if (typeof titel === "string" && titel.trim()) {
         const omschrijving = formData.get("omschrijving");
+        let afbeelding: Buffer | null = null;
+        try {
+          const ruw = await leesUploadAfbeelding(formData.get("afbeelding"));
+          if (ruw) afbeelding = await verwerkPortfolioFoto(ruw);
+        } catch (err) {
+          if (err instanceof OngeldigeAfbeeldingError) terug("foto");
+          throw err;
+        }
         await addPortfolioItem(user.id, {
           titel: titel.trim(),
           omschrijving:
             typeof omschrijving === "string" && omschrijving.trim()
               ? omschrijving.trim()
               : undefined,
+          afbeelding,
         });
       }
       break;

@@ -45,6 +45,7 @@ export async function getPublicZzper(id: string) {
     include: {
       skills: { include: { skill: true } },
       certifications: { include: { certification: true } },
+      portfolio: { orderBy: { volgorde: "asc" } },
     },
   });
   return profile;

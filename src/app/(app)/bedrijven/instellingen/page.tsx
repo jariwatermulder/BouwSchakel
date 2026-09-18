@@ -4,6 +4,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { AccountDangerZone } from "@/components/account-danger-zone";
+import { EmailVerificatieNotice } from "@/components/email-verificatie-notice";
 
 export const metadata: Metadata = {
   title: "Instellingen",
@@ -32,6 +33,8 @@ export default async function BedrijfInstellingenPage() {
           </div>
         </div>
       </Card>
+
+      <EmailVerificatieNotice bevestigd={Boolean(user.emailVerifiedAt)} />
 
       <Card className="mt-6 flex items-center justify-between gap-4">
         <div>

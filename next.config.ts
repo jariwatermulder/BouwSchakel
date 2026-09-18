@@ -33,6 +33,10 @@ const opdrachtenRedirects = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Foto- en documentupload via server actions (max. 10 MB per bestand).
+  experimental: {
+    serverActions: { bodySizeLimit: "12mb" },
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -139,7 +139,9 @@ export default async function RegistrerenPage({
             role="alert"
             className="mt-4 rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700"
           >
-            Controleer de ingevulde velden en probeer het opnieuw.
+            {fout === "foto"
+              ? "De foto kon niet worden gebruikt: kies een JPG, PNG of WebP van maximaal 8 MB."
+              : "Controleer de ingevulde velden en probeer het opnieuw."}
           </p>
         ) : null}
 

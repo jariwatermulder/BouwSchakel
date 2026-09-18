@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
+import { Avatar } from "@/components/avatar";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
 import {
@@ -198,9 +199,7 @@ export default async function VindZzperPage({
                     className="group border-border bg-surface shadow-soft hover:border-navy-300 flex h-full flex-col rounded-[var(--radius-card)] border p-5 transition"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="bg-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
-                        {naam.slice(0, 2).toUpperCase()}
-                      </span>
+                      <Avatar fotoKey={z.fotoKey} naam={naam} size={44} />
                       <div className="min-w-0">
                         <p className="truncate font-semibold">{naam}</p>
                         <p className="text-foreground-muted truncate text-xs">

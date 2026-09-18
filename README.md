@@ -77,3 +77,29 @@ npm run dev            # http://localhost:3000
 
 - De database-host wordt later definitief gekozen (Prisma blijft de ORM). Zonder `DATABASE_URL` draaien alleen de statische pagina's; auth-flows vereisen een database.
 - Juridische teksten zijn concept en moeten door een Nederlandse jurist worden gecontroleerd.
+
+## End-to-end testronde
+
+`scripts/e2e-testronde.mjs` en `scripts/e2e-uploads.mjs` doorlopen de
+belangrijkste flows in een echte browser (Playwright) tegen een lokale
+dev-server en een lokale testdatabase: registratie, e-mailverificatie,
+profiel, etalage, contact/berichten, melden, wachtwoordherstel, beheer,
+contactformulier, AVG-export/verwijderen, foto- en documentupload en mobiel.
+
+```bash
+# 1. lokale Postgres + testdatabase; .env → DATABASE_URL/DIRECT_URL daarnaartoe
+npx prisma migrate deploy && ADMIN_EMAIL=admin@test.local ADMIN_PASSWORD=AdminTest1234! npm run db:seed
+# 2. dev-server met logbestand (voor de "mail niet verzonden"-controles)
+npm run dev > /tmp/zzp-schakel-dev.log 2>&1 &
+# 3. testrondes (weigeren tegen Supabase/productie te draaien)
+E2E_DATABASE_URL=postgresql://postgres:…@127.0.0.1:5432/zzpschakel_test E2E_LOG=/tmp/zzp-schakel-dev.log node scripts/e2e-testronde.mjs
+E2E_DATABASE_URL=postgresql://postgres:…@127.0.0.1:5432/zzpschakel_test node scripts/e2e-uploads.mjs
+```
+
+## Bestandsopslag
+
+Profielfoto's, portfoliofoto's en documenten staan in de database (tabel
+`StoredFile`, zie `src/lib/storage`). Foto's worden bij upload verkleind naar
+WebP en van metadata ontdaan; publieke bestanden staan onder `public/` en zijn
+lang cachebaar via `/api/bestanden/…`, documenten alleen via kort geldige
+gesigneerde URL's. Er is geen extra opslagprovider of sleutel nodig.

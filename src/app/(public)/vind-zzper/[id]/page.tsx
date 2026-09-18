@@ -3,11 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Card, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import { Icon } from "@/components/home/pictos";
+import { Avatar } from "@/components/avatar";
+import { publiekeUrl } from "@/lib/storage/url";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
 import { displayNaam, getPublicZzper } from "@/server/zzpers/directory";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { neemContactOpAction } from "../actions";
+import { MeldProfielForm } from "../meld-profiel-form";
 
 export const dynamic = "force-dynamic";
 
@@ -29,11 +34,13 @@ export async function generateMetadata({
 
 export default async function ZzperProfielPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ gemeld?: string }>;
 }) {
-  const { id } = await params;
-  const data = await getPublicZzper(id);
+  const [{ id }, { gemeld }] = await Promise.all([params, searchParams]);
+  const [data, user] = await Promise.all([getPublicZzper(id), getCurrentUser()]);
   if (!data) notFound();
 
   const p = data;
@@ -50,9 +57,7 @@ export default async function ZzperProfielPage({
         {/* Hoofdkolom */}
         <div>
           <div className="flex items-center gap-4">
-            <span className="bg-ink flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white">
-              {naam.slice(0, 2).toUpperCase()}
-            </span>
+            <Avatar fotoKey={p.fotoKey} naam={naam} size={72} className="ring-brand-50 ring-4" />
             <div>
               <h1 className="text-2xl font-bold md:text-3xl">{naam}</h1>
               <p className="text-foreground-muted mt-0.5 text-sm">
@@ -112,6 +117,35 @@ export default async function ZzperProfielPage({
             </div>
           ) : null}
 
+          {/* Werk / portfolio */}
+          {p.portfolio.length > 0 ? (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold">Werk van {naam}</h2>
+              <ul className="mt-2 grid gap-3 sm:grid-cols-2">
+                {p.portfolio.map((item) => (
+                  <li key={item.id} className="border-border bg-surface overflow-hidden rounded-xl border">
+                    {item.afbeeldingKey ? (
+                      <Image
+                        src={publiekeUrl(item.afbeeldingKey)}
+                        alt={item.titel}
+                        width={800}
+                        height={600}
+                        unoptimized
+                        className="aspect-[4/3] w-full object-cover"
+                      />
+                    ) : null}
+                    <div className="p-3">
+                      <p className="text-sm font-semibold">{item.titel}</p>
+                      {item.omschrijving ? (
+                        <p className="text-foreground-muted mt-0.5 text-xs">{item.omschrijving}</p>
+                      ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           {/* Certificaten */}
           {p.certifications.length > 0 ? (
             <div className="mt-6">
@@ -155,6 +189,7 @@ export default async function ZzperProfielPage({
               rechtstreeks. Afspraken maken jullie samen.
             </p>
           </Card>
+          <MeldProfielForm zzpProfileId={p.id} ingelogd={Boolean(user)} gemeld={gemeld} />
         </aside>
       </div>
     </Container>

@@ -53,5 +53,25 @@ export async function exportUserData(
  * berichten, facturen, notificaties). Bedrijven met andere leden blijven bestaan.
  */
 export async function deleteAccount(userId: string): Promise<void> {
-  await db.user.delete({ where: { id: userId } });
+  // Bedrijven waarvan deze gebruiker het enige lid is, gaan mee (inclusief
+  // gesprekken, berichten en eigen facturen). Bedrijven met andere leden
+  // blijven bestaan; alleen het lidmaatschap vervalt.
+  const lidVan = await db.companyMember.findMany({
+    where: { userId },
+    select: { companyId: true },
+  });
+  const alleenLid: string[] = [];
+  for (const { companyId } of lidVan) {
+    const anderen = await db.companyMember.count({
+      where: { companyId, userId: { not: userId } },
+    });
+    if (anderen === 0) alleenLid.push(companyId);
+  }
+
+  await db.$transaction([
+    ...(alleenLid.length > 0
+      ? [db.company.deleteMany({ where: { id: { in: alleenLid } } })]
+      : []),
+    db.user.delete({ where: { id: userId } }),
+  ]);
 }

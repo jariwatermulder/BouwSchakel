@@ -1,4 +1,6 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
+import { getStorageProvider } from "@/lib/storage";
 import type { BeschikbaarheidType, Prisma, ZZPProfile } from "@prisma/client";
 import { db } from "@/lib/db";
 import {
@@ -189,19 +191,36 @@ export async function removeAvailability(
   await recomputeCompleteness(profile.id);
 }
 
+export const MAX_PORTFOLIO_ITEMS = 12;
+
 export async function addPortfolioItem(
   userId: string,
-  input: { titel: string; omschrijving?: string },
+  input: { titel: string; omschrijving?: string; afbeelding?: Buffer | null },
 ): Promise<void> {
   const profile = await getOrCreateProfile(userId);
   const count = await db.portfolioItem.count({
     where: { zzpProfileId: profile.id },
   });
+  if (count >= MAX_PORTFOLIO_ITEMS) return;
+
+  let afbeeldingKey: string | null = null;
+  if (input.afbeelding) {
+    afbeeldingKey = `public/portfolio/${profile.id}/${randomUUID()}.webp`;
+    const storage = await getStorageProvider();
+    await storage.put({
+      key: afbeeldingKey,
+      body: input.afbeelding,
+      contentType: "image/webp",
+      ownerUserId: userId,
+    });
+  }
+
   await db.portfolioItem.create({
     data: {
       zzpProfileId: profile.id,
       titel: input.titel,
       omschrijving: input.omschrijving ?? null,
+      afbeeldingKey,
       volgorde: count,
     },
   });
@@ -212,7 +231,36 @@ export async function removePortfolioItem(
   itemId: string,
 ): Promise<void> {
   const profile = await getOrCreateProfile(userId);
-  await db.portfolioItem.deleteMany({
+  const item = await db.portfolioItem.findFirst({
     where: { id: itemId, zzpProfileId: profile.id },
+    select: { id: true, afbeeldingKey: true },
   });
+  if (!item) return;
+  await db.portfolioItem.delete({ where: { id: item.id } });
+  if (item.afbeeldingKey) {
+    const storage = await getStorageProvider();
+    await storage.delete(item.afbeeldingKey);
+  }
+}
+
+/** Slaat een (al verwerkte) profielfoto op en ruimt de vorige op. */
+export async function setProfielFoto(
+  userId: string,
+  webp: Buffer,
+): Promise<string> {
+  const profile = await getOrCreateProfile(userId);
+  const key = `public/profiel/${profile.id}/${randomUUID()}.webp`;
+  const storage = await getStorageProvider();
+  await storage.put({ key, body: webp, contentType: "image/webp", ownerUserId: userId });
+  await db.zZPProfile.update({ where: { id: profile.id }, data: { fotoKey: key } });
+  if (profile.fotoKey) await storage.delete(profile.fotoKey);
+  return key;
+}
+
+export async function removeProfielFoto(userId: string): Promise<void> {
+  const profile = await getOrCreateProfile(userId);
+  if (!profile.fotoKey) return;
+  await db.zZPProfile.update({ where: { id: profile.id }, data: { fotoKey: null } });
+  const storage = await getStorageProvider();
+  await storage.delete(profile.fotoKey);
 }

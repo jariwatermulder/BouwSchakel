@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { AccountDangerZone } from "@/components/account-danger-zone";
+import { EmailVerificatieNotice } from "@/components/email-verificatie-notice";
 
 export const metadata: Metadata = {
   title: "Instellingen",
@@ -31,6 +32,8 @@ export default async function InstellingenPage() {
           </div>
         </div>
       </Card>
+
+      <EmailVerificatieNotice bevestigd={Boolean(user.emailVerifiedAt)} />
 
       <AccountDangerZone />
 

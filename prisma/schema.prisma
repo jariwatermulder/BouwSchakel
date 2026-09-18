@@ -59,6 +59,7 @@ model User {
   tokens                 VerificationToken[]
   zzpProfile             ZZPProfile?
   documents              Document[]
+  bestanden              StoredFile[]
   companyMemberships     CompanyMember[]
   notifications          Notification[]
   notificationPreference NotificationPreference?
@@ -150,6 +151,8 @@ model ZZPProfile {
   over           String?
   jarenErvaring  Int?
   uurtariefCents Int?
+  // Profielfoto (sleutel in de bestandsopslag; publiek, vierkant, WebP).
+  fotoKey        String?
 
   // Werkgebied (geocoding volgt later; nu plaats + straal)
   werkgebiedPlaats String?
@@ -272,6 +275,24 @@ model Document {
   grootte      Int
   status       VerificatieStatus @default(NIET_GEVERIFIEERD)
   createdAt    DateTime          @default(now())
+
+  @@index([ownerUserId])
+}
+
+// Bestandsopslag in de database (profiel- en portfoliofoto's, documenten).
+// Publieke bestanden (key begint met "public/") worden zonder handtekening
+// uitgeserveerd via /api/bestanden; privébestanden alleen via een kort geldige
+// gesigneerde URL. Bestanden gaan mee weg met de eigenaar (AVG).
+model StoredFile {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  mime        String
+  grootte     Int
+  data        Bytes
+  publiek     Boolean  @default(false)
+  ownerUserId String?
+  owner       User?    @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
 
   @@index([ownerUserId])
 }

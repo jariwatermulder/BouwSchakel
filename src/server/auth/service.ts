@@ -69,6 +69,58 @@ async function createEmailVerification(user: User): Promise<void> {
   }
 }
 
+export class OngeldigeVerificatieLinkError extends Error {
+  constructor() {
+    super("Deze bevestigingslink is ongeldig of verlopen.");
+    this.name = "OngeldigeVerificatieLinkError";
+  }
+}
+
+/**
+ * Bevestigt een e-mailadres via het token uit de verificatiemail. Een gebruikt
+ * of verlopen token geeft een fout; een al bevestigd adres blijft bevestigd.
+ */
+export async function verifyEmail(token: string): Promise<User> {
+  const record = await db.verificationToken.findUnique({
+    where: { tokenHash: hashToken(token) },
+    include: { user: true },
+  });
+  if (
+    !record ||
+    record.type !== "EMAIL_VERIFICATIE" ||
+    record.usedAt ||
+    record.expiresAt < new Date() ||
+    record.user.status !== "ACTIEF"
+  ) {
+    throw new OngeldigeVerificatieLinkError();
+  }
+
+  const [user] = await db.$transaction([
+    db.user.update({
+      where: { id: record.userId },
+      data: { emailVerifiedAt: record.user.emailVerifiedAt ?? new Date() },
+    }),
+    db.verificationToken.update({
+      where: { id: record.id },
+      data: { usedAt: new Date() },
+    }),
+  ]);
+  return user;
+}
+
+/**
+ * Stuurt (opnieuw) een verificatiemail voor een nog niet bevestigd adres.
+ * Oude, ongebruikte tokens worden ongeldig gemaakt.
+ */
+export async function resendEmailVerification(userId: string): Promise<void> {
+  const user = await db.user.findUnique({ where: { id: userId } });
+  if (!user || user.emailVerifiedAt || user.status !== "ACTIEF") return;
+  await db.verificationToken.deleteMany({
+    where: { userId, type: "EMAIL_VERIFICATIE", usedAt: null },
+  });
+  await createEmailVerification(user);
+}
+
 const WACHTWOORD_RESET_TTL_MS = 1000 * 60 * 60; // 1 uur
 
 /**
