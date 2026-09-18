@@ -80,12 +80,16 @@ export default async function VindZzperPage({
         </h1>
         <p className="text-foreground-muted mt-1">
           Bekijk vakmensen en neem rechtstreeks contact op. Zoeken kan zonder
-          account.
+          account; om contact op te nemen maak je een gratis account aan.
         </p>
         <div className="text-foreground-muted mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
           <span className="inline-flex items-center gap-1.5">
             <span className="text-brand-600" aria-hidden>✓</span>
             Zoeken zonder account
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-brand-600" aria-hidden>✓</span>
+            Account nodig om contact op te nemen
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="text-brand-600" aria-hidden>✓</span>

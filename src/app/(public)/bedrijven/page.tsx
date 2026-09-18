@@ -5,6 +5,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bedrijven" },
   title: "Voor opdrachtgevers",
   description:
     "Zoek op vakgebied en regio, bekijk profielen van vakmensen en neem rechtstreeks contact op. Geen opdracht plaatsen nodig.",

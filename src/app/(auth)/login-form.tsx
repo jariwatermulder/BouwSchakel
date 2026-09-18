@@ -35,7 +35,15 @@ export function LoginForm({ next }: { next?: string | null }) {
           />
         </div>
         <div>
-          <Label htmlFor="password">Wachtwoord</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Wachtwoord</Label>
+            <Link
+              href="/wachtwoord-vergeten"
+              className="text-navy-700 text-xs font-medium hover:underline"
+            >
+              Wachtwoord vergeten?
+            </Link>
+          </div>
           <Input
             id="password"
             name="password"

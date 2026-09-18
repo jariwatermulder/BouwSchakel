@@ -1,23 +1,30 @@
 import type { MetadataRoute } from "next";
-
-const appUrl = process.env.APP_URL ?? "http://localhost:3000";
+import { resolveAppUrl } from "@/lib/app-url";
 
 export default function robots(): MetadataRoute.Robots {
+  const appUrl = resolveAppUrl();
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Privépagina's en interne omgevingen niet indexeren. Zie docs/ARCHITECTURE.md §9.
+      // Privépagina's, accountflows en interne omgevingen niet indexeren.
       disallow: [
         "/inloggen",
         "/registreren",
         "/verifieer",
+        "/wachtwoord-vergeten",
+        "/wachtwoord-herstellen",
         "/zzpers/dashboard",
+        "/zzpers/profiel",
+        "/zzpers/registreren",
         "/bedrijven/dashboard",
+        "/bedrijven/registreren",
         "/admin",
         "/api",
+        "/opdrachten",
       ],
     },
     sitemap: `${appUrl}/sitemap.xml`,
+    host: appUrl,
   };
 }

@@ -5,6 +5,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/hoe-het-werkt" },
   title: "Hoe het werkt",
   description:
     "Zo werkt ZZP Schakel voor bedrijven en zelfstandige zzp’ers.",

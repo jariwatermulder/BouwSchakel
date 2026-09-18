@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 import { Icon } from "@/components/home/pictos";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
 import { VoorOpdrachtgevers, VoorZzpers } from "@/components/home/voor-wie";
@@ -14,7 +19,7 @@ const faqs = [
   {
     vraag: "Moet ik een account maken om te zoeken?",
     antwoord:
-      "Nee. Je kunt zonder account vakmensen zoeken en profielen bekijken. Een account is alleen nodig als je zelf een profiel wilt aanmaken.",
+      "Nee. Zoeken en profielen bekijken kan zonder account. Een account is alleen nodig om contact op te nemen met een zzp’er of om zelf een profiel aan te maken — zo weten beide partijen met wie ze praten.",
   },
   {
     vraag: "Regelen jullie contracten, uren of betalingen?",
@@ -78,7 +83,7 @@ export default function HomePage() {
 
               <ul className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2">
                 {[
-                  { icon: "check" as const, tekst: "Geen account nodig" },
+                  { icon: "check" as const, tekst: "Zoeken zonder account" },
                   { icon: "users" as const, tekst: "Rechtstreeks contact" },
                   { icon: "pin" as const, tekst: "Lokale vakmensen" },
                 ].map((v) => (

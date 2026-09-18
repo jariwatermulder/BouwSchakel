@@ -1,44 +1,45 @@
 import type { MetadataRoute } from "next";
-import { listPublicJobSlugs } from "@/server/jobs/public";
+import { resolveAppUrl } from "@/lib/app-url";
+import { listPublicZzpers } from "@/server/zzpers/directory";
 
-const appUrl = process.env.APP_URL ?? "http://localhost:3000";
-
-// Statische, publieke pagina's.
-const routes = [
-  "",
-  "/hoe-het-werkt",
-  "/tarieven",
-  "/over-ons",
-  "/contact",
-  "/faq",
-  "/zzpers",
-  "/bedrijven",
-  "/opdrachten",
+// Statische, publieke pagina's. Juridische en account-pagina's staan op
+// noindex en horen niet in de sitemap; opdrachtpagina's bestaan niet meer.
+const routes: { pad: string; prio: number }[] = [
+  { pad: "", prio: 1 },
+  { pad: "/vind-zzper", prio: 0.9 },
+  { pad: "/zzpers", prio: 0.8 },
+  { pad: "/bedrijven", prio: 0.8 },
+  { pad: "/hoe-het-werkt", prio: 0.7 },
+  { pad: "/tarieven", prio: 0.6 },
+  { pad: "/faq", prio: 0.6 },
+  { pad: "/over-ons", prio: 0.5 },
+  { pad: "/contact", prio: 0.5 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const appUrl = resolveAppUrl();
   const now = new Date();
-  const statisch: MetadataRoute.Sitemap = routes.map((route) => ({
-    url: `${appUrl}${route}`,
+  const statisch: MetadataRoute.Sitemap = routes.map(({ pad, prio }) => ({
+    url: `${appUrl}${pad}`,
     lastModified: now,
     changeFrequency: "weekly",
-    priority: route === "" ? 1 : 0.7,
+    priority: prio,
   }));
 
-  // Dynamische, indexeerbare opdrachtpagina's. Faalt de DB, val terug op
-  // de statische lijst (sitemap mag nooit de build/route breken).
-  let opdrachten: MetadataRoute.Sitemap = [];
+  // Openbare zzp-profielen. Faalt de DB, val terug op de statische lijst
+  // (de sitemap mag nooit de build of de route breken).
+  let profielen: MetadataRoute.Sitemap = [];
   try {
-    const slugs = await listPublicJobSlugs();
-    opdrachten = slugs.map((j) => ({
-      url: `${appUrl}/opdrachten/${j.slug}`,
-      lastModified: j.updatedAt,
-      changeFrequency: "daily",
+    const zzpers = await listPublicZzpers({});
+    profielen = zzpers.map((z) => ({
+      url: `${appUrl}/vind-zzper/${z.id}`,
+      lastModified: now,
+      changeFrequency: "weekly",
       priority: 0.6,
     }));
   } catch {
-    opdrachten = [];
+    profielen = [];
   }
 
-  return [...statisch, ...opdrachten];
+  return [...statisch, ...profielen];
 }

@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/tarieven" },
   title: "Tarieven",
   description:
     "ZZP Schakel is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",

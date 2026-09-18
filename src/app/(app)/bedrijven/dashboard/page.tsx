@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
-import { JobStatusBadge } from "@/components/job-status-badge";
-import { Reveal } from "@/components/reveal";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getCompanyForUser } from "@/server/company/service";
-import { listJobsForUser } from "@/server/jobs/service";
+import { unreadMessagesCount } from "@/server/messaging/service";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -16,13 +13,11 @@ export const metadata: Metadata = {
 
 export default async function BedrijfDashboardPage() {
   const user = await requireCurrentUser();
-  const company = await getCompanyForUser(user.id);
-  const jobs = await listJobsForUser(user.id);
-
-  const actief = jobs.filter((j) => j.status === "GEPUBLICEERD").length;
-  const vervuld = jobs.filter((j) => j.status === "VERVULD").length;
+  const [company, ongelezen] = await Promise.all([
+    getCompanyForUser(user.id),
+    unreadMessagesCount(user.id),
+  ]);
   const naam = company?.naam || user.email.split("@")[0];
-
   const profielOnvolledig = !company || company.naam.trim() === "";
 
   return (
@@ -34,78 +29,39 @@ export default async function BedrijfDashboardPage() {
           <div>
             <CardTitle>Rond je bedrijfsprofiel af</CardTitle>
             <CardDescription>
-              Vul je bedrijfsnaam en gegevens in voordat je opdrachten plaatst.
+              Met je bedrijfsnaam erbij weten zzp’ers direct wie hen benadert.
             </CardDescription>
           </div>
-          <ButtonLink href="/bedrijven/registreren" variant="accent">
+          <ButtonLink href="/bedrijven/registreren" variant="brand">
             Bedrijfsprofiel
           </ButtonLink>
         </Card>
       ) : null}
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <Card className="bs-load">
-          <CardTitle>Actieve opdrachten</CardTitle>
-          <p className="text-navy-800 mt-2 text-3xl font-extrabold">{actief}</p>
-        </Card>
-        <Card className="bs-load" style={{ animationDelay: "80ms" }}>
-          <CardTitle>Vervuld</CardTitle>
-          <p className="text-navy-800 mt-2 text-3xl font-extrabold">
-            {vervuld}
-          </p>
-        </Card>
-        <Card className="bs-load" style={{ animationDelay: "160ms" }}>
-          <CardTitle>Totaal opdrachten</CardTitle>
-          <p className="text-navy-800 mt-2 text-3xl font-extrabold">
-            {jobs.length}
-          </p>
-        </Card>
-      </div>
-
-      <div className="mt-8 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Recente opdrachten</h2>
-        <ButtonLink
-          href="/bedrijven/opdracht-plaatsen"
-          variant="accent"
-          size="sm"
-        >
-          Opdracht plaatsen
-        </ButtonLink>
-      </div>
-
-      {jobs.length === 0 ? (
-        <Card className="mt-4">
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <Card className="bs-load flex flex-col">
+          <CardTitle>Vind een zzp’er</CardTitle>
           <CardDescription>
-            Je hebt nog geen opdrachten geplaatst.
+            Zoek op vakgebied en regio, bekijk profielen en neem rechtstreeks
+            contact op. Geen opdracht plaatsen nodig.
           </CardDescription>
+          <div className="mt-4">
+            <ButtonLink href="/vind-zzper" variant="brand">
+              Zoek vakmensen
+            </ButtonLink>
+          </div>
         </Card>
-      ) : (
-        <ul className="mt-4 space-y-3">
-          {jobs.slice(0, 5).map((job, i) => (
-            <li key={job.id}>
-              <Reveal delayMs={Math.min(i, 5) * 70}>
-                <Link
-                  href={`/bedrijven/opdrachten/${job.id}`}
-                  className="group block"
-                >
-                  <Card
-                    interactive
-                    className="group-hover:border-accent-500/60 flex items-center justify-between gap-4 transition-colors"
-                  >
-                    <div>
-                      <p className="font-semibold">{job.titel}</p>
-                      <p className="text-foreground-muted text-sm">
-                        {job.locatiePlaats}
-                      </p>
-                    </div>
-                    <JobStatusBadge status={job.status} />
-                  </Card>
-                </Link>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      )}
+        <Card className="bs-load flex flex-col" style={{ animationDelay: "80ms" }}>
+          <CardTitle>Berichten</CardTitle>
+          <p className="text-navy-800 mt-2 text-3xl font-extrabold">{ongelezen}</p>
+          <CardDescription>ongelezen</CardDescription>
+          <div className="mt-4">
+            <ButtonLink href="/bedrijven/berichten" variant="outline">
+              Naar berichten
+            </ButtonLink>
+          </div>
+        </Card>
+      </div>
     </Container>
   );
 }

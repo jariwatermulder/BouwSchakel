@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/faq" },
   title: "Veelgestelde vragen",
   description: "Antwoorden op de meestgestelde vragen over ZZP Schakel.",
 };

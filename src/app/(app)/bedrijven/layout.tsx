@@ -16,11 +16,8 @@ export default async function BedrijfAppLayout({
 
   const navItems: AppNavItem[] = [
     { href: "/bedrijven/dashboard", label: "Dashboard" },
-    { href: "/bedrijven/opdrachten", label: "Opdrachten" },
-    { href: "/bedrijven/kandidaten", label: "Kandidaten" },
     { href: "/bedrijven/berichten", label: "Berichten", badge: berichten },
     { href: "/bedrijven/meldingen", label: "Meldingen", badge: meldingen },
-    { href: "/bedrijven/facturen", label: "Facturen" },
   ];
 
   const menuItems: AppNavItem[] = [
@@ -32,10 +29,7 @@ export default async function BedrijfAppLayout({
     <AppShell
       navItems={navItems}
       menuItems={menuItems}
-      primaryAction={{
-        href: "/bedrijven/opdracht-plaatsen",
-        label: "Opdracht plaatsen",
-      }}
+      primaryAction={{ href: "/vind-zzper", label: "Vind een zzp'er" }}
       email={user.email}
     >
       {children}

@@ -2,7 +2,7 @@ import "server-only";
 import type { User, UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
-import { generateToken } from "@/lib/auth/tokens";
+import { generateToken, hashToken } from "@/lib/auth/tokens";
 import { sendEmail } from "@/lib/email/send";
 import { serverEnv } from "@/lib/env";
 
@@ -67,6 +67,92 @@ async function createEmailVerification(user: User): Promise<void> {
       err instanceof Error ? err.message : err,
     );
   }
+}
+
+const WACHTWOORD_RESET_TTL_MS = 1000 * 60 * 60; // 1 uur
+
+/**
+ * Start een wachtwoord-reset. Geeft bewust nooit prijs of het e-mailadres
+ * bestaat (geen account-enumeratie): de aanroeper toont altijd dezelfde
+ * bevestiging. Alleen voor actieve accounts met wachtwoord wordt een
+ * eenmalig, kort geldig token gemaild.
+ */
+export async function requestPasswordReset(email: string): Promise<void> {
+  const user = await db.user.findUnique({ where: { email } });
+  if (!user || !user.passwordHash || user.status !== "ACTIEF") return;
+
+  // Eerdere, ongebruikte reset-tokens ongeldig maken.
+  await db.verificationToken.deleteMany({
+    where: { userId: user.id, type: "WACHTWOORD_RESET", usedAt: null },
+  });
+
+  const { token, tokenHash } = generateToken();
+  await db.verificationToken.create({
+    data: {
+      userId: user.id,
+      type: "WACHTWOORD_RESET",
+      tokenHash,
+      expiresAt: new Date(Date.now() + WACHTWOORD_RESET_TTL_MS),
+    },
+  });
+
+  const url = `${serverEnv().APP_URL}/wachtwoord-herstellen?token=${token}`;
+  await sendEmail({
+    to: user.email,
+    subject: "Nieuw wachtwoord instellen — ZZP Schakel",
+    text: `Je hebt gevraagd om een nieuw wachtwoord voor ZZP Schakel. Stel het in via deze link (1 uur geldig): ${url}\n\nHeb je dit niet aangevraagd? Dan kun je deze e-mail negeren; je wachtwoord blijft ongewijzigd.`,
+    html: [
+      "<p>Je hebt gevraagd om een nieuw wachtwoord voor ZZP Schakel.</p>",
+      `<p><a href="${url}">Stel je nieuwe wachtwoord in</a> (link is 1 uur geldig).</p>`,
+      "<p>Heb je dit niet aangevraagd? Dan kun je deze e-mail negeren; je wachtwoord blijft ongewijzigd.</p>",
+    ].join(""),
+  });
+}
+
+export class OngeldigeResetLinkError extends Error {
+  constructor() {
+    super("Deze link is ongeldig of verlopen. Vraag een nieuwe aan.");
+    this.name = "OngeldigeResetLinkError";
+  }
+}
+
+/**
+ * Rondt een wachtwoord-reset af: controleert het token (ongebruikt, niet
+ * verlopen), zet het nieuwe wachtwoord, markeert het token als gebruikt en
+ * beëindigt alle bestaande sessies van het account.
+ */
+export async function resetPassword(input: {
+  token: string;
+  password: string;
+}): Promise<User> {
+  const record = await db.verificationToken.findUnique({
+    where: { tokenHash: hashToken(input.token) },
+    include: { user: true },
+  });
+  if (
+    !record ||
+    record.type !== "WACHTWOORD_RESET" ||
+    record.usedAt ||
+    record.expiresAt < new Date() ||
+    record.user.status !== "ACTIEF"
+  ) {
+    throw new OngeldigeResetLinkError();
+  }
+
+  const passwordHash = await hashPassword(input.password);
+  const [user] = await db.$transaction([
+    db.user.update({
+      where: { id: record.userId },
+      // Wie de reset-mail kan lezen, heeft het adres aantoonbaar in bezit.
+      data: { passwordHash, emailVerifiedAt: record.user.emailVerifiedAt ?? new Date() },
+    }),
+    db.verificationToken.update({
+      where: { id: record.id },
+      data: { usedAt: new Date() },
+    }),
+    db.session.deleteMany({ where: { userId: record.userId } }),
+  ]);
+  return user;
 }
 
 export async function authenticate(input: {

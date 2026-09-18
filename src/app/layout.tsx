@@ -2,21 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PWARegister } from "@/components/pwa-register";
-
-// Bepaal een geldige basis-URL, ook als APP_URL ontbreekt, leeg is of het
-// schema mist (bijv. "bouwschakel.vercel.app"). Zo kan een verkeerd ingevulde
-// omgevingsvariabele de build nooit laten crashen.
-function resolveAppUrl(): string {
-  const fallback = "http://localhost:3000";
-  const raw = process.env.APP_URL?.trim();
-  if (!raw) return fallback;
-  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
-  try {
-    return new URL(withScheme).toString();
-  } catch {
-    return fallback;
-  }
-}
+import { resolveAppUrl } from "@/lib/app-url";
 
 const appUrl = resolveAppUrl();
 
@@ -28,11 +14,30 @@ export const metadata: Metadata = {
   },
   description:
     "ZZP Schakel is de directe schakel tussen zzp'ers en bedrijven: vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: "ZZP Schakel",
     url: appUrl,
+    title: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+    description:
+      "Vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+    description:
+      "Vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
+    images: ["/og.png"],
   },
   manifest: "/manifest.webmanifest",
   applicationName: "ZZP Schakel",

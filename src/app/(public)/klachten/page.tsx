@@ -6,6 +6,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { KlachtForm } from "./klacht-form";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/klachten" },
   title: "Klachten",
   robots: { index: false },
 };

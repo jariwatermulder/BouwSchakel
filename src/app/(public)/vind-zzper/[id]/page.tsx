@@ -184,7 +184,7 @@ export default async function ZzperProfielPage({
               {p.uurtariefCents ? `${formatEuro(p.uurtariefCents)} / uur` : "Tarief op aanvraag"}
             </p>
             <p className="text-foreground-muted mt-1 text-xs">
-              Neem rechtstreeks contact op — geen opdracht nodig.
+              Neem contact op — geen opdracht nodig, wel een account.
             </p>
             <form action={neemContactOpAction} className="mt-4">
               <input type="hidden" name="zzpProfileId" value={p.id} />
@@ -196,7 +196,8 @@ export default async function ZzperProfielPage({
               </button>
             </form>
             <p className="text-foreground-muted mt-3 text-center text-xs">
-              Je berichten lopen via ZZP Schakel.
+              Je stuurt een bericht via ZZP Schakel; de zzp’er antwoordt je
+              rechtstreeks. Afspraken maken jullie samen.
             </p>
           </Card>
         </aside>

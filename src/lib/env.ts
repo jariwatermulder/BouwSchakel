@@ -19,6 +19,9 @@ const serverEnvSchema = z.object({
   // maar blijft de app gewoon werken.
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
+  // Beheer-inbox voor het contactformulier (optioneel; berichten staan
+  // altijd óók in de database onder Beheer → Contact).
+  CONTACT_EMAIL: z.string().email().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

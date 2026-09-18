@@ -5,6 +5,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/zzpers" },
   title: "Voor zzp'ers",
   description:
     "Maak gratis een profiel en word gevonden door opdrachtgevers in jouw regio.",

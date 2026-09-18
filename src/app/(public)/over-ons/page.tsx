@@ -5,6 +5,7 @@ import { PageIntro } from "@/components/layout/page-intro";
 import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/over-ons" },
   title: "Over ons",
   description: "Het verhaal achter ZZP Schakel.",
 };

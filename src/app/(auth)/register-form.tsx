@@ -83,6 +83,26 @@ export function RegisterForm({
           </p>
         </div>
 
+        <label className="flex items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            name="akkoord"
+            required
+            className="accent-brand-500 mt-0.5 h-4 w-4 shrink-0"
+          />
+          <span className="text-foreground-muted">
+            Ik ga akkoord met de{" "}
+            <Link href="/algemene-voorwaarden" target="_blank" className="text-navy-700 font-medium underline">
+              algemene voorwaarden
+            </Link>{" "}
+            en heb de{" "}
+            <Link href="/privacy" target="_blank" className="text-navy-700 font-medium underline">
+              privacyverklaring
+            </Link>{" "}
+            gelezen.
+          </span>
+        </label>
+
         {state.error ? <FormAlert>{state.error}</FormAlert> : null}
 
         <Button type="submit" variant="brand" disabled={pending} className="w-full">

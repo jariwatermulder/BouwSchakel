@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MatchScore } from "@/components/match-score";
-import { Reveal } from "@/components/reveal";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations } from "@/server/zzp/profile";
-import { findOpdrachtenVoorZzp } from "@/server/matching/service";
-import { formatEuro } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -28,10 +23,6 @@ export default async function ZzpDashboardPage() {
   const profile = await getProfileWithRelations(user.id);
   const pct = profile?.profielCompleetheidPct ?? 0;
   const naam = profile?.voornaam ?? user.email.split("@")[0];
-  const matches =
-    profile && profile.skills.length > 0
-      ? (await findOpdrachtenVoorZzp(user.id)).slice(0, 5)
-      : [];
 
   return (
     <Container className="py-8 md:py-12">
@@ -44,10 +35,11 @@ export default async function ZzpDashboardPage() {
           <div>
             <CardTitle>Maak je profiel compleet ({pct}%)</CardTitle>
             <CardDescription>
-              Een compleet profiel levert betere en meer matches op.
+              Een compleet profiel wordt vaker bekeken en vaker benaderd door
+              opdrachtgevers.
             </CardDescription>
           </div>
-          <ButtonLink href="/zzpers/registreren" variant="accent">
+          <ButtonLink href="/zzpers/registreren" variant="brand">
             Verder met profiel
           </ButtonLink>
         </Card>
@@ -70,7 +62,7 @@ export default async function ZzpDashboardPage() {
           <CardTitle>Zichtbaarheid</CardTitle>
           <div className="mt-2">
             {profile?.zichtbaar ? (
-              <Badge variant="verified">Zichtbaar voor bedrijven</Badge>
+              <Badge variant="verified">Zichtbaar voor opdrachtgevers</Badge>
             ) : (
               <Badge variant="pending">Nog niet zichtbaar</Badge>
             )}
@@ -82,56 +74,38 @@ export default async function ZzpDashboardPage() {
       </div>
 
       <section className="mt-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Opdrachten voor jou</h2>
-          {matches.length > 0 ? (
-            <ButtonLink href="/zzpers/opdrachten" variant="ghost" size="sm">
-              Alle opdrachten
-            </ButtonLink>
-          ) : null}
-        </div>
-        {matches.length === 0 ? (
-          <Card className="mt-4">
+        <h2 className="text-lg font-semibold">Zo word je gevonden</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          <Card>
+            <CardTitle>1. Vakgebied en regio</CardTitle>
             <CardDescription>
-              Er zijn nog geen passende opdrachten. Zodra bedrijven opdrachten
-              plaatsen die bij jouw profiel passen, verschijnen ze hier.
+              Opdrachtgevers zoeken op vakgebied en plaats. Kies je vak precies
+              en stel je werkgebied ruim genoeg in.
             </CardDescription>
           </Card>
-        ) : (
-          <ul className="mt-4 space-y-3">
-            {matches.map(({ job, result }, i) => (
-              <li key={job.id}>
-                <Reveal delayMs={Math.min(i, 5) * 70}>
-                  <Link
-                    href={`/zzpers/opdrachten/${job.id}`}
-                    className="group block"
-                  >
-                    <Card
-                      interactive
-                      className="group-hover:border-accent-500/60 flex flex-col gap-3 transition-colors sm:flex-row sm:items-start sm:justify-between"
-                    >
-                    <div>
-                      <p className="font-semibold">{job.titel}</p>
-                      <p className="text-foreground-muted text-sm">
-                        {job.company.naam || "Bedrijf"} · {job.locatiePlaats}
-                        {result.afstandKm != null
-                          ? ` · ${result.afstandKm} km`
-                          : ""}
-                        {job.gewenstUurtariefCents
-                          ? ` · ${formatEuro(job.gewenstUurtariefCents)} p/u`
-                          : ""}
-                      </p>
-                    </div>
-                      <div className="sm:w-52 sm:shrink-0">
-                        <MatchScore result={result} compact />
-                      </div>
-                    </Card>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        )}
+          <Card>
+            <CardTitle>2. Laat zien wat je doet</CardTitle>
+            <CardDescription>
+              Een korte introductie, je ervaring en een paar afgeronde projecten
+              maken het verschil in de zoekresultaten.
+            </CardDescription>
+          </Card>
+          <Card>
+            <CardTitle>3. Reageer snel</CardTitle>
+            <CardDescription>
+              Nieuwe berichten van opdrachtgevers vind je onder Berichten. Je
+              krijgt er ook een e-mail van.
+            </CardDescription>
+          </Card>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <ButtonLink href="/zzpers/profiel" variant="brand">
+            Bekijk mijn profiel
+          </ButtonLink>
+          <ButtonLink href="/zzpers/berichten" variant="outline">
+            Naar berichten
+          </ButtonLink>
+        </div>
       </section>
     </Container>
   );

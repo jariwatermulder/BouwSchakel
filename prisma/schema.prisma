@@ -850,3 +850,24 @@ model ZzpInvoiceLine {
 
   @@index([invoiceId])
 }
+
+// ── Contactformulier ───────────────────────────────────────────────────────
+enum ContactStatus {
+  NIEUW
+  BEANTWOORD
+  GESLOTEN
+}
+
+model ContactMessage {
+  id        String        @id @default(uuid())
+  naam      String
+  email     String
+  onderwerp String
+  bericht   String
+  status    ContactStatus @default(NIEUW)
+  ip        String?
+  createdAt DateTime      @default(now())
+
+  @@index([status])
+  @@index([createdAt])
+}

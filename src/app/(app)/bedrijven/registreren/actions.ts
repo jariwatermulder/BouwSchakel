@@ -49,6 +49,6 @@ export async function saveCompany(
   if (next) redirect(next);
 
   const nieuw = formData.get("onboarding") === "1";
-  if (nieuw) redirect("/bedrijven/opdracht-plaatsen");
+  if (nieuw) redirect("/vind-zzper");
   return { ok: true };
 }
