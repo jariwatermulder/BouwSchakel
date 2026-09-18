@@ -56,7 +56,13 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           aria-label="ZZP Schakel — naar de homepage"
           onClick={sluit}
         >
-          <Logo variant="white" />
+          <Logo
+            priority
+            className={cn(
+              "transition-all duration-300 ease-out",
+              scrolled ? "w-[126px] md:w-[148px]" : "w-[132px] md:w-[156px]",
+            )}
+          />
         </Link>
 
         <nav aria-label="Hoofdmenu" className="hidden items-center gap-6 md:flex">

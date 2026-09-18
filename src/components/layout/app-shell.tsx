@@ -46,7 +46,7 @@ export function AppShell({
             className="flex shrink-0 items-center"
             aria-label="ZZP Schakel — naar de homepage"
           >
-            <Logo variant="white" />
+            <Logo className="w-[126px] md:w-[150px]" />
           </Link>
 
           {/* Hoofdmenu (desktop) */}

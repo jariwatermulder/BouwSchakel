@@ -37,7 +37,7 @@ export function SiteFooter() {
     <footer className="border-border bg-ink text-navy-100 mt-auto border-t">
       <Container className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4">
         <div className="col-span-2 md:col-span-1">
-          <Logo variant="white" />
+          <Logo className="w-[132px] md:w-[150px]" />
           <p className="text-navy-200 mt-3 text-sm">
             Vind een zzp’er in jouw regio en neem rechtstreeks contact op.
           </p>
