@@ -48,9 +48,9 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative grid lg:min-h-[clamp(620px,calc(100vh-4rem),820px)] lg:grid-cols-[minmax(0,50fr)_minmax(0,50fr)]">
+        <div className="relative grid lg:h-[clamp(680px,calc(100vh-4rem),750px)] lg:grid-cols-[minmax(0,50fr)_minmax(0,50fr)]">
           {/* Tekstzijde */}
-          <div className="relative z-20 flex items-center px-4 pt-12 pb-6 sm:px-6 lg:py-16 lg:pr-4 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+          <div className="relative z-20 flex items-center px-4 pt-12 pb-6 sm:px-6 lg:py-12 lg:pr-4 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
             <div className="w-full max-w-[36rem]">
               <span
                 className="bs-load border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide"
@@ -62,7 +62,7 @@ export default function HomePage() {
 
               <h1
                 className="bs-load mt-5 max-w-[30rem] text-[2.1rem] font-bold leading-[1.06] tracking-tight sm:text-5xl lg:text-[3rem] xl:text-[3.5rem]"
-                style={{ animationDelay: "80ms" }}
+                style={{ animationDelay: "100ms" }}
               >
                 <span className="text-foreground">
                   Vakmensen en opdrachtgevers,
@@ -72,7 +72,7 @@ export default function HomePage() {
 
               <p
                 className="bs-load text-foreground-muted mt-4 max-w-[30rem] text-lg leading-relaxed"
-                style={{ animationDelay: "160ms" }}
+                style={{ animationDelay: "200ms" }}
               >
                 Vind een vakman in jouw regio, of laat je als zzp’er vinden.
                 Zonder tussenlaag.
@@ -80,7 +80,7 @@ export default function HomePage() {
 
               <div
                 className="bs-load mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
-                style={{ animationDelay: "240ms" }}
+                style={{ animationDelay: "300ms" }}
               >
                 <ButtonLink
                   href="/vind-zzper"
@@ -105,7 +105,7 @@ export default function HomePage() {
 
               <ul
                 className="bs-load mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-7 sm:gap-y-3"
-                style={{ animationDelay: "320ms" }}
+                style={{ animationDelay: "380ms" }}
               >
                 {[
                   { icon: "check" as const, kop: "Geen account nodig", sub: "om te zoeken" },
@@ -127,33 +127,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Fotozijde: vult op desktop de hele rechterzijde tot de schermrand */}
-          <div className="relative z-10 -mx-4 mt-6 sm:-mx-6 lg:static lg:mx-0 lg:mt-0">
+          {/* Fotozijde: onder de tekst op mobiel; op desktop de rechter 68% tot de schermrand */}
+          <div className="relative z-10 -mx-4 mt-8 sm:-mx-6 lg:static lg:mx-0 lg:mt-0">
             <HeroFoto />
-            {/* Handgeschreven accent op de foto (alleen desktop) */}
-            <div className="pointer-events-none absolute top-[14%] right-8 z-20 hidden text-right xl:block">
-              <p
-                className="text-2xl leading-tight text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.45)]"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                Echte vakmensen.
-                <br />
-                Rechtstreeks in contact.
-              </p>
-              <svg
-                aria-hidden
-                viewBox="0 0 60 60"
-                className="mt-1 mr-6 ml-auto h-10 w-10 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M40 8 C 36 26, 28 40, 16 48" />
-                <path d="M26 46 L16 49 L18 38" />
-              </svg>
-            </div>
           </div>
         </div>
       </section>
