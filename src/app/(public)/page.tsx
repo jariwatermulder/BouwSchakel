@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { HeroFoto } from "@/components/home/hero-foto";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 
@@ -36,35 +36,57 @@ const faqs = [
 export default function HomePage() {
   return (
     <>
-      {/* ───────────── Hero: wit tekstvlak links, heldere foto rechts ───────────── */}
+      {/* ───────────── Hero: tekst links, fotografie als onderdeel van de interface rechts ───────────── */}
       <section className="bg-surface relative overflow-hidden">
-        <div className="grid md:h-[clamp(620px,76vh,720px)] md:grid-cols-[1.04fr_0.96fr] md:items-stretch">
+        {/* Zachte lichtblauwe sfeer achter de tekstzijde */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60rem 42rem at -8% -25%, rgba(37,99,235,0.07), transparent 60%)",
+          }}
+        />
+
+        <div className="relative grid lg:min-h-[clamp(600px,calc(100vh-4rem),800px)] lg:grid-cols-[minmax(0,45fr)_minmax(0,55fr)]">
           {/* Tekstzijde */}
-          <div className="relative z-10 flex items-center px-4 py-12 sm:px-6 md:py-0 md:pr-6 md:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
-            <div className="w-full max-w-[36rem]">
-              <span className="border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide">
+          <div className="relative z-20 flex items-center px-4 pt-12 pb-6 sm:px-6 lg:py-16 lg:pr-4 lg:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+            <div className="w-full max-w-[34rem]">
+              <span
+                className="bs-load border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide"
+                style={{ animationDelay: "0ms" }}
+              >
                 <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
                 Hét platform voor vakmensen en opdrachtgevers
               </span>
 
-              <h1 className="mt-5 max-w-[26rem] text-[2.1rem] font-bold leading-[1.08] tracking-tight sm:text-5xl">
+              <h1
+                className="bs-load mt-5 max-w-[26rem] text-[2.1rem] font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.25rem]"
+                style={{ animationDelay: "80ms" }}
+              >
                 <span className="text-foreground">
                   Vakmensen en opdrachtgevers,
                 </span>{" "}
                 <span className="text-brand-600">rechtstreeks verbonden.</span>
               </h1>
 
-              <p className="text-foreground-muted mt-4 max-w-[32rem] text-lg leading-relaxed">
+              <p
+                className="bs-load text-foreground-muted mt-4 max-w-[30rem] text-lg leading-relaxed"
+                style={{ animationDelay: "160ms" }}
+              >
                 Vind een vakman in jouw regio, of laat je als zzp’er vinden.
                 Zonder tussenlaag.
               </p>
 
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <div
+                className="bs-load mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+                style={{ animationDelay: "240ms" }}
+              >
                 <ButtonLink
                   href="/vind-zzper"
                   variant="brand"
                   size="lg"
-                  className="justify-center rounded-xl"
+                  className="justify-center rounded-xl shadow-[0_10px_24px_-12px_rgba(37,99,235,0.7)] transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_-12px_rgba(37,99,235,0.8)] motion-reduce:transform-none"
                 >
                   <Icon name="search" className="h-5 w-5" />
                   Zoek een vakman
@@ -74,14 +96,17 @@ export default function HomePage() {
                   href="/registreren?rol=zzp"
                   variant="outline"
                   size="lg"
-                  className="justify-center rounded-xl"
+                  className="bg-surface/80 justify-center rounded-xl backdrop-blur-sm transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 motion-reduce:transform-none"
                 >
                   Maak een profiel aan
                   <span aria-hidden>→</span>
                 </ButtonLink>
               </div>
 
-              <ul className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2">
+              <ul
+                className="bs-load mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2"
+                style={{ animationDelay: "320ms" }}
+              >
                 {[
                   { icon: "check" as const, tekst: "Zoeken zonder account" },
                   { icon: "users" as const, tekst: "Rechtstreeks contact" },
@@ -101,56 +126,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Fotozijde: personen springen uit een zachte merkkleur-vorm */}
-          <div className="relative h-80 sm:h-96 md:h-full">
-            {/* Achtergrond: originele locatiefoto (bus/garage) met de personen weggewerkt */}
-            <div className="absolute inset-x-0 top-[40%] bottom-0 overflow-hidden md:top-[44%] md:rounded-l-[3rem]">
-              <Image
-                src="/images/hero-achtergrond-clean.jpg"
-                alt=""
-                fill
-                priority
-                sizes="(min-width: 768px) 48vw, 100vw"
-                className="object-cover object-[50%_bottom]"
-              />
-            </div>
-
-            {/* Handgeschreven accent, zoals in de referentie (alleen desktop) */}
-            <div className="pointer-events-none absolute top-[13%] right-8 z-20 hidden text-right lg:block">
-              <p
-                className="text-foreground text-2xl leading-tight"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                Echte vakmensen.
-                <br />
-                Rechtstreeks in contact.
-              </p>
-              <svg
-                aria-hidden
-                viewBox="0 0 60 60"
-                className="text-brand-600 mt-1 mr-4 ml-auto h-11 w-11"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M46 6 C 40 26, 30 40, 16 48" />
-                <path d="M27 46 L16 49 L18 38" />
-              </svg>
-            </div>
-
-            {/* Uitgeknipte personen die uit het kader springen */}
-            <div className="hero-pop-float absolute top-[14%] right-0 bottom-0 left-[42%] z-10">
-              <Image
-                src="/images/hero-personen.png"
-                alt="Een vakman en een opdrachtgever overleggen samen"
-                fill
-                priority
-                sizes="(min-width: 768px) 40vw, 85vw"
-                className="object-contain object-[left_bottom] [filter:drop-shadow(0_22px_30px_rgba(2,8,23,0.30))]"
-              />
-            </div>
+          {/* Fotozijde: loopt op desktop tot de rechterrand van het scherm */}
+          <div className="relative z-10 -mx-4 mt-4 sm:-mx-6 lg:mx-0 lg:mt-0">
+            <HeroFoto />
           </div>
         </div>
       </section>
