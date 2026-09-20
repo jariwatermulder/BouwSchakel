@@ -121,6 +121,8 @@ export function VoorZzpers() {
               href="/registreren?rol=zzp"
               variant="brand"
               size="lg"
+              data-track="cta_clicked"
+              data-track-label="voor-zzpers-maak-profiel"
               className="mt-8 w-full justify-center rounded-xl sm:w-auto sm:px-8"
             >
               Maak gratis een profiel

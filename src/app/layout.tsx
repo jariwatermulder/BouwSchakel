@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PWARegister } from "@/components/pwa-register";
+import { AnalyticsTracker } from "@/components/analytics/tracker";
 import { resolveAppUrl } from "@/lib/app-url";
 
 const appUrl = resolveAppUrl();
@@ -87,6 +88,7 @@ export default function RootLayout({
         {children}
         <CookieConsent />
         <PWARegister />
+        <AnalyticsTracker />
       </body>
     </html>
   );

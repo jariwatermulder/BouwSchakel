@@ -52,6 +52,12 @@ const verwerkingen = [
     bewaartermijn: "Tot 2 jaar na afhandeling",
   },
   {
+    doel: "Eigen bezoekersstatistieken (geen Google Analytics)",
+    gegevens: "pseudoniem bezoekers- en sessienummer, bezochte pagina's, herkomst (alleen domeinnaam), apparaattype, browser en besturingssysteem, uitgevoerde acties zoals zoeken of contact opnemen; geen IP-adres; bij ingelogde gebruikers gekoppeld aan het account-id",
+    grondslag: "Gerechtvaardigd belang (art. 6 lid 1 sub f AVG): begrijpen en verbeteren van het platform",
+    bewaartermijn: "Maximaal 24 maanden; bij verwijdering van je account wordt de koppeling met je account direct verwijderd",
+  },
+  {
     doel: "Beveiliging, misbruikpreventie en audit",
     gegevens: "IP-adres, tijdstippen, technische logregels, auditlog van accountacties (zoals instemming met de voorwaarden)",
     grondslag: "Gerechtvaardigd belang (art. 6 lid 1 sub f AVG)",
@@ -171,8 +177,9 @@ export default function PrivacyPage() {
 
           <H>7. Cookies</H>
           <p>
-            We gebruiken alleen functionele cookies (sessie en cookievoorkeur).
-            Zie ons cookiebeleid.
+            We gebruiken functionele cookies (sessie en cookievoorkeur) en
+            eigen statistiekcookies met een gering privacy-effect. Zie ons
+            cookiebeleid.
           </p>
 
           <H>8. Wijzigingen</H>

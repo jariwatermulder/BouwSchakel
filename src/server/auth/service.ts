@@ -1,4 +1,5 @@
 import "server-only";
+import { trackEvent } from "@/lib/analytics/track";
 import type { User, UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
@@ -105,6 +106,7 @@ export async function verifyEmail(token: string): Promise<User> {
       data: { usedAt: new Date() },
     }),
   ]);
+  await trackEvent("email_verified", { userId: user.id, userRole: user.role, page: "/verifieer" });
   return user;
 }
 

@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { bedrijfOnboardingPad } from "@/server/company/service";
 import { AccountNodig } from "@/components/account-nodig";
+import { trackEvent } from "@/lib/analytics/track";
 import {
   displayNaam,
   listPublicZzpers,
@@ -92,6 +93,22 @@ export default async function VindZzperPage({
   }
 
   const zzpers = user ? await listPublicZzpers({ vakSlug: vak, plaats }) : [];
+
+  // Zoekgedrag meten: wat wordt gezocht en of het iets oplevert. Voor
+  // bezoekers zonder account zijn de resultaten onbekend (niet getoond).
+  if (heeftFilter) {
+    await trackEvent("search_performed", {
+      userId: user?.id ?? null,
+      userRole: user?.role ?? null,
+      page: "/vind-zzper",
+      metadata: {
+        vak: vak ?? null,
+        plaats: plaats?.trim().toLowerCase().slice(0, 60) ?? null,
+        resultaten: user ? zzpers.length : null,
+        gast: !user,
+      },
+    });
+  }
 
   return (
     <>
@@ -221,6 +238,8 @@ export default async function VindZzperPage({
                 <li key={z.id}>
                   <Link
                     href={`/vind-zzper/${z.id}`}
+                    data-track="search_result_clicked"
+                    data-track-label={z.id}
                     className="group border-border bg-surface shadow-soft hover:border-navy-300 flex h-full flex-col rounded-[var(--radius-card)] border p-5 transition"
                   >
                     <div className="flex items-center gap-3">

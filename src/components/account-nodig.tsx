@@ -25,6 +25,8 @@ export function AccountNodig({
         <ButtonLink
           href={`/registreren?rol=bedrijf&next=${n}`}
           variant="brand"
+          data-track="cta_clicked"
+          data-track-label="account-nodig-registreren"
           className="h-12 justify-center rounded-xl px-6 text-base"
         >
           Maak een account aan

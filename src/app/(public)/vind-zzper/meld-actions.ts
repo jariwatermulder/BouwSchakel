@@ -4,6 +4,7 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { rateLimit } from "@/lib/ratelimit";
+import { trackEvent } from "@/lib/analytics/track";
 import { db } from "@/lib/db";
 
 const schema = z.object({
@@ -61,6 +62,7 @@ export async function meldProfielAction(formData: FormData): Promise<void> {
         toelichting: parsed.data.toelichting ?? null,
       },
     });
+    await trackEvent("profile_reported", { userId: user.id, userRole: user.role, page: terug, metadata: { reden: parsed.data.reden, zzpProfileId: profiel.id } });
   }
   redirect(`${terug}?gemeld=1`);
 }

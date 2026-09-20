@@ -87,6 +87,8 @@ export default function HomePage() {
                   href="/vind-zzper"
                   variant="brand"
                   size="lg"
+                  data-track="cta_clicked"
+                  data-track-label="hero-zoek-vakman"
                   className="justify-center rounded-xl shadow-[0_10px_24px_-12px_rgba(37,99,235,0.7)] transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_-12px_rgba(37,99,235,0.8)] motion-reduce:transform-none"
                 >
                   <Icon name="search" className="h-5 w-5" />
@@ -97,6 +99,8 @@ export default function HomePage() {
                   href="/registreren?rol=zzp"
                   variant="outline"
                   size="lg"
+                  data-track="cta_clicked"
+                  data-track-label="hero-maak-profiel"
                   className="bg-surface/80 justify-center rounded-xl backdrop-blur-sm transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 motion-reduce:transform-none"
                 >
                   Maak een profiel aan

@@ -114,6 +114,8 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
                 href="/registreren?rol=zzp"
                 variant="brand"
                 size="sm"
+                data-track="cta_clicked"
+                data-track-label="header-maak-profiel"
                 className="rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
               >
                 Maak een profiel
@@ -181,6 +183,8 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
                     href="/registreren?rol=zzp"
                     variant="brand"
                     size="lg"
+                    data-track="cta_clicked"
+                    data-track-label="menu-maak-profiel"
                     onClick={sluit}
                     className="w-full justify-center rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
                   >

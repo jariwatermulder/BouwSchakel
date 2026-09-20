@@ -600,3 +600,34 @@ model ContactMessage {
   @@index([status])
   @@index([createdAt])
 }
+
+// ── Analytics: first-party, privacyvriendelijke event tracking ──────────────
+// Eén platte eventtabel; `metadata` is vrij zodat nieuwe events geen
+// schemawijziging vragen. Geen ruwe user-agent, geen IP, referrer alleen als
+// hostnaam. Geen foreign key naar User: events blijven pseudoniem bruikbaar
+// na verwijdering van een account (userId wordt dan op null gezet).
+model AnalyticsEvent {
+  id          String    @id @default(uuid())
+  eventName   String
+  userId      String?
+  userRole    UserRole?
+  anonymousId String?
+  sessionId   String?
+  page        String?
+  referrer    String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  deviceType  String?
+  browser     String?
+  os          String?
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([eventName, createdAt])
+  @@index([sessionId])
+  @@index([anonymousId])
+  @@index([userId])
+  @@map("analytics_events")
+}

@@ -1,6 +1,7 @@
 import "server-only";
 import type { Conversation, Message, Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
+import { trackEvent } from "@/lib/analytics/track";
 import { notify } from "@/server/notifications/service";
 
 export class GeenToegangError extends Error {
@@ -55,7 +56,7 @@ async function deelname(
 export async function startDirectConversation(
   userId: string,
   zzpProfileId: string,
-): Promise<Conversation> {
+): Promise<Conversation & { nieuw: boolean }> {
   const member = await db.companyMember.findFirst({
     where: { userId },
     select: { companyId: true },
@@ -68,13 +69,22 @@ export async function startDirectConversation(
   });
   if (!zzp) throw new GeenToegangError();
 
-  return db.conversation.upsert({
+  const bestaand = await db.conversation.findUnique({
     where: {
       companyId_zzpProfileId: { companyId: member.companyId, zzpProfileId },
     },
-    update: {},
-    create: { companyId: member.companyId, zzpProfileId },
   });
+  if (bestaand) return { ...bestaand, nieuw: false };
+  const nieuw = await db.conversation.create({
+    data: { companyId: member.companyId, zzpProfileId },
+  });
+  await trackEvent("contact_request_sent", {
+    userId,
+    userRole: "COMPANY",
+    page: `/vind-zzper/${zzpProfileId}`,
+    metadata: { conversationId: nieuw.id, zzpProfileId, companyId: member.companyId },
+  });
+  return { ...nieuw, nieuw: true };
 }
 
 export async function sendMessage(
@@ -101,6 +111,12 @@ export async function sendMessage(
       data: { laatsteBericht: new Date() },
     }),
   ]);
+
+  await trackEvent("message_sent", {
+    userId,
+    userRole: d.isZzp ? "ZZP" : "COMPANY",
+    metadata: { conversationId, lengte: tekst.length },
+  });
 
   // Notificeer de tegenpartij.
   if (d.isZzp) {

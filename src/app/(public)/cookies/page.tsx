@@ -22,6 +22,18 @@ const cookies = [
     type: "Functioneel, first-party",
     duur: "12 maanden",
   },
+  {
+    naam: "zs_aid",
+    doel: "Eigen bezoekersstatistieken: een willekeurig, pseudoniem bezoekersnummer zodat we terugkerende bezoekers kunnen onderscheiden. Bevat geen persoonsgegevens en wordt niet met derden gedeeld.",
+    type: "Statistiek, first-party, gering privacy-effect",
+    duur: "12 maanden",
+  },
+  {
+    naam: "zs_sid",
+    doel: "Eigen bezoekersstatistieken: een willekeurig sessienummer om bezoeken (sessies) te tellen.",
+    type: "Statistiek, first-party, gering privacy-effect",
+    duur: "30 minuten na je laatste activiteit",
+  },
 ];
 
 function H({ children }: { children: React.ReactNode }) {
@@ -41,11 +53,15 @@ export default function CookiesPage() {
         <div className="text-foreground-muted space-y-4 text-sm leading-relaxed">
           <p>
             Cookies zijn kleine tekstbestanden die je browser opslaat. Wij
-            gebruiken uitsluitend functionele cookies, waarvoor volgens de
-            Telecommunicatiewet geen toestemming nodig is. We plaatsen geen
-            advertentie-, tracking- of social-media-cookies en gebruiken geen
-            analytische tools van derden. Daarom vragen we geen toestemming,
-            maar informeren we je alleen.
+            gebruiken functionele cookies en eigen statistiekcookies met een
+            gering privacy-effect, waarvoor volgens de Telecommunicatiewet geen
+            toestemming nodig is. We plaatsen geen advertentie-, tracking- of
+            social-media-cookies en gebruiken geen analytische tools van derden
+            (zoals Google Analytics). Onze statistieken meten we zelf: pseudoniem,
+            zonder IP-adres en zonder de gegevens met anderen te delen. Daarom
+            vragen we geen toestemming, maar informeren we je alleen. Stel je
+            browser in op &ldquo;Do Not Track&rdquo; of Global Privacy Control,
+            dan meten we je bezoek niet.
           </p>
 
           <div className="border-border overflow-x-auto rounded-lg border">
@@ -81,8 +97,8 @@ export default function CookiesPage() {
           <H>Cookies weigeren of verwijderen</H>
           <p>
             Je kunt cookies via je browserinstellingen blokkeren of verwijderen.
-            Zonder de sessiecookie kun je niet ingelogd blijven; zoeken en
-            profielen bekijken werkt wel.
+            Zonder de sessiecookie kun je niet ingelogd blijven. Zonder de
+            statistiekcookies werkt de site gewoon; we tellen je bezoek dan niet.
           </p>
 
           <H>Wijzigingen</H>

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { rateLimit } from "@/lib/ratelimit";
+import { trackEvent } from "@/lib/analytics/track";
 import { sendEmail } from "@/lib/email/send";
 
 const schema = z.object({
@@ -44,6 +45,7 @@ export async function verstuurContact(
   void _honeypot;
 
   const record = await db.contactMessage.create({ data: { ...data, ip } });
+  await trackEvent("contact_form_sent", { page: "/contact", metadata: { onderwerp: data.onderwerp.slice(0, 80) } });
 
   // Best-effort notificatie naar de beheer-inbox; het bericht staat sowieso in
   // de database (Beheer → Contact) en de inzender krijgt altijd dezelfde melding.

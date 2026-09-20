@@ -22,6 +22,8 @@ import {
   updateProfileFields,
 } from "@/server/zzp/profile";
 import { isStapSlug, volgendeStap, type StapSlug } from "./steps";
+import { db } from "@/lib/db";
+import { trackEvent } from "@/lib/analytics/track";
 import {
   leesUploadAfbeelding,
   OngeldigeAfbeeldingError,
@@ -63,7 +65,16 @@ export async function saveStap(formData: FormData): Promise<void> {
         telefoon: formData.get("telefoon"),
       });
       if (!p.success) terug();
-      else await updateProfileFields(user.id, p.data);
+      else {
+        const bestaand = await db.zZPProfile.findUnique({
+          where: { userId: user.id },
+          select: { voornaam: true },
+        });
+        await updateProfileFields(user.id, p.data);
+        if (!bestaand?.voornaam) {
+          await trackEvent("profile_created", { userId: user.id, userRole: user.role, page: "/zzpers/registreren" });
+        }
+      }
       break;
     }
     case "bedrijf": {

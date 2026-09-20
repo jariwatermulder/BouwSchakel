@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { getStorageProvider } from "@/lib/storage";
 import type { BeschikbaarheidType, Prisma, ZZPProfile } from "@prisma/client";
 import { db } from "@/lib/db";
+import { trackEvent } from "@/lib/analytics/track";
 import {
   computeCompleteness,
   MIN_ZICHTBAAR_PCT,
@@ -84,6 +85,12 @@ export async function recomputeCompleteness(
     where: { id: profileId },
     data: { profielCompleetheidPct: pct, zichtbaar },
   });
+  if (pct === 100 && p.profielCompleetheidPct < 100) {
+    await trackEvent("profile_completed", { userId: p.userId, userRole: "ZZP" });
+  }
+  if (zichtbaar && !p.zichtbaar) {
+    await trackEvent("profile_visible", { userId: p.userId, userRole: "ZZP", metadata: { pct } });
+  }
   return pct;
 }
 
@@ -259,6 +266,7 @@ export async function setProfielFoto(
   await storage.put({ key, body: webp, contentType: "image/webp", ownerUserId: userId });
   await db.zZPProfile.update({ where: { id: profile.id }, data: { fotoKey: key } });
   if (profile.fotoKey) await storage.delete(profile.fotoKey);
+  await trackEvent("profile_photo_uploaded", { userId, userRole: "ZZP", metadata: { vervangen: !!profile.fotoKey } });
   return key;
 }
 

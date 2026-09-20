@@ -3,7 +3,8 @@
 import { redirect } from "next/navigation";
 import { requireCurrentRole } from "@/lib/auth/current-user";
 import { companySchema } from "@/lib/validations/company";
-import { updateCompany } from "@/server/company/service";
+import { bedrijfCompleet, getOrCreateCompanyForUser, updateCompany } from "@/server/company/service";
+import { trackEvent } from "@/lib/analytics/track";
 import { safeNextPath } from "@/lib/auth/next";
 
 export interface CompanyFormState {
@@ -32,6 +33,8 @@ export async function saveCompany(
     };
   }
 
+  const voorheen = await getOrCreateCompanyForUser(user.id);
+  const wasCompleet = bedrijfCompleet(voorheen);
   await updateCompany(user.id, {
     naam: parsed.data.naam,
     kvkNummer: parsed.data.kvkNummer,
@@ -42,6 +45,15 @@ export async function saveCompany(
     typeWerkzaamheden: parsed.data.typeWerkzaamheden ?? null,
     omschrijving: parsed.data.omschrijving ?? null,
   });
+
+  if (!wasCompleet) {
+    await trackEvent("company_profile_completed", {
+      userId: user.id,
+      userRole: user.role,
+      page: "/bedrijven/registreren",
+      metadata: { regio: parsed.data.regio ?? null },
+    });
+  }
 
   // Terug naar de gekozen bestemming (bijv. een zzp-profiel om contact mee
   // op te nemen) als die is meegegeven.

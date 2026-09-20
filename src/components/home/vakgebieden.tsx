@@ -110,6 +110,8 @@ export function Vakgebieden() {
                         <ButtonLink
                           href={`/vind-zzper?vak=${v.slug}`}
                           variant="brand"
+                          data-track="cta_clicked"
+                          data-track-label={`vakgebied-${v.slug}`}
                           className="h-12 w-full rounded-xl text-base"
                         >
                           {v.knop}

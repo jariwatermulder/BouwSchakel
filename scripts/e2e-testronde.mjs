@@ -281,7 +281,7 @@ await step("Wachtwoord vergeten: bevestiging + mail-log", async () => {
   assert(t, "geen resettoken");
   const mails = fs.readFileSync(LOG, "utf8").split("\n").filter(l => l.includes(`e-mail niet verzonden aan ${ZZP.email}`));
   assert(mails.length >= 2, "geen mail-log voor reset (" + mails.length + ")");
-  await p.waitForSelector("text=/verstuurd|ontvang|gestuurd/i", { timeout: 15000 });
+  await p.waitForSelector("text=Controleer je e-mail", { timeout: 15000 });
   bevestigingBekend = await p.locator("main, body").first().innerText();
   await c.close();
   return mails[mails.length - 1].replace(/.*\("(.*)"\).*/, "onderwerp: $1");
@@ -289,7 +289,7 @@ await step("Wachtwoord vergeten: bevestiging + mail-log", async () => {
 await step("Wachtwoord vergeten voor onbekend adres geeft dezelfde bevestiging", async () => {
   const c = await ctx(); const p = await c.newPage();
   await p.goto(BASE + "/wachtwoord-vergeten"); await p.fill('input[name="email"]', "niemand-" + RUN + "@test.local"); await p.click('button[type="submit"]');
-  await p.waitForSelector("text=/verstuurd|ontvang|gestuurd/i", { timeout: 15000 });
+  await p.waitForSelector("text=Controleer je e-mail", { timeout: 15000 });
   const tekst = await p.locator("main, body").first().innerText();
   assert(tekst === bevestigingBekend, "melding verschilt voor onbekend adres"); await c.close();
 });
@@ -317,6 +317,33 @@ await step("Admin inloggen → /admin dashboard met statistieken", async () => {
   await a.waitForSelector("text=Gesprekken"); await a.screenshot({ path: SHOTS + "/admin.png", fullPage: true });
 });
 await step("Zzp'er komt niet in /admin", async () => { await z.goto(BASE + "/admin"); assert(!z.url().includes("/admin"), z.url()); });
+await step("Gast en zzp'er krijgen geen analytics-API (401/403)", async () => {
+  const r1 = await fetch(BASE + "/api/admin/export?dataset=events"); assert(r1.status === 401, "gast: " + r1.status);
+  const cookie = (await zc.cookies()).map(c => `${c.name}=${c.value}`).join("; ");
+  const r2 = await fetch(BASE + "/api/admin/activiteit", { headers: { cookie } }); assert(r2.status === 403, "zzp'er: " + r2.status);
+});
+await step("Analytics: registratie, zoekopdracht en contact van deze ronde zijn gemeten", async () => {
+  const n = async (eventName, extra = {}) => db.analyticsEvent.count({ where: { eventName, ...extra } });
+  assert((await n("zzper_registered", { userId: zzpUser.id })) === 1, "zzper_registered");
+  assert((await n("company_registered", { userId: bedrijfUser.id })) === 1, "company_registered");
+  assert((await n("contact_request_sent", { userId: bedrijfUser.id })) >= 1, "contact_request_sent");
+  assert((await n("search_performed")) >= 1, "search_performed");
+  assert((await n("page_view")) >= 5, "page_view");
+  assert((await db.analyticsEvent.count({ where: { page: { startsWith: "/admin" }, eventName: "page_view" } })) === 0, "admin wordt gemeten");
+});
+await step("Admin: analytics-pagina's laden met echte cijfers, filter en export", async () => {
+  for (const p of ["/admin/analytics/website", "/admin/analytics/zzpers", "/admin/analytics/bedrijven", "/admin/analytics/contact", "/admin/analytics/zoekgedrag", "/admin/analytics/conversie", "/admin/analytics/activiteit", "/admin/instellingen"]) {
+    const r = await a.goto(BASE + p + "?p=7d"); assert(r.status() === 200, p + " " + r.status());
+  }
+  await a.goto(BASE + "/admin/analytics/zzpers?p=7d"); await a.waitForSelector("text=Totaal zzp");
+  const zzp = await db.user.count({ where: { role: "ZZP", deletedAt: null } });
+  assert((await a.textContent("body")).includes(String(zzp)), "zzp-totaal ontbreekt");
+  await a.click('button:has-text("30 dagen")'); await a.waitForURL(/p=30d/);
+  const cookie = (await ac.cookies()).map(c => `${c.name}=${c.value}`).join("; ");
+  const r = await fetch(BASE + "/api/admin/export?dataset=zzp-registraties&p=30d", { headers: { cookie } });
+  assert(r.status === 200 && (r.headers.get("content-type") || "").includes("text/csv"), "export " + r.status);
+  await a.screenshot({ path: SHOTS + "/admin-analytics.png", fullPage: true });
+});
 await step("Admin: report afhandelen", async () => {
   await a.goto(BASE + "/admin/reports"); await a.waitForSelector("text=Testmelding");
   const form = a.locator("form", { has: a.locator('select[name="status"]') }).first();

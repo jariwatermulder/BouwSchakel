@@ -20,6 +20,7 @@ import {
 import { createSession } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/ratelimit";
 import { safeNextPath, withNext } from "@/lib/auth/next";
+import { trackEvent } from "@/lib/analytics/track";
 import { db } from "@/lib/db";
 
 /** Versie van de voorwaarden/privacyverklaring waar de gebruiker mee instemt. */
@@ -78,6 +79,17 @@ export async function registerAction(
       },
     });
     await createSession(user.id, meta);
+    await trackEvent("user_registered", {
+      userId: user.id,
+      userRole: user.role,
+      page: "/registreren",
+      metadata: { rol: user.role },
+    });
+    await trackEvent(user.role === "ZZP" ? "zzper_registered" : "company_registered", {
+      userId: user.id,
+      userRole: user.role,
+      page: "/registreren",
+    });
   } catch (err) {
     if (err instanceof EmailInGebruikError) return { error: err.message };
     throw err;
@@ -118,6 +130,7 @@ export async function loginAction(
     const user = await authenticate(parsed.data);
     role = user.role;
     await createSession(user.id, await sessionMeta());
+    await trackEvent("login", { userId: user.id, userRole: user.role, page: "/inloggen" });
   } catch (err) {
     if (err instanceof OngeldigeInlogError) return { error: err.message };
     throw err;

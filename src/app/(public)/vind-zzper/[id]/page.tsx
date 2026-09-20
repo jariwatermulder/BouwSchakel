@@ -13,6 +13,7 @@ import { formatEuro } from "@/lib/utils";
 import { displayNaam, getPublicZzper } from "@/server/zzpers/directory";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { AccountNodig } from "@/components/account-nodig";
+import { trackEvent } from "@/lib/analytics/track";
 import { neemContactOpAction } from "../actions";
 import { MeldProfielForm } from "../meld-profiel-form";
 
@@ -75,6 +76,18 @@ export default async function ZzperProfielPage({
   if (!data) notFound();
 
   const p = data;
+  if (p.userId !== user.id) {
+    await trackEvent("profile_viewed", {
+      userId: user.id,
+      userRole: user.role,
+      page: `/vind-zzper/${id}`,
+      metadata: {
+        zzpProfileId: p.id,
+        vak: p.skills[0]?.skill.slug ?? p.vakgebiedAnders ?? null,
+        plaats: p.werkgebiedPlaats?.toLowerCase() ?? null,
+      },
+    });
+  }
   const naam = displayNaam(p);
   const geverifieerd = p.verificatieStatus === "GEVERIFIEERD";
 
@@ -228,6 +241,8 @@ export default async function ZzperProfielPage({
               <input type="hidden" name="zzpProfileId" value={p.id} />
               <button
                 type="submit"
+                data-track="button_clicked"
+                data-track-label="neem-contact-op"
                 className="bg-brand-500 hover:bg-brand-600 flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white transition-colors"
               >
                 Neem contact op
