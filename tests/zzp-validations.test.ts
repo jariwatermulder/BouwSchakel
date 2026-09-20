@@ -19,12 +19,17 @@ describe("zzp registratie validaties", () => {
     ).toBe(false);
   });
 
-  it("kvk moet 8 cijfers zijn maar is optioneel", () => {
+  it("kvk is verplicht en moet 8 cijfers zijn", () => {
     expect(bedrijfSchema.safeParse({ kvkNummer: "12345678" }).success).toBe(
       true,
     );
-    expect(bedrijfSchema.safeParse({ kvkNummer: "" }).success).toBe(true);
+    expect(bedrijfSchema.safeParse({ kvkNummer: " 12345678 " }).success).toBe(
+      true,
+    );
+    expect(bedrijfSchema.safeParse({ kvkNummer: "" }).success).toBe(false);
+    expect(bedrijfSchema.safeParse({}).success).toBe(false);
     expect(bedrijfSchema.safeParse({ kvkNummer: "123" }).success).toBe(false);
+    expect(bedrijfSchema.safeParse({ kvkNummer: "1234567a" }).success).toBe(false);
   });
 
   it("vakgebied vereist minstens één skill", () => {

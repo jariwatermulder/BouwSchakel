@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { AnimatedBar } from "@/components/animated-bar";
 import { Avatar } from "@/components/avatar";
+import { ProfielVoortgangKaart } from "@/components/zzp/profiel-voortgang";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations, MAX_PORTFOLIO_ITEMS } from "@/server/zzp/profile";
+import { berekenVoortgang } from "@/server/zzp/voortgang";
 import { formatEuro } from "@/lib/utils";
 import { publiekeUrl } from "@/lib/storage/url";
 import {
@@ -51,7 +52,7 @@ export default async function ProfielPage({
     p?.voornaam || p?.achternaam
       ? `${p?.voornaam ?? ""} ${p?.achternaam ?? ""}`.trim()
       : "Naam nog niet ingevuld";
-  const pct = p?.profielCompleetheidPct ?? 0;
+  const voortgang = berekenVoortgang(p);
 
   return (
     <Container className="py-8 md:py-12">
@@ -95,7 +96,11 @@ export default async function ProfielPage({
         </p>
       ) : null}
 
-      <Card className="bs-load mt-6">
+      <div className="bs-load mt-6">
+        <ProfielVoortgangKaart voortgang={voortgang} compact />
+      </div>
+
+      <Card id="profielfoto" className="bs-load mt-6 scroll-mt-24">
         <CardTitle>Profielfoto</CardTitle>
         <CardDescription className="mt-1">
           Een duidelijke foto van jezelf zorgt dat opdrachtgevers je sneller
@@ -130,41 +135,6 @@ export default async function ProfielPage({
           ) : null}
         </div>
       </Card>
-
-      {p && !p.kvkNummer ? (
-        <div
-          role="alert"
-          className="mt-6 flex flex-col gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between"
-        >
-          <p>
-            <strong>Je KvK-nummer ontbreekt.</strong> Zonder KvK-nummer is je
-            profiel niet zichtbaar voor opdrachtgevers.
-          </p>
-          <ButtonLink
-            href="/zzpers/registreren?stap=bedrijf"
-            variant="brand"
-            size="sm"
-            className="shrink-0 rounded-lg"
-          >
-            KvK-nummer invullen
-          </ButtonLink>
-        </div>
-      ) : null}
-
-      {p ? (
-        <Card className="bs-load mt-6">
-          <div className="flex items-center justify-between">
-            <CardTitle>Profiel compleet</CardTitle>
-            <span className="text-navy-800 font-bold">{pct}%</span>
-          </div>
-          <AnimatedBar value={pct} className="mt-3" />
-          {pct < 100 ? (
-            <CardDescription className="mt-2">
-              Een compleet profiel wordt vaker gevonden en eerder benaderd.
-            </CardDescription>
-          ) : null}
-        </Card>
-      ) : null}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card className="bs-load">

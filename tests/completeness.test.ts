@@ -58,3 +58,22 @@ describe("computeCompleteness", () => {
     expect(pct).toBeLessThanOrEqual(100);
   });
 });
+
+describe("completenessOnderdelen", () => {
+  it("gewichten tellen op tot 100 en elk onderdeel wijst naar een stap", async () => {
+    const { ONDERDELEN, completenessOnderdelen } = await import("@/server/zzp/completeness");
+    expect(ONDERDELEN.reduce((s, o) => s + o.gewicht, 0)).toBe(100);
+    const leeg = completenessOnderdelen({
+      skillsCount: 0,
+      specializationsCount: 0,
+      certificationsCount: 0,
+      availabilityCount: 0,
+      eigenBus: false,
+      eigenGereedschap: false,
+      vca: false,
+    });
+    expect(leeg.every((o) => !o.vervuld)).toBe(true);
+    expect(leeg.reduce((s, o) => s + o.procent, 0)).toBe(100);
+    expect(leeg.every((o) => typeof o.stap === "string" && o.label.length > 0)).toBe(true);
+  });
+});
