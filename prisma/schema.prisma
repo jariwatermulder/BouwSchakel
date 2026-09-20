@@ -66,6 +66,7 @@ model User {
   sentMessages           Message[]
   reportsIngediend       Report[]
   auditLogs              AuditLog[]
+  oauthAccounts          OAuthAccount[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -73,6 +74,21 @@ model User {
 
   @@index([role])
   @@index([status])
+}
+
+// Gekoppelde externe logins (Google, Apple). Eén account kan meerdere
+// providers hebben; een provider-account hoort bij precies één gebruiker.
+model OAuthAccount {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String // "google" | "apple"
+  providerAccountId String // stabiele "sub" van de provider
+  email             String?
+  createdAt         DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {

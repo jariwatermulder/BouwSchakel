@@ -22,6 +22,14 @@ const serverEnvSchema = z.object({
   // Beheer-inbox voor het contactformulier (optioneel; berichten staan
   // altijd óók in de database onder Beheer → Contact).
   CONTACT_EMAIL: z.string().email().optional(),
+  // Inloggen met Google/Apple (optioneel): zonder deze waarden worden de
+  // knoppen niet getoond. Zie docs/OAUTH.md.
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  APPLE_CLIENT_ID: z.string().optional(),
+  APPLE_TEAM_ID: z.string().optional(),
+  APPLE_KEY_ID: z.string().optional(),
+  APPLE_PRIVATE_KEY: z.string().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

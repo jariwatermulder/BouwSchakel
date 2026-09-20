@@ -8,20 +8,28 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FormAlert } from "@/components/ui/form-alert";
+import { OAuthKnoppen } from "@/components/auth/oauth-knoppen";
+import type { OAuthProvider } from "@/lib/auth/oauth-config";
 
 const initial: AuthFormState = {};
 
 export function RegisterForm({
   defaultRole,
   next,
+  providers = [],
+  fout,
 }: {
   defaultRole: "ZZP" | "COMPANY";
   next?: string | null;
+  providers?: OAuthProvider[];
+  /** Foutmelding uit de OAuth-flow (?fout=…). */
+  fout?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(registerAction, initial);
   const inloggenHref = next
     ? `/inloggen?next=${encodeURIComponent(next)}`
     : "/inloggen";
+  const melding = state.error ?? fout ?? null;
 
   return (
     <Card>
@@ -103,11 +111,14 @@ export function RegisterForm({
           </span>
         </label>
 
-        {state.error ? <FormAlert>{state.error}</FormAlert> : null}
+        {melding ? <FormAlert>{melding}</FormAlert> : null}
 
         <Button type="submit" variant="brand" disabled={pending} className="w-full">
           {pending ? "Bezig…" : "Account aanmaken"}
         </Button>
+
+        {/* Zelfde formulier: rol en akkoord gaan mee naar Google/Apple. */}
+        <OAuthKnoppen providers={providers} tekst="Registreren met" />
       </form>
 
       <p className="text-foreground-muted mt-4 text-center text-sm">

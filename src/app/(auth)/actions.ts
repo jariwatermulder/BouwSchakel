@@ -24,7 +24,7 @@ import { trackEvent } from "@/lib/analytics/track";
 import { db } from "@/lib/db";
 
 /** Versie van de voorwaarden/privacyverklaring waar de gebruiker mee instemt. */
-const VOORWAARDEN_VERSIE = "2026-09";
+import { VOORWAARDEN_VERSIE } from "@/lib/voorwaarden";
 
 export interface AuthFormState {
   error?: string;
