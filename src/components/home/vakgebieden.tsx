@@ -8,7 +8,11 @@ import { ButtonLink } from "@/components/ui/button";
  *
  * De cijfers zijn landelijke branchecijfers (aantal bedrijven in Nederland,
  * 2025) van Brookz op basis van CBS. Het zijn géén aantallen aangesloten
- * zzp'ers of profielen; dat staat daarom letterlijk bij elk cijfer.
+ * zzp'ers of profielen; dat staat daarom in de voetnoot onder de kaarten.
+ * Bronnen (geraadpleegd september 2026):
+ *   https://www.brookz.nl/branche-informatie/dakdekkersbedrijf
+ *   https://www.brookz.nl/branche-informatie/timmerbedrijf
+ *   https://www.brookz.nl/branche-informatie/loodgietersbedrijf
  * De foto's zijn gegenereerde sfeerbeelden per categorie, geen foto's van
  * aangesloten leden.
  */
@@ -23,7 +27,6 @@ const VAKGEBIEDEN = [
     aantal: "6.255",
     eenheid: "dakdekkersbedrijven",
     knop: "Bekijk dakdekkers",
-    bron: "https://www.brookz.nl/branche-informatie/dakdekkersbedrijf",
   },
   {
     slug: "timmerman",
@@ -35,7 +38,6 @@ const VAKGEBIEDEN = [
     aantal: "26.260",
     eenheid: "timmerbedrijven",
     knop: "Bekijk timmermannen",
-    bron: "https://www.brookz.nl/branche-informatie/timmerbedrijf",
   },
   {
     slug: "loodgieter",
@@ -47,7 +49,6 @@ const VAKGEBIEDEN = [
     aantal: "10.750",
     eenheid: "loodgietersbedrijven",
     knop: "Bekijk loodgieters",
-    bron: "https://www.brookz.nl/branche-informatie/loodgietersbedrijf",
   },
 ] as const;
 
@@ -93,30 +94,18 @@ export function Vakgebieden() {
                       {v.tekst}
                     </p>
 
-                    <p className="mt-5 text-lg leading-snug">
-                      <strong className="text-foreground text-2xl font-bold tabular-nums">
+                    {/* Cijferblok onderaan verankerd: in elke rij staan de cijfers
+                        daardoor op exact dezelfde hoogte, ongeacht de tekstlengte. */}
+                    <p className="mt-auto pt-6">
+                      <strong className="text-foreground block text-3xl font-bold leading-none tabular-nums">
                         {v.aantal}
-                      </strong>{" "}
-                      <span className="text-foreground font-medium">{v.eenheid}</span>
-                    </p>
-                    <p className="text-foreground-muted mt-1 text-sm font-medium">
-                      In Nederland · 2025
-                    </p>
-                    <p className="text-foreground-muted mt-1 text-sm leading-snug">
-                      Landelijk branchecijfer, geen aantal aangesloten profielen.
-                    </p>
-                    <p className="mt-1 text-xs">
-                      <a
-                        href={v.bron}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-foreground-muted hover:text-brand-700 rounded-sm underline decoration-1 underline-offset-2"
-                      >
-                        Bron: Brookz, op basis van CBS
-                      </a>
+                      </strong>
+                      <span className="text-foreground mt-1.5 block text-base font-medium">
+                        {v.eenheid} in Nederland
+                      </span>
                     </p>
 
-                    <div className="border-border mt-auto border-t pt-5">
+                    <div className="border-border mt-5 border-t pt-5">
                       <div className="mt-1">
                         <ButtonLink
                           href={`/vind-zzper?vak=${v.slug}`}
@@ -134,6 +123,11 @@ export function Vakgebieden() {
             </li>
           ))}
         </ul>
+
+        <p className="text-foreground-muted mt-6 text-sm">
+          Aantallen: bedrijven in Nederland volgens Brookz, op basis van CBS.
+          Geen aantal aangesloten profielen.
+        </p>
       </Container>
     </section>
   );
