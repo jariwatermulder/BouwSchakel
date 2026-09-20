@@ -2,21 +2,21 @@ import Link from "next/link";
 import { AnimatedBar } from "@/components/animated-bar";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
-import type { ProfielVoortgang } from "@/server/zzp/voortgang";
+import type { Voortgang } from "@/lib/voortgang";
 
 /**
  * "Je profiel is 75% compleet" + precies waar de overige 25% te halen valt,
- * elk onderdeel met een directe knop naar de juiste registratiestap.
- * Wordt gebruikt op het dashboard en op de profielpagina.
+ * elk onderdeel met een directe knop naar de juiste plek. Wordt gebruikt op
+ * de dashboards en profielpagina's van zzp'ers en opdrachtgevers.
  */
-export function ProfielVoortgangKaart({
+export function VoortgangKaart({
   voortgang,
   compact = false,
 }: {
-  voortgang: ProfielVoortgang;
+  voortgang: Voortgang;
   compact?: boolean;
 }) {
-  const { pct, ontbrekend, tips, kvkOntbreekt, zichtbaar, minZichtbaarPct } = voortgang;
+  const { pct, ontbrekend, tips, blokkade, toelichting, klaarTekst } = voortgang;
   const resterend = ontbrekend.reduce((s, o) => s + (o.procent ?? 0), 0);
   const compleet = ontbrekend.length === 0;
 
@@ -32,7 +32,7 @@ export function ProfielVoortgangKaart({
           </h2>
           <p className="text-foreground-muted mt-1 text-sm">
             {compleet
-              ? "Alles staat erin. Houd je beschikbaarheid en tarief actueel."
+              ? klaarTekst
               : `Nog ${resterend}% te halen. Elk onderdeel hieronder brengt je direct naar de juiste plek.`}
           </p>
         </div>
@@ -41,26 +41,20 @@ export function ProfielVoortgangKaart({
         </p>
       </div>
       <AnimatedBar value={pct} className="mt-4" />
-      {!zichtbaar && !compleet ? (
-        <p className="text-foreground-muted mt-2 text-xs">
-          Vanaf {minZichtbaarPct}% en met een KvK-nummer word je zichtbaar voor
-          opdrachtgevers.
-        </p>
+      {toelichting && !compleet ? (
+        <p className="text-foreground-muted mt-2 text-xs">{toelichting}</p>
       ) : null}
 
-      {kvkOntbreekt ? (
+      {blokkade ? (
         <div className="mt-5 flex flex-col gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            <strong>KvK-nummer ontbreekt.</strong> Zonder KvK-nummer is je
-            profiel niet zichtbaar, ook niet bij 100%.
-          </p>
+          <p>{blokkade.tekst}</p>
           <ButtonLink
-            href="/zzpers/registreren?stap=bedrijf"
+            href={blokkade.href}
             variant="brand"
             size="sm"
             className="shrink-0 rounded-lg"
           >
-            KvK-nummer invullen
+            {blokkade.knop}
           </ButtonLink>
         </div>
       ) : null}
@@ -108,12 +102,12 @@ export function ProfielVoortgangKaart({
         </div>
       ) : null}
 
-      {compleet && !kvkOntbreekt ? (
+      {compleet && !blokkade ? (
         <div className="mt-5 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white">
             <Icon name="check" className="h-4 w-4" />
           </span>
-          Opdrachtgevers zien een volledig profiel. Goed bezig!
+          {klaarTekst}
         </div>
       ) : null}
 

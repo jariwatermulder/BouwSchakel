@@ -6,29 +6,12 @@ import {
   MIN_ZICHTBAAR_PCT,
   type OnderdeelStatus,
 } from "@/server/zzp/completeness";
+import type { Voortgang, VoortgangActie } from "@/lib/voortgang";
 
-/** Een concrete vervolgstap voor de zzp'er, met directe link naar de juiste plek. */
-export interface VoortgangActie {
-  id: string;
-  label: string;
-  actie: string;
-  href: string;
-  /** Procentpunten die dit oplevert; null voor tips die niet meetellen. */
-  procent: number | null;
-}
-
-export interface ProfielVoortgang {
-  pct: number;
-  minZichtbaarPct: number;
+export interface ProfielVoortgang extends Voortgang {
   zichtbaar: boolean;
   /** Ontbrekend KvK-nummer blokkeert de zichtbaarheid, los van het percentage. */
   kvkOntbreekt: boolean;
-  /** Onderdelen die nog procenten opleveren, zwaarste eerst. */
-  ontbrekend: VoortgangActie[];
-  /** Vervulde onderdelen (voor het overzicht). */
-  vervuld: OnderdeelStatus[];
-  /** Tips die niet meetellen in het percentage maar wel opvallen. */
-  tips: VoortgangActie[];
 }
 
 function stapHref(stap: OnderdeelStatus["stap"]): string {
@@ -36,8 +19,8 @@ function stapHref(stap: OnderdeelStatus["stap"]): string {
 }
 
 /**
- * Vertaalt een profiel naar een overzicht van wat er al staat en wat er nog
- * te halen valt, zodat de zzp'er niet zelf hoeft te zoeken.
+ * Vertaalt een zzp-profiel naar een overzicht van wat er al staat en wat er
+ * nog te halen valt, zodat de zzp'er niet zelf hoeft te zoeken.
  */
 export function berekenVoortgang(p: ProfileWithRelations | null): ProfielVoortgang {
   const input = {
@@ -63,7 +46,7 @@ export function berekenVoortgang(p: ProfileWithRelations | null): ProfielVoortga
   };
 
   const onderdelen = completenessOnderdelen(input);
-  const ontbrekend = onderdelen
+  const ontbrekend: VoortgangActie[] = onderdelen
     .filter((o) => !o.vervuld)
     .sort((a, b) => b.procent - a.procent)
     .map((o) => ({
@@ -103,13 +86,26 @@ export function berekenVoortgang(p: ProfileWithRelations | null): ProfielVoortga
     });
   }
 
+  const zichtbaar = p?.zichtbaar ?? false;
+  const kvkOntbreekt = !p?.kvkNummer;
+
   return {
     pct: p?.profielCompleetheidPct ?? computeCompleteness(input),
-    minZichtbaarPct: MIN_ZICHTBAAR_PCT,
-    zichtbaar: p?.zichtbaar ?? false,
-    kvkOntbreekt: !p?.kvkNummer,
     ontbrekend,
-    vervuld: onderdelen.filter((o) => o.vervuld),
     tips,
+    blokkade: kvkOntbreekt
+      ? {
+          tekst:
+            "KvK-nummer ontbreekt. Zonder KvK-nummer is je profiel niet zichtbaar, ook niet bij 100%.",
+          knop: "KvK-nummer invullen",
+          href: "/zzpers/registreren?stap=bedrijf",
+        }
+      : undefined,
+    toelichting: zichtbaar
+      ? undefined
+      : `Vanaf ${MIN_ZICHTBAAR_PCT}% en met een KvK-nummer word je zichtbaar voor opdrachtgevers.`,
+    klaarTekst: "Opdrachtgevers zien een volledig profiel. Houd je beschikbaarheid en tarief actueel.",
+    zichtbaar,
+    kvkOntbreekt,
   };
 }

@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/button";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/avatar";
-import { ProfielVoortgangKaart } from "@/components/zzp/profiel-voortgang";
+import { VoortgangKaart } from "@/components/voortgang-kaart";
 import { requireCurrentUser } from "@/lib/auth/current-user";
 import { getProfileWithRelations, MAX_PORTFOLIO_ITEMS } from "@/server/zzp/profile";
 import { berekenVoortgang } from "@/server/zzp/voortgang";
@@ -97,7 +97,7 @@ export default async function ProfielPage({
       ) : null}
 
       <div className="bs-load mt-6">
-        <ProfielVoortgangKaart voortgang={voortgang} compact />
+        <VoortgangKaart voortgang={voortgang} compact />
       </div>
 
       <Card id="profielfoto" className="bs-load mt-6 scroll-mt-24">
