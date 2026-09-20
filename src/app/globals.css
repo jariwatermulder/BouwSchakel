@@ -169,23 +169,15 @@ h3 {
 .shadow-soft { box-shadow: var(--shadow-soft); }
 .shadow-elevated { box-shadow: var(--shadow-elevated); }
 
-/* Kleine, hoofdletter-eyebrow boven sectiekoppen. */
+/* Kleine, hoofdletter-eyebrow boven sectiekoppen (zonder decoratief streepje,
+   zodat de tekst strak op de linkerlijn van de sectie staat). */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-block;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-brand-700);
-}
-.eyebrow::before {
-  content: "";
-  width: 1.5rem;
-  height: 2px;
-  border-radius: 9999px;
-  background: var(--color-brand-500);
 }
 
 /* Zachte radial-gradient sfeerlaag voor donkere hero's. */

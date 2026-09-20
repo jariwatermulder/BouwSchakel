@@ -7,6 +7,8 @@ import { Icon } from "@/components/home/pictos";
 import { Avatar } from "@/components/avatar";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import { AccountNodig } from "@/components/account-nodig";
 import {
   displayNaam,
   listPublicZzpers,
@@ -42,7 +44,7 @@ const POPULAIRE_VAKGEBIEDEN = [
 const stappen = [
   {
     titel: "Zoek op vak en regio",
-    tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
+    tekst: "Kies een vakgebied en je plaats. Met een gratis account als opdrachtgever zie je de passende profielen.",
     src: "/images/stap-1-zoeken.png",
     alt: "Telefoon met de ZZP Schakel-zoekfunctie: vakgebied en plaats invullen.",
   },
@@ -66,12 +68,21 @@ export default async function VindZzperPage({
   searchParams: Promise<{ vak?: string; plaats?: string }>;
 }) {
   const { vak, plaats } = await searchParams;
-  const [zzpers, vakgebieden] = await Promise.all([
-    listPublicZzpers({ vakSlug: vak, plaats }),
+  // Passende profielen zijn alleen met een account zichtbaar. Zonder account
+  // halen we ze ook niet op; de filters blijven wel bruikbaar en gaan mee in
+  // `next`, zodat de bezoeker na registreren/inloggen hier terugkomt.
+  const [user, vakgebieden] = await Promise.all([
+    getCurrentUser(),
     listVakgebiedenVoorFilter(),
   ]);
+  const zzpers = user ? await listPublicZzpers({ vakSlug: vak, plaats }) : [];
 
   const heeftFilter = Boolean(vak || plaats);
+  const query = new URLSearchParams();
+  if (vak) query.set("vak", vak);
+  if (plaats) query.set("plaats", plaats);
+  const qs = query.toString();
+  const huidigPad = qs ? `/vind-zzper?${qs}` : "/vind-zzper";
 
   return (
     <>
@@ -80,17 +91,18 @@ export default async function VindZzperPage({
           Vind een zzp’er
         </h1>
         <p className="text-foreground-muted mt-1">
-          Bekijk vakmensen en neem rechtstreeks contact op. Zoeken kan zonder
-          account; om contact op te nemen maak je een gratis account aan.
+          Zoek op vakgebied en regio. Om passende profielen te bekijken en
+          rechtstreeks contact op te nemen maak je gratis een account aan als
+          opdrachtgever.
         </p>
         <div className="text-foreground-muted mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
           <span className="inline-flex items-center gap-1.5">
             <span className="text-brand-600" aria-hidden>✓</span>
-            Zoeken zonder account
+            Gratis account als opdrachtgever
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="text-brand-600" aria-hidden>✓</span>
-            Account nodig om contact op te nemen
+            Rechtstreeks contact, geen tussenlaag
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="text-brand-600" aria-hidden>✓</span>
@@ -163,7 +175,11 @@ export default async function VindZzperPage({
           ))}
         </div>
 
-        {zzpers.length === 0 ? (
+        {!user ? (
+          <div className="mt-6">
+            <AccountNodig next={huidigPad} />
+          </div>
+        ) : zzpers.length === 0 ? (
           <div className="border-border mt-6 rounded-2xl border border-dashed p-10 text-center">
             <p className="text-foreground font-medium">
               Nog geen passende profielen voor deze zoekopdracht.

@@ -8,7 +8,7 @@ import { ButtonLink } from "@/components/ui/button";
  *
  * De cijfers zijn landelijke branchecijfers (aantal bedrijven in Nederland,
  * 2025) van Brookz op basis van CBS. Het zijn géén aantallen aangesloten
- * zzp'ers of profielen; dat staat daarom in de voetnoot onder de kaarten.
+ * zzp'ers of profielen; daarom staat er "…bedrijven in Nederland" bij.
  * Bronnen (geraadpleegd september 2026):
  *   https://www.brookz.nl/branche-informatie/dakdekkersbedrijf
  *   https://www.brookz.nl/branche-informatie/timmerbedrijf
@@ -123,11 +123,6 @@ export function Vakgebieden() {
             </li>
           ))}
         </ul>
-
-        <p className="text-foreground-muted mt-6 text-sm">
-          Aantallen: bedrijven in Nederland volgens Brookz, op basis van CBS.
-          Geen aantal aangesloten profielen.
-        </p>
       </Container>
     </section>
   );

@@ -18,8 +18,8 @@ const vragen = [
     a: "Nee. Tijdens de introductie is ZZP Schakel gratis, voor zowel opdrachtgevers als zzp’ers. Mocht daar iets in veranderen, dan laten we dat vooraf duidelijk weten.",
   },
   {
-    v: "Moet ik een account maken om te zoeken?",
-    a: "Nee. Je kunt zonder account vakmensen zoeken en profielen bekijken. Een account is alleen nodig om zelf een profiel aan te maken of om via het platform contact op te nemen.",
+    v: "Moet ik een account maken om profielen te bekijken?",
+    a: "Ja. Om passende profielen te bekijken en contact op te nemen maak je gratis een account aan als opdrachtgever. Zzp’ers maken een account aan om zelf een profiel te plaatsen.",
   },
   {
     v: "Moet ik een opdracht plaatsen om iemand te benaderen?",

@@ -25,7 +25,7 @@ const SETS: Record<
         img: "/images/zo-werkt/og-1.png",
         alt: "Zoek op vakgebied en plaats in de ZZP Schakel-app.",
         titel: "Zoek op vak en regio",
-        tekst: "Kies een vakgebied en je plaats. Zoeken kan zonder account.",
+        tekst: "Kies een vakgebied en je plaats. Met een gratis account als opdrachtgever zie je de passende profielen.",
       },
       {
         img: "/images/zo-werkt/og-2.png",

@@ -11,6 +11,7 @@ import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
 import { displayNaam, getPublicZzper } from "@/server/zzpers/directory";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { AccountNodig } from "@/components/account-nodig";
 import { neemContactOpAction } from "../actions";
 import { MeldProfielForm } from "../meld-profiel-form";
 
@@ -22,6 +23,9 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  // Zonder account tonen we geen profielgegevens, ook niet in de paginatitel.
+  const user = await getCurrentUser();
+  if (!user) return { title: "Profiel van een zzp'er", robots: { index: false } };
   const data = await getPublicZzper(id);
   if (!data) return { title: "Profiel niet gevonden" };
   const naam = displayNaam(data);
@@ -40,7 +44,27 @@ export default async function ZzperProfielPage({
   searchParams: Promise<{ gemeld?: string }>;
 }) {
   const [{ id }, { gemeld }] = await Promise.all([params, searchParams]);
-  const [data, user] = await Promise.all([getPublicZzper(id), getCurrentUser()]);
+  const user = await getCurrentUser();
+
+  // Profielen zijn alleen met een account zichtbaar. Na registreren of
+  // inloggen komt de bezoeker op dit profiel terug.
+  if (!user) {
+    return (
+      <Container className="max-w-4xl py-8 md:py-12">
+        <Link href="/vind-zzper" className="text-foreground-muted hover:text-foreground text-sm">
+          ← Terug naar zoeken
+        </Link>
+        <div className="mt-4">
+          <AccountNodig
+            next={`/vind-zzper/${id}`}
+            titel="Om dit profiel te bekijken maak je een account aan als opdrachtgever."
+          />
+        </div>
+      </Container>
+    );
+  }
+
+  const data = await getPublicZzper(id);
   if (!data) notFound();
 
   const p = data;

@@ -56,8 +56,8 @@ export default function TarievenPage() {
           <p className="text-brand-700 mt-3 text-3xl font-extrabold">Gratis</p>
           <ul className="mt-4 space-y-2">
             {[
-              "Zoeken op vakgebied en regio, zonder account",
-              "Profielen van vakmensen bekijken",
+              "Gratis account als opdrachtgever",
+              "Zoeken op vakgebied en regio en passende profielen bekijken",
               "Rechtstreeks contact opnemen via het platform",
             ].map((v) => (
               <li key={v} className="text-foreground-muted flex gap-2 text-sm">

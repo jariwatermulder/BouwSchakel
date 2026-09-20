@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 const punten = [
   {
-    t: "Zoeken zonder account",
-    d: "Zoek op vakgebied en regio en bekijk profielen — je hoeft je nergens eerst voor aan te melden.",
+    t: "Gratis account als opdrachtgever",
+    d: "Zoek op vakgebied en regio. Met een gratis account bekijk je de passende profielen en neem je rechtstreeks contact op.",
     icon: "match" as const,
   },
   {

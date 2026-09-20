@@ -133,8 +133,8 @@ export default function PrivacyPage() {
 
           <H>3. Wie je gegevens ziet</H>
           <p>
-            Je openbare profiel is zichtbaar voor iedereen die het platform
-            bezoekt, ook zonder account; jij bepaalt wat je daarin opneemt. Je
+            Je profiel is zichtbaar voor bezoekers van het platform die zijn
+            ingelogd met een account; jij bepaalt wat je daarin opneemt. Je
             e-mailadres en telefoonnummer tonen we niet openbaar; contact
             verloopt via berichten binnen het platform. Berichten zijn alleen
             zichtbaar voor de deelnemers en — bij een melding of klacht — voor

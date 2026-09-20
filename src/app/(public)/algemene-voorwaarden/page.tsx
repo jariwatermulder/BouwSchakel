@@ -46,8 +46,8 @@ export default function AlgemeneVoorwaardenPage() {
 
           <H>3. Account en toegang</H>
           <p>
-            Zoeken en profielen bekijken kan zonder account. Om contact op te
-            nemen of een profiel aan te maken is een account nodig. Je bent
+            Om profielen te bekijken, contact op te nemen of een profiel aan te
+            maken is een account nodig. Je bent
             verantwoordelijk voor de geheimhouding van je inloggegevens en voor
             alles wat er met je account gebeurt. Je houdt maximaal één account
             per persoon of onderneming aan, je gegevens zijn juist en actueel

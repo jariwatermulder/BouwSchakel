@@ -18,9 +18,9 @@ const faqs = [
       "Nee. Tijdens de introductie is ZZP Schakel gratis, voor zowel opdrachtgevers als zzp’ers.",
   },
   {
-    vraag: "Moet ik een account maken om te zoeken?",
+    vraag: "Moet ik een account maken om profielen te bekijken?",
     antwoord:
-      "Nee. Zoeken en profielen bekijken kan zonder account. Een account is alleen nodig om contact op te nemen met een zzp’er of om zelf een profiel aan te maken — zo weten beide partijen met wie ze praten.",
+      "Ja. Om passende profielen te bekijken en contact op te nemen maak je gratis een account aan als opdrachtgever — zo weten beide partijen met wie ze praten. Zzp’ers maken een account aan om zelf een profiel te plaatsen.",
   },
   {
     vraag: "Regelen jullie contracten, uren of betalingen?",
@@ -131,14 +131,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ───────────── Vakgebieden: drie kaarten naar de gefilterde etalage ───────────── */}
-      <Vakgebieden />
-
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}
       <ZoWerktHet />
 
-      {/* ───────────── Voor opdrachtgevers / Voor zzp'ers ───────────── */}
+      {/* ───────────── Voor opdrachtgevers ───────────── */}
       <VoorOpdrachtgevers />
+
+      {/* ───────────── Vakgebieden: drie kaarten naar de gefilterde etalage ───────────── */}
+      <Vakgebieden />
+
+      {/* ───────────── Voor zzp'ers ───────────── */}
       <VoorZzpers />
 
       {/* ───────────── Veelgestelde vragen ───────────── */}

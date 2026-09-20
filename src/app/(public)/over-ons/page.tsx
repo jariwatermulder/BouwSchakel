@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const waarden = [
   {
     titel: "Eenvoudig",
-    tekst: "Zoeken op vakgebied en regio, zonder account en zonder gedoe.",
+    tekst: "Zoeken op vakgebied en regio, met een gratis account en zonder gedoe.",
     icon: "match",
     kleur: "#0e9f6e",
   },
