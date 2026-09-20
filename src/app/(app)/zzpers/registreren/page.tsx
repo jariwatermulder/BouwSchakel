@@ -35,7 +35,7 @@ function stapDone(slug: StapSlug, p: ProfileWithRelations | null): boolean {
     case "persoonlijk":
       return !!p.voornaam && !!p.achternaam;
     case "vakgebied":
-      return p.skills.length > 0;
+      return p.skills.length > 0 || !!p.vakgebiedAnders;
     case "ervaring":
       return p.jarenErvaring != null;
     case "tarief":
@@ -141,7 +141,9 @@ export default async function RegistrerenPage({
           >
             {fout === "foto"
               ? "De foto kon niet worden gebruikt: kies een JPG, PNG of WebP van maximaal 8 MB."
-              : "Controleer de ingevulde velden en probeer het opnieuw."}
+              : fout === "anders"
+                ? "Je hebt 'Anders' aangevinkt: vul in wat je doet, of haal het vinkje weg."
+                : "Controleer de ingevulde velden en probeer het opnieuw."}
           </p>
         ) : null}
 

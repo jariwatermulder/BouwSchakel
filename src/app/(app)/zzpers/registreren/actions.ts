@@ -32,6 +32,18 @@ function checkbox(formData: FormData, name: string): boolean {
   return formData.get(name) === "on";
 }
 
+/** Tekst bij "Anders, namelijk…"; alleen meegenomen als het vinkje aanstaat. */
+function anders(formData: FormData): string | undefined {
+  if (!checkbox(formData, "andersAan")) return undefined;
+  const v = formData.get("anders");
+  return typeof v === "string" ? v : undefined;
+}
+
+/** Vinkje "Anders" aan, maar geen tekst ingevuld. */
+function andersLeeg(formData: FormData): boolean {
+  return checkbox(formData, "andersAan") && !anders(formData)?.trim();
+}
+
 /** Verwerkt één registratiestap en navigeert naar de volgende (of het dashboard). */
 export async function saveStap(formData: FormData): Promise<void> {
   const user = await requireCurrentRole("ZZP");
@@ -64,19 +76,29 @@ export async function saveStap(formData: FormData): Promise<void> {
       break;
     }
     case "vakgebied": {
+      if (andersLeeg(formData)) terug("anders");
       const p = vakgebiedSchema.safeParse({
         skillIds: formData.getAll("skillIds"),
+        anders: anders(formData),
       });
       if (!p.success) terug();
-      else await setSkills(user.id, p.data.skillIds);
+      else {
+        await updateProfileFields(user.id, { vakgebiedAnders: p.data.anders ?? null });
+        await setSkills(user.id, p.data.skillIds);
+      }
       break;
     }
     case "specialisatie": {
+      if (andersLeeg(formData)) terug("anders");
       const p = specialisatieSchema.safeParse({
         specializationIds: formData.getAll("specializationIds"),
+        anders: anders(formData),
       });
       if (!p.success) terug();
-      else await setSpecializations(user.id, p.data.specializationIds);
+      else {
+        await updateProfileFields(user.id, { specialisatieAnders: p.data.anders ?? null });
+        await setSpecializations(user.id, p.data.specializationIds);
+      }
       break;
     }
     case "ervaring": {
@@ -144,11 +166,16 @@ export async function saveStap(formData: FormData): Promise<void> {
       break;
     }
     case "certificaten": {
+      if (andersLeeg(formData)) terug("anders");
       const p = certificatenSchema.safeParse({
         certificationIds: formData.getAll("certificationIds"),
+        anders: anders(formData),
       });
       if (!p.success) terug();
-      else await setCertifications(user.id, p.data.certificationIds);
+      else {
+        await updateProfileFields(user.id, { certificatenAnders: p.data.anders ?? null });
+        await setCertifications(user.id, p.data.certificationIds);
+      }
       break;
     }
     case "portfolio": {

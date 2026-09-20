@@ -215,7 +215,12 @@ export default async function VindZzperPage({
                           <Icon name="shield" className="h-3 w-3" /> Geverifieerd
                         </span>
                       ) : null}
-                      {z.skills.slice(0, 3).map((s) => {
+                      {z.vakgebiedAnders ? (
+                        <span className="bg-brand-50 text-brand-700 rounded-full px-2 py-0.5 text-xs font-semibold">
+                          {z.vakgebiedAnders}
+                        </span>
+                      ) : null}
+                      {z.skills.slice(0, z.vakgebiedAnders ? 2 : 3).map((s) => {
                         const meta = sectorMetaVan(s.skill.slug);
                         return (
                           <span

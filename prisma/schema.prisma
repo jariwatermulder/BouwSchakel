@@ -154,6 +154,11 @@ model ZZPProfile {
   // Profielfoto (sleutel in de bestandsopslag; publiek, vierkant, WebP).
   fotoKey        String?
 
+  // "Anders, namelijk…": vrije tekst naast de keuzelijsten.
+  vakgebiedAnders     String?
+  specialisatieAnders String?
+  certificatenAnders  String?
+
   // Werkgebied (geocoding volgt later; nu plaats + straal)
   werkgebiedPlaats String?
   werkgebiedLat    Float?

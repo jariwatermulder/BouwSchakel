@@ -28,12 +28,27 @@ export const bedrijfSchema = z.object({
     .or(z.literal("").transform(() => undefined)),
 });
 
-export const vakgebiedSchema = z.object({
-  skillIds: z.array(z.string().uuid()).min(1, "Kies minstens één vakgebied"),
-});
+/** Vrije tekst bij "Anders, namelijk…" (max. 120 tekens, leeg = niet gebruikt). */
+export const andersSchema = z
+  .string()
+  .trim()
+  .max(120, "Houd het kort (max. 120 tekens)")
+  .optional()
+  .transform((v) => (v ? v : undefined));
+
+export const vakgebiedSchema = z
+  .object({
+    skillIds: z.array(z.string().uuid()).default([]),
+    anders: andersSchema,
+  })
+  .refine((v) => v.skillIds.length > 0 || !!v.anders, {
+    message: "Kies minstens één vakgebied of vul 'Anders' in",
+    path: ["skillIds"],
+  });
 
 export const specialisatieSchema = z.object({
   specializationIds: z.array(z.string().uuid()).default([]),
+  anders: andersSchema,
 });
 
 export const ervaringSchema = z.object({
@@ -69,6 +84,7 @@ export const materieelSchema = z.object({
 
 export const certificatenSchema = z.object({
   certificationIds: z.array(z.string().uuid()).default([]),
+  anders: andersSchema,
 });
 
 export const availabilitySchema = z.object({

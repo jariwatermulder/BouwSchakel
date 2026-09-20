@@ -64,9 +64,10 @@ export async function recomputeCompleteness(
     werkgebiedPlaats: p.werkgebiedPlaats,
     maxReisafstandKm: p.maxReisafstandKm,
     startdatum: p.startdatum,
-    skillsCount: p._count.skills,
-    specializationsCount: p._count.specializations,
-    certificationsCount: p._count.certifications,
+    // "Anders, namelijk…" telt mee als ingevulde keuze.
+    skillsCount: p._count.skills + (p.vakgebiedAnders ? 1 : 0),
+    specializationsCount: p._count.specializations + (p.specialisatieAnders ? 1 : 0),
+    certificationsCount: p._count.certifications + (p.certificatenAnders ? 1 : 0),
     availabilityCount: p._count.availability,
     eigenBus: p.eigenBus,
     eigenGereedschap: p.eigenGereedschap,
@@ -101,6 +102,9 @@ type ScalarProfileData = Pick<
   | "eigenGereedschap"
   | "vca"
   | "startdatum"
+  | "vakgebiedAnders"
+  | "specialisatieAnders"
+  | "certificatenAnders"
 >;
 
 export async function updateProfileFields(

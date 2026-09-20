@@ -96,10 +96,15 @@ export default async function ZzperProfielPage({
           ) : null}
 
           {/* Vakgebieden */}
-          {p.skills.length > 0 ? (
+          {p.skills.length > 0 || p.vakgebiedAnders ? (
             <div className="mt-6">
               <h2 className="text-sm font-semibold">Vakgebieden</h2>
               <div className="mt-2 flex flex-wrap gap-2">
+                {p.vakgebiedAnders ? (
+                  <span className="bg-brand-50 text-brand-700 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold">
+                    {p.vakgebiedAnders}
+                  </span>
+                ) : null}
                 {p.skills.map((s) => {
                   const meta = sectorMetaVan(s.skill.slug);
                   return (
@@ -147,10 +152,23 @@ export default async function ZzperProfielPage({
           ) : null}
 
           {/* Certificaten */}
-          {p.certifications.length > 0 ? (
+          {p.specialisatieAnders ? (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold">Specialisatie</h2>
+              <p className="text-foreground-muted mt-2 text-sm">{p.specialisatieAnders}</p>
+            </div>
+          ) : null}
+
+          {p.certifications.length > 0 || p.certificatenAnders ? (
             <div className="mt-6">
               <h2 className="text-sm font-semibold">Certificaten</h2>
               <div className="mt-2 flex flex-wrap gap-2">
+                {p.certificatenAnders ? (
+                  <span className="border-border bg-surface inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm">
+                    <Icon name="shield" className="text-foreground-muted h-3.5 w-3.5" />
+                    {p.certificatenAnders}
+                  </span>
+                ) : null}
                 {p.certifications.map((c) => (
                   <span
                     key={c.id}

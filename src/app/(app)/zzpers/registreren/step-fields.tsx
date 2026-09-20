@@ -29,6 +29,43 @@ function CheckboxCard({
   );
 }
 
+/**
+ * "Anders, namelijk…": vinkje + tekstveld dat verschijnt zodra het vinkje
+ * aanstaat (CSS-only via group-has). Wordt gebruikt bij vakgebied,
+ * specialisatie en certificaten.
+ */
+function AndersOptie({
+  waarde,
+  label,
+  placeholder,
+}: {
+  waarde: string | null | undefined;
+  label: string;
+  placeholder: string;
+}) {
+  const aan = Boolean(waarde);
+  return (
+    <div className="group border-border has-[:checked]:border-navy-500 has-[:checked]:bg-navy-50 mt-3 rounded-lg border p-3">
+      <label className="flex cursor-pointer items-center gap-2 text-sm">
+        <input type="checkbox" name="andersAan" defaultChecked={aan} />
+        {label}
+      </label>
+      <div className="mt-2 hidden group-has-[:checked]:block">
+        <Input
+          name="anders"
+          maxLength={120}
+          defaultValue={waarde ?? ""}
+          placeholder={placeholder}
+          aria-label={label}
+        />
+        <p className="text-foreground-muted mt-1 text-xs">
+          Kort en duidelijk, max. 120 tekens. Dit komt op je profiel te staan.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function StepFields({
   slug,
   profile,
@@ -142,6 +179,11 @@ export function StepFields({
               Er zijn nog geen vakgebieden geconfigureerd.
             </p>
           ) : null}
+          <AndersOptie
+            waarde={profile?.vakgebiedAnders}
+            label="Anders, namelijk…"
+            placeholder="Bijv. glaszetter, hovenier of allround klusser"
+          />
         </fieldset>
       );
 
@@ -153,8 +195,8 @@ export function StepFields({
           </legend>
           {specializations.length === 0 ? (
             <p className="text-foreground-muted text-sm">
-              Kies eerst een vakgebied om specialisaties te zien, of sla deze
-              stap over.
+              Kies eerst een vakgebied om specialisaties te zien, of beschrijf
+              hieronder zelf waar je goed in bent.
             </p>
           ) : (
             <div className="grid gap-2 sm:grid-cols-2">
@@ -169,6 +211,11 @@ export function StepFields({
               ))}
             </div>
           )}
+          <AndersOptie
+            waarde={profile?.specialisatieAnders}
+            label="Anders, namelijk…"
+            placeholder="Bijv. renovatie van monumentale panden"
+          />
         </fieldset>
       );
 
@@ -347,6 +394,11 @@ export function StepFields({
               ))}
             </div>
           )}
+          <AndersOptie
+            waarde={profile?.certificatenAnders}
+            label="Ander certificaat of diploma, namelijk…"
+            placeholder="Bijv. BHV, hoogwerker of asbestherkenning"
+          />
         </fieldset>
       );
 

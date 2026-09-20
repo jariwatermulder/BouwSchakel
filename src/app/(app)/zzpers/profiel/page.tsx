@@ -66,6 +66,9 @@ export default async function ProfielPage({
                 {s.skill.naam}
               </Badge>
             ))}
+            {p?.vakgebiedAnders ? (
+              <Badge variant="accent">{p.vakgebiedAnders}</Badge>
+            ) : null}
             {p?.verificatieStatus === "GEVERIFIEERD" ? (
               <Badge variant="verified">Geverifieerd</Badge>
             ) : (
@@ -181,11 +184,17 @@ export default async function ProfielPage({
                 {s.specialization.naam}
               </Badge>
             ))}
+            {p?.specialisatieAnders ? (
+              <Badge variant="neutral">{p.specialisatieAnders}</Badge>
+            ) : null}
             {p?.certifications.map((c) => (
               <Badge key={c.certificationId} variant="neutral">
                 {c.certification.naam}
               </Badge>
             ))}
+            {p?.certificatenAnders ? (
+              <Badge variant="neutral">{p.certificatenAnders}</Badge>
+            ) : null}
           </div>
         </Card>
       </div>
