@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 import { Icon } from "@/components/home/pictos";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
+import { Vakgebieden } from "@/components/home/vakgebieden";
 import { VoorOpdrachtgevers, VoorZzpers } from "@/components/home/voor-wie";
 
 const faqs = [
@@ -129,6 +130,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ───────────── Vakgebieden: drie kaarten naar de gefilterde etalage ───────────── */}
+      <Vakgebieden />
 
       {/* ───────────── Zo werkt het (interactieve toggle) ───────────── */}
       <ZoWerktHet />

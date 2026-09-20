@@ -153,6 +153,18 @@ h3 {
 .bs-lift { transition: transform 0.25s var(--ease-standard), box-shadow 0.25s var(--ease-standard); }
 .bs-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-elevated); }
 
+/* Vakgebiedkaarten: subtiel diagonaal afgesneden hoek rechtsboven en linksonder. */
+.vg-hoek {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 18px) 0,
+    100% 18px,
+    100% 100%,
+    18px 100%,
+    0 calc(100% - 18px)
+  );
+}
+
 /* Premium schaduw-utilities. */
 .shadow-soft { box-shadow: var(--shadow-soft); }
 .shadow-elevated { box-shadow: var(--shadow-elevated); }
