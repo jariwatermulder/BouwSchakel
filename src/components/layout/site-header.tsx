@@ -47,7 +47,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
       <Container
         className={cn(
           "flex items-center justify-between transition-all duration-300 ease-out",
-          scrolled ? "h-14" : "h-16",
+          scrolled ? "h-14 md:h-[68px]" : "h-16 md:h-[76px]",
         )}
       >
         <Link
@@ -65,12 +65,12 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           />
         </Link>
 
-        <nav aria-label="Hoofdmenu" className="hidden items-center gap-6 md:flex">
+        <nav aria-label="Hoofdmenu" className="hidden items-center gap-6 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="relative text-sm font-medium text-white/85 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
+              className="relative text-sm font-medium whitespace-nowrap text-white/85 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-white after:transition-all after:duration-300 hover:after:w-full motion-reduce:after:transition-none"
             >
               {item.label}
             </Link>
@@ -78,7 +78,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
         </nav>
 
         {/* Acties op desktop */}
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 whitespace-nowrap lg:flex">
           {user ? (
             <>
               <ButtonLink
@@ -129,7 +129,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
           aria-expanded={open}
           aria-controls="mobiel-menu"
           aria-label={open ? "Menu sluiten" : "Menu openen"}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-white hover:bg-white/10 lg:hidden"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-6 w-6">
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
@@ -139,7 +139,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
 
       {/* Uitklapmenu op mobiel */}
       {open ? (
-        <div id="mobiel-menu" className="border-t border-white/15 md:hidden">
+        <div id="mobiel-menu" className="border-t border-white/15 lg:hidden">
           <Container className="flex flex-col py-3">
             {navItems.map((item) => (
               <Link

@@ -6,15 +6,13 @@ import Image from "next/image";
 /**
  * Hero-fotografie als onderdeel van de interface.
  *
- * Eén foto (/images/hero.webp, 1536×1024, originele 3:2-compositie met rustige
- * ruimte links en de twee personen rechts). Op desktop vult de foto de
- * rechter 68% van de hero, van navigatiebalk tot onderrand en tot aan de
- * rechterrand van het scherm. Aan de linkerkant maakt een CSS-masker de foto
- * langzaam zichtbaar vanuit de echte paginakleur (0% → 15% vrijwel niets,
- * 30% duidelijk, 45% volledig), zodat niet te zien is waar de afbeelding
- * technisch begint. De foto is rechts uitgelijnd en op desktop licht vergroot
- * (1.04) vanuit de rechterkant: de rechter persoon komt iets dichterbij en
- * mag net buiten de rand vallen; gezichten en tablet blijven vrij.
+ * Bron: /images/hero.webp (1536×1024, originele 3:2-compositie: rustige ruimte
+ * links, de twee personen rechts). Vanaf xl vult de foto de rechterzijde van
+ * de hero, van navigatiebalk tot onderrand en tot aan de rechterrand van het
+ * scherm, rechts uitgelijnd op ware grootte (geen zoom, zodat de rechter
+ * persoon niet extra wordt afgesneden). De overgang naar het lichte tekstvlak
+ * is een kort CSS-masker (180 px) dat uitsluitend over de lege achtergrond
+ * links loopt; de contouren van beide personen blijven volledig intact.
  *
  * Laden: opacity 0→1 en scale 1.035→1 (zie .hero-foto in globals.css).
  * Scrollen: parallax van maximaal 8 px. Beide uit bij prefers-reduced-motion.
@@ -23,7 +21,7 @@ const FOTO = "/images/hero.webp";
 const ALT =
   "Een opdrachtgever en een zzp'er overleggen bij een bestelbus over de planning van een klus.";
 const MASKER =
-  "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.04) 15%, rgba(0,0,0,0.55) 30%, #000 45%, #000 100%)";
+  "linear-gradient(to right, transparent 0px, rgba(0,0,0,0.08) 70px, rgba(0,0,0,0.6) 125px, #000 180px)";
 
 export function HeroFoto() {
   const parallax = useRef<HTMLDivElement>(null);
@@ -32,7 +30,7 @@ export function HeroFoto() {
     const el = parallax.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+    if (!window.matchMedia("(min-width: 1280px)").matches) return;
     let raf = 0;
     const update = () => {
       raf = 0;
@@ -51,19 +49,16 @@ export function HeroFoto() {
   }, []);
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[3/2] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[62%] xl:w-[68%]">
+    <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[3/2] xl:absolute xl:inset-y-0 xl:right-0 xl:aspect-auto xl:w-[62%] 2xl:w-[58%]">
       <div ref={parallax} className="absolute inset-0 will-change-transform">
-        <div
-          className="hero-foto absolute inset-0"
-          style={{ WebkitMaskImage: MASKER, maskImage: MASKER }}
-        >
+        <div className="hero-foto absolute inset-0 xl:[mask-image:var(--hero-masker)] xl:[-webkit-mask-image:var(--hero-masker)]" style={{ ["--hero-masker" as string]: MASKER }}>
           <Image
             src={FOTO}
             alt={ALT}
             fill
             priority
-            sizes="(min-width: 1024px) 70vw, 100vw"
-            className="object-cover object-[100%_35%] lg:object-[100%_30%] lg:scale-[1.04] lg:[transform-origin:100%_40%]"
+            sizes="(min-width: 1280px) 62vw, 100vw"
+            className="object-cover object-[100%_35%] xl:object-[100%_30%]"
           />
         </div>
       </div>
