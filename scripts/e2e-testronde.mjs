@@ -169,14 +169,22 @@ await step("Portfolio-item toevoegen en verwijderen", async () => {
   await z.click('form:has(input[name="itemId"]) button[type="submit"]'); await z.waitForTimeout(1500);
   n = await db.portfolioItem.count({ where: { zzpProfileId: zzpProfile.id } }); assert(n === 0, "item niet verwijderd");
 });
-await step("Publiek profiel zichtbaar voor gast (privacy: voornaam + initiaal)", async () => {
+await step("Gast ziet profiel niet, wel het accountblok (geen naam/telefoon lekt)", async () => {
   const r = await g.goto(BASE + "/vind-zzper/" + zzpProfile.id); assert(r.status() === 200);
-  const h1 = await g.textContent("h1"); assert(h1.includes("Erik T."), "naam: " + h1);
-  assert(!(await g.content()).includes("0612345678"), "telefoonnummer lekt");
-  await g.screenshot({ path: SHOTS + "/publiek-profiel.png", fullPage: true });
+  const html = await g.content();
+  assert(html.includes("Om dit profiel te bekijken maak je een account aan als opdrachtgever"), "accountblok ontbreekt");
+  assert(!html.includes("Erik T."), "naam lekt naar gast");
+  assert(!html.includes("0612345678"), "telefoonnummer lekt");
+  const reg = await g.getAttribute('a[href^="/registreren?rol=bedrijf"]', "href");
+  assert(reg?.includes(encodeURIComponent("/vind-zzper/" + zzpProfile.id)), "next ontbreekt: " + reg);
+  await g.screenshot({ path: SHOTS + "/gast-profiel-accountblok.png", fullPage: true });
 });
-await step("Gast op etalage vindt het profiel via filter plaats", async () => {
-  await g.goto(BASE + "/vind-zzper?plaats=Groningen"); await g.waitForSelector("text=Erik T.");
+await step("Gast op etalage ziet accountblok met behoud van filter", async () => {
+  await g.goto(BASE + "/vind-zzper?plaats=Groningen");
+  await g.waitForSelector("text=Om passende profielen te bekijken maak je een account aan als opdrachtgever");
+  assert(!(await g.content()).includes("Erik T."), "profiel lekt naar gast");
+  const login = await g.getAttribute('a[href^="/inloggen?next="]', "href");
+  assert(login?.includes(encodeURIComponent("/vind-zzper?plaats=Groningen")), "next ontbreekt: " + login);
 });
 
 // ── 4. Bedrijf registreren en contact opnemen ─────────────────────────────
@@ -190,6 +198,13 @@ await step("Bedrijfsprofiel opslaan", async () => {
   await b.fill('input[name="naam"]', "Bouwbedrijf Test BV"); await b.fill('input[name="contactpersoon"]', "Petra Test"); await b.fill('input[name="regio"]', "Groningen");
   await Promise.all([b.waitForURL(u => !u.pathname.startsWith("/bedrijven/registreren")), b.click('button[type="submit"]')]);
   const c = await db.company.findFirst({ where: { members: { some: { userId: bedrijfUser.id } } } }); assert(c?.naam === "Bouwbedrijf Test BV"); companyId = c.id;
+});
+await step("Ingelogd bedrijf ziet profiel (privacy: voornaam + initiaal) en vindt het via filter plaats", async () => {
+  const r = await b.goto(BASE + "/vind-zzper/" + zzpProfile.id); assert(r.status() === 200);
+  const h1 = await b.textContent("h1"); assert(h1.includes("Erik T."), "naam: " + h1);
+  assert(!(await b.content()).includes("0612345678"), "telefoonnummer lekt");
+  await b.screenshot({ path: SHOTS + "/profiel-ingelogd.png", fullPage: true });
+  await b.goto(BASE + "/vind-zzper?plaats=Groningen"); await b.waitForSelector("text=Erik T.");
 });
 await step("'Neem contact op' opent een gesprek", async () => {
   await b.goto(BASE + "/vind-zzper/" + zzpProfile.id);
@@ -240,7 +255,11 @@ await step("Bedrijf meldt een profiel → report in beheer", async () => {
   await Promise.all([b.waitForURL(/gemeld=1/), b.click("text=Melding versturen")]);
   const r = await db.report.findFirst({ where: { melderUserId: bedrijfUser.id, subjectId: zzpProfile.id } }); assert(r?.reden === "SPAM");
 });
-await step("Gast ziet bij melden alleen een inloglink", async () => { await g.goto(BASE + "/vind-zzper/" + zzpProfile.id); await g.waitForSelector("text=Log in om dit profiel te melden"); });
+await step("Gast kan niet melden: ziet alleen het accountblok", async () => {
+  await g.goto(BASE + "/vind-zzper/" + zzpProfile.id);
+  await g.waitForSelector("text=Om dit profiel te bekijken maak je een account aan als opdrachtgever");
+  assert(!(await g.content()).includes('name="zzpProfileId"'), "meld-/contactformulier zichtbaar voor gast");
+});
 
 // ── 6. Wachtwoord vergeten / herstellen ───────────────────────────────────
 const NEW_PW = "NieuwWachtwoord2026!";
@@ -301,7 +320,8 @@ await step("Admin: zzp-profiel verifiëren → label op publiek profiel", async 
   const form = a.locator("form", { has: a.locator(`input[value="${zzpProfile.id}"]`) }).first();
   await form.locator("select").selectOption("GEVERIFIEERD"); await form.locator('button[type="submit"]').click(); await a.waitForTimeout(1500);
   const p = await db.zZPProfile.findUnique({ where: { id: zzpProfile.id } }); assert(p.verificatieStatus === "GEVERIFIEERD");
-  await g.goto(BASE + "/vind-zzper/" + zzpProfile.id); await g.waitForSelector("text=Geverifieerd");
+  // Profielen zijn alleen met een account zichtbaar: controleer als ingelogd bedrijf.
+  await b.goto(BASE + "/vind-zzper/" + zzpProfile.id); await b.waitForSelector("text=Geverifieerd");
 });
 await step("Admin: gebruiker blokkeren → inloggen faalt; deblokkeren → lukt weer", async () => {
   await a.goto(BASE + "/admin/gebruikers?zoek=" + encodeURIComponent(ZZP.email));
