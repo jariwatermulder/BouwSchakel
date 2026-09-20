@@ -22,7 +22,7 @@ const SETS: Record<
     label: "Voor opdrachtgevers",
     stappen: [
       {
-        img: "/images/zo-werkt/og-1.png",
+        img: "/images/zo-werkt/zoeken-telefoon.png",
         alt: "Zoek op vakgebied en plaats in de ZZP Schakel-app.",
         titel: "Zoek op vak en regio",
         tekst: "Kies een vakgebied en je plaats. Met een gratis account als opdrachtgever zie je de passende profielen.",
@@ -47,7 +47,7 @@ const SETS: Record<
     label: "Voor zzp’ers",
     stappen: [
       {
-        img: "/images/zo-werkt/zzp-1.png",
+        img: "/images/zo-werkt/profiel-aanmaken.png",
         alt: "Een zzp’er maakt een profiel aan op ZZP Schakel.",
         titel: "Maak gratis je profiel",
         tekst:
