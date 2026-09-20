@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { bedrijfOnboardingPad } from "@/server/company/service";
 import {
   GeenToegangError,
   startDirectConversation,
@@ -21,6 +22,12 @@ export async function neemContactOpAction(formData: FormData): Promise<void> {
     redirect(
       `/registreren?rol=bedrijf&next=${encodeURIComponent(terug)}`,
     );
+  }
+
+  // Zonder bedrijfsnaam en KvK-nummer eerst het bedrijfsprofiel afmaken.
+  if (user.role === "COMPANY") {
+    const onboarding = await bedrijfOnboardingPad(user.id, terug);
+    if (onboarding) redirect(onboarding);
   }
 
   let conversationId: string;

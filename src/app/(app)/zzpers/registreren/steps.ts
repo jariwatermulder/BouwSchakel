@@ -7,10 +7,10 @@
  */
 export const REGISTRATIE_STAPPEN = [
   { slug: "persoonlijk", label: "Naam", kern: true },
+  { slug: "bedrijf", label: "KvK & bedrijf", kern: true },
   { slug: "vakgebied", label: "Vakgebied", kern: true },
   { slug: "werkgebied", label: "Plaats & werkgebied", kern: true },
   { slug: "beschikbaarheid", label: "Beschikbaarheid", kern: true },
-  { slug: "bedrijf", label: "Bedrijfsgegevens", kern: false },
   { slug: "ervaring", label: "Ervaring & introductie", kern: false },
   { slug: "tarief", label: "Tarief", kern: false },
   { slug: "specialisatie", label: "Specialisatie", kern: false },

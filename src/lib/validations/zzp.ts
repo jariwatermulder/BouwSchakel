@@ -20,12 +20,12 @@ export const persoonlijkSchema = z.object({
 
 export const bedrijfSchema = z.object({
   bedrijfsnaam: optionalTrimmed,
+  // Verplicht: zonder KvK-nummer wordt een profiel niet zichtbaar.
   kvkNummer: z
     .string()
     .trim()
-    .regex(/^\d{8}$/u, "KvK-nummer bestaat uit 8 cijfers")
-    .optional()
-    .or(z.literal("").transform(() => undefined)),
+    .min(1, "KvK-nummer is verplicht")
+    .regex(/^\d{8}$/u, "KvK-nummer bestaat uit 8 cijfers"),
 });
 
 /** Vrije tekst bij "Anders, namelijk…" (max. 120 tekens, leeg = niet gebruikt). */

@@ -7,7 +7,9 @@ import { Icon } from "@/components/home/pictos";
 import { Avatar } from "@/components/avatar";
 import { sectorMetaVan } from "@/lib/sector-meta";
 import { formatEuro } from "@/lib/utils";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { bedrijfOnboardingPad } from "@/server/company/service";
 import { AccountNodig } from "@/components/account-nodig";
 import {
   displayNaam,
@@ -75,7 +77,6 @@ export default async function VindZzperPage({
     getCurrentUser(),
     listVakgebiedenVoorFilter(),
   ]);
-  const zzpers = user ? await listPublicZzpers({ vakSlug: vak, plaats }) : [];
 
   const heeftFilter = Boolean(vak || plaats);
   const query = new URLSearchParams();
@@ -83,6 +84,14 @@ export default async function VindZzperPage({
   if (plaats) query.set("plaats", plaats);
   const qs = query.toString();
   const huidigPad = qs ? `/vind-zzper?${qs}` : "/vind-zzper";
+
+  // Opdrachtgevers vullen eerst bedrijfsnaam en KvK-nummer in.
+  if (user?.role === "COMPANY") {
+    const onboarding = await bedrijfOnboardingPad(user.id, huidigPad);
+    if (onboarding) redirect(onboarding);
+  }
+
+  const zzpers = user ? await listPublicZzpers({ vakSlug: vak, plaats }) : [];
 
   return (
     <>

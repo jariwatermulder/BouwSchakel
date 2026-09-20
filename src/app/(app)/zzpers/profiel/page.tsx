@@ -131,6 +131,26 @@ export default async function ProfielPage({
         </div>
       </Card>
 
+      {p && !p.kvkNummer ? (
+        <div
+          role="alert"
+          className="mt-6 flex flex-col gap-3 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p>
+            <strong>Je KvK-nummer ontbreekt.</strong> Zonder KvK-nummer is je
+            profiel niet zichtbaar voor opdrachtgevers.
+          </p>
+          <ButtonLink
+            href="/zzpers/registreren?stap=bedrijf"
+            variant="brand"
+            size="sm"
+            className="shrink-0 rounded-lg"
+          >
+            KvK-nummer invullen
+          </ButtonLink>
+        </div>
+      ) : null}
+
       {p ? (
         <Card className="bs-load mt-6">
           <div className="flex items-center justify-between">

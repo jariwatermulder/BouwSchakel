@@ -74,14 +74,15 @@ export async function recomputeCompleteness(
     vca: p.vca,
   });
 
+  // Zonder KvK-nummer is een profiel nooit zichtbaar. Met KvK-nummer gaat de
+  // zichtbaarheid aan bij voldoende compleetheid en nooit meer terug op false
+  // zolang de drempel gehaald blijft.
+  const heeftKvk = !!p.kvkNummer;
+  const zichtbaar = heeftKvk && (pct >= MIN_ZICHTBAAR_PCT || p.zichtbaar);
+
   await db.zZPProfile.update({
     where: { id: profileId },
-    data: {
-      profielCompleetheidPct: pct,
-      // Zichtbaarheid pas aanzetten bij voldoende compleet; nooit terugzetten
-      // op false zolang de drempel gehaald blijft.
-      zichtbaar: pct >= MIN_ZICHTBAAR_PCT ? true : p.zichtbaar,
-    },
+    data: { profielCompleetheidPct: pct, zichtbaar },
   });
   return pct;
 }

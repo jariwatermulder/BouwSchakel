@@ -30,7 +30,7 @@ export function CompanyForm({
           <Input id="naam" name="naam" defaultValue={company.naam} required />
         </div>
         <div>
-          <Label htmlFor="kvkNummer">KvK-nummer (optioneel)</Label>
+          <Label htmlFor="kvkNummer">KvK-nummer</Label>
           <Input
             id="kvkNummer"
             name="kvkNummer"
@@ -38,6 +38,7 @@ export function CompanyForm({
             pattern="\d{8}"
             placeholder="8 cijfers"
             defaultValue={company.kvkNummer ?? ""}
+            required
           />
         </div>
         <div>

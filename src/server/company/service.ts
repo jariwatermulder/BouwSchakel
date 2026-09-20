@@ -34,6 +34,28 @@ export async function getCompanyForUser(
   return membership?.company ?? null;
 }
 
+/**
+ * Een opdrachtgever kan pas verder (etalage, profielen, contact) als het
+ * bedrijfsprofiel een naam én een KvK-nummer heeft.
+ */
+export function bedrijfCompleet(company: Pick<Company, "naam" | "kvkNummer"> | null): boolean {
+  return !!company && company.naam.trim() !== "" && !!company.kvkNummer;
+}
+
+/**
+ * Pad waarnaar een opdrachtgever zonder compleet bedrijfsprofiel wordt
+ * gestuurd, of null als alles in orde is. `terug` is het pad om na het
+ * invullen naar terug te keren.
+ */
+export async function bedrijfOnboardingPad(
+  userId: string,
+  terug: string,
+): Promise<string | null> {
+  const company = await getCompanyForUser(userId);
+  if (bedrijfCompleet(company)) return null;
+  return `/bedrijven/registreren?next=${encodeURIComponent(terug)}`;
+}
+
 /** Controleert of een gebruiker lid is van het bedrijf (autorisatie). */
 export async function getMembership(
   userId: string,

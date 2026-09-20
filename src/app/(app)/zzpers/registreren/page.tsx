@@ -34,6 +34,8 @@ function stapDone(slug: StapSlug, p: ProfileWithRelations | null): boolean {
   switch (slug) {
     case "persoonlijk":
       return !!p.voornaam && !!p.achternaam;
+    case "bedrijf":
+      return !!p.kvkNummer;
     case "vakgebied":
       return p.skills.length > 0 || !!p.vakgebiedAnders;
     case "ervaring":
@@ -128,9 +130,9 @@ export default async function RegistrerenPage({
 
         {kern ? (
           <div className="border-brand-100 bg-brand-50 text-brand-700 mt-4 rounded-lg border p-3 text-sm">
-            Zodra je naam, vakgebied en werkgebied zijn ingevuld, staat je
-            profiel online en kunnen opdrachtgevers je vinden. De rest vul je
-            later aan.
+            Zodra je naam, KvK-nummer, vakgebied en werkgebied zijn ingevuld,
+            staat je profiel online en kunnen opdrachtgevers je vinden. De
+            rest vul je later aan.
           </div>
         ) : null}
 

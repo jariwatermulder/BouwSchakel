@@ -34,7 +34,7 @@ export async function saveCompany(
 
   await updateCompany(user.id, {
     naam: parsed.data.naam,
-    kvkNummer: parsed.data.kvkNummer ?? null,
+    kvkNummer: parsed.data.kvkNummer,
     contactpersoon: parsed.data.contactpersoon ?? null,
     telefoon: parsed.data.telefoon ?? null,
     website: parsed.data.website ?? null,

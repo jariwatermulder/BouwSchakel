@@ -9,12 +9,12 @@ const optioneel = z
 
 export const companySchema = z.object({
   naam: z.string().trim().min(1, "Bedrijfsnaam is verplicht").max(160),
+  // Verplicht: zonder KvK-nummer kan een opdrachtgever niet verder.
   kvkNummer: z
     .string()
     .trim()
-    .regex(/^\d{8}$/u, "KvK-nummer bestaat uit 8 cijfers")
-    .optional()
-    .or(z.literal("").transform(() => undefined)),
+    .min(1, "KvK-nummer is verplicht")
+    .regex(/^\d{8}$/u, "KvK-nummer bestaat uit 8 cijfers"),
   contactpersoon: optioneel,
   telefoon: optioneel,
   website: z

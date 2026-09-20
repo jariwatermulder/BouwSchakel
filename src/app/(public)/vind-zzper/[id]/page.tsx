@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { bedrijfOnboardingPad } from "@/server/company/service";
 import { Container } from "@/components/ui/container";
 import { Card, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
@@ -62,6 +63,12 @@ export default async function ZzperProfielPage({
         </div>
       </Container>
     );
+  }
+
+  // Opdrachtgevers vullen eerst bedrijfsnaam en KvK-nummer in.
+  if (user.role === "COMPANY") {
+    const onboarding = await bedrijfOnboardingPad(user.id, `/vind-zzper/${id}`);
+    if (onboarding) redirect(onboarding);
   }
 
   const data = await getPublicZzper(id);

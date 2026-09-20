@@ -127,15 +127,7 @@ export function StepFields({
       return (
         <div className="space-y-4">
           <div>
-            <Label htmlFor="bedrijfsnaam">Bedrijfsnaam (optioneel)</Label>
-            <Input
-              id="bedrijfsnaam"
-              name="bedrijfsnaam"
-              defaultValue={profile?.bedrijfsnaam ?? ""}
-            />
-          </div>
-          <div>
-            <Label htmlFor="kvkNummer">KvK-nummer (optioneel)</Label>
+            <Label htmlFor="kvkNummer">KvK-nummer</Label>
             <Input
               id="kvkNummer"
               name="kvkNummer"
@@ -143,6 +135,19 @@ export function StepFields({
               pattern="\d{8}"
               placeholder="8 cijfers"
               defaultValue={profile?.kvkNummer ?? ""}
+              required
+            />
+            <p className="text-foreground-muted mt-1 text-xs">
+              Verplicht: zonder KvK-nummer wordt je profiel niet zichtbaar
+              voor opdrachtgevers.
+            </p>
+          </div>
+          <div>
+            <Label htmlFor="bedrijfsnaam">Bedrijfsnaam (optioneel)</Label>
+            <Input
+              id="bedrijfsnaam"
+              name="bedrijfsnaam"
+              defaultValue={profile?.bedrijfsnaam ?? ""}
             />
           </div>
         </div>

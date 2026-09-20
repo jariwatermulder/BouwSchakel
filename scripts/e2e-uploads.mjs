@@ -52,7 +52,8 @@ await step("Zzp'er registreren + kernprofiel", async () => {
   await z.fill('input[name="email"]', ZZP.email); await z.fill('input[name="password"]', ZZP.pw); await z.check('input[name="akkoord"]');
   await Promise.all([z.waitForURL(/zzpers\/registreren/), z.click('button[type="submit"]')]);
   await z.fill('input[name="voornaam"]', "Foto"); await z.fill('input[name="achternaam"]', "Tester"); await z.fill('input[name="telefoon"]', "0611111111");
-  await Promise.all([z.waitForURL(/stap=vakgebied/), z.click('button[type="submit"]')]);
+  await Promise.all([z.waitForURL(/stap=bedrijf/), z.click('button[type="submit"]')]);
+  await z.fill('input[name="kvkNummer"]', "12345678"); await Promise.all([z.waitForURL(/stap=vakgebied/), z.click('button[type="submit"]')]);
   await z.check('input[name="skillIds"] >> nth=0'); await Promise.all([z.waitForURL(/stap=werkgebied/), z.click('button[type="submit"]')]);
   await z.fill('input[name="werkgebiedPlaats"]', "Assen"); await z.fill('input[name="maxReisafstandKm"]', "40");
   await Promise.all([z.waitForURL(/stap=beschikbaarheid/), z.click('button[type="submit"]')]);
@@ -78,12 +79,12 @@ await step("Foto publiek bereikbaar via /api/bestanden met lange cache", async (
   assert(r.status === 200 && r.headers.get("content-type") === "image/webp", `${r.status} ${r.headers.get("content-type")}`);
   assert(r.headers.get("cache-control")?.includes("immutable"), r.headers.get("cache-control"));
 });
-await step("Publiek profiel en etalage tonen de foto", async () => {
-  const g = await (await browser.newContext()).newPage();
+await step("Profiel en etalage tonen de foto (ingelogd; zonder account niet zichtbaar)", async () => {
+  const g = z;
   await g.goto(BASE + "/vind-zzper/" + profile.id);
   const src = await g.getAttribute('img[alt^="Profielfoto van"]', "src"); assert(src?.includes(profile.fotoKey.split("/").pop()), "src: " + src);
   await g.goto(BASE + "/vind-zzper?plaats=Assen"); await g.waitForSelector('img[alt^="Profielfoto van"]');
-  await g.screenshot({ path: SHOTS + "/etalage-foto.png" }); await g.context().close();
+  await g.screenshot({ path: SHOTS + "/etalage-foto.png" });
 });
 await step("Nieuwe foto vervangt de oude (oude bestand opgeruimd)", async () => {
   const oud = profile.fotoKey;
@@ -112,9 +113,9 @@ await step("Portfolio-item met foto → verkleind (max 1600) en op publiek profi
   const item = await db.portfolioItem.findFirst({ where: { zzpProfileId: profile.id } }); assert(item?.afbeeldingKey, "geen afbeeldingKey");
   const f = await db.storedFile.findUnique({ where: { key: item.afbeeldingKey } }); const meta = await sharp(Buffer.from(f.data)).metadata();
   assert(Math.max(meta.width, meta.height) === 1600 && meta.format === "webp", `${meta.width}×${meta.height}`);
-  const g = await (await browser.newContext()).newPage();
+  const g = z;
   await g.goto(BASE + "/vind-zzper/" + profile.id); await g.waitForSelector("text=Werk van"); await g.waitForSelector('img[alt="Aanbouw Assen"]');
-  await g.screenshot({ path: SHOTS + "/publiek-portfolio.png", fullPage: true }); await g.context().close();
+  await g.screenshot({ path: SHOTS + "/publiek-portfolio.png", fullPage: true });
   return `${f.grootte} bytes`;
 });
 await step("Portfolio-item verwijderen ruimt de foto op", async () => {

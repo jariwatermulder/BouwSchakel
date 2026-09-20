@@ -129,6 +129,14 @@ await step("Instellingen tonen 'E-mail bevestigd: Ja'", async () => { await z.go
 await step("Wizard stap Naam", async () => {
   await z.goto(BASE + "/zzpers/registreren?stap=persoonlijk");
   await z.fill('input[name="voornaam"]', "Erik"); await z.fill('input[name="achternaam"]', "Testman"); await z.fill('input[name="telefoon"]', "0612345678");
+  await Promise.all([z.waitForURL(/stap=bedrijf/), z.click('button[type="submit"]')]);
+});
+await step("Wizard stap KvK: ongeldig wordt ook serverside geweigerd, 8 cijfers gaat door", async () => {
+  // Browservalidatie uitzetten zodat de servercontrole wordt getest.
+  await z.evaluate(() => { document.querySelector("form").noValidate = true; });
+  await z.fill('input[name="kvkNummer"]', "123");
+  await Promise.all([z.waitForURL(/stap=bedrijf&fout=/), z.click('button[type="submit"]')]);
+  await z.fill('input[name="kvkNummer"]', "12345678");
   await Promise.all([z.waitForURL(/stap=vakgebied/), z.click('button[type="submit"]')]);
 });
 await step("Wizard stap Vakgebied", async () => {
@@ -158,7 +166,7 @@ await step("Profiel aanvullen (ervaring, tarief) → zichtbaar in etalage", asyn
 await step("Profiel aanpassen (naam wijzigen) werkt", async () => {
   await z.goto(BASE + "/zzpers/registreren?stap=persoonlijk");
   await z.fill('input[name="achternaam"]', "Testman-Jansen");
-  await Promise.all([z.waitForURL(/stap=vakgebied/), z.click('button[type="submit"]')]);
+  await Promise.all([z.waitForURL(/stap=bedrijf/), z.click('button[type="submit"]')]);
   const p = await db.zZPProfile.findUnique({ where: { userId: zzpUser.id } }); assert(p.achternaam === "Testman-Jansen");
 });
 await step("Portfolio-item toevoegen en verwijderen", async () => {
@@ -195,7 +203,9 @@ await step("Registratie bedrijf → bedrijfsprofiel", async () => {
   bedrijfUser = await db.user.findUnique({ where: { email: BEDRIJF.email } }); assert(bedrijfUser?.role === "COMPANY");
 });
 await step("Bedrijfsprofiel opslaan", async () => {
-  await b.fill('input[name="naam"]', "Bouwbedrijf Test BV"); await b.fill('input[name="contactpersoon"]', "Petra Test"); await b.fill('input[name="regio"]', "Groningen");
+  // Zonder KvK-nummer komt een opdrachtgever niet op de etalage.
+  await b.goto(BASE + "/vind-zzper"); await b.waitForURL(/\/bedrijven\/registreren\?next=/);
+  await b.fill('input[name="naam"]', "Bouwbedrijf Test BV"); await b.fill('input[name="kvkNummer"]', "87654321"); await b.fill('input[name="contactpersoon"]', "Petra Test"); await b.fill('input[name="regio"]', "Groningen");
   await Promise.all([b.waitForURL(u => !u.pathname.startsWith("/bedrijven/registreren")), b.click('button[type="submit"]')]);
   const c = await db.company.findFirst({ where: { members: { some: { userId: bedrijfUser.id } } } }); assert(c?.naam === "Bouwbedrijf Test BV"); companyId = c.id;
 });
