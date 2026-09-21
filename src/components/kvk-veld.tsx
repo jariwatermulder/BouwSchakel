@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { isGeldigKvkFormaat, kvkControleTekst, normaliseerKvk, type KvkControle } from "@/lib/kvk";
+import { isGeldigKvkFormaat, kvkBlokkeert, kvkControleTekst, normaliseerKvk, type KvkControle } from "@/lib/kvk";
 import { controleerKvkAction } from "@/app/(app)/kvk-controle/actions";
 
 /**
@@ -72,7 +72,7 @@ export function KvkVeld({
   const kleur =
     toonResultaat?.status === "gevonden"
       ? "text-emerald-700"
-      : toonResultaat?.status === "niet_gevonden" || toonResultaat?.status === "ongeldig"
+      : toonResultaat && (kvkBlokkeert(toonResultaat) || toonResultaat.status === "ongeldig")
         ? "text-red-600"
         : "text-foreground-muted";
 
@@ -89,7 +89,7 @@ export function KvkVeld({
           value={waarde}
           required={required}
           aria-describedby={statusId}
-          aria-invalid={toonResultaat?.status === "niet_gevonden" ? true : undefined}
+          aria-invalid={toonResultaat && kvkBlokkeert(toonResultaat) ? true : undefined}
           onChange={(e) => {
             setWaarde(e.target.value);
             if (resultaat && normaliseerKvk(e.target.value) !== resultaat.kvkNummer) setResultaat(null);

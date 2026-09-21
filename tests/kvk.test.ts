@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isGeldigKvkFormaat, kiesKvkResultaat, kvkControleTekst, normaliseerKvk } from "@/lib/kvk";
+import { isGeldigKvkFormaat, kiesKvkResultaat, kvkBlokkeert, kvkControleTekst, normaliseerKvk } from "@/lib/kvk";
 import { kvkNummerSchema } from "@/lib/validations/kvk";
 
 describe("kvk-helpers", () => {
@@ -47,5 +47,14 @@ describe("kvk-helpers", () => {
     expect(kvkControleTekst({ status: "gevonden", kvkNummer: "12345678", naam: "Jansen", plaats: "Groningen" })).toContain("Jansen, Groningen");
     expect(kvkControleTekst({ status: "niet_gevonden", kvkNummer: "12345678" })).toContain("niet in het Handelsregister");
     expect(kvkControleTekst({ status: "niet_beschikbaar", kvkNummer: "12345678" })).toContain("verdergaan");
+    expect(kvkControleTekst({ status: "gevonden", kvkNummer: "68750110", naam: "Test BV", plaats: null, test: true })).toContain("testomgeving");
+    expect(kvkControleTekst({ status: "niet_gevonden", kvkNummer: "12345678", test: true })).toContain("verdergaan");
+  });
+
+  it("blokkeert alleen een echt 'niet gevonden' uit het Handelsregister", () => {
+    expect(kvkBlokkeert({ status: "niet_gevonden", kvkNummer: "12345678" })).toBe(true);
+    expect(kvkBlokkeert({ status: "niet_gevonden", kvkNummer: "12345678", test: true })).toBe(false);
+    expect(kvkBlokkeert({ status: "gevonden", kvkNummer: "12345678", naam: "X", plaats: null })).toBe(false);
+    expect(kvkBlokkeert({ status: "niet_beschikbaar", kvkNummer: "12345678" })).toBe(false);
   });
 });

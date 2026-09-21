@@ -5,15 +5,23 @@ het nummer op twee niveaus:
 
 1. **Formaat** (altijd): precies 8 cijfers. Spaties, punten en streepjes worden
    automatisch weggehaald ("12 345 678" wordt "12345678").
-2. **Handelsregister** (als `KVK_API_KEY` is gezet): het nummer wordt opgezocht
-   via de officiële KvK Zoeken API. Staat het nummer er niet in, dan kan het
-   formulier niet worden opgeslagen. Bij een treffer bewaren we de gevonden
-   bedrijfsnaam en het tijdstip (`kvkNaam`, `kvkGecontroleerdOp`), zichtbaar
-   voor beheerders onder Beheer → Verificaties en Beheer → Bedrijven.
+2. **Handelsregister**: het nummer wordt opgezocht via de officiële KvK Zoeken
+   API. Welke omgeving dat is, hangt af van de omgevingsvariabelen (zie
+   hieronder).
 
-Zonder sleutel, of als de KvK-API tijdelijk niet antwoordt, valt de controle
-terug op alleen het formaat. Een storing bij de KvK blokkeert dus nooit een
-registratie; het profiel krijgt dan geen "gecontroleerd"-markering.
+## Drie standen
+
+| Stand | Wanneer | Gedrag |
+| --- | --- | --- |
+| **Productie** | `KVK_API_KEY` gezet | Echte controle. Een nummer dat niet in het Handelsregister staat kan niet worden opgeslagen. Bij een treffer bewaren we naam en tijdstip (`kvkNaam`, `kvkGecontroleerdOp`), zichtbaar onder Beheer → Verificaties en Beheer → Bedrijven. |
+| **Testmodus** (standaard) | geen `KVK_API_KEY` | De site bevraagt de KvK-testomgeving met de openbare testsleutel uit de KvK-documentatie. Daar bestaan alleen testbedrijven (bijv. `68750110`, "Test BV"), dus een echt KvK-nummer wordt daar niet gevonden. Daarom blokkeert "niet gevonden" het opslaan niet, en telt een treffer niet als echte controle (er wordt niets bewaard). Het veld zegt er steeds bij dat het om de testomgeving gaat. |
+| **Uit** | `KVK_CONTROLE=uit` | Alleen formaatcontrole. |
+
+Als de KvK-API niet antwoordt (storing, time-out), valt elke stand terug op
+alleen het formaat. Een storing bij de KvK blokkeert dus nooit een registratie.
+
+`KVK_API_URL` overschrijft de API-URL (zelden nodig; wordt lokaal gebruikt om
+tegen een nagebootste API te testen).
 
 ## In het formulier
 
@@ -24,27 +32,32 @@ het veld Bedrijfsnaam over te nemen. De controle loopt via de server action
 `controleerKvkAction` (alleen ingelogd, max. 30 controles per 10 minuten per
 gebruiker). Resultaten worden 24 uur gecachet.
 
-## Sleutel aanvragen
+## Eigen sleutel aanvragen (productie)
 
 1. Maak een account op https://developers.kvk.nl en vraag toegang aan tot de
    **KVK Zoeken API** (Handelsregister). Dit is een betaalde dienst van de KvK
    met een prijs per bevraging; zie de actuele tarieven op de KvK-site.
-2. Zet op Vercel `KVK_API_KEY` op de ontvangen sleutel.
-3. Testen zonder kosten kan tegen de KvK-testomgeving: zet dan ook
-   `KVK_API_URL=https://api.kvk.nl/test/api/v2/zoeken` en gebruik de testsleutel
-   en testnummers uit de KvK-documentatie. Haal `KVK_API_URL` weer weg voor
-   productie.
+2. Zet op Vercel `KVK_API_KEY` op de ontvangen sleutel en deploy opnieuw.
+   Vanaf dat moment is de controle echt en blokkerend.
+
+## Testnummers
+
+In de KvK-testomgeving werken onder meer `68750110` (Test BV) en de andere
+testnummers uit de KvK-documentatie (https://developers.kvk.nl → Zoeken API →
+testomgeving). Elk ander nummer geeft "niet gevonden in de testomgeving".
 
 ## Privacy
 
 Er wordt alleen het ingevoerde KvK-nummer naar de KvK gestuurd; geen
 persoonsgegevens. De KvK Zoeken API geeft openbare Handelsregistergegevens
-terug (naam, vestigingsplaats). We bewaren daarvan alleen de naam.
+terug (naam, vestigingsplaats). We bewaren daarvan alleen de naam, en alleen
+in productie.
 
 ## Controleren
 
-- Zonder sleutel: het veld meldt "Het formaat klopt (8 cijfers). Controle bij de
-  KvK is op dit moment niet mogelijk; je kunt gewoon verdergaan."
-- Met sleutel: een bestaand nummer geeft de bedrijfsnaam; een niet-bestaand
+- Testmodus: `68750110` geeft "Gevonden in de KvK-testomgeving: Test BV …";
+  een ander nummer geeft de melding dat het niet in de testomgeving staat en
+  opslaan blijft mogelijk.
+- Productie: een bestaand nummer geeft de bedrijfsnaam; een niet-bestaand
   nummer geeft "staat niet in het Handelsregister" en het formulier weigert.
 - Unit tests: `tests/kvk.test.ts`.

@@ -25,6 +25,7 @@ import { isStapSlug, volgendeStap, type StapSlug } from "./steps";
 import { db } from "@/lib/db";
 import { trackEvent } from "@/lib/analytics/track";
 import { controleerKvk, kvkOpslagVelden } from "@/server/kvk/service";
+import { kvkBlokkeert } from "@/lib/kvk";
 import {
   leesUploadAfbeelding,
   OngeldigeAfbeeldingError,
@@ -91,9 +92,9 @@ export async function saveStap(formData: FormData): Promise<void> {
           userId: user.id,
           userRole: user.role,
           page: "/zzpers/registreren",
-          metadata: { status: kvk.status, bron: "opslaan" },
+          metadata: { status: kvk.status, bron: "opslaan", test: kvk.test ?? false },
         });
-        if (kvk.status === "niet_gevonden") terug("kvk");
+        if (kvkBlokkeert(kvk)) terug("kvk");
         await updateProfileFields(user.id, { ...p.data, ...kvkOpslagVelden(kvk) });
       }
       break;

@@ -22,7 +22,7 @@ export async function controleerKvkAction(input: string): Promise<KvkControle> {
     await trackEvent("kvk_checked", {
       userId: user.id,
       userRole: user.role,
-      metadata: { status: resultaat.status, bron: "formulier" },
+      metadata: { status: resultaat.status, bron: "formulier", test: resultaat.test ?? false },
     });
   }
   return resultaat;

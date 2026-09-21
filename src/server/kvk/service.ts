@@ -9,15 +9,40 @@ import { isGeldigKvkFormaat, kiesKvkResultaat, normaliseerKvk, type KvkControle 
  * blokkeren.
  */
 
-const STANDAARD_URL = "https://api.kvk.nl/api/v2/zoeken";
+const PRODUCTIE_URL = "https://api.kvk.nl/api/v2/zoeken";
+/**
+ * KvK-testomgeving met de openbare testsleutel uit de KvK-documentatie
+ * (developers.kvk.nl). Geen geheim: iedereen mag hiermee de testomgeving
+ * bevragen. Er bestaan daar alleen testbedrijven (bijv. 68750110 "Test BV").
+ */
+const TEST_URL = "https://api.kvk.nl/test/api/v2/zoeken";
+const TEST_SLEUTEL = "l7xx1f2691f2520d487b9b17e7ddb3f3b9dc";
 const TIMEOUT_MS = 6000;
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const CACHE_MAX = 500;
 
 const cache = new Map<string, { resultaat: KvkControle; tot: number }>();
 
-export function kvkApiBeschikbaar(env: Record<string, string | undefined> = process.env): boolean {
-  return !!env.KVK_API_KEY?.trim();
+export interface KvkModus {
+  /** null = controle uitgeschakeld (KVK_CONTROLE=uit). */
+  url: string | null;
+  sleutel: string;
+  /** Testomgeving (geen eigen sleutel): resultaten tellen niet als echte controle. */
+  test: boolean;
+}
+
+/**
+ * Bepaalt welke KvK-omgeving wordt gebruikt:
+ * - KVK_CONTROLE=uit → geen controle (alleen formaat);
+ * - KVK_API_KEY gezet → productie-Handelsregister (KVK_API_URL kan de URL overschrijven);
+ * - anders → KvK-testomgeving met de openbare testsleutel (KVK_API_URL mag ook hier overschrijven).
+ */
+export function kvkModus(env: Record<string, string | undefined> = process.env): KvkModus {
+  if (env.KVK_CONTROLE?.trim().toLowerCase() === "uit") return { url: null, sleutel: "", test: false };
+  const eigen = env.KVK_API_KEY?.trim();
+  const url = env.KVK_API_URL?.trim();
+  if (eigen) return { url: url || PRODUCTIE_URL, sleutel: eigen, test: false };
+  return { url: url || TEST_URL, sleutel: TEST_SLEUTEL, test: true };
 }
 
 function uitCache(nummer: string): KvkControle | null {
@@ -52,47 +77,51 @@ export async function controleerKvk(input: unknown): Promise<KvkControle> {
   const kvkNummer = normaliseerKvk(input);
   if (!isGeldigKvkFormaat(kvkNummer)) return { status: "ongeldig", kvkNummer };
 
-  const sleutel = process.env.KVK_API_KEY?.trim();
-  if (!sleutel) return { status: "niet_beschikbaar", kvkNummer };
+  const modus = kvkModus();
+  if (!modus.url) return { status: "niet_beschikbaar", kvkNummer };
+  const test = modus.test;
 
   const gecachet = uitCache(kvkNummer);
   if (gecachet) return gecachet;
 
-  const url = new URL(process.env.KVK_API_URL?.trim() || STANDAARD_URL);
+  const url = new URL(modus.url);
   url.searchParams.set("kvkNummer", kvkNummer);
   url.searchParams.set("resultatenPerPagina", "10");
 
   try {
     const res = await fetch(url, {
-      headers: { apikey: sleutel, Accept: "application/json" },
+      headers: { apikey: modus.sleutel, Accept: "application/json" },
       cache: "no-store",
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     // De Zoeken API antwoordt met 404 als er geen enkel resultaat is.
     if (res.status === 404) {
-      const r: KvkControle = { status: "niet_gevonden", kvkNummer };
+      const r: KvkControle = { status: "niet_gevonden", kvkNummer, test };
       inCache(kvkNummer, r);
       return r;
     }
     if (!res.ok) {
       console.error(`KvK-API antwoordde met ${res.status} voor een controle`);
-      return { status: "niet_beschikbaar", kvkNummer };
+      return { status: "niet_beschikbaar", kvkNummer, test };
     }
     const gekozen = kiesKvkResultaat(await res.json(), kvkNummer);
     const r: KvkControle = gekozen
-      ? { status: "gevonden", kvkNummer, naam: gekozen.naam, plaats: gekozen.plaats }
-      : { status: "niet_gevonden", kvkNummer };
+      ? { status: "gevonden", kvkNummer, naam: gekozen.naam, plaats: gekozen.plaats, test }
+      : { status: "niet_gevonden", kvkNummer, test };
     inCache(kvkNummer, r);
     return r;
   } catch (e) {
     console.error("KvK-API niet bereikbaar:", e instanceof Error ? e.message : e);
-    return { status: "niet_beschikbaar", kvkNummer };
+    return { status: "niet_beschikbaar", kvkNummer, test };
   }
 }
 
-/** Velden die we na een controle bij het profiel opslaan (null als niet gecontroleerd). */
+/**
+ * Velden die we na een controle bij het profiel opslaan. Alleen een echte
+ * treffer in het Handelsregister telt; een testresultaat wordt niet bewaard.
+ */
 export function kvkOpslagVelden(c: KvkControle): { kvkNaam: string | null; kvkGecontroleerdOp: Date | null } {
-  return c.status === "gevonden"
+  return c.status === "gevonden" && !c.test
     ? { kvkNaam: c.naam, kvkGecontroleerdOp: new Date() }
     : { kvkNaam: null, kvkGecontroleerdOp: null };
 }

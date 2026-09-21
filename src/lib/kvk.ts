@@ -15,12 +15,25 @@ export function isGeldigKvkFormaat(nummer: string): boolean {
   return /^\d{8}$/u.test(nummer) && nummer !== "00000000";
 }
 
-export type KvkControle =
+export type KvkControle = (
   | { status: "gevonden"; kvkNummer: string; naam: string; plaats: string | null }
   | { status: "niet_gevonden"; kvkNummer: string }
   | { status: "ongeldig"; kvkNummer: string }
-  /** Geen API-sleutel ingesteld, of de KvK-API gaf geen bruikbaar antwoord. */
-  | { status: "niet_beschikbaar"; kvkNummer: string };
+  /** De controle is uitgeschakeld, of de KvK-API gaf geen bruikbaar antwoord. */
+  | { status: "niet_beschikbaar"; kvkNummer: string }
+) & {
+  /**
+   * True als het antwoord uit de KvK-testomgeving komt (geen eigen sleutel
+   * ingesteld). Daar bestaan alleen testnummers, dus een testresultaat telt
+   * nooit als echte controle en blokkeert het opslaan niet.
+   */
+  test?: boolean;
+};
+
+/** Blokkeert dit resultaat het opslaan? Alleen een echt "niet gevonden" uit het Handelsregister. */
+export function kvkBlokkeert(c: KvkControle): boolean {
+  return c.status === "niet_gevonden" && !c.test;
+}
 
 /** Eén resultaat uit de KvK Zoeken API v2 (alleen de velden die wij gebruiken). */
 interface KvkZoekResultaat {
@@ -66,9 +79,13 @@ export function kiesKvkResultaat(
 export function kvkControleTekst(c: KvkControle): string {
   switch (c.status) {
     case "gevonden":
-      return `Gevonden in het Handelsregister: ${c.naam}${c.plaats ? `, ${c.plaats}` : ""}.`;
+      return c.test
+        ? `Gevonden in de KvK-testomgeving: ${c.naam}${c.plaats ? `, ${c.plaats}` : ""}. (Testmodus: telt niet als echte controle.)`
+        : `Gevonden in het Handelsregister: ${c.naam}${c.plaats ? `, ${c.plaats}` : ""}.`;
     case "niet_gevonden":
-      return "Dit KvK-nummer staat niet in het Handelsregister. Controleer het nummer.";
+      return c.test
+        ? "Het formaat klopt. Niet gevonden in de KvK-testomgeving (daar bestaan alleen testnummers, bijv. 68750110); je kunt gewoon verdergaan."
+        : "Dit KvK-nummer staat niet in het Handelsregister. Controleer het nummer.";
     case "ongeldig":
       return "Een KvK-nummer bestaat uit 8 cijfers.";
     case "niet_beschikbaar":

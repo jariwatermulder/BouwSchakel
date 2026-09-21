@@ -7,6 +7,7 @@ import { bedrijfCompleet, getOrCreateCompanyForUser, updateCompany } from "@/ser
 import { trackEvent } from "@/lib/analytics/track";
 import { safeNextPath } from "@/lib/auth/next";
 import { controleerKvk, kvkOpslagVelden } from "@/server/kvk/service";
+import { kvkBlokkeert } from "@/lib/kvk";
 
 export interface CompanyFormState {
   error?: string;
@@ -56,9 +57,9 @@ export async function saveCompany(
     userId: user.id,
     userRole: user.role,
     page: "/bedrijven/registreren",
-    metadata: { status: kvk.status, bron: "opslaan" },
+    metadata: { status: kvk.status, bron: "opslaan", test: kvk.test ?? false },
   });
-  if (kvk.status === "niet_gevonden") {
+  if (kvkBlokkeert(kvk)) {
     return { error: "Dit KvK-nummer staat niet in het Handelsregister. Controleer het nummer.", waarden };
   }
 
