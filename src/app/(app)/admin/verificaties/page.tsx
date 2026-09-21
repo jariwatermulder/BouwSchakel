@@ -6,6 +6,7 @@ import { requireCurrentAdmin } from "@/lib/auth/current-user";
 import { listDocuments, listZzpVerificaties } from "@/server/admin/service";
 import { verifieerDocument, verifieerZzp } from "../actions";
 import { getStorageProvider } from "@/lib/storage";
+import { KvkStatus } from "@/components/admin/kvk-status";
 
 export const metadata: Metadata = {
   title: "Verificaties",
@@ -49,6 +50,7 @@ export default async function AdminVerificatiesPage() {
                     {p.kvkNummer ? `KvK ${p.kvkNummer} · ` : ""}
                     {p.profielCompleetheidPct}% compleet
                   </p>
+                  <KvkStatus nummer={p.kvkNummer} naam={p.kvkNaam} op={p.kvkGecontroleerdOp} />
                 </div>
                 <VerifForm
                   action={verifieerZzp}

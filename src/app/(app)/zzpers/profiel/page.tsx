@@ -144,7 +144,12 @@ export default async function ProfielPage({
             {p?.bedrijfsnaam ? (
               <Rij label="Bedrijf" value={p.bedrijfsnaam} />
             ) : null}
-            {p?.kvkNummer ? <Rij label="KvK" value={p.kvkNummer} /> : null}
+            {p?.kvkNummer ? (
+              <Rij
+                label="KvK"
+                value={p.kvkNaam ? `${p.kvkNummer} · ${p.kvkNaam} (gecontroleerd)` : p.kvkNummer}
+              />
+            ) : null}
             {p?.jarenErvaring != null ? (
               <Rij label="Ervaring" value={`${p.jarenErvaring} jaar`} />
             ) : null}

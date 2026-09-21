@@ -30,6 +30,10 @@ const serverEnvSchema = z.object({
   APPLE_TEAM_ID: z.string().optional(),
   APPLE_KEY_ID: z.string().optional(),
   APPLE_PRIVATE_KEY: z.string().optional(),
+  // KvK-controle (optioneel): zonder sleutel wordt alleen het formaat
+  // gecontroleerd. Zie docs/KVK.md.
+  KVK_API_KEY: z.string().optional(),
+  KVK_API_URL: z.string().url().optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

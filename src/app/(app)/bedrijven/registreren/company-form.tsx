@@ -5,7 +5,8 @@ import type { Company } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { saveCompany, type CompanyFormState } from "./actions";
+import { KvkVeld } from "@/components/kvk-veld";
+import { saveCompany, type CompanyFormState, type CompanyVeld } from "./actions";
 
 const initial: CompanyFormState = {};
 
@@ -19,6 +20,8 @@ export function CompanyForm({
   next?: string | null;
 }) {
   const [state, formAction, pending] = useActionState(saveCompany, initial);
+  // Na een fout zet React de velden terug; de ingevulde waarden komen dan uit de state.
+  const w = (veld: CompanyVeld, huidig: string | null | undefined) => state.waarden?.[veld] ?? huidig ?? "";
 
   return (
     <form action={formAction} className="space-y-4">
@@ -27,26 +30,15 @@ export function CompanyForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <Label htmlFor="naam">Bedrijfsnaam</Label>
-          <Input id="naam" name="naam" defaultValue={company.naam} required />
+          <Input id="naam" name="naam" defaultValue={w("naam", company.naam)} required />
         </div>
-        <div>
-          <Label htmlFor="kvkNummer">KvK-nummer</Label>
-          <Input
-            id="kvkNummer"
-            name="kvkNummer"
-            inputMode="numeric"
-            pattern="\d{8}"
-            placeholder="8 cijfers"
-            defaultValue={company.kvkNummer ?? ""}
-            required
-          />
-        </div>
+        <KvkVeld defaultValue={w("kvkNummer", company.kvkNummer)} naamVeldId="naam" />
         <div>
           <Label htmlFor="contactpersoon">Contactpersoon (optioneel)</Label>
           <Input
             id="contactpersoon"
             name="contactpersoon"
-            defaultValue={company.contactpersoon ?? ""}
+            defaultValue={w("contactpersoon", company.contactpersoon)}
           />
         </div>
         <div>
@@ -55,7 +47,7 @@ export function CompanyForm({
             id="telefoon"
             name="telefoon"
             type="tel"
-            defaultValue={company.telefoon ?? ""}
+            defaultValue={w("telefoon", company.telefoon)}
           />
         </div>
         <div>
@@ -65,7 +57,7 @@ export function CompanyForm({
             name="website"
             type="url"
             placeholder="https://..."
-            defaultValue={company.website ?? ""}
+            defaultValue={w("website", company.website)}
           />
         </div>
         <div>
@@ -73,7 +65,7 @@ export function CompanyForm({
           <Input
             id="regio"
             name="regio"
-            defaultValue={company.regio ?? ""}
+            defaultValue={w("regio", company.regio)}
             placeholder="Bijv. Groningen"
           />
         </div>
@@ -84,7 +76,7 @@ export function CompanyForm({
           <Input
             id="typeWerkzaamheden"
             name="typeWerkzaamheden"
-            defaultValue={company.typeWerkzaamheden ?? ""}
+            defaultValue={w("typeWerkzaamheden", company.typeWerkzaamheden)}
             placeholder="Bijv. installatie, schoonmaak, transport"
           />
         </div>
@@ -96,7 +88,7 @@ export function CompanyForm({
           name="omschrijving"
           rows={4}
           maxLength={2000}
-          defaultValue={company.omschrijving ?? ""}
+          defaultValue={w("omschrijving", company.omschrijving)}
           className="border-border bg-surface focus-visible:border-navy-500 w-full rounded-lg border p-3 text-sm"
         />
       </div>

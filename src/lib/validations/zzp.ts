@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { kvkNummerSchema } from "@/lib/validations/kvk";
 
 /**
  * Zod-schemas voor de ZZP-registratie (per stap) en profielonderdelen.
@@ -21,11 +22,7 @@ export const persoonlijkSchema = z.object({
 export const bedrijfSchema = z.object({
   bedrijfsnaam: optionalTrimmed,
   // Verplicht: zonder KvK-nummer wordt een profiel niet zichtbaar.
-  kvkNummer: z
-    .string()
-    .trim()
-    .min(1, "KvK-nummer is verplicht")
-    .regex(/^\d{8}$/u, "KvK-nummer bestaat uit 8 cijfers"),
+  kvkNummer: kvkNummerSchema,
 });
 
 /** Vrije tekst bij "Anders, namelijk…" (max. 120 tekens, leeg = niet gebruikt). */

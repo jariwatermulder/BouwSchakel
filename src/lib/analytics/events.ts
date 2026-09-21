@@ -28,6 +28,7 @@ export const EVENTS = {
   // Profiel (server)
   profile_created: "Zzp'er heeft profiel aangemaakt",
   profile_completed: "Zzp-profiel 100% compleet",
+  kvk_checked: "KvK-nummer gecontroleerd",
   profile_visible: "Zzp-profiel zichtbaar geworden",
   company_profile_completed: "Bedrijfsprofiel afgerond",
   profile_photo_uploaded: "Profielfoto geüpload",

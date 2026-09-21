@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
 import { VerifForm } from "@/components/admin/verif-form";
+import { KvkStatus } from "@/components/admin/kvk-status";
 import { requireCurrentAdmin } from "@/lib/auth/current-user";
 import { listCompanies } from "@/server/admin/service";
 import { verifieerBedrijf } from "../actions";
@@ -28,6 +29,7 @@ export default async function AdminBedrijvenPage() {
                   {c.kvkNummer ? `KvK ${c.kvkNummer} · ` : ""}
                   {c._count.members} leden · {c._count.conversations} gesprekken
                 </p>
+                <KvkStatus nummer={c.kvkNummer} naam={c.kvkNaam} op={c.kvkGecontroleerdOp} />
               </div>
               <VerifForm
                 action={verifieerBedrijf}

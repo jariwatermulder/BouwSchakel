@@ -150,11 +150,14 @@ model ZZPProfile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Persoonlijk / bedrijf
-  voornaam     String?
-  achternaam   String?
-  telefoon     String?
-  bedrijfsnaam String?
-  kvkNummer    String?
+  voornaam           String?
+  achternaam         String?
+  telefoon           String?
+  bedrijfsnaam       String?
+  kvkNummer          String?
+  // Gevuld na een geslaagde controle in het KvK Handelsregister.
+  kvkNaam            String?
+  kvkGecontroleerdOp DateTime?
 
   // Factuurgegevens (voor de ingebouwde facturenmodule)
   btwId    String?
@@ -339,16 +342,19 @@ enum CompanyMemberRole {
 }
 
 model Company {
-  id                String            @id @default(uuid())
-  naam              String
-  kvkNummer         String?
-  omschrijving      String?
-  website           String?
-  telefoon          String?
-  contactpersoon    String?
-  regio             String?
-  typeWerkzaamheden String?
-  verificatieStatus VerificatieStatus @default(NIET_GEVERIFIEERD)
+  id                 String            @id @default(uuid())
+  naam               String
+  kvkNummer          String?
+  // Gevuld na een geslaagde controle in het KvK Handelsregister.
+  kvkNaam            String?
+  kvkGecontroleerdOp DateTime?
+  omschrijving       String?
+  website            String?
+  telefoon           String?
+  contactpersoon     String?
+  regio              String?
+  typeWerkzaamheden  String?
+  verificatieStatus  VerificatieStatus @default(NIET_GEVERIFIEERD)
 
   // Factuurgegevens (voor de facturenmodule)
   btwId    String?
@@ -536,13 +542,13 @@ model ZzpInvoice {
   companyId    String?
   company      Company?    @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  factuurnummer   String
-  status          ZzpInvoiceStatus @default(CONCEPT)
-  factuurdatum    DateTime
-  vervaldatum     DateTime?
+  factuurnummer      String
+  status             ZzpInvoiceStatus @default(CONCEPT)
+  factuurdatum       DateTime
+  vervaldatum        DateTime?
   betaaltermijnDagen Int?
   betaalreferentie   String?
-  btwVerlegd         Boolean @default(false)
+  btwVerlegd         Boolean          @default(false)
 
   // Afzender (momentopname)
   afzenderNaam     String
@@ -557,19 +563,19 @@ model ZzpInvoice {
   afzenderWebsite  String?
 
   // Klant
-  klantNaam          String
+  klantNaam           String
   klantContactpersoon String?
-  klantAdres         String?
-  klantPostcode      String?
-  klantPlaats        String?
-  klantEmail         String?
-  klantKvk           String?
-  klantBtwId         String?
+  klantAdres          String?
+  klantPostcode       String?
+  klantPlaats         String?
+  klantEmail          String?
+  klantKvk            String?
+  klantBtwId          String?
 
-  btwPercentage  Int    @default(21)
-  subtotaalCents Int    @default(0)
-  btwCents       Int    @default(0)
-  totaalCents    Int    @default(0)
+  btwPercentage  Int     @default(21)
+  subtotaalCents Int     @default(0)
+  btwCents       Int     @default(0)
+  totaalCents    Int     @default(0)
   opmerking      String?
 
   lines     ZzpInvoiceLine[]

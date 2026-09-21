@@ -145,7 +145,9 @@ export default async function RegistrerenPage({
               ? "De foto kon niet worden gebruikt: kies een JPG, PNG of WebP van maximaal 8 MB."
               : fout === "anders"
                 ? "Je hebt 'Anders' aangevinkt: vul in wat je doet, of haal het vinkje weg."
-                : "Controleer de ingevulde velden en probeer het opnieuw."}
+                : fout === "kvk"
+                  ? "Dit KvK-nummer staat niet in het Handelsregister. Controleer het nummer."
+                  : "Controleer de ingevulde velden en probeer het opnieuw."}
           </p>
         ) : null}
 

@@ -2,6 +2,7 @@ import type { Certification, Skill, Specialization } from "@prisma/client";
 import { groepeerSkills } from "@/lib/sectoren";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { KvkVeld } from "@/components/kvk-veld";
 import type { ProfileWithRelations } from "@/server/zzp/profile";
 import type { StapSlug } from "./steps";
 
@@ -126,22 +127,11 @@ export function StepFields({
     case "bedrijf":
       return (
         <div className="space-y-4">
-          <div>
-            <Label htmlFor="kvkNummer">KvK-nummer</Label>
-            <Input
-              id="kvkNummer"
-              name="kvkNummer"
-              inputMode="numeric"
-              pattern="\d{8}"
-              placeholder="8 cijfers"
-              defaultValue={profile?.kvkNummer ?? ""}
-              required
-            />
-            <p className="text-foreground-muted mt-1 text-xs">
-              Verplicht: zonder KvK-nummer wordt je profiel niet zichtbaar
-              voor opdrachtgevers.
-            </p>
-          </div>
+          <KvkVeld
+            defaultValue={profile?.kvkNummer ?? ""}
+            naamVeldId="bedrijfsnaam"
+            hint="Verplicht: zonder KvK-nummer wordt je profiel niet zichtbaar voor opdrachtgevers. We controleren het nummer bij het Handelsregister."
+          />
           <div>
             <Label htmlFor="bedrijfsnaam">Bedrijfsnaam (optioneel)</Label>
             <Input

@@ -101,6 +101,8 @@ type ScalarProfileData = Pick<
   | "telefoon"
   | "bedrijfsnaam"
   | "kvkNummer"
+  | "kvkNaam"
+  | "kvkGecontroleerdOp"
   | "over"
   | "jarenErvaring"
   | "uurtariefCents"

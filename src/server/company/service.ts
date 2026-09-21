@@ -70,6 +70,8 @@ type CompanyData = Pick<
   Prisma.CompanyUpdateInput,
   | "naam"
   | "kvkNummer"
+  | "kvkNaam"
+  | "kvkGecontroleerdOp"
   | "omschrijving"
   | "website"
   | "telefoon"

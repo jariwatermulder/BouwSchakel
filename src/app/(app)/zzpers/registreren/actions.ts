@@ -24,6 +24,7 @@ import {
 import { isStapSlug, volgendeStap, type StapSlug } from "./steps";
 import { db } from "@/lib/db";
 import { trackEvent } from "@/lib/analytics/track";
+import { controleerKvk, kvkOpslagVelden } from "@/server/kvk/service";
 import {
   leesUploadAfbeelding,
   OngeldigeAfbeeldingError,
@@ -83,7 +84,18 @@ export async function saveStap(formData: FormData): Promise<void> {
         kvkNummer: formData.get("kvkNummer"),
       });
       if (!p.success) terug();
-      else await updateProfileFields(user.id, p.data);
+      else {
+        // KvK-nummer controleren in het Handelsregister (als de KvK-API is ingesteld).
+        const kvk = await controleerKvk(p.data.kvkNummer);
+        await trackEvent("kvk_checked", {
+          userId: user.id,
+          userRole: user.role,
+          page: "/zzpers/registreren",
+          metadata: { status: kvk.status, bron: "opslaan" },
+        });
+        if (kvk.status === "niet_gevonden") terug("kvk");
+        await updateProfileFields(user.id, { ...p.data, ...kvkOpslagVelden(kvk) });
+      }
       break;
     }
     case "vakgebied": {

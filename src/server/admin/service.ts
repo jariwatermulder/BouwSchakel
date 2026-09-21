@@ -76,6 +76,8 @@ export async function listZzpVerificaties() {
       voornaam: true,
       achternaam: true,
       kvkNummer: true,
+      kvkNaam: true,
+      kvkGecontroleerdOp: true,
       verificatieStatus: true,
       profielCompleetheidPct: true,
     },
