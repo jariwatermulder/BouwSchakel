@@ -49,12 +49,17 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative grid xl:min-h-[clamp(650px,calc(100vh-76px-60px),750px)] xl:grid-cols-[minmax(0,52fr)_minmax(0,48fr)]">
+        {/*
+          Vanaf md (768 px) staan tekst en foto naast elkaar: de foto vult de
+          rechterzijde tot de schermrand (zie HeroFoto). Daaronder staat de foto
+          onder de tekst. De kolomverhouding groeit mee met de schermbreedte.
+        */}
+        <div className="relative grid md:min-h-[560px] md:grid-cols-[minmax(0,46fr)_minmax(0,54fr)] lg:min-h-[600px] lg:grid-cols-[minmax(0,48fr)_minmax(0,52fr)] xl:min-h-[clamp(650px,calc(100vh-76px-60px),750px)] xl:grid-cols-[minmax(0,52fr)_minmax(0,48fr)]">
           {/* Tekstzijde */}
-          <div className="relative z-20 flex items-center px-4 pt-12 pb-6 sm:px-6 xl:py-12 xl:pr-4 xl:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
+          <div className="relative z-20 flex items-center px-4 pt-12 pb-6 sm:px-6 md:py-10 md:pr-2 lg:pr-4 xl:py-12 xl:pl-[max(1.5rem,calc((100vw-72rem)/2+2rem))]">
             <div className="w-full max-w-[36rem]">
               <span
-                className="bs-load border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide"
+                className="bs-load border-border bg-surface text-foreground inline-flex max-w-full items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold tracking-wide md:px-3 md:text-[11px] md:tracking-normal lg:px-3.5 lg:text-xs lg:tracking-wide"
                 style={{ animationDelay: "0ms" }}
               >
                 <span aria-hidden className="bg-brand-500 h-2 w-2 shrink-0 rounded-full" />
@@ -62,7 +67,7 @@ export default function HomePage() {
               </span>
 
               <h1
-                className="bs-load mt-5 max-w-[30rem] text-[2.1rem] font-bold leading-[1.06] tracking-tight sm:text-5xl xl:text-[3.25rem] 2xl:text-[3.5rem]"
+                className="bs-load mt-5 max-w-[30rem] text-[2.1rem] font-bold leading-[1.06] tracking-tight sm:text-5xl md:text-[2.5rem] lg:text-[2.85rem] xl:text-[3.25rem] 2xl:text-[3.5rem]"
                 style={{ animationDelay: "100ms" }}
               >
                 <span className="text-foreground">
@@ -72,7 +77,7 @@ export default function HomePage() {
               </h1>
 
               <p
-                className="bs-load text-foreground-muted mt-4 max-w-[30rem] text-lg leading-relaxed"
+                className="bs-load text-foreground-muted mt-4 max-w-[30rem] text-lg leading-relaxed md:text-base lg:text-lg"
                 style={{ animationDelay: "200ms" }}
               >
                 Vind een vakman in jouw regio, of laat je als zzp’er vinden.
@@ -80,7 +85,7 @@ export default function HomePage() {
               </p>
 
               <div
-                className="bs-load mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:flex-nowrap"
+                className="bs-load mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:flex-col lg:flex-row xl:flex-nowrap"
                 style={{ animationDelay: "300ms" }}
               >
                 <ButtonLink
@@ -109,7 +114,7 @@ export default function HomePage() {
               </div>
 
               <ul
-                className="bs-load mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-3"
+                className="bs-load mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-3 md:flex-col md:items-start lg:flex-row lg:items-center"
                 style={{ animationDelay: "380ms" }}
               >
                 {[
@@ -128,8 +133,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Fotozijde: onder de tekst op mobiel; op desktop de rechter 68% tot de schermrand */}
-          <div className="relative z-10 -mx-4 mt-8 sm:-mx-6 xl:static xl:mx-0 xl:mt-0">
+          {/* Fotozijde: onder de tekst op mobiel; vanaf md de rechterzijde tot de schermrand */}
+          <div className="relative z-10 -mx-4 mt-8 sm:-mx-6 md:static md:mx-0 md:mt-0">
             <HeroFoto />
           </div>
         </div>
