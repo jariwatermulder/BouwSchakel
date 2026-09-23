@@ -6,9 +6,13 @@ import { ButtonLink } from "@/components/ui/button";
  * Homepage-sectie "Vind een vakman per vakgebied": drie kaarten die direct
  * naar de etalage met het juiste vakgebiedfilter leiden (/vind-zzper?vak=…).
  *
- * Bewust zonder aantallen: landelijke branchecijfers naast een zoekknop
- * worden gelezen als bewijs van het eigen aanbod (websiteaudit, punt 09).
- * Echte bewijspunten (aantal profielen, reacties) komen pas als ze er zijn.
+ * De cijfers zijn landelijke branchecijfers (aantal bedrijven in Nederland,
+ * 2025) van Brookz op basis van CBS. Het zijn géén aantallen aangesloten
+ * zzp'ers of profielen; daarom staat er "…bedrijven in Nederland" bij.
+ * Bronnen (geraadpleegd september 2026):
+ *   https://www.brookz.nl/branche-informatie/dakdekkersbedrijf
+ *   https://www.brookz.nl/branche-informatie/timmerbedrijf
+ *   https://www.brookz.nl/branche-informatie/loodgietersbedrijf
  * De foto's zijn gegenereerde sfeerbeelden per categorie, geen foto's van
  * aangesloten leden.
  */
@@ -20,6 +24,8 @@ const VAKGEBIEDEN = [
       "Voor dakonderhoud, reparaties en nieuwe dakbedekking. Vind een dakdekker en bespreek rechtstreeks jouw klus.",
     afbeelding: "/images/vakgebieden/dakdekkers.webp",
     alt: "Dakdekker aan het werk op een plat dak.",
+    aantal: "6.255",
+    eenheid: "dakdekkersbedrijven",
     knop: "Bekijk dakdekkers",
   },
   {
@@ -29,6 +35,8 @@ const VAKGEBIEDEN = [
       "Van kozijnen en houtwerk tot een verbouwing. Vind een timmerman en bespreek wat je wilt laten maken.",
     afbeelding: "/images/vakgebieden/timmermannen.webp",
     alt: "Timmerman meet een houten balk bij een verbouwing.",
+    aantal: "26.260",
+    eenheid: "timmerbedrijven",
     knop: "Bekijk timmermannen",
   },
   {
@@ -38,6 +46,8 @@ const VAKGEBIEDEN = [
       "Hulp nodig met leidingen, een lekkage of sanitair? Vind een loodgieter en leg rechtstreeks contact.",
     afbeelding: "/images/vakgebieden/loodgieters.webp",
     alt: "Loodgieter werkt aan de aansluiting van een wastafel.",
+    aantal: "10.750",
+    eenheid: "loodgietersbedrijven",
     knop: "Bekijk loodgieters",
   },
 ] as const;
@@ -84,9 +94,19 @@ export function Vakgebieden() {
                       {v.tekst}
                     </p>
 
-                    {/* Knop onderaan verankerd: in elke rij op dezelfde hoogte, ongeacht de tekstlengte. */}
-                    <div className="border-border mt-auto border-t pt-5">
-                      <div className="mt-1 pt-1">
+                    {/* Cijferblok onderaan verankerd: in elke rij staan de cijfers
+                        daardoor op exact dezelfde hoogte, ongeacht de tekstlengte. */}
+                    <p className="mt-auto pt-6">
+                      <strong className="text-foreground block text-3xl font-bold leading-none tabular-nums">
+                        {v.aantal}
+                      </strong>
+                      <span className="text-foreground mt-1.5 block text-base font-medium">
+                        {v.eenheid} in Nederland
+                      </span>
+                    </p>
+
+                    <div className="border-border mt-5 border-t pt-5">
+                      <div className="mt-1">
                         <ButtonLink
                           href={`/vind-zzper?vak=${v.slug}`}
                           variant="brand"
