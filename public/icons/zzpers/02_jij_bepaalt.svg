@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Jij bepaalt">
+  <circle cx="22" cy="32" r="15" stroke="#0B2A5B" stroke-width="4"/>
+  <path d="M28.5 26.5a8.5 8.5 0 1 0 0 11" stroke="#0B2A5B" stroke-width="4"/>
+  <path d="M13 30h11M13 34h11" stroke="#0B2A5B" stroke-width="4"/>
+  <path d="M40 20h18M40 32h18M40 44h18" stroke="#0B2A5B" stroke-width="4"/>
+  <circle cx="53" cy="20" r="4.5" fill="#2563EB"/>
+  <circle cx="48" cy="32" r="4.5" fill="#2563EB"/>
+  <circle cx="44" cy="44" r="4.5" fill="#2563EB"/>
+</svg>

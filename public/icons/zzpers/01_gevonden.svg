@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Gevonden worden">
+  <circle cx="32" cy="32" r="18" stroke="#0B2A5B" stroke-width="4"/>
+  <path d="M32 6v7M32 51v7M6 32h7M51 32h7" stroke="#0B2A5B" stroke-width="4"/>
+  <circle cx="32" cy="26" r="5.5" fill="#2563EB"/>
+  <path d="M21 43c0-6 5-9.5 11-9.5s11 3.5 11 9.5v1.5H21z" fill="#2563EB"/>
+</svg>

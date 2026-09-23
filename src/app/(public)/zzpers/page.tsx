@@ -3,7 +3,6 @@ import { paginaMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
-import { Icon } from "@/components/home/pictos";
 
 export const metadata: Metadata = paginaMetadata({
   pad: "/zzpers",
@@ -12,29 +11,51 @@ export const metadata: Metadata = paginaMetadata({
     "Maak je profiel en laat opdrachtgevers zien wat je doet en waar je werkt. Gratis tijdens de introductie.",
 });
 
+/**
+ * Eigen iconenset (public/icons/zzpers, SVG, 64×64): navy lijnen met blauwe
+ * accenten, één lijndikte en afronding. Vaste afmetingen voorkomen dat de
+ * kaarten verspringen tijdens het laden.
+ */
 const punten = [
   {
     t: "Word gevonden",
     d: "Opdrachtgevers zoeken op vakgebied en regio en vinden jouw profiel. Zij nemen rechtstreeks contact op.",
-    icon: "match" as const,
+    icon: "/icons/zzpers/01_gevonden.svg",
   },
   {
     t: "Jij bepaalt",
     d: "Kies zelf je vakgebied, werkgebied en beschikbaarheid. Een indicatief tarief mag, maar hoeft niet.",
-    icon: "euro" as const,
+    icon: "/icons/zzpers/02_jij_bepaalt.svg",
   },
   {
     t: "Gratis tijdens de introductie",
     d: "Een profiel aanmaken en benaderd worden kost op dit moment niets.",
-    icon: "shield" as const,
+    icon: "/icons/zzpers/03_vertrouwd.svg",
   },
 ];
 
 const stappen = [
-  "Maak in een paar minuten een profiel aan.",
-  "Stel je vakgebied, werkgebied en beschikbaarheid in.",
-  "Word gevonden en rechtstreeks benaderd door opdrachtgevers.",
+  { tekst: "Maak in een paar minuten een profiel aan.", icon: "/icons/zzpers/04_profiel_aanmaken.svg" },
+  { tekst: "Stel je vakgebied, werkgebied en beschikbaarheid in.", icon: "/icons/zzpers/05_werkgebied_beschikbaarheid.svg" },
+  { tekst: "Word gevonden en rechtstreeks benaderd door opdrachtgevers.", icon: "/icons/zzpers/06_rechtstreeks_contact.svg" },
 ];
+
+/** Lichtblauwe icoon-container met subtiele hover: het icoon komt 2 px omhoog. */
+function IcoonVak({ src }: { src: string }) {
+  return (
+    <span className="bg-brand-50 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl">
+      <Image
+        src={src}
+        alt=""
+        aria-hidden
+        width={36}
+        height={36}
+        unoptimized
+        className="h-9 w-9 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
+      />
+    </span>
+  );
+}
 
 export default function ZzpLandingPage() {
   return (
@@ -86,10 +107,8 @@ export default function ZzpLandingPage() {
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {punten.map((p) => (
-              <div key={p.t} className="border-border bg-surface rounded-2xl border p-6">
-                <span className="bg-brand-50 text-brand-600 flex h-11 w-11 items-center justify-center rounded-xl">
-                  <Icon name={p.icon} className="h-5 w-5" />
-                </span>
+              <div key={p.t} className="group border-border bg-surface rounded-2xl border p-6">
+                <IcoonVak src={p.icon} />
                 <h3 className="mt-4 text-lg font-semibold">{p.t}</h3>
                 <p className="text-foreground-muted mt-2 text-sm leading-relaxed">
                   {p.d}
@@ -106,11 +125,14 @@ export default function ZzpLandingPage() {
           <h2 className="text-2xl font-bold md:text-3xl">Zo werkt het</h2>
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             {stappen.map((stap, i) => (
-              <li key={stap} className="border-border bg-surface rounded-2xl border p-6">
-                <span className="bg-brand-50 text-brand-700 flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold tabular-nums">
-                  {i + 1}
-                </span>
-                <p className="text-foreground mt-4">{stap}</p>
+              <li key={stap.tekst} className="group border-border bg-surface rounded-2xl border p-6">
+                <div className="flex items-center gap-3">
+                  <IcoonVak src={stap.icon} />
+                  <span className="text-brand-700 text-xs font-bold tracking-wide uppercase tabular-nums">
+                    Stap {i + 1}
+                  </span>
+                </div>
+                <p className="text-foreground mt-4">{stap.tekst}</p>
               </li>
             ))}
           </ol>
