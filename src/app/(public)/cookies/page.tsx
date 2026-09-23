@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
 import { LegalNotice } from "@/components/layout/legal-notice";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = paginaMetadata({
+  pad: "/cookies",
   title: "Cookiebeleid",
-  robots: { index: false },
-  alternates: { canonical: "/cookies" },
-};
+  index: false,
+});
 
 const cookies = [
   {

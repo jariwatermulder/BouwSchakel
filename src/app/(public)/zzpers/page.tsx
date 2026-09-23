@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/zzpers" },
-  title: "Voor zzp'ers",
+export const metadata: Metadata = paginaMetadata({
+  pad: "/zzpers",
+  title: "Word gevonden als zzp’er",
   description:
-    "Maak gratis een profiel en word gevonden door opdrachtgevers in jouw regio.",
-};
+    "Maak je profiel en laat opdrachtgevers zien wat je doet en waar je werkt. Gratis tijdens de introductie.",
+});
 
 const punten = [
   {

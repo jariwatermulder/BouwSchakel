@@ -31,7 +31,7 @@ export function LoginForm({
 
   return (
     <Card>
-      <CardTitle>Inloggen</CardTitle>
+      <CardTitle as="h1">Inloggen</CardTitle>
       <CardDescription>Welkom terug bij ZZP Schakel.</CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">

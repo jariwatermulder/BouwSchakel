@@ -69,7 +69,7 @@ export function RegisterForm({
 
   return (
     <Card>
-      <CardTitle>Account aanmaken</CardTitle>
+      <CardTitle as="h1">Account aanmaken</CardTitle>
       <CardDescription>{info.intro(naarZoekopdracht)}</CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">

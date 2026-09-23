@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
 import { LegalNotice } from "@/components/layout/legal-notice";
 import { BEDRIJF } from "@/lib/bedrijfsgegevens";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = paginaMetadata({
+  pad: "/privacy",
   title: "Privacyverklaring",
-  robots: { index: false },
-  alternates: { canonical: "/privacy" },
-};
+  index: false,
+});
 
 function H({ children }: { children: React.ReactNode }) {
   return <h2 className="text-foreground mt-8 text-lg font-semibold">{children}</h2>;

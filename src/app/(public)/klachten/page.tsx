@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
@@ -6,11 +7,11 @@ import { LegalNotice } from "@/components/layout/legal-notice";
 import { Card, CardTitle } from "@/components/ui/card";
 import { KlachtForm } from "./klacht-form";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/klachten" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/klachten",
   title: "Klachten",
-  robots: { index: false },
-};
+  index: false,
+});
 
 export default function KlachtenPage() {
   return (
@@ -74,7 +75,7 @@ export default function KlachtenPage() {
         </div>
 
         <Card className="mt-8">
-          <CardTitle>Klacht indienen</CardTitle>
+          <CardTitle as="h2">Klacht indienen</CardTitle>
           <div className="mt-4">
             <KlachtForm />
           </div>

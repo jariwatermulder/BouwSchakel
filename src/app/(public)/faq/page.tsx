@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { PageIntro } from "@/components/layout/page-intro";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/faq" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/faq",
   title: "Veelgestelde vragen",
-  description: "Antwoorden op de meestgestelde vragen over ZZP Schakel.",
-};
+  description:
+    "Antwoorden op de meestgestelde vragen over ZZP Schakel.",
+});
 
 const vragen = [
   {

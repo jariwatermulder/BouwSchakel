@@ -17,7 +17,7 @@ export function ForgotForm() {
   if (state.ok) {
     return (
       <Card>
-        <CardTitle>Controleer je e-mail</CardTitle>
+        <CardTitle as="h1">Controleer je e-mail</CardTitle>
         <CardDescription>
           Als er een account bestaat voor dit e-mailadres, hebben we een link
           gestuurd waarmee je een nieuw wachtwoord kunt instellen. De link is
@@ -34,7 +34,7 @@ export function ForgotForm() {
 
   return (
     <Card>
-      <CardTitle>Wachtwoord vergeten</CardTitle>
+      <CardTitle as="h1">Wachtwoord vergeten</CardTitle>
       <CardDescription>
         Vul je e-mailadres in. Je ontvangt een link om een nieuw wachtwoord in
         te stellen.

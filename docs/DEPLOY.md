@@ -24,14 +24,16 @@ Voeg deze toe onder "Environment Variables" (vervang `[WACHTWOORD]` door stap 1)
 DATABASE_URL = postgresql://postgres.pzpegcnvtzamsjqboyxz:[WACHTWOORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres?pgbouncer=true
 DIRECT_URL   = postgresql://postgres:[WACHTWOORD]@db.pzpegcnvtzamsjqboyxz.supabase.co:5432/postgres
 AUTH_SECRET  = yz9atEsHMLvKm2tP+WgdXhqCs4GjGSt7GFgzOZpNrgNCPrWMvYg9xiVaUsIzbqDP
-APP_URL      = https://zzpschakel.nl
+APP_URL      = https://www.zzpschakel.nl
 ```
 
 > `APP_URL` is de basis voor canonical-links, Open Graph (deelvoorbeelden),
-> sitemap, robots en e-maillinks. Zet hem op het **definitieve domein**, niet
-> op een `*.vercel.app`-adres. Staat hier nog een oud adres (zoals
-> `bouwschakel.vercel.app`), dan verwijzen alle pagina's daarnaar. Na een
-> wijziging opnieuw deployen.
+> sitemap, robots, structured data en e-maillinks. Zet hem op het
+> **definitieve domein met www**, niet op een `*.vercel.app`-adres. Als
+> vangnet gebruikt de code in productie (`VERCEL_ENV=production`) altijd
+> `https://www.zzpschakel.nl` wanneer `APP_URL` ontbreekt of nog naar een
+> `*.vercel.app`-host wijst (zie `src/lib/app-url.ts`). Previews gebruiken hun
+> eigen deploy-URL en staan op noindex. Zie docs/SEO.md.
 
 Bedrijfsgegevens voor de juridische pagina's (privacy, voorwaarden, klachten,
 cookies, contact). Zolang deze leeg zijn, tonen die pagina's placeholders en
@@ -46,20 +48,31 @@ NEXT_PUBLIC_CONTACT_EMAIL    = <e-mailadres waarop jullie bereikbaar zijn>
 NEXT_PUBLIC_CONTACT_TELEFOON = <optioneel>
 ```
 
-## 3b. Eigen domein koppelen (zzpschakel.nl)
+## 3b. Eigen domein koppelen (www.zzpschakel.nl)
 
-1. Vercel → project → **Settings → Domains** → voeg `zzpschakel.nl` en
-   `www.zzpschakel.nl` toe. Vercel toont welke DNS-records nodig zijn.
-2. Bij de domeinregistrar: zet het A-record van `zzpschakel.nl` op het
-   IP-adres dat Vercel noemt en een CNAME voor `www` naar
-   `cname.vercel-dns.com` (of de waarden die Vercel toont). Verwijder oude
-   records die naar een andere hosting wijzen; die geven anders een 502.
-3. Wacht tot Vercel het domein als "Valid Configuration" toont en het
+Productie-origin is **https://www.zzpschakel.nl**; `zzpschakel.nl` (zonder
+www) stuurt permanent door naar www.
+
+1. Vercel → project → **Settings → Domains** → voeg `www.zzpschakel.nl` toe
+   als primair domein en `zzpschakel.nl` met "Redirect to www.zzpschakel.nl"
+   (308). Vercel toont welke DNS-records nodig zijn.
+2. Bij de domeinregistrar: CNAME voor `www` naar `cname.vercel-dns.com` en
+   het A-record van `zzpschakel.nl` op het IP-adres dat Vercel noemt (of de
+   waarden die Vercel toont). Verwijder oude records die naar een andere
+   hosting of een doorstuurdienst wijzen; die geven anders een 502 of een
+   pagina in een frame.
+3. Wacht tot Vercel beide domeinen als "Valid Configuration" toont en het
    certificaat is uitgegeven.
-4. Zet `APP_URL` op `https://zzpschakel.nl` en deploy opnieuw.
-5. Controleer vanaf een ander netwerk (bijv. mobiel): homepage, /vind-zzper en
-   /registreren, en bekijk de broncode op `<link rel="canonical">` en
-   `og:url`.
+4. Zet `APP_URL` op `https://www.zzpschakel.nl` en deploy opnieuw.
+5. Controleer vanaf een ander netwerk (bijv. mobiel):
+   - `https://zzpschakel.nl/vind-zzper?vak=timmerman` → 308 naar
+     `https://www.zzpschakel.nl/vind-zzper?vak=timmerman` (pad en query blijven);
+   - `http://www.zzpschakel.nl` → https;
+   - de oude adressen `bouw-schakel.vercel.app`, `bouwschakel.vercel.app` en
+     `bouw-schakel-geqi.vercel.app` → 308 naar www (ingebouwd in
+     `next.config.ts`, alleen in productie);
+   - broncode van de homepage: `<link rel="canonical">`, `og:url` en
+     `og:image` op www.zzpschakel.nl; `/robots.txt` en `/sitemap.xml` idem.
 
 ## 4. Deploy
 

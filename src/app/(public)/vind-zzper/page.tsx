@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
@@ -21,12 +22,12 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Vind een zzp'er",
+export const metadata: Metadata = paginaMetadata({
+  pad: "/vind-zzper",
+  title: "Zoek een zzp’er op vak en regio",
   description:
-    "Zoek op vakgebied en regio, bekijk profielen van vakmensen en neem rechtstreeks contact op. Geen opdracht nodig.",
-  alternates: { canonical: "/vind-zzper" },
-};
+    "Zoek een vakman voor jouw klus. Met een gratis account bekijk je het aanbod voor je zoekopdracht en leg je rechtstreeks contact.",
+});
 
 const veld =
   "border-border bg-surface focus-visible:border-navy-500 h-11 rounded-lg border px-3 text-sm outline-none";

@@ -17,7 +17,7 @@ export function ResetForm({ token }: { token: string }) {
   if (!token) {
     return (
       <Card>
-        <CardTitle>Link ongeldig</CardTitle>
+        <CardTitle as="h1">Link ongeldig</CardTitle>
         <CardDescription>
           Deze herstel-link is niet compleet. Vraag een nieuwe link aan.
         </CardDescription>
@@ -32,7 +32,7 @@ export function ResetForm({ token }: { token: string }) {
 
   return (
     <Card>
-      <CardTitle>Nieuw wachtwoord instellen</CardTitle>
+      <CardTitle as="h1">Nieuw wachtwoord instellen</CardTitle>
       <CardDescription>Kies een nieuw wachtwoord van minimaal 10 tekens.</CardDescription>
 
       <form action={formAction} className="mt-6 space-y-4">

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/bedrijven" },
-  title: "Voor opdrachtgevers",
+export const metadata: Metadata = paginaMetadata({
+  pad: "/bedrijven",
+  title: "Vind een vakman voor jouw klus",
   description:
-    "Zoek op vakgebied en regio, bekijk profielen van vakmensen en neem rechtstreeks contact op. Geen opdracht plaatsen nodig.",
-};
+    "Ontdek hoe je via ZZP Schakel vakmensen zoekt op vak en regio en rechtstreeks afspraken maakt. Geen opdracht plaatsen nodig.",
+});
 
 const punten = [
   {

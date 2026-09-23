@@ -1,10 +1,15 @@
 import type { MetadataRoute } from "next";
 import { resolveAppUrl } from "@/lib/app-url";
 
-// Statische, publieke pagina's. Juridische en account-pagina's staan op
-// noindex en horen niet in de sitemap; opdrachtpagina's bestaan niet meer.
-// Zzp-profielen zijn alleen met een account zichtbaar en staan daarom niet
-// in de sitemap.
+/**
+ * Alleen bedoelde, indexeerbare, canonieke pagina's (zie docs/SEO.md).
+ * Niet opgenomen: juridische pagina's en accountflows (noindex), filter-
+ * varianten van /vind-zzper (canonical naar /vind-zzper), zzp-profielen
+ * (alleen met account zichtbaar) en interne routes.
+ *
+ * Bewust zonder lastModified: die datum hoort alleen bij een echte
+ * inhoudswijziging, niet bij elke aanvraag.
+ */
 const routes: { pad: string; prio: number }[] = [
   { pad: "", prio: 1 },
   { pad: "/vind-zzper", prio: 0.9 },
@@ -19,10 +24,8 @@ const routes: { pad: string; prio: number }[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const appUrl = resolveAppUrl();
-  const now = new Date();
   return routes.map(({ pad, prio }) => ({
     url: `${appUrl}${pad}`,
-    lastModified: now,
     changeFrequency: "weekly",
     priority: prio,
   }));

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { HeroFoto } from "@/components/home/hero-foto";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = paginaMetadata({
+  pad: "/",
+});
 import { Icon } from "@/components/home/pictos";
 import { ZoWerktHet } from "@/components/home/zo-werkt-het";
 import { Vakgebieden } from "@/components/home/vakgebieden";

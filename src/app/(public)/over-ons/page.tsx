@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { PageIntro } from "@/components/layout/page-intro";
 import { Icon } from "@/components/home/pictos";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/over-ons" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/over-ons",
   title: "Over ons",
-  description: "Het verhaal achter ZZP Schakel.",
-};
+  description:
+    "Het verhaal achter ZZP Schakel.",
+});
 
 const waarden = [
   {
@@ -74,7 +76,7 @@ export default function OverOnsPage() {
               >
                 <Icon name={w.icon} className="h-6 w-6" />
               </span>
-              <CardTitle className="mt-4">{w.titel}</CardTitle>
+              <CardTitle as="h2" className="mt-4">{w.titel}</CardTitle>
               <CardDescription>{w.tekst}</CardDescription>
             </Card>
           ))}

@@ -4,40 +4,36 @@ import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PWARegister } from "@/components/pwa-register";
 import { AnalyticsTracker } from "@/components/analytics/tracker";
 import { resolveAppUrl } from "@/lib/app-url";
+import { StructuredData } from "@/components/structured-data";
 
 const appUrl = resolveAppUrl();
 
 export const metadata: Metadata = {
+  // Absolute basis voor canonicals, deelafbeeldingen en sitemap (zie src/lib/app-url.ts).
   metadataBase: new URL(appUrl),
   title: {
-    default: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+    default: "ZZP Schakel — Vind vakmensen in jouw regio",
     template: "%s · ZZP Schakel",
   },
   description:
-    "ZZP Schakel is de directe schakel tussen zzp'ers en bedrijven: vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
-  alternates: { canonical: "/" },
+    "Zoek op vakgebied en regio. Maak gratis een account om het aanbod te bekijken en rechtstreeks contact te leggen met zelfstandige vakmensen.",
+  // Geen vaste og:title/og:description/og:url: die volgen per pagina uit
+  // title, description en canonical, zodat deelvoorbeelden de pagina beschrijven.
   openGraph: {
     type: "website",
     locale: "nl_NL",
     siteName: "ZZP Schakel",
-    url: appUrl,
-    title: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
-    description:
-      "Vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
+        alt: "ZZP Schakel — Vind vakmensen in jouw regio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ZZP Schakel — De directe schakel tussen zzp'ers en bedrijven.",
-    description:
-      "Vind een vakman in jouw regio of laat je als zzp'er vinden. Rechtstreeks contact, zonder tussenlaag.",
     images: ["/og.png"],
   },
   manifest: "/manifest.webmanifest",
@@ -85,6 +81,7 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-full flex-col">
+        <StructuredData />
         {children}
         <CookieConsent />
         <PWARegister />

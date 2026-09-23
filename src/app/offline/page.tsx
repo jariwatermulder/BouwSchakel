@@ -13,7 +13,7 @@ export default function OfflinePage() {
   return (
     <Container className="max-w-lg py-20 text-center">
       <Card>
-        <CardTitle>Je bent offline</CardTitle>
+        <CardTitle as="h1">Je bent offline</CardTitle>
         <p className="text-foreground-muted mt-2">
           Er is op dit moment geen internetverbinding. Zodra je weer online
           bent, kun je verdergaan met ZZP Schakel.

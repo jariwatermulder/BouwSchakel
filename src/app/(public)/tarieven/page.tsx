@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/tarieven" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/tarieven",
   title: "Tarieven",
   description:
     "ZZP Schakel is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",
-};
+});
 
 export default function TarievenPage() {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -7,12 +8,12 @@ import { Icon } from "@/components/home/pictos";
 import { BEDRIJF, BEDRIJFSGEGEVENS_COMPLEET } from "@/lib/bedrijfsgegevens";
 import { ContactForm } from "./contact-form";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/contact",
   title: "Contact",
   description:
     "Vragen over ZZP Schakel, je account of je profiel? Stuur ons een bericht; we reageren meestal binnen twee werkdagen.",
-};
+});
 
 export default function ContactPage() {
   const email = BEDRIJF.email.startsWith("[") ? null : BEDRIJF.email;
@@ -27,7 +28,7 @@ export default function ContactPage() {
       />
       <Container className="grid gap-8 py-12 md:grid-cols-[1fr_320px] md:py-16">
         <Card>
-          <CardTitle>Stuur ons een bericht</CardTitle>
+          <CardTitle as="h2">Stuur ons een bericht</CardTitle>
           <CardDescription>
             Beschrijf je vraag zo concreet mogelijk; dan kunnen we je sneller
             helpen.
@@ -42,7 +43,7 @@ export default function ContactPage() {
             <span className="bg-brand-50 text-brand-600 flex h-11 w-11 items-center justify-center rounded-xl">
               <Icon name="chat" className="h-5 w-5" />
             </span>
-            <CardTitle className="mt-4">Rechtstreeks</CardTitle>
+            <CardTitle as="h2" className="mt-4">Rechtstreeks</CardTitle>
             {email || telefoon ? (
               <ul className="mt-2 space-y-1 text-sm">
                 {email ? (
@@ -72,7 +73,7 @@ export default function ContactPage() {
             <span className="bg-brand-50 text-brand-600 flex h-11 w-11 items-center justify-center rounded-xl">
               <Icon name="shield" className="h-5 w-5" />
             </span>
-            <CardTitle className="mt-4">Klacht of melding</CardTitle>
+            <CardTitle as="h2" className="mt-4">Klacht of melding</CardTitle>
             <CardDescription>
               Klacht over het platform of een andere gebruiker? Gebruik de{" "}
               <Link href="/klachten" className="text-brand-600 font-medium hover:underline">
@@ -84,7 +85,7 @@ export default function ContactPage() {
 
           {BEDRIJFSGEGEVENS_COMPLEET ? (
             <Card>
-              <CardTitle>Bedrijfsgegevens</CardTitle>
+              <CardTitle as="h2">Bedrijfsgegevens</CardTitle>
               <CardDescription>
                 {BEDRIJF.naam}
                 <br />

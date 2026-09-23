@@ -31,6 +31,35 @@ const opdrachtenRedirects = [
   { source: "/zzpers/reacties", destination: "/zzpers/dashboard", permanent: true },
 ];
 
+// ── Productiedomein ────────────────────────────────────────────────────────
+// Eén publieke origin: https://www.zzpschakel.nl (zie src/lib/app-url.ts en
+// docs/SEO.md). Het domein zonder www en de oude publieke *.vercel.app-hosts
+// sturen permanent door naar www, met behoud van pad en query. Alleen in
+// productie: previews hebben eigen hosts en blijven onaangeroerd.
+const PRODUCTIE_HOST = "www.zzpschakel.nl";
+const OUDE_PUBLIEKE_HOSTS = [
+  "zzpschakel.nl",
+  "bouw-schakel.vercel.app",
+  "bouwschakel.vercel.app",
+  "bouw-schakel-geqi.vercel.app",
+];
+const isVercelProductie = process.env.VERCEL_ENV === "production";
+const isVercelPreview = !!process.env.VERCEL_ENV && !isVercelProductie;
+
+const hostRedirects = isVercelProductie
+  ? OUDE_PUBLIEKE_HOSTS.map((host) => ({
+      source: "/:path*",
+      has: [{ type: "host" as const, value: host }],
+      destination: `https://${PRODUCTIE_HOST}/:path*`,
+      permanent: true,
+    }))
+  : [];
+
+// Preview-deployments nooit indexeren (aanvullend op robots.txt).
+const previewHeaders = isVercelPreview
+  ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+  : [];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Foto- en documentupload via server actions (max. 10 MB per bestand).
@@ -38,10 +67,10 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "12mb" },
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [{ source: "/:path*", headers: [...securityHeaders, ...previewHeaders] }];
   },
   async redirects() {
-    return opdrachtenRedirects;
+    return [...hostRedirects, ...opdrachtenRedirects];
   },
 };
 

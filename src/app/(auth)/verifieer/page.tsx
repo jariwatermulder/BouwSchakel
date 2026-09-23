@@ -65,7 +65,7 @@ export default async function VerifieerPage({
     <Card>
       {resultaat.ok ? (
         <>
-          <CardTitle>E-mailadres bevestigd</CardTitle>
+          <CardTitle as="h1">E-mailadres bevestigd</CardTitle>
           <CardDescription className="mt-2">
             Bedankt, je e-mailadres is bevestigd. Je kunt nu verder met ZZP
             Schakel.
@@ -73,7 +73,7 @@ export default async function VerifieerPage({
         </>
       ) : (
         <>
-          <CardTitle>Bevestigen niet gelukt</CardTitle>
+          <CardTitle as="h1">Bevestigen niet gelukt</CardTitle>
           <CardDescription className="mt-2">
             {resultaat.fout} Log in en vraag bij Instellingen een nieuwe
             bevestigingsmail aan.

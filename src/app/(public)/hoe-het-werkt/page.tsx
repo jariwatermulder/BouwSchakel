@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { paginaMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/container";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { PageIntro } from "@/components/layout/page-intro";
 import { Icon } from "@/components/home/pictos";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/hoe-het-werkt" },
+export const metadata: Metadata = paginaMetadata({
+  pad: "/hoe-het-werkt",
   title: "Hoe het werkt",
   description:
     "Zo werkt ZZP Schakel voor bedrijven en zelfstandige zzp’ers.",
-};
+});
 
 const bedrijf = [
   "Kies je vak en regio. Maak gratis een account om passende profielen te bekijken en contact op te nemen.",
@@ -42,7 +43,7 @@ export default function HoeHetWerktPage() {
             >
               <Icon name="doc" className="h-5 w-5" />
             </span>
-            <CardTitle>Voor opdrachtgevers</CardTitle>
+            <CardTitle as="h2">Voor opdrachtgevers</CardTitle>
           </div>
           <ol className="mt-5 space-y-3">
             {bedrijf.map((stap, i) => (
@@ -69,7 +70,7 @@ export default function HoeHetWerktPage() {
             >
               <Icon name="bolt" className="h-5 w-5" />
             </span>
-            <CardTitle>Voor zzp&apos;ers</CardTitle>
+            <CardTitle as="h2">Voor zzp&apos;ers</CardTitle>
           </div>
           <ol className="mt-5 space-y-3">
             {zzp.map((stap, i) => (
@@ -96,7 +97,7 @@ export default function HoeHetWerktPage() {
               <Icon name="shield" className="h-5 w-5" />
             </span>
             <div>
-              <CardTitle>Rechtstreeks contact, geen tussenpersoon</CardTitle>
+              <CardTitle as="h2">Rechtstreeks contact, geen tussenpersoon</CardTitle>
               <CardDescription>
                 ZZP Schakel is een communicatieplatform: het brengt
                 opdrachtgever en zzp’er met elkaar in contact. Afspraken over het
