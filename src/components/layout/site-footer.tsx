@@ -26,7 +26,6 @@ const columns = [
     links: [
       { href: "/algemene-voorwaarden", label: "Algemene voorwaarden" },
       { href: "/privacy", label: "Privacy" },
-      { href: "/cookies", label: "Cookies" },
       { href: "/klachten", label: "Klachten" },
     ],
   },
