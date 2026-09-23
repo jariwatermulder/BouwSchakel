@@ -7,7 +7,7 @@
  * andermans gegevens ziet. Alleen een paar statische bestanden worden vooraf
  * gecachet voor de offline-terugval.
  */
-const CACHE = "zzp-schakel-v2";
+const CACHE = "zzp-schakel-v3";
 const OFFLINE_URL = "/offline";
 const PRECACHE = [OFFLINE_URL, "/icon-192.png", "/icon-512.png"];
 
