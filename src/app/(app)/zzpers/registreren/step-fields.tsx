@@ -295,7 +295,7 @@ export function StepFields({
         <div className="space-y-6">
           <p className="border-border bg-surface-muted text-foreground-muted rounded-lg border p-3 text-sm">
             Weet je je beschikbaarheid nog niet? Laat dit leeg en klik op
-            opslaan — je profiel toont dan <strong>&ldquo;In overleg&rdquo;</strong>. Je kunt
+            opslaan; je profiel toont dan <strong>&ldquo;In overleg&rdquo;</strong>. Je kunt
             dit later altijd aanpassen.
           </p>
           <div>

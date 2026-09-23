@@ -14,7 +14,7 @@ export const OG_AFBEELDING = {
   url: "/og.png",
   width: 1200,
   height: 630,
-  alt: "ZZP Schakel — Vind vakmensen in jouw regio",
+  alt: "ZZP Schakel: vind vakmensen in jouw regio",
 };
 
 export function paginaMetadata({

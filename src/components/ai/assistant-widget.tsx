@@ -213,7 +213,7 @@ export function AssistantWidget() {
             </button>
           </form>
           <p className="text-foreground-muted bg-surface px-3 pb-2 text-center text-[11px]">
-            AI kan fouten maken — geen juridisch of financieel advies.
+            AI kan fouten maken. Dit is geen juridisch of financieel advies.
           </p>
         </div>
       ) : null}

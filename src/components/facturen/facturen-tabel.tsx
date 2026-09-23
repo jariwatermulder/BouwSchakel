@@ -143,7 +143,7 @@ export function FacturenTabel({
                       {datumKortNL(f.datum)}
                     </td>
                     <td className="text-foreground-muted px-4 py-3">
-                      {f.vervaldatum ? datumKortNL(f.vervaldatum) : "—"}
+                      {f.vervaldatum ? datumKortNL(f.vervaldatum) : "-"}
                     </td>
                     <td className="px-4 py-3 text-right font-medium tabular-nums">
                       {euro(f.totaalCents)}

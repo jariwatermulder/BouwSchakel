@@ -147,7 +147,7 @@ export function ZoWerktHet() {
             Twee manieren, één platform
           </h2>
           <p className="text-foreground-muted mt-2">
-            Of je nu op zoek bent naar een vakman of zelf zzp’er bent — ZZP
+            Of je nu op zoek bent naar een vakman of zelf zzp’er bent: ZZP
             Schakel brengt jullie direct met elkaar in contact.
           </p>
         </div>

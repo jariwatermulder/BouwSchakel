@@ -7,7 +7,7 @@ export const metadata: Metadata = paginaMetadata({
   pad: "/tarieven",
   title: "Tarieven",
   description:
-    "ZZP Schakel is tijdens de introductie gratis — voor zzp’ers en opdrachtgevers.",
+    "ZZP Schakel is tijdens de introductie gratis, voor zzp’ers en opdrachtgevers.",
 });
 
 export default function TarievenPage() {
@@ -20,7 +20,7 @@ export default function TarievenPage() {
           </h1>
           <p className="text-foreground-muted mt-3 max-w-2xl text-lg">
             Zoeken, een profiel aanmaken en contact leggen kost op dit moment
-            niets — voor zowel zzp’ers als opdrachtgevers.
+            niets, voor zowel zzp’ers als opdrachtgevers.
           </p>
         </Container>
       </section>
@@ -82,7 +82,7 @@ export default function TarievenPage() {
             het werk, het tarief en de planning. Wij regelen geen contracten,
             urenregistratie, facturen of betalingen. Er is nog geen vast
             verdienmodel. Mocht daar iets in veranderen, dan laten we dat vooraf
-            duidelijk weten — er worden nooit ongemerkt kosten in rekening
+            duidelijk weten; er worden nooit ongemerkt kosten in rekening
             gebracht.
           </p>
         </div>

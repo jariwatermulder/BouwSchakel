@@ -58,7 +58,7 @@ export default async function BeschikbaarheidPage() {
                 <span className="flex items-center gap-3">
                   <Badge variant="accent">{typeLabel[a.type]}</Badge>
                   {datum(a.van)}
-                  {a.tot ? ` — ${datum(a.tot)}` : " — doorlopend"}
+                  {a.tot ? ` tot ${datum(a.tot)}` : ", doorlopend"}
                 </span>
                 <form action={verwijderBeschikbaarheid}>
                   <input type="hidden" name="id" value={a.id} />

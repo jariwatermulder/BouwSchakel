@@ -21,7 +21,7 @@ const faqs = [
   {
     vraag: "Moet ik een account maken om profielen te bekijken?",
     antwoord:
-      "Ja. Om passende profielen te bekijken en contact op te nemen maak je gratis een account aan als opdrachtgever — zo weten beide partijen met wie ze praten. Zzp’ers maken een account aan om zelf een profiel te plaatsen.",
+      "Ja. Om passende profielen te bekijken en contact op te nemen maak je gratis een account aan als opdrachtgever. Zo weten beide partijen met wie ze praten. Zzp’ers maken een account aan om zelf een profiel te plaatsen.",
   },
   {
     vraag: "Regelen jullie contracten, uren of betalingen?",

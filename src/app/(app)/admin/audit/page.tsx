@@ -44,12 +44,12 @@ export default async function AdminAuditPage() {
                   <td className="py-2 pr-4 whitespace-nowrap">
                     {tijd(l.createdAt)}
                   </td>
-                  <td className="py-2 pr-4">{l.actor?.email ?? "—"}</td>
+                  <td className="py-2 pr-4">{l.actor?.email ?? "-"}</td>
                   <td className="py-2 pr-4">{l.actie}</td>
                   <td className="text-foreground-muted py-2">
                     {l.subjectType
                       ? `${l.subjectType} ${l.subjectId ?? ""}`
-                      : "—"}
+                      : "-"}
                   </td>
                 </tr>
               ))}

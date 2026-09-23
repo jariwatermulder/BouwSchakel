@@ -32,7 +32,7 @@ export async function sendEmail(message: EmailMessage): Promise<void> {
 
   if (!apiKey) {
     console.warn(
-      `[email] Geen RESEND_API_KEY ingesteld — e-mail niet verzonden aan ${message.to} ("${message.subject}").`,
+      `[email] Geen RESEND_API_KEY ingesteld; e-mail niet verzonden aan ${message.to} ("${message.subject}").`,
     );
     return;
   }

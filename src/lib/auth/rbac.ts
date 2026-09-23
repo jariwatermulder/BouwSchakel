@@ -5,7 +5,7 @@ import type { AdminRole, User, UserRole } from "@prisma/client";
  *
  * Deze functies zijn puur en zonder side effects, zodat ze eenvoudig te testen
  * zijn (zie tests/rbac.test.ts). Autorisatie hoort altijd server-side te
- * gebeuren — een verborgen frontend-knop is geen beveiliging.
+ * gebeuren - een verborgen frontend-knop is geen beveiliging.
  * Zie docs/SECURITY.md §2.
  */
 

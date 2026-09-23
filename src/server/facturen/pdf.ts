@@ -70,7 +70,7 @@ function euro(cents: number): string {
   })}`;
 }
 function dkort(d: Date | null): string {
-  return d ? new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d) : "—";
+  return d ? new Intl.DateTimeFormat("nl-NL", { dateStyle: "medium" }).format(d) : "-";
 }
 function dlang(d: Date | null): string {
   return d ? new Intl.DateTimeFormat("nl-NL", { dateStyle: "long" }).format(d) : "";
@@ -135,7 +135,7 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
 
   function wrap(text: string, size: number, maxW: number): string[] {
     const woorden = safe(text).split(/\s+/).filter(Boolean);
-    if (woorden.length === 0) return ["—"];
+    if (woorden.length === 0) return ["-"];
     const regels: string[] = [];
     let huidig = "";
     for (const w of woorden) {
@@ -187,7 +187,7 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
     ["FACTUURNUMMER", data.factuurnummer],
     ["FACTUURDATUM", dkort(data.factuurdatum)],
     ["VERVALDATUM", dkort(data.vervaldatum)],
-    ["BETAALTERMIJN", data.betaaltermijnDagen ? `${data.betaaltermijnDagen} dagen` : "—"],
+    ["BETAALTERMIJN", data.betaaltermijnDagen ? `${data.betaaltermijnDagen} dagen` : "-"],
   ];
   const cellW = (RIGHT - M) / meta.length;
   meta.forEach(([label, waarde], i) => {
@@ -241,7 +241,7 @@ export async function genereerFactuurPdf(data: FactuurPdfData): Promise<Uint8Arr
       ly -= 13;
     });
     R(page, Number.isInteger(r.aantal) ? String(r.aantal) : r.aantal.toFixed(2), COL.aantalR, y, 10, font, MUTED);
-    T(page, r.eenheid ?? "—", COL.eenheidL, y, 10, font, MUTED);
+    T(page, r.eenheid ?? "-", COL.eenheidL, y, 10, font, MUTED);
     R(page, euro(r.tariefCents), COL.tariefR, y, 10, font, MUTED);
     R(page, data.btwVerlegd ? "verlegd" : `${r.btwPercentage}%`, COL.btwR, y, 10, font, MUTED);
     R(page, euro(r.bedragCents), COL.bedragR, y, 10, font, INK);

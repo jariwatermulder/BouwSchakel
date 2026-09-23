@@ -59,7 +59,7 @@ async function createEmailVerification(user: User): Promise<void> {
   try {
     await sendEmail({
       to: user.email,
-      subject: "Bevestig je e-mailadres — ZZP Schakel",
+      subject: "Bevestig je e-mailadres | ZZP Schakel",
       text: `Welkom bij ZZP Schakel. Bevestig je e-mailadres via: ${url}`,
     });
   } catch (err) {
@@ -153,7 +153,7 @@ export async function requestPasswordReset(email: string): Promise<void> {
   const url = `${serverEnv().APP_URL}/wachtwoord-herstellen?token=${token}`;
   await sendEmail({
     to: user.email,
-    subject: "Nieuw wachtwoord instellen — ZZP Schakel",
+    subject: "Nieuw wachtwoord instellen | ZZP Schakel",
     text: `Je hebt gevraagd om een nieuw wachtwoord voor ZZP Schakel. Stel het in via deze link (1 uur geldig): ${url}\n\nHeb je dit niet aangevraagd? Dan kun je deze e-mail negeren; je wachtwoord blijft ongewijzigd.`,
     html: [
       "<p>Je hebt gevraagd om een nieuw wachtwoord voor ZZP Schakel.</p>",

@@ -125,7 +125,7 @@ export default async function RegistrerenPage({
         <p className="text-foreground-muted mt-1 text-sm">
           {kern
             ? `Stap ${groepIndex + 1} van ${KERN_STAPPEN.length}. Je voortgang wordt automatisch opgeslagen.`
-            : "Optioneel — je kunt dit later aanvullen. Je voortgang wordt automatisch opgeslagen."}
+            : "Optioneel: je kunt dit later aanvullen. Je voortgang wordt automatisch opgeslagen."}
         </p>
 
         {kern ? (

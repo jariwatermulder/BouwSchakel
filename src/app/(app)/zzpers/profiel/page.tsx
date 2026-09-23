@@ -254,7 +254,7 @@ export default async function ProfielPage({
         ) : (
           <p className="text-foreground-muted mt-2 text-sm">
             Nog geen werk toegevoegd. Laat met een paar foto&apos;s zien wat je
-            maakt — dat overtuigt opdrachtgevers.
+            maakt. Dat overtuigt opdrachtgevers.
           </p>
         )}
       </Card>

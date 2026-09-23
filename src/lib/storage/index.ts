@@ -5,7 +5,7 @@ import "server-only";
  * Postgres-provider gebruikt (zie ./postgres.ts): geen extra configuratie
  * nodig. Publieke bestanden (profiel-/portfoliofoto's) staan onder `public/`;
  * privédocumenten worden alleen via kort geldige gesigneerde URL's
- * uitgeserveerd — nooit zonder handtekening. Zie docs/SECURITY.md §4.
+ * uitgeserveerd - nooit zonder handtekening. Zie docs/SECURITY.md §4.
  */
 export interface StoredObject {
   key: string;

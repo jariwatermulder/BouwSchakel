@@ -3,7 +3,7 @@ import { BEDRIJFSGEGEVENS_COMPLEET } from "@/lib/bedrijfsgegevens";
 /**
  * Melding op juridische pagina's. Toont alleen iets zolang de bedrijfsgegevens
  * (naam, adres, KvK, e-mail) niet zijn ingevuld via de NEXT_PUBLIC_BEDRIJF_*-
- * variabelen — daarna verdwijnt de melding vanzelf. De teksten zelf zijn
+ * variabelen - daarna verdwijnt de melding vanzelf. De teksten zelf zijn
  * inhoudelijk uitgewerkt; laat ze vóór livegang door een jurist nalezen.
  */
 export function LegalNotice() {

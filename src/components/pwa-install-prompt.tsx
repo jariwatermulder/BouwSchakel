@@ -122,7 +122,7 @@ export function PWAInstallPrompt() {
             </p>
           ) : (
             <p className="text-foreground-muted text-sm">
-              Zet ZZP Schakel op je beginscherm — snel en zonder appstore.
+              Zet ZZP Schakel op je beginscherm. Snel en zonder appstore.
             </p>
           )}
         </div>

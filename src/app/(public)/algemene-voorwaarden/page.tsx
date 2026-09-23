@@ -33,7 +33,7 @@ export default function AlgemeneVoorwaardenPage() {
             nummer {BEDRIJF.kvk}. Bereikbaar via {BEDRIJF.email}.
           </p>
 
-          <H>2. Wat ZZP Schakel is — en niet is</H>
+          <H>2. Wat ZZP Schakel is, en wat niet</H>
           <p>
             ZZP Schakel is een communicatieplatform dat zelfstandige vakmensen
             (zzp’ers) en opdrachtgevers met elkaar in contact brengt. Wij zijn
@@ -109,7 +109,7 @@ export default function AlgemeneVoorwaardenPage() {
             instellingen; je gegevens worden dan verwijderd of geanonimiseerd
             volgens onze privacyverklaring. Wij mogen een account schorsen of
             beëindigen bij schending van deze voorwaarden, bij misbruik of op
-            grond van een wettelijke verplichting — waar mogelijk na een
+            grond van een wettelijke verplichting, waar mogelijk na een
             waarschuwing.
           </p>
 

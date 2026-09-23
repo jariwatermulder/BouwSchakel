@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!data) return { title: "Profiel niet gevonden" };
   const naam = displayNaam(data);
   return {
-    title: `${naam} — zzp'er`,
+    title: `${naam}, zzp'er`,
     description: data.over?.slice(0, 155) ?? `Bekijk het profiel van ${naam} op ZZP Schakel.`,
     robots: { index: false },
   };
@@ -235,7 +235,7 @@ export default async function ZzperProfielPage({
               {p.uurtariefCents ? `${formatEuro(p.uurtariefCents)} / uur` : "Tarief op aanvraag"}
             </p>
             <p className="text-foreground-muted mt-1 text-xs">
-              Neem contact op — geen opdracht nodig, wel een account.
+              Neem contact op. Geen opdracht nodig, wel een account.
             </p>
             <form action={neemContactOpAction} className="mt-4">
               <input type="hidden" name="zzpProfileId" value={p.id} />

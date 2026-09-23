@@ -31,7 +31,7 @@ const voordelen = [
   "Rechtstreeks contact",
 ];
 
-/** Sectie 1 — Voor opdrachtgevers: tekst + drie punten links, illustratie rechts. */
+/** Sectie 1 - Voor opdrachtgevers: tekst + drie punten links, illustratie rechts. */
 export function VoorOpdrachtgevers() {
   return (
     <section className="py-16 md:py-24">
@@ -89,7 +89,7 @@ export function VoorOpdrachtgevers() {
   );
 }
 
-/** Sectie 2 — Voor zzp'ers: tekst + voordelen + CTA links, illustratie rechts. */
+/** Sectie 2 - Voor zzp'ers: tekst + voordelen + CTA links, illustratie rechts. */
 export function VoorZzpers() {
   return (
     <section className="bg-brand-50 py-16 md:py-24">

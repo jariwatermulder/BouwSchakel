@@ -18,7 +18,7 @@ function formatDuur(sec: number): string {
 }
 
 function toon(v: string | number | null, type: Kolom["type"]): string {
-  if (v == null) return "—";
+  if (v == null) return "-";
   if (typeof v === "number") {
     if (type === "procent") return `${v.toLocaleString("nl-NL")}%`;
     if (type === "duur") return formatDuur(v);

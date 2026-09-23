@@ -72,7 +72,7 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
         <Link
           href="/"
           className="flex items-center"
-          aria-label="ZZP Schakel — naar de homepage"
+          aria-label="ZZP Schakel, naar de homepage"
           onClick={sluit}
         >
           <Logo

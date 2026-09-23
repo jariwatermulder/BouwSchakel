@@ -2,7 +2,7 @@
  * Officiële bedrijfsgegevens van de aanbieder van ZZP Schakel. Worden getoond
  * in de juridische pagina's en op de contactpagina.
  *
- * Vul dit ÉÉN keer in met de echte gegevens (KvK-uittreksel) — zolang hier
+ * Vul dit ÉÉN keer in met de echte gegevens (KvK-uittreksel) - zolang hier
  * placeholders staan, toont de site een duidelijke "nog aan te vullen"-melding
  * op de juridische pagina's. Verzin hier nooit gegevens.
  */

@@ -32,7 +32,7 @@ export default async function FacturenPage() {
       {facturen.length === 0 ? (
         <Card className="mt-6">
           <CardDescription>
-            Je hebt nog geen facturen. Maak je eerste factuur — koppel hem aan
+            Je hebt nog geen facturen. Maak je eerste factuur en koppel hem aan
             een opdracht of vul zelf de gegevens in.
           </CardDescription>
         </Card>

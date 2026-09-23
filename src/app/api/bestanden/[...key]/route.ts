@@ -3,7 +3,7 @@ import { handtekeningGeldig, isPubliekeKey, leesBestand } from "@/lib/storage/po
 
 /**
  * Serveert opgeslagen bestanden. Publieke bestanden (`public/…`, zoals
- * profielfoto's) zijn vrij en lang cachebaar — elke upload krijgt een nieuwe
+ * profielfoto's) zijn vrij en lang cachebaar - elke upload krijgt een nieuwe
  * sleutel. Privébestanden vereisen een geldige, kort geldige handtekening
  * (zie StorageProvider.signedUrl) en worden nooit gecachet.
  */

@@ -77,7 +77,7 @@ export default async function AdminVerificatiesPage() {
               <Card className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium">
-                    {d.type} — {d.bestandsnaam}
+                    {d.type}: {d.bestandsnaam}
                   </p>
                   <p className="text-foreground-muted text-sm">
                     {d.owner.email} ·{" "}

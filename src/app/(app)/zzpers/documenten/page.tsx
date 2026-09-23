@@ -59,7 +59,7 @@ export default async function DocumentenPage({
       <h1 className="text-2xl font-bold md:text-3xl">Documenten</h1>
       <p className="text-foreground-muted mt-1 text-sm">
         Upload je certificaten en verzekeringsbewijzen voor verificatie. Je
-        documenten zijn alleen zichtbaar voor jou en het verificatieteam — nooit
+        documenten zijn alleen zichtbaar voor jou en het verificatieteam, nooit
         op je publieke profiel.
       </p>
 
@@ -129,7 +129,7 @@ export default async function DocumentenPage({
                 className="border-border flex flex-wrap items-center justify-between gap-3 border-b py-2 text-sm last:border-0"
               >
                 <span className="min-w-0">
-                  <span className="font-medium">{typeLabel[d.type]}</span> —{" "}
+                  <span className="font-medium">{typeLabel[d.type]}</span>:{" "}
                   <a href={d.url} className="text-brand-600 hover:underline" target="_blank" rel="noreferrer">
                     {d.bestandsnaam}
                   </a>

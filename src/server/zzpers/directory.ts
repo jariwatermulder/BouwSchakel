@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 /**
  * Publieke etalage van zichtbare zzp'ers. Bedrijven kunnen bladeren en direct
- * contact opnemen — er is geen opdracht nodig. Toont alleen profielen met
+ * contact opnemen - er is geen opdracht nodig. Toont alleen profielen met
  * `zichtbaar = true`. Privacy: geen exacte contactgegevens in de etalage.
  */
 

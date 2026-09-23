@@ -15,7 +15,7 @@ export function ContactForm() {
     return (
       <p className="rounded-lg border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-800">
         Bedankt voor je bericht. We reageren zo snel mogelijk op het opgegeven
-        e-mailadres — meestal binnen twee werkdagen.
+        e-mailadres, meestal binnen twee werkdagen.
       </p>
     );
   }

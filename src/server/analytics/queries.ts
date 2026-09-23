@@ -17,7 +17,7 @@ import {
  * Alle aggregaties voor het admin-dashboard. Uitsluitend echte data uit de
  * eigen database (gebruikers, profielen, gesprekken) en de eigen
  * analytics_events. Alles wat nog niet gemeten wordt, geeft `null` terug en
- * wordt in de UI als "Nog geen data" getoond — nooit als 0 of verzonnen.
+ * wordt in de UI als "Nog geen data" getoond - nooit als 0 of verzonnen.
  *
  * Zware queries lopen via een cache van 60 s (zie cache.ts).
  */

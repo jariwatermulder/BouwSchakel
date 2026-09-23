@@ -144,7 +144,7 @@ export default function PrivacyPage() {
             ingelogd met een account; jij bepaalt wat je daarin opneemt. Je
             e-mailadres en telefoonnummer tonen we niet openbaar; contact
             verloopt via berichten binnen het platform. Berichten zijn alleen
-            zichtbaar voor de deelnemers en — bij een melding of klacht — voor
+            zichtbaar voor de deelnemers en, bij een melding of klacht, voor
             onze beheerders.
           </p>
 
@@ -153,7 +153,7 @@ export default function PrivacyPage() {
           <ul className="list-disc space-y-1 pl-5">
             {verwerkers.map((v) => (
               <li key={v.naam}>
-                <span className="text-foreground font-medium">{v.naam}</span> — {v.doel}; {v.locatie}.
+                <span className="text-foreground font-medium">{v.naam}</span>: {v.doel}; {v.locatie}.
               </li>
             ))}
           </ul>

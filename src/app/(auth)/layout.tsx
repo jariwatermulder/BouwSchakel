@@ -12,7 +12,7 @@ export default function AuthLayout({
       {/* Zelfde blauwe balk als de site-header, zodat het witte logo wordt gebruikt. */}
       <div className="bg-brand-500 border-brand-700/40 border-b">
         <Container className="flex h-16 items-center">
-          <Link href="/" className="flex items-center" aria-label="ZZP Schakel — naar de homepage">
+          <Link href="/" className="flex items-center" aria-label="ZZP Schakel, naar de homepage">
             <Logo priority />
           </Link>
         </Container>

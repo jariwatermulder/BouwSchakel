@@ -3,7 +3,7 @@
  *
  * `kern` = nodig voor een bruikbaar, zichtbaar profiel bij de eerste
  * registratie. De overige stappen zijn optioneel en kunnen later worden
- * aangevuld via de profielpagina — ze onderbreken de eerste registratie niet.
+ * aangevuld via de profielpagina - ze onderbreken de eerste registratie niet.
  */
 export const REGISTRATIE_STAPPEN = [
   { slug: "persoonlijk", label: "Naam", kern: true },

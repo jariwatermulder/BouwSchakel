@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   // Absolute basis voor canonicals, deelafbeeldingen en sitemap (zie src/lib/app-url.ts).
   metadataBase: new URL(appUrl),
   title: {
-    default: "ZZP Schakel — Vind vakmensen in jouw regio",
+    default: "ZZP Schakel: vind vakmensen in jouw regio",
     template: "%s · ZZP Schakel",
   },
   description:
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "ZZP Schakel — Vind vakmensen in jouw regio",
+        alt: "ZZP Schakel: vind vakmensen in jouw regio",
       },
     ],
   },

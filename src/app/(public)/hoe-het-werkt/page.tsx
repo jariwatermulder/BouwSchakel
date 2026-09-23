@@ -21,7 +21,7 @@ const bedrijf = [
 
 const zzp = [
   "Maak een profiel met je vakgebied en werkgebied.",
-  "Stel je beschikbaarheid in — ook ‘in overleg’ kan.",
+  "Stel je beschikbaarheid in; ook ‘in overleg’ kan.",
   "Word gevonden door opdrachtgevers in jouw regio.",
   "Word rechtstreeks benaderd en maak zelf je afspraken.",
 ];

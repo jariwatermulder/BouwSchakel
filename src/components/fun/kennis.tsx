@@ -6,7 +6,7 @@ import { Icon } from "@/components/home/pictos";
 /**
  * Speelse kennis-elementen: een roulerend 'Wist je dat?'-weetje en een
  * mini-quiz. Alle inhoud is algemeen en feitelijk (geen verzonnen cijfers);
- * bij het weetje staat een korte disclaimer — het is geen juridisch of
+ * bij het weetje staat een korte disclaimer - het is geen juridisch of
  * financieel advies.
  */
 

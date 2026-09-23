@@ -44,7 +44,7 @@ export function AppShell({
           <Link
             href="/"
             className="flex shrink-0 items-center"
-            aria-label="ZZP Schakel — naar de homepage"
+            aria-label="ZZP Schakel, naar de homepage"
           >
             <Logo className="w-[126px] md:w-[150px]" />
           </Link>

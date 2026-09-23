@@ -4,7 +4,7 @@
  *
  * Productie-origin: https://www.zzpschakel.nl (zonder www wordt naar www
  * doorgestuurd, zie next.config.ts). Volgorde:
- * 1. APP_URL, mits geen *.vercel.app-host — een expliciet ingesteld domein wint.
+ * 1. APP_URL, mits geen *.vercel.app-host - een expliciet ingesteld domein wint.
  * 2. Vercel-productie (VERCEL_ENV=production): de vaste productie-origin. Een
  *    APP_URL die nog naar een oud *.vercel.app-adres wijst wordt hier bewust
  *    genegeerd; anders verwijzen canonicals en deelvoorbeelden naar de

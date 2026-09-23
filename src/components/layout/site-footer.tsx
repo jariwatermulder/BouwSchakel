@@ -64,7 +64,7 @@ export function SiteFooter() {
 
       <div className="border-navy-800 border-t">
         <Container className="text-navy-300 py-4 text-xs">
-          © {new Date().getFullYear()} ZZP Schakel — communicatieplatform dat
+          © {new Date().getFullYear()} ZZP Schakel, communicatieplatform dat
           opdrachtgevers en zzp’ers met elkaar in contact brengt. Afspraken over
           het werk maken beide partijen rechtstreeks met elkaar; ZZP Schakel is
           daarbij geen partij.

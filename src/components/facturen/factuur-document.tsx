@@ -74,16 +74,16 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
   );
   const eff = effectieveStatus(data.status, toDate(data.vervaldatum));
   const status = STATUS_META[eff] ?? STATUS_META.CONCEPT!;
-  const nummer = data.factuurnummer || "—";
+  const nummer = data.factuurnummer || "-";
   const referentie = data.betaalreferentie || data.factuurnummer;
 
   const meta: { label: string; waarde: string }[] = [
     { label: "Factuurnummer", waarde: nummer },
-    { label: "Factuurdatum", waarde: datumKortNL(data.factuurdatum) || "—" },
-    { label: "Vervaldatum", waarde: datumKortNL(data.vervaldatum) || "—" },
+    { label: "Factuurdatum", waarde: datumKortNL(data.factuurdatum) || "-" },
+    { label: "Vervaldatum", waarde: datumKortNL(data.vervaldatum) || "-" },
     {
       label: "Betaaltermijn",
-      waarde: data.betaaltermijnDagen ? `${data.betaaltermijnDagen} dagen` : "—",
+      waarde: data.betaaltermijnDagen ? `${data.betaaltermijnDagen} dagen` : "-",
     },
   ];
 
@@ -135,7 +135,7 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
             <p className="text-foreground-muted text-[10px] font-semibold tracking-wide uppercase">
               Van
             </p>
-            <p className="mt-2 font-bold">{data.afzender.naam || "—"}</p>
+            <p className="mt-2 font-bold">{data.afzender.naam || "-"}</p>
             <div className="text-foreground-muted mt-1 text-sm leading-relaxed">
               <AdresRegels
                 regels={[
@@ -157,7 +157,7 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
             <p className="text-foreground-muted text-[10px] font-semibold tracking-wide uppercase">
               Factuur aan
             </p>
-            <p className="mt-2 font-bold">{data.klant.naam || "—"}</p>
+            <p className="mt-2 font-bold">{data.klant.naam || "-"}</p>
             <div className="text-foreground-muted mt-1 text-sm leading-relaxed">
               <AdresRegels
                 regels={[
@@ -203,12 +203,12 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
               ) : (
                 data.regels.map((r, i) => (
                   <tr key={i} className="border-border/70 border-b last:border-0">
-                    <td className="py-3 pr-3 align-top">{r.omschrijving || "—"}</td>
+                    <td className="py-3 pr-3 align-top">{r.omschrijving || "-"}</td>
                     <td className="px-3 py-3 text-right align-top tabular-nums">
                       {Number.isInteger(r.aantal) ? r.aantal : r.aantal.toFixed(2)}
                     </td>
                     <td className="text-foreground-muted px-3 py-3 align-top">
-                      {r.eenheid || "—"}
+                      {r.eenheid || "-"}
                     </td>
                     <td className="px-3 py-3 text-right align-top tabular-nums">
                       {euro(r.tariefCents)}
@@ -293,7 +293,7 @@ export function FactuurDocument({ data }: { data: FactuurDocumentData }) {
         {/* Voettekst */}
         <footer className="border-border text-foreground-muted mt-8 flex flex-wrap items-center justify-between gap-2 border-t pt-4 text-[11px]">
           <span className="font-semibold">ZZP Schakel</span>
-          <span>Opgemaakt met ZZP Schakel — controleer zelf de fiscale juistheid.</span>
+          <span>Opgemaakt met ZZP Schakel. Controleer zelf de fiscale juistheid.</span>
         </footer>
       </div>
     </article>

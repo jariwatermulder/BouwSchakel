@@ -55,7 +55,7 @@ export async function verstuurContact(
       await sendEmail({
         to: naar,
         subject: `[Contact] ${data.onderwerp}`,
-        text: `Van: ${data.naam} <${data.email}>\nOnderwerp: ${data.onderwerp}\n\n${data.bericht}\n\n— Bericht #${record.id}`,
+        text: `Van: ${data.naam} <${data.email}>\nOnderwerp: ${data.onderwerp}\n\n${data.bericht}\n\nBericht #${record.id}`,
       });
     } catch (err) {
       console.warn("[contact] Notificatiemail niet verzonden:", err instanceof Error ? err.message : err);

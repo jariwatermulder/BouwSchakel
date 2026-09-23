@@ -24,7 +24,7 @@ export default function ContactPage() {
       <PageIntro
         eyebrow="Contact"
         title="We horen graag van je"
-        lead="Vragen over het platform, je account of je profiel? Stuur een bericht — we reageren meestal binnen twee werkdagen."
+        lead="Vragen over het platform, je account of je profiel? Stuur een bericht; we reageren meestal binnen twee werkdagen."
       />
       <Container className="grid gap-8 py-12 md:grid-cols-[1fr_320px] md:py-16">
         <Card>
