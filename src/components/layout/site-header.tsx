@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/brand/logo";
 import { ButtonLink, Button } from "@/components/ui/button";
@@ -22,9 +23,27 @@ const navItems = [
   { href: "/hoe-het-werkt", label: "Hoe het werkt" },
 ];
 
+/**
+ * De aanmeldknop volgt de context: op pagina's voor opdrachtgevers (zoeken,
+ * Voor opdrachtgevers) leidt hij naar een opdrachtgeversaccount en keert de
+ * bezoeker daarna terug naar die pagina; elders naar een zzp-profiel.
+ */
+function aanmeldKnop(pathname: string): { href: string; label: string; track: string } {
+  const opdrachtgever = pathname.startsWith("/vind-zzper") || pathname.startsWith("/bedrijven");
+  if (opdrachtgever) {
+    return {
+      href: `/registreren?rol=bedrijf&next=${encodeURIComponent(pathname)}`,
+      label: "Account aanmaken",
+      track: "header-account-opdrachtgever",
+    };
+  }
+  return { href: "/registreren?rol=zzp", label: "Maak een profiel", track: "header-maak-profiel" };
+}
+
 export function SiteHeader({ user }: { user?: HeaderUser }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const knop = aanmeldKnop(usePathname() ?? "/");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -111,14 +130,14 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
                 Inloggen
               </ButtonLink>
               <ButtonLink
-                href="/registreren?rol=zzp"
+                href={knop.href}
                 variant="brand"
                 size="sm"
                 data-track="cta_clicked"
-                data-track-label="header-maak-profiel"
+                data-track-label={knop.track}
                 className="rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
               >
-                Maak een profiel
+                {knop.label}
               </ButtonLink>
             </>
           )}
@@ -180,15 +199,15 @@ export function SiteHeader({ user }: { user?: HeaderUser }) {
               ) : (
                 <>
                   <ButtonLink
-                    href="/registreren?rol=zzp"
+                    href={knop.href}
                     variant="brand"
                     size="lg"
                     data-track="cta_clicked"
-                    data-track-label="menu-maak-profiel"
+                    data-track-label={`menu-${knop.track.replace("header-", "")}`}
                     onClick={sluit}
                     className="w-full justify-center rounded-xl bg-white text-brand-700 hover:bg-white/90 hover:text-brand-700"
                   >
-                    Maak een profiel
+                    {knop.label}
                   </ButtonLink>
                   <ButtonLink
                     href="/inloggen"

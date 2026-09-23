@@ -22,6 +22,10 @@ const vragen = [
     a: "Ja. Om passende profielen te bekijken en contact op te nemen maak je gratis een account aan als opdrachtgever. Zzp’ers maken een account aan om zelf een profiel te plaatsen.",
   },
   {
+    v: "Kan ik als particulier een vakman zoeken?",
+    a: "ZZP Schakel is bedoeld voor zakelijke opdrachtgevers: bij het aanmaken van een opdrachtgeversaccount vul je een bedrijfsnaam en KvK-nummer in. Ook zzp’ers registreren met hun KvK-nummer.",
+  },
+  {
     v: "Moet ik een opdracht plaatsen om iemand te benaderen?",
     a: "Nee. Je zoekt op vakgebied en regio, bekijkt profielen en neemt rechtstreeks contact op. Een opdracht plaatsen is niet verplicht.",
   },

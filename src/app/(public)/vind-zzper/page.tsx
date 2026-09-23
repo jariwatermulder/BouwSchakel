@@ -15,6 +15,7 @@ import { trackEvent } from "@/lib/analytics/track";
 import {
   displayNaam,
   listPublicZzpers,
+  countPublicZzpers,
   listVakgebiedenVoorFilter,
 } from "@/server/zzpers/directory";
 
@@ -61,7 +62,7 @@ const stappen = [
     titel: "Neem rechtstreeks contact op",
     tekst: "Bespreek zelf het werk, het tarief en de planning. Geen tussenlaag.",
     src: "/images/stap-3-contact.png",
-    alt: "Contact opnemen met een vakman via bericht, bellen of WhatsApp.",
+    alt: "Rechtstreeks contact opnemen met een vakman via een bericht in het platform.",
   },
 ];
 
@@ -93,6 +94,12 @@ export default async function VindZzperPage({
   }
 
   const zzpers = user ? await listPublicZzpers({ vakSlug: vak, plaats }) : [];
+  // Gasten zien geen profielen, wel het echte aantal passende profielen
+  // (alleen een getal) zodat ze weten wat een account oplevert.
+  const aantalVoorGast = user ? null : await countPublicZzpers({ vakSlug: vak, plaats });
+  const vakNaam = vak ? vakgebieden.find((v) => v.slug === vak)?.naam?.toLowerCase() : undefined;
+  const plaatsTekst = plaats?.trim() ? ` in ${plaats.trim()}` : "";
+  const zoekopdracht = vakNaam ? `voor ${vakNaam}${plaatsTekst}` : plaatsTekst.trim() || null;
 
   // Zoekgedrag meten: wat wordt gezocht en of het iets oplevert. Voor
   // bezoekers zonder account zijn de resultaten onbekend (niet getoond).
@@ -203,7 +210,7 @@ export default async function VindZzperPage({
 
         {!user ? (
           <div className="mt-6">
-            <AccountNodig next={huidigPad} />
+            <AccountNodig next={huidigPad} aantal={aantalVoorGast} zoekopdracht={zoekopdracht} />
           </div>
         ) : zzpers.length === 0 ? (
           <div className="border-border mt-6 rounded-2xl border border-dashed p-10 text-center">

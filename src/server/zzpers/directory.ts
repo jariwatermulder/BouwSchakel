@@ -34,9 +34,24 @@ export async function listPublicZzpers(filter: DirectoryFilter) {
   });
 }
 
-/** Aantal zichtbare zzp'er-profielen in de etalage (voor tellers). */
-export async function countPublicZzpers(): Promise<number> {
-  return db.zZPProfile.count({ where: { zichtbaar: true, deletedAt: null } });
+/**
+ * Aantal zichtbare zzp'er-profielen in de etalage, optioneel voor een
+ * zoekopdracht. Alleen een getal: bruikbaar voor bezoekers zonder account,
+ * omdat er geen profielgegevens in zitten.
+ */
+export async function countPublicZzpers(filter: DirectoryFilter = {}): Promise<number> {
+  return db.zZPProfile.count({
+    where: {
+      zichtbaar: true,
+      deletedAt: null,
+      ...(filter.vakSlug
+        ? { skills: { some: { skill: { slug: filter.vakSlug } } } }
+        : {}),
+      ...(filter.plaats
+        ? { werkgebiedPlaats: { contains: filter.plaats, mode: "insensitive" } }
+        : {}),
+    },
+  });
 }
 
 export async function getPublicZzper(id: string) {
