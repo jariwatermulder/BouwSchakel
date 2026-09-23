@@ -67,21 +67,19 @@ export default function HomePage() {
               </span>
 
               <h1
-                className="bs-load mt-5 max-w-[30rem] text-[2.1rem] font-bold leading-[1.06] tracking-tight sm:text-5xl md:text-[2.5rem] lg:text-[2.85rem] xl:text-[3.25rem] 2xl:text-[3.5rem]"
+                className="bs-load mt-5 max-w-[36rem] text-[2.1rem] font-bold leading-[1.06] tracking-tight sm:text-5xl md:text-[2.5rem] lg:text-[2.85rem] xl:text-[3.25rem] 2xl:text-[3.5rem]"
                 style={{ animationDelay: "100ms" }}
               >
-                <span className="text-foreground">
-                  Vakmensen en opdrachtgevers,
-                </span>{" "}
-                <span className="text-brand-600">rechtstreeks verbonden.</span>
+                <span className="text-foreground">Jouw vakman.</span>{" "}
+                <span className="text-brand-600">Rechtstreeks gevonden.</span>
               </h1>
 
               <p
                 className="bs-load text-foreground-muted mt-4 max-w-[30rem] text-lg leading-relaxed md:text-base lg:text-lg"
                 style={{ animationDelay: "200ms" }}
               >
-                Vind een vakman in jouw regio, of laat je als zzp’er vinden.
-                Zonder tussenlaag.
+                Vind zelfstandige vakmensen in jouw regio. Of maak als zzp’er
+                een profiel en laat opdrachtgevers jou vinden.
               </p>
 
               <div
@@ -97,7 +95,7 @@ export default function HomePage() {
                   className="justify-center rounded-xl shadow-[0_10px_24px_-12px_rgba(37,99,235,0.7)] transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_-12px_rgba(37,99,235,0.8)] motion-reduce:transform-none"
                 >
                   <Icon name="search" className="h-5 w-5" />
-                  Zoek een vakman
+                  Ik zoek een vakman
                   <span aria-hidden>→</span>
                 </ButtonLink>
                 <ButtonLink
@@ -108,7 +106,7 @@ export default function HomePage() {
                   data-track-label="hero-maak-profiel"
                   className="bg-surface/80 justify-center rounded-xl backdrop-blur-sm transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 motion-reduce:transform-none"
                 >
-                  Maak een profiel aan
+                  Ik ben zzp’er
                   <span aria-hidden>→</span>
                 </ButtonLink>
               </div>

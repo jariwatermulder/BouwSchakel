@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/home/pictos";
 import { Avatar } from "@/components/avatar";
 import { sectorMetaVan } from "@/lib/sector-meta";
+import { groepeerSkills } from "@/lib/sectoren";
 import { formatEuro } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/current-user";
@@ -154,10 +155,15 @@ export default async function VindZzperPage({
             </label>
             <select id="vak" name="vak" defaultValue={vak ?? ""} className={`${veld} w-full`}>
               <option value="">Alle vakgebieden</option>
-              {vakgebieden.map((v) => (
-                <option key={v.slug} value={v.slug}>
-                  {v.naam}
-                </option>
+              {/* Gegroepeerd per sector; bouw en techniek (onze startfocus) staan bovenaan. */}
+              {groepeerSkills(vakgebieden).map(({ sector, skills }) => (
+                <optgroup key={sector} label={sector}>
+                  {skills.map((v) => (
+                    <option key={v.slug} value={v.slug}>
+                      {v.naam}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </div>

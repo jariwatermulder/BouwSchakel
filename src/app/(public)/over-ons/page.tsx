@@ -15,19 +15,19 @@ const waarden = [
     titel: "Eenvoudig",
     tekst: "Zoeken op vakgebied en regio, met een gratis account en zonder gedoe.",
     icon: "match",
-    kleur: "#0e9f6e",
+    kleur: "#2563eb",
   },
   {
     titel: "Rechtstreeks",
     tekst: "Opdrachtgever en zzp’er maken zelf afspraken, zonder tussenpersoon.",
     icon: "chat",
-    kleur: "#0b8457",
+    kleur: "#1d4ed8",
   },
   {
     titel: "Focus op de bouw",
     tekst: "We beginnen bij bouw en techniek en groeien van daaruit verder.",
     icon: "grid",
-    kleur: "#0a6b48",
+    kleur: "#2f5da6",
   },
 ];
 
