@@ -7,35 +7,25 @@ import { ButtonLink } from "@/components/ui/button";
  * inloggen terugsturen (inclusief gekozen filters), zodat het gekozen
  * vakgebied behouden blijft.
  *
- * Om vóór de accountdrempel een concrete indruk te geven, tonen we het echte
- * aantal passende profielen (alleen een getal, geen profielgegevens) en wat
- * een profiel bevat. Er worden nooit voorbeeldprofielen verzonnen.
+ * Vóór de accountdrempel tonen we wat een profiel bevat en waarom een account
+ * nodig is; bewust geen resultaataantal en nooit verzonnen voorbeeldprofielen.
  */
 export function AccountNodig({
   next,
-  aantal,
-  zoekopdracht,
-  titel,
-  tekst = "Een account is gratis. Daarna zie je direct de profielen die bij jouw zoekopdracht passen en kun je rechtstreeks contact opnemen.",
+  titel = "Bekijk wie bij jouw klus past.",
+  tekst = "Maak gratis een account om het aanbod voor jouw zoekopdracht te bekijken en rechtstreeks contact te leggen.",
+  knop = "Bekijk het aanbod",
 }: {
   next: string;
-  /** Echt aantal zichtbare profielen voor deze zoekopdracht; null = niet tonen. */
-  aantal?: number | null;
-  /** Omschrijving van de zoekopdracht, bijv. "voor timmerman in Groningen" of "in Groningen". */
-  zoekopdracht?: string | null;
   titel?: string;
   tekst?: string;
+  knop?: string;
 }) {
   const n = encodeURIComponent(next);
-  const kop =
-    titel ??
-    (aantal && aantal > 0
-      ? `${aantal} ${aantal === 1 ? "vakman gevonden" : "vakmensen gevonden"}${zoekopdracht ? ` ${zoekopdracht}` : ""}. Maak een account aan om de profielen te bekijken.`
-      : "Om passende profielen te bekijken maak je een account aan als opdrachtgever.");
 
   return (
     <div className="border-border bg-surface rounded-2xl border p-6 md:p-8">
-      <h2 className="text-xl font-bold md:text-2xl">{kop}</h2>
+      <h2 className="text-xl font-bold md:text-2xl">{titel}</h2>
       <p className="text-foreground-muted mt-2 max-w-2xl leading-relaxed">{tekst}</p>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -75,7 +65,7 @@ export function AccountNodig({
           data-track-label="account-nodig-registreren"
           className="h-12 justify-center rounded-xl px-6 text-base"
         >
-          Maak gratis een account aan
+          {knop}
           <span aria-hidden>→</span>
         </ButtonLink>
         <Link
