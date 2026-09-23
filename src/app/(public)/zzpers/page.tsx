@@ -12,9 +12,10 @@ export const metadata: Metadata = paginaMetadata({
 });
 
 /**
- * Eigen iconenset (public/icons/zzpers, SVG, 64×64): navy lijnen met blauwe
- * accenten, één lijndikte en afronding. Vaste afmetingen voorkomen dat de
- * kaarten verspringen tijdens het laden.
+ * Eigen iconenset (public/icons/zzpers, aangeleverde SVG's, 96×96): navy
+ * lijnen met blauwe accenten op de lichtblauwe afgeronde container, die in de
+ * SVG zelf zit. Vaste afmetingen voorkomen dat de kaarten verspringen tijdens
+ * het laden.
  */
 const punten = [
   {
@@ -40,20 +41,18 @@ const stappen = [
   { tekst: "Word gevonden en rechtstreeks benaderd door opdrachtgevers.", icon: "/icons/zzpers/06_rechtstreeks_contact.svg" },
 ];
 
-/** Lichtblauwe icoon-container met subtiele hover: het icoon komt 2 px omhoog. */
+/** Icoon-tegel (56 px) met subtiele hover: de tegel komt 2 px omhoog. */
 function IcoonVak({ src }: { src: string }) {
   return (
-    <span className="bg-brand-50 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl">
-      <Image
-        src={src}
-        alt=""
-        aria-hidden
-        width={36}
-        height={36}
-        unoptimized
-        className="h-9 w-9 transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
-      />
-    </span>
+    <Image
+      src={src}
+      alt=""
+      aria-hidden
+      width={56}
+      height={56}
+      unoptimized
+      className="h-14 w-14 shrink-0 rounded-2xl transition-transform duration-200 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
+    />
   );
 }
 
