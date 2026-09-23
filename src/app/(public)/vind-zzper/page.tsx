@@ -47,7 +47,7 @@ const POPULAIRE_VAKGEBIEDEN = [
 const stappen = [
   {
     titel: "Zoek op vak en regio",
-    tekst: "Kies een vakgebied en je plaats. Met een gratis account als opdrachtgever zie je de passende profielen.",
+    tekst: "Kies je vak en regio. Maak gratis een account om passende profielen te bekijken en contact op te nemen.",
     src: "/images/stap-1-zoeken.png",
     alt: "Telefoon met de ZZP Schakel-zoekfunctie: vakgebied en plaats invullen.",
   },

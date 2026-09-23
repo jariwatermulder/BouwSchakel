@@ -53,7 +53,7 @@ const verwerkingen = [
   },
   {
     doel: "Eigen bezoekersstatistieken (geen Google Analytics)",
-    gegevens: "pseudoniem bezoekers- en sessienummer, bezochte pagina's, herkomst (alleen domeinnaam), apparaattype, browser en besturingssysteem, uitgevoerde acties zoals zoeken of contact opnemen; geen IP-adres; bij ingelogde gebruikers gekoppeld aan het account-id",
+    gegevens: "willekeurig bezoekers- en sessienummer (cookies zs_aid en zs_sid), bezochte pagina's, herkomst (alleen domeinnaam), apparaattype, browser en besturingssysteem, uitgevoerde acties zoals zoeken of contact opnemen; geen IP-adres; ben je ingelogd, dan koppelen we de metingen aan je account-id. Met 'Do Not Track' of Global Privacy Control meten we niets",
     grondslag: "Gerechtvaardigd belang (art. 6 lid 1 sub f AVG): begrijpen en verbeteren van het platform",
     bewaartermijn: "Maximaal 24 maanden; bij verwijdering van je account wordt de koppeling met je account direct verwijderd",
   },
@@ -177,8 +177,10 @@ export default function PrivacyPage() {
 
           <H>7. Cookies</H>
           <p>
-            We gebruiken functionele cookies (sessie en cookievoorkeur) en
-            eigen statistiekcookies met een gering privacy-effect. Zie ons
+            We gebruiken functionele cookies (inloggen en de beveiliging van
+            inloggen via Google of Apple) en eigen statistiekcookies met een
+            gering privacy-effect; geen cookies van derden. Welke cookies dat
+            precies zijn en hoe lang ze bewaard blijven, staat in ons
             cookiebeleid.
           </p>
 

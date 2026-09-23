@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 const bedrijf = [
-  "Zoek op vakgebied en regio — een account of opdracht is niet nodig.",
-  "Bekijk profielen van vakmensen in jouw buurt.",
-  "Neem rechtstreeks contact op via het platform.",
+  "Kies je vak en regio. Maak gratis een account om passende profielen te bekijken en contact op te nemen.",
+  "Bekijk profielen van vakmensen in jouw buurt. Een opdracht plaatsen is niet nodig.",
+  "Neem rechtstreeks contact op via berichten in het platform.",
   "Bespreek zelf het werk, het tarief en de planning.",
 ];
 

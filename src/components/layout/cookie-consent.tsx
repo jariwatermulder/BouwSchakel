@@ -35,8 +35,8 @@ export function CookieConsent() {
     <div className="border-border bg-surface fixed inset-x-0 bottom-0 z-50 border-t p-4 shadow-lg">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
         <p className="text-foreground-muted text-sm">
-          We gebruiken functionele cookies om het platform te laten werken. Lees
-          ons{" "}
+          We gebruiken functionele cookies en eigen, anonieme
+          bezoekersstatistieken zonder trackers van derden. Lees ons{" "}
           <Link href="/cookies" className="text-navy-700 underline">
             cookiebeleid
           </Link>

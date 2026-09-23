@@ -116,9 +116,8 @@ export default function AlgemeneVoorwaardenPage() {
           <p>
             Heb je een klacht over het platform of over een andere gebruiker?
             Gebruik onze klachtenregeling. We bevestigen ontvangst binnen 5
-            werkdagen en streven naar afhandeling binnen 4 weken. Consumenten
-            kunnen daarnaast het Europese ODR-platform voor onlinegeschillen
-            gebruiken.
+            werkdagen en streven naar afhandeling binnen 4 weken. Kom je er met
+            ons niet uit, dan geldt artikel 11.
           </p>
 
           <H>11. Toepasselijk recht en wijzigingen</H>

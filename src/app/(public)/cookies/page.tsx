@@ -11,20 +11,20 @@ export const metadata: Metadata = {
 
 const cookies = [
   {
-    naam: "session",
+    naam: "bs_session",
     doel: "Houdt je ingelogd. Bevat alleen een willekeurig sessietoken; de koppeling met je account staat aan onze kant.",
     type: "Functioneel, first-party",
     duur: "Maximaal 30 dagen, of tot je uitlogt",
   },
   {
-    naam: "cookie-consent",
-    doel: "Onthoudt dat je de cookiemelding hebt gezien, zodat we die niet elke keer tonen.",
+    naam: "zs_oauth",
+    doel: "Beveiligt het inloggen met Google of Apple: een eenmalige, ondertekende controlecode tijdens het doorsturen naar en van de inlogdienst.",
     type: "Functioneel, first-party",
-    duur: "12 maanden",
+    duur: "Maximaal 10 minuten",
   },
   {
     naam: "zs_aid",
-    doel: "Eigen bezoekersstatistieken: een willekeurig, pseudoniem bezoekersnummer zodat we terugkerende bezoekers kunnen onderscheiden. Bevat geen persoonsgegevens en wordt niet met derden gedeeld.",
+    doel: "Eigen bezoekersstatistieken: een willekeurig bezoekersnummer om terugkerende bezoekers te onderscheiden. Het nummer zelf zegt niets over wie je bent; ben je ingelogd, dan koppelen we de metingen wel aan je account (zie de privacyverklaring). We delen niets met derden.",
     type: "Statistiek, first-party, gering privacy-effect",
     duur: "12 maanden",
   },
@@ -46,22 +46,22 @@ export default function CookiesPage() {
       <PageIntro
         eyebrow="Juridisch"
         title="Cookiebeleid"
-        lead="ZZP Schakel gebruikt alleen cookies die nodig zijn om het platform te laten werken."
+        lead="ZZP Schakel gebruikt functionele cookies en eigen bezoekersstatistieken. Geen advertentiecookies, geen trackers van derden."
       />
       <Container className="max-w-3xl py-12 md:py-16">
         <LegalNotice />
         <div className="text-foreground-muted space-y-4 text-sm leading-relaxed">
           <p>
             Cookies zijn kleine tekstbestanden die je browser opslaat. Wij
-            gebruiken functionele cookies en eigen statistiekcookies met een
-            gering privacy-effect, waarvoor volgens de Telecommunicatiewet geen
-            toestemming nodig is. We plaatsen geen advertentie-, tracking- of
-            social-media-cookies en gebruiken geen analytische tools van derden
-            (zoals Google Analytics). Onze statistieken meten we zelf: pseudoniem,
-            zonder IP-adres en zonder de gegevens met anderen te delen. Daarom
-            vragen we geen toestemming, maar informeren we je alleen. Stel je
-            browser in op &ldquo;Do Not Track&rdquo; of Global Privacy Control,
-            dan meten we je bezoek niet.
+            gebruiken twee soorten: functionele cookies (nodig om in te loggen)
+            en eigen statistiekcookies met een gering privacy-effect. We plaatsen
+            geen advertentie-, tracking- of social-media-cookies en gebruiken
+            geen analytische tools van derden (zoals Google Analytics). Onze
+            statistieken meten we zelf, zonder IP-adres en zonder de gegevens
+            met anderen te delen. Daarom vragen we geen toestemming, maar
+            informeren we je met de melding onderaan de pagina. Stel je browser
+            in op &ldquo;Do Not Track&rdquo; of Global Privacy Control, dan
+            meten we je bezoek niet.
           </p>
 
           <div className="border-border overflow-x-auto rounded-lg border">
@@ -89,9 +89,10 @@ export default function CookiesPage() {
 
           <H>Lokale opslag</H>
           <p>
-            Naast cookies kan je browser kleine voorkeuren lokaal bewaren (zoals
-            de installatie-melding van de app). Die gegevens verlaten je apparaat
-            niet.
+            Naast cookies bewaart je browser twee kleine voorkeuren lokaal: dat
+            je de cookiemelding hebt gezien en dat je de installatie-melding van
+            de app hebt weggeklikt. Die gegevens verlaten je apparaat niet en
+            worden niet naar ons verstuurd.
           </p>
 
           <H>Cookies weigeren of verwijderen</H>
