@@ -13,6 +13,12 @@ import { isProduction } from "@/lib/env";
  * Zie docs/SECURITY.md §1.
  */
 export const SESSION_COOKIE = "bs_session";
+/**
+ * Niet-geheime hint voor de menubalk: bevat alleen de rol (ZZP/COMPANY/ADMIN)
+ * en geen token. Hiermee kunnen publieke pagina's statisch blijven; de
+ * browser leest de hint zelf. Toegang wordt altijd server-side gecontroleerd.
+ */
+export const ROL_HINT_COOKIE = "zs_rol";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 dagen
 
 export async function createSession(
@@ -35,6 +41,14 @@ export async function createSession(
   const store = await cookies();
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
+    secure: isProduction(),
+    sameSite: "lax",
+    path: "/",
+    expires: expiresAt,
+  });
+  const user = await db.user.findUnique({ where: { id: userId }, select: { role: true } });
+  store.set(ROL_HINT_COOKIE, user?.role ?? "", {
+    httpOnly: false,
     secure: isProduction(),
     sameSite: "lax",
     path: "/",
@@ -69,4 +83,5 @@ export async function destroySession(): Promise<void> {
       });
   }
   store.delete(SESSION_COOKIE);
+  store.delete(ROL_HINT_COOKIE);
 }

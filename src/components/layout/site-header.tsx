@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/ui/container";
@@ -10,6 +10,25 @@ import { cn } from "@/lib/utils";
 import { logoutAction } from "@/app/(app)/actions";
 
 type HeaderUser = { email: string; role: string } | null;
+
+/**
+ * Ingelogd-status voor de menubalk zonder server-sessie: de rol-hintcookie
+ * (zs_rol, niet geheim) wordt in de browser gelezen. De server rendert de
+ * uitgelogde variant; na hydration wisselt de balk voor ingelogde bezoekers.
+ */
+function leesRol(): string | null {
+  const m = document.cookie.match(/(?:^|; )zs_rol=([^;]*)/);
+  const rol = decodeURIComponent(m?.[1] ?? "");
+  return rol === "ZZP" || rol === "COMPANY" || rol === "ADMIN" ? rol : null;
+}
+function abonneer(cb: () => void) {
+  window.addEventListener("focus", cb);
+  document.addEventListener("visibilitychange", cb);
+  return () => {
+    window.removeEventListener("focus", cb);
+    document.removeEventListener("visibilitychange", cb);
+  };
+}
 
 function dashboardPad(role: string): string {
   if (role === "COMPANY") return "/bedrijven/dashboard";
@@ -40,10 +59,13 @@ function aanmeldKnop(pathname: string): { href: string; label: string; track: st
   return { href: "/registreren?rol=zzp", label: "Maak een profiel", track: "header-maak-profiel" };
 }
 
-export function SiteHeader({ user }: { user?: HeaderUser }) {
+export function SiteHeader({ user: userProp }: { user?: HeaderUser }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const knop = aanmeldKnop(usePathname() ?? "/");
+  const pathname = usePathname() ?? "/";
+  const knop = aanmeldKnop(pathname);
+  const rolUitCookie = useSyncExternalStore(abonneer, leesRol, () => null);
+  const user: HeaderUser = userProp !== undefined ? userProp : rolUitCookie ? { email: "", role: rolUitCookie } : null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);

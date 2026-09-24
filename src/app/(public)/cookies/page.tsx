@@ -18,6 +18,12 @@ const cookies = [
     duur: "Maximaal 30 dagen, of tot je uitlogt",
   },
   {
+    naam: "zs_rol",
+    doel: "Onthoudt alleen of je bent ingelogd en met welke rol (zzp'er, opdrachtgever of beheer), zodat de menubalk direct klopt. Bevat geen sessietoken en geeft geen toegang.",
+    type: "Functioneel, first-party",
+    duur: "Maximaal 30 dagen, of tot je uitlogt",
+  },
+  {
     naam: "zs_oauth",
     doel: "Beveiligt het inloggen met Google of Apple: een eenmalige, ondertekende controlecode tijdens het doorsturen naar en van de inlogdienst.",
     type: "Functioneel, first-party",

@@ -22,19 +22,19 @@ const SETS: Record<
     label: "Voor opdrachtgevers",
     stappen: [
       {
-        img: "/images/zo-werkt/zoeken-telefoon.png",
+        img: "/images/zo-werkt/zoeken-telefoon.webp",
         alt: "Zoek op vakgebied en plaats in de ZZP Schakel-app.",
         titel: "Zoek op vak en regio",
         tekst: "Kies je vak en regio. Maak gratis een account om passende profielen te bekijken en contact op te nemen.",
       },
       {
-        img: "/images/zo-werkt/og-2.png",
+        img: "/images/zo-werkt/og-2.webp",
         alt: "Profielkaart van een vakman met vakgebied en werkgebied.",
         titel: "Bekijk profielen",
         tekst: "Zie wie er werkt in jouw buurt, met vakgebied en werkgebied.",
       },
       {
-        img: "/images/zo-werkt/og-3.png",
+        img: "/images/zo-werkt/og-3.webp",
         alt: "Rechtstreeks contact opnemen met een vakman via bericht.",
         titel: "Neem rechtstreeks contact op",
         tekst:
@@ -47,21 +47,21 @@ const SETS: Record<
     label: "Voor zzp’ers",
     stappen: [
       {
-        img: "/images/zo-werkt/profiel-aanmaken.png",
+        img: "/images/zo-werkt/profiel-aanmaken.webp",
         alt: "Een zzp’er maakt een profiel aan op ZZP Schakel.",
         titel: "Maak gratis je profiel",
         tekst:
           "Laat zien wie je bent, wat je doet en waar je werkt. Binnen een paar minuten sta je online.",
       },
       {
-        img: "/images/zo-werkt/zzp-2.png",
+        img: "/images/zo-werkt/zzp-2.webp",
         alt: "Een zzp’er wordt op de kaart gevonden in zijn regio.",
         titel: "Word gevonden in jouw regio",
         tekst:
           "Opdrachtgevers zoeken op vakgebied en regio. Zo kom jij in beeld bij de juiste klussen.",
       },
       {
-        img: "/images/zo-werkt/zzp-3.png",
+        img: "/images/zo-werkt/zzp-3.webp",
         alt: "Een zzp’er ontvangt rechtstreeks een aanvraag van een opdrachtgever.",
         titel: "Kom direct in contact",
         tekst:

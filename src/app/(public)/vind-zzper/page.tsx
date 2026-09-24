@@ -50,19 +50,19 @@ const stappen = [
   {
     titel: "Zoek op vak en regio",
     tekst: "Kies je vak en regio. Maak gratis een account om passende profielen te bekijken en contact op te nemen.",
-    src: "/images/stap-1-zoeken.png",
+    src: "/images/stap-1-zoeken.webp",
     alt: "Telefoon met de ZZP Schakel-zoekfunctie: vakgebied en plaats invullen.",
   },
   {
     titel: "Bekijk profielen",
     tekst: "Zie wie er werkt in jouw buurt, met vakgebied en werkgebied.",
-    src: "/images/stap-2-profiel.png",
+    src: "/images/stap-2-profiel.webp",
     alt: "Profielkaart van een vakman met vakgebied, werkgebied en ervaring.",
   },
   {
     titel: "Neem rechtstreeks contact op",
     tekst: "Bespreek zelf het werk, het tarief en de planning. Geen tussenlaag.",
-    src: "/images/stap-3-contact.png",
+    src: "/images/stap-3-contact.webp",
     alt: "Rechtstreeks contact opnemen met een vakman via een bericht in het platform.",
   },
 ];

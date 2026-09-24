@@ -75,7 +75,7 @@ export function VoorOpdrachtgevers() {
 
           <div>
             <Image
-              src="/images/zo-werkt/zoeken-telefoon.png"
+              src="/images/zo-werkt/zoeken-telefoon.webp"
               alt="De ZZP Schakel-app: zoek vakmensen op vakgebied en regio."
               width={640}
               height={640}
@@ -133,7 +133,7 @@ export function VoorZzpers() {
           <div>
             <div className="bg-surface shadow-soft mx-auto max-w-md overflow-hidden rounded-3xl p-3">
               <Image
-                src="/images/zo-werkt/zzp-2.png"
+                src="/images/zo-werkt/zzp-2.webp"
                 alt="Een zzp’er wordt door opdrachtgevers gevonden in zijn regio."
                 width={640}
                 height={640}

@@ -1,5 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+// Inter (merklettertype) zelf gehost: geen externe verbinding, geen
+// blokkerend stylesheet en geen verspringende tekst. Variabel font, één
+// bestand per tekenset (latin + latin-ext dekt Nederlands volledig).
+const inter = localFont({
+  src: [
+    { path: "../fonts/inter-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
+    { path: "../fonts/inter-latin-ext-wght-normal.woff2", weight: "100 900", style: "normal" },
+  ],
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
+});
 import { CookieConsent } from "@/components/layout/cookie-consent";
 import { PWARegister } from "@/components/pwa-register";
 import { AnalyticsTracker } from "@/components/analytics/tracker";
@@ -65,21 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="nl" className="h-full">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* Inter is het merklettertype (brandguide). */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        />
-      </head>
+    <html lang="nl" className={`h-full ${inter.variable}`}>
       <body className="flex min-h-full flex-col">
         <StructuredData />
         {children}
